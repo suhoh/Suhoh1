@@ -260,6 +260,7 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.5.1.min.map" />
+    <Content Include="Views\Home\OpenLayerMap.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -284,10 +285,12 @@
     </Compile>
     <Compile Include="Models\Account\AccountViewModels.cs" />
     <Compile Include="Models\GridView\GridViewHelper.cs" />
+    <Compile Include="Models\Home\ViewModel.cs" />
     <Compile Include="Models\Scheduler\SchedulerDataSource.cs" />
     <Compile Include="Models\Scheduler\SchedulerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
