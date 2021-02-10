@@ -13,10 +13,23 @@
         console.log("window - innerHeight " + window.innerHeight);
 
     });
+
+    function holaClick() {
+        alert("hello world");
+    }
 </script>
 
 <div style="width:100%;height:100%;position: relative;" id="MainContent">
     @*@Html.Raw(File.ReadAllText(Server.MapPath(@"~/App_Data/Overview.html")))*@
+
+    @Html.DevExpress().Button(settings =>
+        {
+            settings.Name = "Hello";
+            settings.Text = "Hola";
+            settings.Width = 500;
+            settings.UseSubmitBehavior = false;
+            settings.ClientSideEvents.Click = "holaClick";
+        }).GetHtml()
 
     @Html.DevExpress().Splitter(settings => {
         settings.Name = "splitterMain";
