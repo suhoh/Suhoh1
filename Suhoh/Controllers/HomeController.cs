@@ -13,8 +13,11 @@ namespace Suhoh.Controllers
         {
             return View();
         }
-
         public ActionResult OpenLayerMap(ViewModel vm)
+        {
+            return View();
+        }
+        public ActionResult D3Graph(ViewModel vm)
         {
             return View();
         }
