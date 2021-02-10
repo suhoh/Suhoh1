@@ -33,7 +33,7 @@
                 mapPane.Name = "paneMap";
                 mapPane.SetContent(() =>
                 {
-                    ViewContext.Writer.Write("<h1>Big Map Pane</h1>");
+                    ViewContext.Writer.Write("<h1>James' Map</h1>");
                 });
 
             });
@@ -42,7 +42,7 @@
                 graphPane.Name = "paneGraph";
                 graphPane.SetContent(() =>
                 {
-                    ViewContext.Writer.Write("<h2>Graph Pane - Change from master</h2>");
+                    ViewContext.Writer.Write("<h2>James' Map 2</h2>");
                 });
 
             });
@@ -51,7 +51,7 @@
             gridviewPane.Name = "paneGridview";
             gridviewPane.Size = Unit.Percentage(30);
             gridviewPane.SetContent(() => {
-                ViewContext.Writer.Write("Gridview Pane - Change with Jae watching");
+                ViewContext.Writer.Write("<h3>James Grid View</h3>");
             });
         });
     }).GetHtml()
