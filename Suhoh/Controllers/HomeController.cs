@@ -13,7 +13,6 @@ namespace Suhoh.Controllers
         {
             return View();
         }
-
         public ActionResult OpenLayerMap(ViewModel vm)
         {
             return View();

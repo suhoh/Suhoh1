@@ -44,8 +44,7 @@
                 graphPane.Name = "paneGraph";
                 graphPane.SetContent(() =>
                 {
-                    ViewContext.Writer.Write("<h2>Graph Pane - Change from master</h2>");
-                    //Html
+                    Html.RenderPartial("D3Graph", Model);
                 });
 
             });
