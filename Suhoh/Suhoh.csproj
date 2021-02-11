@@ -138,8 +138,8 @@
     <Content Include="App_Data\Overview.html" />
     <Content Include="App_Data\OverviewContents.xml" />
     <Content Include="Content\Content.css" />
-    <Content Include="Scripts\D3_v6.5\d3.js" />
-    <Content Include="Scripts\D3_v6.5\d3.min.js" />
+    <Content Include="Scripts\D3_v650\d3.js" />
+    <Content Include="Scripts\D3_v650\d3.min.js" />
     <Content Include="Content\GridView.css" />
     <Content Include="Content\GridView.js" />
     <Content Include="Content\Images\adaptive-menu.svg" />

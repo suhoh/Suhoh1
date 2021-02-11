@@ -5,10 +5,60 @@
     ViewBag.Title = "OpenLayerMap";
 }
 
-<h2>OpenLayerMap</h2>
+<style>
+    .olMap {
+        opacity: 1;
+        background-color: #e92c2c;
+        width: 100%;
+        height: 80%;
+        position: static;
+        z-index: 1;
+        /*position: fixed;
+    top: 47px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1;*/
+    }
+</style>
 
-<script type="text/javascript">
+<head>
+</head>
+<body>
+    <div id="map" class="olMap">
+    </div>
+</body>
+<script>
+    var esriStreets = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer';
+    var _scaleLine = new ol.control.ScaleLine();
+    var layerStreets = new ol.layer.Tile({
+        zIndex: 1000,
+        visible: true,
+        name: 'layerStreets',
+        source: new ol.source.XYZ({
+            title: 'layerStreets',
+            url: esriStreets + '/tile/{z}/{y}/{x}',
+            crossOrigin: "Anonymous"
+        })
+    });
 
+    var _map;
+
+    _map = new ol.Map({
+        target: 'map',
+        controls: ol.control.defaults({
+            attributionOptions: {
+                collapsible: false
+            }
+        }).extend([
+            _scaleLine
+        ]),
+        layer: layerStreets,
+        logo: true,
+        view: new ol.View({
+            center: [0, 0],
+            zoom: 4
+        })
+    });
 
 </script>
 
