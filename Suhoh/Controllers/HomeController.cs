@@ -17,7 +17,10 @@ namespace Suhoh.Controllers
         {
             return View();
         }
-
+        public ActionResult D3Graph(ViewModel vm)
+        {
+            return View();
+        }
         public ActionResult DxGridview(ViewModel vm)
         {
             return View();
