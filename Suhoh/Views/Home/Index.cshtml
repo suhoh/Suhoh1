@@ -14,8 +14,7 @@
     window.addEventListener('resize', function (event) {
         console.log("window - innerWidth " + window.innerWidth);
         console.log("window - innerHeight " + window.innerHeight);
-
-    });
+    })
 
 </script>
 
@@ -54,7 +53,7 @@
             gridviewPane.Name = "paneGridview";
             gridviewPane.Size = Unit.Percentage(30);
             gridviewPane.SetContent(() => {
-                ViewContext.Writer.Write("Gridview Pane - Change with Jae watching");
+                Html.RenderPartial("DxGridview", Model);
             });
         });
     }).GetHtml()

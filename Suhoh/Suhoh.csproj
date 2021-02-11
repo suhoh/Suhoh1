@@ -191,6 +191,8 @@
     <Content Include="Content\Images\sign-out.svg" />
     <Content Include="Content\Images\user.svg" />
     <Content Include="Content\Layout.css" />
+    <Content Include="Scripts\Ol_v650\ol.css" />
+    <Content Include="Scripts\Ol_v650\ol.js" />
     <Content Include="Content\Photo\Alberto_Alonso.jpg" />
     <Content Include="Content\Photo\Alfredo_Gomez.jpg" />
     <Content Include="Content\Photo\Andrew_Lee.jpg" />
@@ -227,6 +229,8 @@
     <Content Include="Content\SignInRegister.css" />
     <Content Include="Content\SignInRegister.js" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\Ol_v650\ol.css.map" />
+    <Content Include="Scripts\Ol_v650\ol.js.map" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -264,6 +268,7 @@
     <Content Include="Scripts\jquery-3.5.1.min.map" />
     <Content Include="Views\Home\OpenLayerMap.cshtml" />
     <Content Include="Views\Home\D3Graph.cshtml" />
+    <Content Include="Views\Home\DxGridview.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
