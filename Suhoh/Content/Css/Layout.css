@@ -124,7 +124,7 @@ html
 
 .header-logo
 {
-    background: url('Images/logo.svg') no-repeat center;
+    background: url('../Images/logo.svg') no-repeat center;
     height: 26px;
     width: 150px;
 }
@@ -133,7 +133,7 @@ html
 {
     .header-logo
     {
-        background: url('Images/logo-small.svg') no-repeat center;
+        background: url('../Images/logo-small.svg') no-repeat center;
         width: 26px;
     }
 }
@@ -207,9 +207,8 @@ html
 }
 
 /* Ellipsis -> Apps Icon */
-.header-menu .adaptive-image
-{
-    background: url('Images/adaptive-menu.svg') no-repeat center;
+.header-menu .adaptive-image {
+    background: url('../Images/adaptive-menu.svg') no-repeat center;
     width: 16px;
     height: 16px;
     padding: 0 8px;
@@ -227,9 +226,8 @@ html
         width: 47px;
     }
 
-    .header-menu .adaptive-image
-    {
-        background: url('Images/application.svg') no-repeat center;
+    .header-menu .adaptive-image {
+        background: url('../Images/application.svg') no-repeat center;
     }
 
     /* Show item images */
@@ -240,14 +238,12 @@ html
 }
 
 /* Right area menu */
-.header-menu .toggle-item .image
-{
-    background: url('Images/double.svg') no-repeat center;
+.header-menu .toggle-item .image {
+    background: url('../Images/double.svg') no-repeat center;
 }
 
-.header-menu .toggle-item.checked .image
-{
-    background: url('Images/double-close.svg') no-repeat center;
+.header-menu .toggle-item.checked .image {
+    background: url('../Images/double-close.svg') no-repeat center;
 }
 
 .header-menu .image-item
@@ -274,14 +270,13 @@ html
     border-radius: 50%;
 }
 
-.header-menu .account-background .empty-image
-{
-    width: 16px;
-    height: 16px;
-    margin: 8px;
-    display: inline-block;
-    background: url('Images/user.svg');
-}
+    .header-menu .account-background .empty-image {
+        width: 16px;
+        height: 16px;
+        margin: 8px;
+        display: inline-block;
+        background: url('../Images/user.svg');
+    }
 
 .header-menu .account-background .account-image
 {

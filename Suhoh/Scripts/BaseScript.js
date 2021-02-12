@@ -2,6 +2,7 @@
     var adjustmentDelegates = [];
     function AddAdjustmentDelegate(adjustmentDelegate) {
         adjustmentDelegates.push(adjustmentDelegate);
+        _map.updateSize();
     }
     function onControlsInitialized(s, e) {
         adjustPageControls();
@@ -74,6 +75,12 @@
             pGraph.SetSize(pGraph.offsetWidth + offset);
 
         }
+
+        //var pMap = splitterMain.GetPaneByName('paneMap');
+        //var pGraph = splitterMain.GetPaneByName('paneGraph');
+        //pMap.RefreshContentUrl();
+        //pGraph.RefreshContentUrl();
+
     }
 
     function toggleRightPanel() {

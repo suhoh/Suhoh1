@@ -4,11 +4,13 @@
 <html>
 <head>
     <meta charset="UTF-8" />
+    <link rel="icon" href="@Url.Content("~/Logo/favicon.ico")" />   @*favicon.ico will be added later*@
     <title>
         @{ var pageTitleParts = new string[] { ViewBag.Title, "Suhoh Consulting Ltd." }; }
         @string.Join(" - ", @pageTitleParts.Where(s => !string.IsNullOrEmpty(s)))
     </title>
     <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+
     @Html.DevExpress().GetStyleSheets(
     new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
     new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
@@ -25,13 +27,13 @@
         new Script { ExtensionSuite = ExtensionSuite.Scheduler },
         new Script { ExtensionSuite = ExtensionSuite.Report }
     )
-    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Content.css")" />
-    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Layout.css")" />
-    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Scripts/Ol_v650/ol.css")" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/suhoh")
+    @*@Scripts.Render("~/bundles/jquery")*@ @*gets loaded through DevExpress automatically*@
+    @Scripts.Render("~/bundles/modernizr")
+
     @RenderSection("Head", false)
-    <script type="text/javascript" src="@Url.Content("~/Content/Script.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/Ol_v650/ol.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/D3_v650/d3.js")"></script>
 
     <script>
         // sending the __RequestVerificationToken value manually, see details: https://github.com/DevExpress/aspnet-security-bestpractices/tree/master/SecurityBestPractices.Mvc#4-preventing-cross-site-request-forgery-csrf
