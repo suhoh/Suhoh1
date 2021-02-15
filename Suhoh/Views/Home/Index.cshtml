@@ -11,10 +11,18 @@
 }
 
 <script>
+    var _headerHeight = 0;
+
     window.addEventListener('resize', function (event) {
         console.log("window - innerWidth " + window.innerWidth);
         console.log("window - innerHeight " + window.innerHeight);
     })
+
+    function splitterMainResized(s, e) {
+        _map.updateSize();
+        var pGridview = splitterMain.GetPaneByName('paneGridview');
+        dxGridview.SetHeight(pGridview.GetClientHeight() - _headerHeight);
+    }
 
 </script>
 
@@ -53,7 +61,7 @@
             gridviewPane.Name = "paneGridview";
             gridviewPane.Size = Unit.Percentage(30);
             gridviewPane.SetContent(() => {
-                Html.RenderPartial("DxGridview", Model);
+                Html.RenderAction("DxGridview", Model);
             });
         });
         settings.ClientSideEvents.PaneResized = "splitterMainResized";

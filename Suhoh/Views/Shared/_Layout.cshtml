@@ -205,7 +205,7 @@
             }).BindToSiteMap("~/App_Data/ApplicationMenuDataSource.sitemap", false).GetHtml();
             ViewContext.Writer.Write("</div></div><div class='dx-clear'></div>");
         });
-    }).GetHtml()
+        }).GetHtml()
         @if(IsSectionDefined("LeftPanelContent")) {
             @Html.DevExpress().Panel(settings => {
                 settings.Name = "leftPanel";

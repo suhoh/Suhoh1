@@ -27,6 +27,9 @@ namespace Suhoh
                 "~/Scripts/modernizr-*"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                "~/Content/Css/DxGridview.css",
+                "~/Content/Css/D3Graph.css",
+                "~/Content/Css/OpenLayerMap.css",
                 "~/Content/Css/Content.css",
                 "~/Content/Css/Layout.css",
                 "~/Scripts/Ol_v650/ol.css"));

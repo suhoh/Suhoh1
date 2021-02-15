@@ -5,5 +5,43 @@
     ViewBag.Title = "DxGridview";
 }
 
-<h2>DxGridview</h2>
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "dxGridview";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "DxGridview" };
 
+        settings.KeyFieldName = "WellId";
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.ControlStyle.CssClass = "dxGridview";
+        settings.Styles.Header.Paddings.Padding = 4;
+
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.VerticalScrollableHeight = 100;
+        settings.SettingsBehavior.AllowFocusedRow = true;
+
+        settings.Columns.Add("WellId");
+        settings.Columns.Add("Lat");
+        settings.Columns.Add("Lon");
+        settings.Columns.Add("Top");
+        settings.Columns.Add("Base");
+        settings.Columns.Add("Depth");
+        settings.Columns.Add("TestType");
+
+        // Scrollbar
+        //settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        //settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+
+        // Paging
+        //settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        settings.SettingsPager.Position = PagerPosition.Bottom;
+        settings.SettingsPager.FirstPageButton.Visible = true;
+        settings.SettingsPager.LastPageButton.Visible = true;
+        settings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+        // Column
+        settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.NextColumn;
+        settings.SettingsResizing.Visualization = ResizingMode.Live;
+        settings.SettingsBehavior.AllowEllipsisInText = false;
+    }).Bind(Model.DxGridview).GetHtml()
