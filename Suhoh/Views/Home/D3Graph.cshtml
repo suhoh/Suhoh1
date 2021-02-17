@@ -6,71 +6,31 @@
 }
 
 @*<h2>D3Graph</h2>*@
-<div id="pieChart" style="background-color:lightgrey; top:0px; left:0px; width:300px; height:300px"></div>
+<div id="pieChart"></div>
+<div class="divChartSettingButton">
+    @Html.DevExpress().Button(settings =>
+    {
+        settings.Name = "btnChartSetting";
+        settings.Text = "";
+        settings.Width = 50;
+        settings.UseSubmitBehavior = false;
+        settings.ToolTip = "Setting";
+        settings.ControlStyle.CssClass = "btnChartSetting";
+        settings.ClientSideEvents.Click = "panelSlideChartSetting";
+
+        settings.Images.Image.IconID = IconID.IconbuilderActionsSettingsSvgWhite16x16;
+
+    }).GetHtml()
+</div>
 
 @* This file will contain events that relates to D3
-   Specific functions will be stored under Scripts/D3 folder with separate file names
-   - createScatterPlot
-   - createBar, createPie, etc... *@
+    Specific functions will be stored under Scripts/D3 folder with separate file names
+    - createScatterPlot
+    - createBar, createPie, etc... *@
 
 <script type="text/javascript">
-    var width = 400;
-    var height = 400;
-    var margin = 40;
-    var radius = 180;
-    var innerRadius = radius * 0.45;
-    var outerRadius = radius * 0.7;
 
-    //var data = { a: 9, b: 20, c: 30, d: 8, e: 12 }
-    var data = [{ 'value': 9, 'key': "a" }, { 'value': 20, 'key': "b" }, { 'value': 30, 'key': "c" }, { 'value': 8, 'key': "d" }, { 'value': 12, 'key': "e" }]
-
-    //var color = d3.scaleOrdinal()
-    //    .domain(data)
-    //    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"])
-
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
-
-    var svg = d3.select("#pieChart")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", "translate(150 150)");
-
-    //svg.append("rect")
-    //    .attr("width", 200)
-    //    .attr("height", 200)
-    //    .style("fill", "yellow")
-
-    //svg.append("g")
-    //    .attr("transform", "translate(50,50)")
-
-    //var pieData = d3.pie()
-    //    .sort(null)
-    //    .value(function (d) { return d.value; })
-    //    (data);
-
-    var pieData = d3.pie()
-        .value(function (d) { return d.value; })
-        (data);
-
-    //var data_ready = pie(d3.entries(data))
-
-    var arc = d3.arc()
-        .innerRadius(innerRadius)
-        .outerRadius(outerRadius)
-        .padAngle(.01)
-        .padRadius(50);
-
-    svg.selectAll("allSlices")
-        .data(pieData)
-        .enter()
-        .append("path")
-        .attr('d', arc)
-        .attr("fill", function (d) { return (color(d.data.key)) })
-        .attr("stroke", "black")
-        .style("stroke-width", "2px")
-        .style("opacity", 0.7);
+    drawPie('pieChart', _pieData, 400, 400, 180);
 
 </script>
 

@@ -153,6 +153,7 @@
     <Content Include="Content\Css\D3Graph.css" />
     <Content Include="Content\Css\DxGridview.css" />
     <Content Include="Content\Css\OpenLayerMap.css" />
+    <Content Include="Scripts\D3\pie.js" />
     <Content Include="Scripts\D3_v650\d3.js" />
     <Content Include="Scripts\D3_v650\d3.min.js" />
     <Content Include="Content\GridView.css" />
@@ -267,7 +268,9 @@
     <Content Include="App_Data\ApplicationMenuDataSource.sitemap" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -324,7 +327,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scripts\D3\" />
     <Folder Include="Scripts\OL\" />
   </ItemGroup>
   <PropertyGroup>
