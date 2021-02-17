@@ -5,5 +5,13 @@
 
 .dxgvDataRow_Office365 td.dxgv {
     /*top right bottom left*/
-    padding: 5px 2px 5px 2px !important;
+    padding: 3px 2px 3px 2px !important;
+}
+
+/*Doesn't seem to be working*/
+.dxgvHeader_Office365.gridSettings1 {
+    background: #FF00FF !important;
+}
+.dxgvHeader_Office365.gridSettings1 table {
+    color: white !important;
 }

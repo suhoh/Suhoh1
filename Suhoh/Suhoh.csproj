@@ -258,6 +258,9 @@
     <Content Include="Scripts\jQuery\jquery-3.5.1.slim.min.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\SheetJS\cpexcel.js" />
+    <Content Include="Scripts\SheetJS\jszip.js" />
+    <Content Include="Scripts\SheetJS\xlsx.full.min.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +292,7 @@
     <Content Include="Views\Home\OpenLayerMap.cshtml" />
     <Content Include="Views\Home\D3Graph.cshtml" />
     <Content Include="Views\Home\DxGridview.cshtml" />
+    <Content Include="Scripts\SheetJS\xlsx.full.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

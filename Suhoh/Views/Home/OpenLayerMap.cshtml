@@ -29,6 +29,21 @@
         </div>
     </div>
 </body>
+
+<div class="loadExcel">
+    @Html.DevExpress().Button(settings =>
+        {
+            settings.Name = "btnGotoHomeMap";
+            settings.Text = "";
+            //settings.Height = 30;
+            settings.Width = 50;
+            settings.UseSubmitBehavior = false;
+            settings.ControlStyle.CssClass = "loadExcelButton";
+            settings.ClientSideEvents.Click = "loadExcelFile";
+            settings.Images.Image.IconID = IconID.IconbuilderActionsHomeSvgWhite16x16;
+        }).GetHtml()
+</div>
+
 <script>
     var esriStreets = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer';
     var _scaleLine = new ol.control.ScaleLine();

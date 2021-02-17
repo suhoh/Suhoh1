@@ -11,7 +11,9 @@ namespace Suhoh
             bundles.Add(new ScriptBundle("~/bundles/suhoh").Include(
                 "~/Scripts/BaseScript.js",
                 "~/Scripts/Ol_v650/ol.js",
-                "~/Scripts/D3_v650/d3.js"));
+                "~/Scripts/D3_v650/d3.js",
+                "~/Scripts/SheetJS/xlsx.full.min.js"
+            ));
 
             // DevExpress add jquery automatically in web.config
             // https://docs.devexpress.com/AspNet/17153/common-concepts/webconfig-modifications/webconfig-options/embed-third-party-libraries
