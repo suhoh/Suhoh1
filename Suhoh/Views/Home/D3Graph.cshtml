@@ -7,22 +7,34 @@
 
 @*<h2>D3Graph</h2>*@
 <div id="pieChart"></div>
-<div class="divChartSettingButton">
-    @Html.DevExpress().Button(settings =>
-    {
-        settings.Name = "btnChartSetting";
-        settings.Text = "";
-        settings.Width = 50;
-        settings.UseSubmitBehavior = false;
-        settings.ToolTip = "Setting";
-        settings.ControlStyle.CssClass = "btnChartSetting";
-        settings.ClientSideEvents.Click = "panelSlideChartSetting";
+@*<div class="divChartSettingButton">
+        @Html.DevExpress().Button(settings =>
+        {
+            settings.Name = "btnChartSetting";
+            settings.Text = "";
+            settings.Width = 10;
+            settings.Height = 10;
+            settings.UseSubmitBehavior = false;
+            settings.ToolTip = "Setting";
+            settings.ControlStyle.CssClass = "btnChartSetting";
+            settings.ClientSideEvents.Click = "panelSlideChartSetting";
 
-        settings.Images.Image.IconID = IconID.IconbuilderActionsSettingsSvgWhite16x16;
+            settings.Images.Image.IconID = IconID.IconbuilderActionsSettingsSvgWhite16x16;
 
-    }).GetHtml()
+        }).GetHtml()
+    </div>*@
+<div class="divChartMaximizeButton">
+    <button type="button" class="btnChartMaximize">M</button>
 </div>
-
+<div class="divChartLegendButton">
+    <button type="button" class="btnChartLegend" onclick="showHideLegend()">L</button>
+</div>
+<div class="divChartPropertyButton">
+    <button type="button" class="btnChartProperty">P</button>
+</div>
+<div class="divChartSettingButton">
+    <button type="button" class="btnChartSetting">S</button>
+</div>
 @* This file will contain events that relates to D3
     Specific functions will be stored under Scripts/D3 folder with separate file names
     - createScatterPlot
@@ -30,7 +42,20 @@
 
 <script type="text/javascript">
 
-    drawPie('pieChart', _pieData, 400, 400, 180);
+    drawPie('pieChart', _pieData, 400, 400, 180, _isLabel);
+    
+    function showHideLegend() {
+        if (_isD3Label == false)
+            _isD3Label = true;
+        else
+            _isD3Label = false;
+
+        var pGraph = splitterMain.GetPaneByName('paneGraph');
+        var width = pGraph.GetClientWidth();
+        var height = pGraph.GetClientHeight();
+        var min = Math.min(width, height);
+        drawPie('pieChart', _pieData, width, height, min / 2);
+    }
 
 </script>
 
