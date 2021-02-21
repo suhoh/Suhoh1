@@ -43,17 +43,39 @@
                 workbook.SheetNames.forEach(function (sheetName) {
                     var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     var json_object = JSON.stringify(XL_row_object);
+                    //var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
+                    //var jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+                    convertJsonToDataTable(json_object);
                     console.log(JSON.parse(json_object));
                 })
             };
-
             reader.onerror = function (ex) {
                 console.log(ex);
             };
-
             reader.readAsBinaryString(file);
         };
     };
+
+    // Ajax: convert Json to DataTable and will show in Gridview
+    function convertJsonToDataTable(json) {
+        var url = "Home/ConvertJsonToDataTable"
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: { 'json': json},
+            dataType: "json",
+            success: successFunc,
+            error: errorFunc
+        });
+
+        function successFunc(data, status) {
+            dxGridview.PerformCallback();
+        }
+        function errorFunc() {
+            alert("Error: ConvertJsonToDataTable");
+        }
+
+    }
 
     function loadExcelFile(evt) {
         var excelFile = document.createElement('input');

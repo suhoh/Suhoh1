@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -9,7 +10,8 @@ namespace Suhoh.Model
     public class ViewModel
     {
         public string MyId { get; set; }
-        public IEnumerable DxGridview;
+        public DataTable DxGridview { get; set; }
+        public IEnumerable DxGridviewList;
 
 
 
@@ -17,6 +19,12 @@ namespace Suhoh.Model
         {
             MyId = "Hello world";
         }
+    }
+
+    public class KeyValue
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
     }
 
     // Test Gridview

@@ -321,6 +321,7 @@
     </Compile>
     <Compile Include="Models\Account\AccountViewModels.cs" />
     <Compile Include="Models\GridView\GridViewHelper.cs" />
+    <Compile Include="Models\Home\DataEngine.cs" />
     <Compile Include="Models\Home\ViewModel.cs" />
     <Compile Include="Models\Scheduler\SchedulerDataSource.cs" />
     <Compile Include="Models\Scheduler\SchedulerHelper.cs" />

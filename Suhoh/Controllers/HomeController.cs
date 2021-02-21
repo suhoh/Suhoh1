@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Suhoh.Model;
+using System.Data;
+using Newtonsoft.Json;
 
 namespace Suhoh.Controllers
 {
@@ -13,7 +15,10 @@ namespace Suhoh.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            ViewModel model = new ViewModel();
+
+            Session["viewModel"] = model;
+            return View(model);
         }
         public ActionResult OpenLayerMap(ViewModel vm)
         {
@@ -52,9 +57,19 @@ namespace Suhoh.Controllers
 
         public ActionResult DxGridview(ViewModel vm)
         {
-            vm.DxGridview = PopulateGridView();
-            return PartialView("DxGridview", vm);
+            ViewModel viewModel = (ViewModel)Session["viewModel"];
+            return PartialView("DxGridview", viewModel);
         }
 
+
+        [HttpPost]
+        public ActionResult ConvertJsonToDataTable(string json)
+        {
+            ViewModel vm = (ViewModel)Session["viewModel"];
+            vm.DxGridview = (DataTable)JsonConvert.DeserializeObject(json, (typeof(DataTable)));
+
+            Session["viewModel"] = vm;
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
     }
 }
