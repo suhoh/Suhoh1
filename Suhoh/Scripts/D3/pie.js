@@ -67,16 +67,14 @@ function drawPie(divName, data, width, height, radius) {
                 .attr("stroke-width", 2);
         });
 
-    svg.selectAll("allSlices")
-        .data(pieData)
-        .enter()
-        .append('text')
-        .text(function (d) { return d.data.key })
-        .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
-        .style("text-anchor", "middle")
-        .style("font-size", 14)
-}
-
-function panelSlideChartSetting() {
-
+    if (_isD3Label == true) {
+        svg.selectAll("allSlices")
+            .data(pieData)
+            .enter()
+            .append('text')
+            .text(function (d) { return d.data.key })
+            .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+            .style("text-anchor", "middle")
+            .style("font-size", 14)
+    }
 }

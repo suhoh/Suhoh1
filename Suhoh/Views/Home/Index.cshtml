@@ -12,6 +12,7 @@
 
 <script>
     var _headerHeight = 0;
+    var _isD3Label = false;
     var _pieData = [{ 'value': 9, 'key': "a" }, { 'value': 20, 'key': "b" }, { 'value': 30, 'key': "c" }, { 'value': 8, 'key': "d" }, { 'value': 12, 'key': "e" }, { 'value': 3, 'key': "f" }, { 'value': 5, 'key': "g" }, { 'value': 7, 'key': "h" }, { 'value': 2, 'key': "i" }, { 'value': 7, 'key': "j" }, { 'value': 9, 'key': "k" }, { 'value': 9, 'key': "l" }]
 
     window.addEventListener('resize', function (event) {
@@ -123,7 +124,6 @@
                 {
                     Html.RenderPartial("D3Graph", Model);
                 });
-
             });
         });
         settings.Panes.Add(gridviewPane => {
@@ -136,5 +136,3 @@
         settings.ClientSideEvents.PaneResized = "splitterMainResized";
     }).GetHtml()
 </div>
-
-@*<div id="PieChart" style="background: yellow; top: 500px; left: 500px; z-index: 1000"></div>*@
