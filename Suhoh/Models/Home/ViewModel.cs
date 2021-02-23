@@ -11,9 +11,6 @@ namespace Suhoh.Model
     {
         public string MyId { get; set; }
         public DataTable DxGridview { get; set; }
-        public IEnumerable DxGridviewList;
-
-
 
         public ViewModel()
         {

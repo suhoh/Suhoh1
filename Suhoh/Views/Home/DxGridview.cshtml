@@ -31,7 +31,11 @@
         {
             foreach (DataColumn c in Model.DxGridview.Columns)
             {
-                settings.Columns.Add(c.ColumnName);
+                settings.Columns.Add(column =>
+                {
+                    column.FieldName = c.ColumnName;
+                    column.ToolTip = c.ColumnName;
+                });
             }
         }
         //else

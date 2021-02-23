@@ -16,6 +16,7 @@
     padding: 0px !important;
     width: 22px;
     height: 22px;
+    background: url('../Images/Maximize.svg') no-repeat center;
 }
     .btnChartMaximize:hover {
         background-color: rgba(0,60,136,.7) !important;
@@ -39,6 +40,7 @@
     padding: 0px !important;
     width: 22px;
     height: 22px;
+    background: url('../Images/Legend.svg') no-repeat center;
 }
     .btnChartLegend:hover {
         background-color: rgba(0,60,136,.7) !important;
@@ -62,6 +64,7 @@
     padding: 0px !important;
     width: 22px;
     height: 22px;
+    background: url('../Images/Property.svg') no-repeat center;
 }
     .btnChartProperty:hover {
         background-color: rgba(0,60,136,.7) !important;

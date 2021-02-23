@@ -153,6 +153,9 @@
     <Content Include="Content\Css\D3Graph.css" />
     <Content Include="Content\Css\DxGridview.css" />
     <Content Include="Content\Css\OpenLayerMap.css" />
+    <Content Include="Content\Images\Property.svg" />
+    <Content Include="Content\Images\Legend.svg" />
+    <Content Include="Content\Images\Maximize.svg" />
     <Content Include="Scripts\D3\pie.js" />
     <Content Include="Scripts\D3_v650\d3.js" />
     <Content Include="Scripts\D3_v650\d3.min.js" />
