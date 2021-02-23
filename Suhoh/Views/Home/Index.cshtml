@@ -13,7 +13,8 @@
 <script>
     var _headerHeight = 0;
     var _isD3Label = false;
-    var _pieData = [{ 'value': 9, 'key': "a" }, { 'value': 20, 'key': "b" }, { 'value': 30, 'key': "c" }, { 'value': 8, 'key': "d" }, { 'value': 12, 'key': "e" }, { 'value': 3, 'key': "f" }, { 'value': 5, 'key': "g" }, { 'value': 7, 'key': "h" }, { 'value': 2, 'key': "i" }, { 'value': 7, 'key': "j" }, { 'value': 9, 'key': "k" }, { 'value': 9, 'key': "l" }]
+    var _pieData = [{ "Quantity": 1534864, "Project": "a" }, { "Quantity": 125494, "Project": "b" }, { "Quantity": 10000000, "Project": "c" }]
+    var _jsonData;
 
     window.addEventListener('resize', function (event) {
         console.log("window - innerWidth " + window.innerWidth + ", window - innerHeight " + window.innerHeight);
@@ -26,7 +27,9 @@
         var width = pGraph.GetClientWidth();
         var height = pGraph.GetClientHeight();
         var min = Math.min(width, height);
-        drawPie('pieChart', _pieData, width, height, min/2);
+
+        if (_jsonData != null)
+            drawPie('pieChart', _jsonData, "Applicant", "Quantity_m3", width, height, min/2);
 
         var pGridview = splitterMain.GetPaneByName('paneGridview');
         dxGridview.SetHeight(pGridview.GetClientHeight() - _headerHeight);
@@ -42,12 +45,12 @@
                     type: 'binary'
                 });
                 workbook.SheetNames.forEach(function (sheetName) {
-                    var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-                    var json_object = JSON.stringify(XL_row_object);
+                    _jsonData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                    var jsonData = JSON.stringify(_jsonData);
                     //var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
                     //var jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-                    convertJsonToDataTable(json_object);
-                    console.log(JSON.parse(json_object));
+                    convertJsonToDataTable(jsonData);
+                    console.log(JSON.parse(jsonData));
                 })
             };
             reader.onerror = function (ex) {
@@ -71,6 +74,12 @@
 
         function successFunc(data, status) {
             dxGridview.PerformCallback();
+
+            var pGraph = splitterMain.GetPaneByName('paneGraph');
+            var width = pGraph.GetClientWidth();
+            var height = pGraph.GetClientHeight();
+            var min = Math.min(width, height);
+            drawPie('pieChart', _jsonData, "Applicant", "Quantity_m3", width, height, min / 2);
         }
         function errorFunc() {
             alert("Error: ConvertJsonToDataTable");
