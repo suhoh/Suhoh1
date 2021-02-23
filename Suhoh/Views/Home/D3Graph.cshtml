@@ -33,7 +33,7 @@
     <button type="button" class="btnChartProperty">P</button>
 </div>
 <div class="divChartSettingButton">
-    <button type="button" class="btnChartSetting">S</button>
+    <button type="button" class="btnChartClose">C</button>
 </div>
 @* This file will contain events that relates to D3
     Specific functions will be stored under Scripts/D3 folder with separate file names
@@ -42,7 +42,7 @@
 
 <script type="text/javascript">
 
-    drawPie('pieChart', _pieData, 400, 400, 180, _isLabel);
+    //drawPie('pieChart', _pieData, 400, 400, 180, _isLabel);
     
     function showHideLegend() {
         if (_isD3Label == false)
@@ -54,7 +54,7 @@
         var width = pGraph.GetClientWidth();
         var height = pGraph.GetClientHeight();
         var min = Math.min(width, height);
-        drawPie('pieChart', _pieData, width, height, min / 2);
+        drawPie('pieChart', _jsonData, "Applicant", "Quantity_m3", width, height, min / 2);
     }
 
 </script>
