@@ -1,7 +1,10 @@
 ﻿//
 // D3 chart functions
 //
-function drawPie(divName, data, xCol, yCol, width, height, radius) {
+function drawPie(divName, data, width, height, radius) {
+    if (data == undefined)
+        return;
+
     d3.select("#" + divName).selectAll("svg").remove();
 
     var margin = 40;
@@ -20,7 +23,7 @@ function drawPie(divName, data, xCol, yCol, width, height, radius) {
         .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
 
     var pieData = d3.pie()
-        .value(function (d) { return d.Quantity; })
+        .value(function (d) { return d.Y; })
         (data);
 
     var arc = d3.arc()
@@ -46,7 +49,7 @@ function drawPie(divName, data, xCol, yCol, width, height, radius) {
         .enter()
         .append("path")
         .attr('d', arc)
-        .attr("fill", function (d) { return (color(d.data.Project)) })
+        .attr("fill", function (d) { return (color(d.data.X)) })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
         .style("opacity", 0.7)
@@ -72,7 +75,7 @@ function drawPie(divName, data, xCol, yCol, width, height, radius) {
             .data(pieData)
             .enter()
             .append('text')
-            .text(function (d) { return d.data.Project })
+            .text(function (d) { return d.data.X })
             .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
             .style("text-anchor", "middle")
             .style("font-size", 14)

@@ -23,13 +23,10 @@
     function splitterMainResized(s, e) {
         _map.updateSize();
 
-        var pGraph = splitterMain.GetPaneByName('paneGraph');
-        var width = pGraph.GetClientWidth();
-        var height = pGraph.GetClientHeight();
-        var min = Math.min(width, height);
-
-        if (_jsonData != null)
-            drawPie('pieChart', _jsonData, "Applicant", "Quantity_m3", width, height, min/2);
+        if (_jsonData != null) {
+            var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3');
+            drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        }
 
         var pGridview = splitterMain.GetPaneByName('paneGridview');
         dxGridview.SetHeight(pGridview.GetClientHeight() - _headerHeight);
@@ -47,8 +44,11 @@
                 workbook.SheetNames.forEach(function (sheetName) {
                     _jsonData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     var jsonData = JSON.stringify(_jsonData);
-                    //var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
-                    //var jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+                    var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
+
+                    var xCol = "Applicant";
+                    console.log(_jsonData[0][xCol]);
+
                     convertJsonToDataTable(jsonData);
                     console.log(JSON.parse(jsonData));
                 })
@@ -75,16 +75,12 @@
         function successFunc(data, status) {
             dxGridview.PerformCallback();
 
-            var pGraph = splitterMain.GetPaneByName('paneGraph');
-            var width = pGraph.GetClientWidth();
-            var height = pGraph.GetClientHeight();
-            var min = Math.min(width, height);
-            drawPie('pieChart', _jsonData, "Applicant", "Quantity_m3", width, height, min / 2);
+            var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3');
+            drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
         }
         function errorFunc() {
             alert("Error: ConvertJsonToDataTable");
         }
-
     }
 
     function loadExcelFile(evt) {
@@ -144,4 +140,46 @@
         });
         settings.ClientSideEvents.PaneResized = "splitterMainResized";
     }).GetHtml()
+</div>
+
+@*Property popup*@
+<div>
+    @Html.DevExpress().PopupControl(
+        settings =>
+        {
+            settings.Name = "popupProperty";
+            settings.Width = 250;
+            settings.Height = 350;
+            settings.AllowDragging = true;
+            settings.CloseAction = CloseAction.CloseButton;
+            settings.CloseOnEscape = true;
+            settings.PopupAnimationType = AnimationType.None;
+            settings.HeaderText = "Property";
+
+
+            settings.ShowPinButton = true;
+            settings.ShowCloseButton = true;
+            settings.ShowCollapseButton = true;
+
+            settings.Modal = false;
+
+            settings.PopupAnimationType = AnimationType.Slide;
+
+            settings.ResizingMode = ResizingMode.Live;
+            settings.AllowResize = true;
+            settings.ShowSizeGrip = ShowSizeGrip.True;
+            settings.ShowFooter = false;
+
+            settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+            settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+            //settings.SetContent(() =>
+            //{
+            //    Html.RenderPartial("CallbackSearchResult", Model);
+            //});
+
+            //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
+            //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
+
+            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupProperty', '', true); }";
+        }).GetHtml()
 </div>
