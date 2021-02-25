@@ -52,7 +52,7 @@ function drawPie(divName, data, width, height, radius) {
         .enter()
         .append("path")
         .attr('d', arc)
-        .attr("fill", function (d) { return (color(d.data.X)) })
+        .attr("fill", function (d, idx) { return (color[idx]) })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
         .style("opacity", 0.7)
