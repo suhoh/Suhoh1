@@ -26,7 +26,17 @@
     - createBar, createPie, etc... *@
 
 <script type="text/javascript">
- 
+
+    const _colorScale = d3.interpolateRdYlBu;
+
+    const _colorRangeInfo = {
+        colorStart: 0,
+        colorEnd: 1,
+        useEndAsStart: false,
+    };
+
+    //drawPie('pieChart', _pieData, 400, 400, 180, _isLabel);
+    
     function showHideLegend() {
         if (_isD3Label == false)
             _isD3Label = true;
@@ -66,6 +76,28 @@
             xyArray.push({ "X": jsonData[i][xCol], "Y": jsonData[i][yCol] });
         }
         return xyArray;
+    }
+
+    function calculatePoint(i, intervalSize, colorRangeInfo) {
+        var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+        return (useEndAsStart
+            ? (colorEnd - (i * intervalSize))
+            : (colorStart + (i * intervalSize)));
+    }
+
+    function interpolateColors(dataLength, colorScale, colorRangeInfo) {
+        var { colorStart, colorEnd } = colorRangeInfo;
+        var colorRange = colorEnd - colorStart;
+        var intervalSize = colorRange / dataLength;
+        var i, colorPoint;
+        var colorArray = [];
+
+        for (i = 0; i < dataLength; i++) {
+            colorPoint = calculatePoint(i, intervalSize, colorRangeInfo);
+            colorArray.push(colorScale(colorPoint));
+        }
+
+        return colorArray;
     }
 
 </script>

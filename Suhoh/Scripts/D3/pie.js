@@ -8,12 +8,15 @@ function drawPie(divName, data, width, height, radius) {
     d3.select("#" + divName).selectAll("svg").remove();
 
     var margin = 40;
-    var innerRadius = radius * 0.3;
+    //var innerRadius = radius * 0.3;
+    var innerRadius = 0;
     var outerRadius = radius * 0.7;
     var arcInRadius = radius * 0.7;
     var arcOverRadius = radius * 0.75;
     
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    //var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    var color = interpolateColors(data.length, _colorScale, _colorRangeInfo);
 
     var svg = d3.select("#" + divName)
         .append("svg")
