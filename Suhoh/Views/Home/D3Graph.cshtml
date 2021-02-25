@@ -42,6 +42,14 @@
 
 <script type="text/javascript">
 
+    const _colorScale = d3.interpolateRdYlBu;
+
+    const _colorRangeInfo = {
+        colorStart: 0,
+        colorEnd: 1,
+        useEndAsStart: false,
+    };
+
     //drawPie('pieChart', _pieData, 400, 400, 180, _isLabel);
     
     function showHideLegend() {
@@ -55,6 +63,28 @@
         var height = pGraph.GetClientHeight();
         var min = Math.min(width, height);
         drawPie('pieChart', _jsonData, "Applicant", "Quantity_m3", width, height, min / 2);
+    }
+
+    function calculatePoint(i, intervalSize, colorRangeInfo) {
+        var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+        return (useEndAsStart
+            ? (colorEnd - (i * intervalSize))
+            : (colorStart + (i * intervalSize)));
+    }
+
+    function interpolateColors(dataLength, colorScale, colorRangeInfo) {
+        var { colorStart, colorEnd } = colorRangeInfo;
+        var colorRange = colorEnd - colorStart;
+        var intervalSize = colorRange / dataLength;
+        var i, colorPoint;
+        var colorArray = [];
+
+        for (i = 0; i < dataLength; i++) {
+            colorPoint = calculatePoint(i, intervalSize, colorRangeInfo);
+            colorArray.push(colorScale(colorPoint));
+        }
+
+        return colorArray;
     }
 
 </script>

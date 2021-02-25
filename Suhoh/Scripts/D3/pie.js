@@ -5,12 +5,15 @@ function drawPie(divName, data, xCol, yCol, width, height, radius) {
     d3.select("#" + divName).selectAll("svg").remove();
 
     var margin = 40;
-    var innerRadius = radius * 0.3;
+    //var innerRadius = radius * 0.3;
+    var innerRadius = 0;
     var outerRadius = radius * 0.7;
     var arcInRadius = radius * 0.7;
     var arcOverRadius = radius * 0.75;
     
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    //var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    var color = interpolateColors(data.length, _colorScale, _colorRangeInfo);
 
     var svg = d3.select("#" + divName)
         .append("svg")
@@ -20,7 +23,7 @@ function drawPie(divName, data, xCol, yCol, width, height, radius) {
         .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
 
     var pieData = d3.pie()
-        .value(function (d) { return d.Quantity; })
+        .value(function (d) { return d.Quantity_m3; })
         (data);
 
     var arc = d3.arc()
@@ -46,7 +49,7 @@ function drawPie(divName, data, xCol, yCol, width, height, radius) {
         .enter()
         .append("path")
         .attr('d', arc)
-        .attr("fill", function (d) { return (color(d.data.Project)) })
+        .attr("fill", function (d, idx) { return color[idx] })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
         .style("opacity", 0.7)
@@ -72,7 +75,7 @@ function drawPie(divName, data, xCol, yCol, width, height, radius) {
             .data(pieData)
             .enter()
             .append('text')
-            .text(function (d) { return d.data.Project })
+            .text(function (d) { return d.data.LicenceType })
             .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
             .style("text-anchor", "middle")
             .style("font-size", 14)
