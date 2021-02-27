@@ -7,7 +7,7 @@
     /*background-color: yellow;*/
 }
 .btnChartMaximize {
-    background-color: rgba(0,60,136,.5) !important;
+    /*background-color: rgba(0,60,136,.5) !important;*/
     color: white !important;
     font-weight: bold !important;
     border: none !important;
@@ -16,11 +16,11 @@
     padding: 0px !important;
     width: 22px;
     height: 22px;
-    background: url('../Images/Maximize.svg') no-repeat center;
+    background: url('../Images/Suhoh/Maximize.svg') no-repeat center;
 }
-    .btnChartMaximize:hover {
+    /*.btnChartMaximize:hover {
         background-color: rgba(0,60,136,.7) !important;
-    }
+    }*/
 
 .divChartLegendButton {
     opacity: 1;
@@ -40,7 +40,7 @@
     padding: 0px !important;
     width: 22px;
     height: 22px;
-    background: url('../Images/Legend.svg') no-repeat center;
+    background: url('../Images/Suhoh/Legend.svg') no-repeat center;
 }
     .btnChartLegend:hover {
         background-color: rgba(0,60,136,.7) !important;
@@ -64,7 +64,7 @@
     padding: 0px !important;
     width: 22px;
     height: 22px;
-    background: url('../Images/Property.svg') no-repeat center;
+    background: url('../Images/Suhoh/Property.svg') no-repeat center;
 }
     .btnChartProperty:hover {
         background-color: rgba(0,60,136,.7) !important;
@@ -91,3 +91,11 @@
     .btnChartClose:hover {
         background-color: rgba(0,60,136,.7) !important;
     }
+
+/*.maxFill {
+    stroke: #71398F;
+    stroke-width: 50;
+}
+    .maxFill:hover {
+        fill: red;
+    }*/
