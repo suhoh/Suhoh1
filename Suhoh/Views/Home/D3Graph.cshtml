@@ -7,22 +7,7 @@
 
 @*<h2>D3Graph</h2>*@
 <div id="pieChart"></div>
-@*<div class="divChartSettingButton">
-        @Html.DevExpress().Button(settings =>
-        {
-            settings.Name = "btnChartSetting";
-            settings.Text = "";
-            settings.Width = 10;
-            settings.Height = 10;
-            settings.UseSubmitBehavior = false;
-            settings.ToolTip = "Setting";
-            settings.ControlStyle.CssClass = "btnChartSetting";
-            settings.ClientSideEvents.Click = "panelSlideChartSetting";
 
-            settings.Images.Image.IconID = IconID.IconbuilderActionsSettingsSvgWhite16x16;
-
-        }).GetHtml()
-    </div>*@
 <div class="divChartMaximizeButton">
     <button type="button" class="btnChartMaximize"></button>
 </div>
@@ -30,7 +15,7 @@
     <button type="button" class="btnChartLegend" onclick="showHideLegend()">L</button>
 </div>
 <div class="divChartPropertyButton">
-    <button type="button" class="btnChartProperty">P</button>
+    <button type="button" class="btnChartProperty" onclick="showPropertyPopup()">P</button>
 </div>
 <div class="divChartSettingButton">
     <button type="button" class="btnChartClose">C</button>
@@ -42,19 +27,75 @@
 
 <script type="text/javascript">
 
-    //drawPie('pieChart', _pieData, 400, 400, 180, _isLabel);
-    
+    const _colorScale = d3.interpolateRdYlBu;
+
+    const _colorRangeInfo = {
+        colorStart: 0,
+        colorEnd: 1,
+        useEndAsStart: false,
+    };
+  
     function showHideLegend() {
         if (_isD3Label == false)
             _isD3Label = true;
         else
             _isD3Label = false;
 
-        var pGraph = splitterMain.GetPaneByName('paneGraph');
+        var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3');
+        drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    }
+
+    function showPropertyPopup() {
+        popupProperty.Show();
+    }
+
+    function getPieData(paneId, jsonData, xCol, yCol) {
+        if (jsonData == null)
+            return null;
+
+        var pGraph = splitterMain.GetPaneByName(paneId);
         var width = pGraph.GetClientWidth();
         var height = pGraph.GetClientHeight();
         var min = Math.min(width, height);
-        drawPie('pieChart', _jsonData, "Applicant", "Quantity_m3", width, height, min / 2);
+
+        var xyArray = [];
+        for (i = 0; i < jsonData.length; i++) {
+            xyArray.push({ "X": jsonData[i][xCol], "Y": jsonData[i][yCol] });
+        }
+
+        return { pieData: xyArray, width: width, height: height, min: min }
+    }
+
+    function populatePieData(jsonData, xCol, yCol) {
+        if (jsonData == null)
+            return null;
+        var xyArray = [];
+        for (i = 0; i < jsonData.length; i++) {
+            xyArray.push({ "X": jsonData[i][xCol], "Y": jsonData[i][yCol] });
+        }
+        return xyArray;
+    }
+
+    function calculatePoint(i, intervalSize, colorRangeInfo) {
+        var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
+        return (useEndAsStart
+            ? (colorEnd - (i * intervalSize))
+            : (colorStart + (i * intervalSize)));
+    }
+
+    function interpolateColors(dataLength, colorScale, colorRangeInfo) {
+        var { colorStart, colorEnd } = colorRangeInfo;
+        var colorRange = colorEnd - colorStart;
+        var intervalSize = colorRange / dataLength;
+        var i, colorPoint;
+        var colorArray = [];
+
+        for (i = 0; i < dataLength; i++) {
+            colorPoint = calculatePoint(i, intervalSize, colorRangeInfo);
+            colorArray.push(colorScale(colorPoint));
+        }
+
+        return colorArray;
     }
 
 </script>
