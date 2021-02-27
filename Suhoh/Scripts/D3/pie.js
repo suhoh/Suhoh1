@@ -1,10 +1,14 @@
 ﻿//
 // D3 chart functions
 //
+
+var _pieData;
+
 function drawPie(divName, data, width, height, radius) {
     if (data == undefined)
         return;
 
+    _pieData = data;
     d3.select("#" + divName).selectAll("svg").remove();
 
     var margin = 40;
@@ -83,4 +87,5 @@ function drawPie(divName, data, width, height, radius) {
             .style("text-anchor", "middle")
             .style("font-size", 14)
     }
+    return svg;
 }

@@ -11,6 +11,7 @@
 }
 
 <script>
+    var _pieSvg = null;
     var _headerHeight = 0;
     var _isD3Label = false;
     var _pieData = [{ "Quantity": 1534864, "Project": "a" }, { "Quantity": 125494, "Project": "b" }, { "Quantity": 10000000, "Project": "c" }]
@@ -23,14 +24,27 @@
     function splitterMainResized(s, e) {
         _map.updateSize();
 
-        if (_jsonData != null) {
-            var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3');
+        if (_jsonData != null && _pieSvg != null) {
+
+            //var paneSize = getPaneSize('paneGraph');
+            //_pieSvg.attr("width", paneSize.width).attr("height", paneSize.height);
+
+            var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3', false);
             drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
         }
 
         var pGridview = splitterMain.GetPaneByName('paneGridview');
         dxGridview.SetHeight(pGridview.GetClientHeight() - _headerHeight);
     }
+
+
+    function getPaneSize(paneId) {
+        var pGraph = splitterMain.GetPaneByName(paneId);
+        var width = pGraph.GetClientWidth();
+        var height = pGraph.GetClientHeight();
+        return { width: width, height: height }
+    }
+
 
     var ExcelToJSON = function () {
         this.parseExcel = function (file) {
@@ -75,8 +89,8 @@
         function successFunc(data, status) {
             dxGridview.PerformCallback();
 
-            var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3');
-            drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+            var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3', true);
+            _pieSvg = drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
         }
         function errorFunc() {
             alert("Error: ConvertJsonToDataTable");
@@ -147,7 +161,7 @@
     @Html.DevExpress().PopupControl(
         settings =>
         {
-            settings.Name = "popupProperty";
+            settings.Name = "popupPaneProperty";
             settings.Width = 250;
             settings.Height = 350;
             settings.AllowDragging = true;
@@ -180,6 +194,6 @@
             //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
             //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
 
-            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupProperty', '', true); }";
+            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPaneProperty', '', true); }";
         }).GetHtml()
 </div>

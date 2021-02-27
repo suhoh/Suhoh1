@@ -299,6 +299,9 @@
     <Content Include="Views\Home\D3Graph.cshtml" />
     <Content Include="Views\Home\DxGridview.cshtml" />
     <Content Include="Scripts\SheetJS\xlsx.full.min.map" />
+    <Content Include="Views\Home\DxGridviewProperty.cshtml" />
+    <Content Include="Views\Home\D3GraphProperty.cshtml" />
+    <Content Include="Views\Home\OpenLayerMapProperty.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
