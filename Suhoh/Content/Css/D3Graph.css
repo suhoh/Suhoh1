@@ -7,8 +7,8 @@
     /*background-color: yellow;*/
 }
 .btnChartMaximize {
-    /*background-color: rgba(0,60,136,.5) !important;*/
-    color: white !important;
+    background-color: rgba(0,60,136,.5) !important;
+    /*color: blue !important;*/
     font-weight: bold !important;
     border: none !important;
     box-shadow: 0 0 5px 2px white !important;
@@ -18,9 +18,9 @@
     height: 22px;
     background: url('../Images/Suhoh/Maximize.svg') no-repeat center;
 }
-    /*.btnChartMaximize:hover {
+    .btnChartMaximize:hover {
         background-color: rgba(0,60,136,.7) !important;
-    }*/
+    }
 
 .divChartLegendButton {
     opacity: 1;

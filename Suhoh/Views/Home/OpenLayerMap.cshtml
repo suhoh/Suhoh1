@@ -31,51 +31,14 @@
 </body>
 
 <div class="loadExcel">
-    @Html.DevExpress().Button(settings =>
-        {
-            settings.Name = "btnGotoHomeMap";
-            settings.Text = "";
-            //settings.Height = 30;
-            settings.Width = 50;
-            settings.UseSubmitBehavior = false;
-            settings.ControlStyle.CssClass = "loadExcelButton";
-            settings.ClientSideEvents.Click = "loadExcelFile";
-            settings.Images.Image.IconID = IconID.IconbuilderActionsHomeSvgWhite16x16;
-        }).GetHtml()
+    <button type="button" class="loadExcelButton" title="Load Excel" onclick="loadExcelFile()"></button>
 </div>
 
 <script>
-    var esriStreets = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer';
-    var _scaleLine = new ol.control.ScaleLine();
-    var layerStreets = new ol.layer.Tile({
-        zIndex: 1000,
-        visible: true,
-        name: 'layerStreets',
-        source: new ol.source.XYZ({
-            title: 'layerStreets',
-            url: esriStreets + '/tile/{z}/{y}/{x}',
-            crossOrigin: "Anonymous"
-        })
-    });
 
     var _map;
 
-    _map = new ol.Map({
-        target: 'map',
-        controls: ol.control.defaults({
-            attributionOptions: {
-                collapsible: false
-            }
-        }).extend([
-            _scaleLine
-        ]),
-        layers: [layerStreets],
-        logo: false,
-        view: new ol.View({
-            center: ol.proj.fromLonLat([-115.979293, 55.528787]),
-            zoom: 4
-        })
-    });
+    initMap('map');
 
 </script>
 

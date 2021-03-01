@@ -3,6 +3,8 @@
 //
 
 var _pieData;
+var _pieSvg = null;
+var _isD3Label = false;
 
 function drawPie(divName, data, width, height, radius) {
     if (data == undefined)

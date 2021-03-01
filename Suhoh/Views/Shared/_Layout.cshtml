@@ -79,7 +79,7 @@
                     menuSettings.Items.Add(item => {
                         item.Text = "";
                         item.Name = "Back";
-                        item.Image.Url = "~/Content/Images/back.svg";
+                        item.Image.Url = "~/Content/Images/DX/back.svg";
                         item.Image.Height = Unit.Pixel(18);
                         item.Image.Width = Unit.Pixel(18);
                         item.ItemStyle.CssClass = "toggle-item vertically-aligned";
@@ -90,7 +90,7 @@
                         item.Text = "";
                         item.Name = "ToggleLeftPanel";
                         item.GroupName = "LeftPanel";
-                        item.Image.Url = "~/Content/Images/menu.svg";
+                        item.Image.Url = "~/Content/Images/DX/menu.svg";
                         item.Image.Height = Unit.Pixel(18);
                         item.Image.Width = Unit.Pixel(18);
                         item.ItemStyle.CssClass = "toggle-item vertically-aligned";
@@ -149,7 +149,7 @@
                         item.Items.Add(subItem => {
                             subItem.Name = "SignOutItem";
                             subItem.Text = "Sign out";
-                            subItem.Image.Url = "~/Content/Images/sign-out.svg";
+                            subItem.Image.Url = "~/Content/Images/DX/sign-out.svg";
                             subItem.Image.Width = Unit.Pixel(16);
                             subItem.Image.Height = Unit.Pixel(16);
                             subItem.NavigateUrl = "javascript:document.getElementById('signOutForm').submit()";
@@ -199,8 +199,8 @@
                 menuSettings.Images.Item.Width = Unit.Pixel(22);
                 menuSettings.Images.Item.Height = Unit.Pixel(22);
                 menuSettings.ItemDataBound = (sender, e) => {
-                    e.Item.Image.Url = string.Format("~/Content/Images/{0}.svg", e.Item.Text);
-                    e.Item.Image.UrlSelected = string.Format("~/Content/Images/{0}-white.svg", e.Item.Text);
+                    e.Item.Image.Url = string.Format("~/Content/Images/DX/{0}.svg", e.Item.Text);
+                    e.Item.Image.UrlSelected = string.Format("~/Content/Images/DX/{0}-white.svg", e.Item.Text);
                 };
             }).BindToSiteMap("~/App_Data/ApplicationMenuDataSource.sitemap", false).GetHtml();
             ViewContext.Writer.Write("</div></div><div class='dx-clear'></div>");

@@ -11,10 +11,6 @@
 }
 
 <script>
-    var _pieSvg = null;
-    var _headerHeight = 0;
-    var _isD3Label = false;
-    var _pieData = [{ "Quantity": 1534864, "Project": "a" }, { "Quantity": 125494, "Project": "b" }, { "Quantity": 10000000, "Project": "c" }]
     var _jsonData;
 
     window.addEventListener('resize', function (event) {
@@ -22,19 +18,21 @@
     })
 
     function splitterMainResized(s, e) {
+        // Update Map
         _map.updateSize();
 
+        // Update Graph
         if (_jsonData != null && _pieSvg != null) {
-
+            // Tried to just update Svg - not working
             //var paneSize = getPaneSize('paneGraph');
             //_pieSvg.attr("width", paneSize.width).attr("height", paneSize.height);
-
             var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3', false);
             drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
         }
 
+        // Update Gridview
         var pGridview = splitterMain.GetPaneByName('paneGridview');
-        dxGridview.SetHeight(pGridview.GetClientHeight() - _headerHeight);
+        dxGridview.SetHeight(pGridview.GetClientHeight());
     }
 
 
@@ -49,22 +47,17 @@
     var ExcelToJSON = function () {
         this.parseExcel = function (file) {
             var reader = new FileReader();
-
             reader.onload = function (e) {
                 var data = e.target.result;
                 var workbook = XLSX.read(data, {
                     type: 'binary'
                 });
                 workbook.SheetNames.forEach(function (sheetName) {
-                    _jsonData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-                    var jsonData = JSON.stringify(_jsonData);
+                    _jsonData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);   // array - _jsonData[0][column name]
+                    var jsonData = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project;:'bbbb'...}, { ...}]
                     var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
 
-                    var xCol = "Applicant";
-                    console.log(_jsonData[0][xCol]);
-
-                    convertJsonToDataTable(jsonData);
-                    console.log(JSON.parse(jsonData));
+                    convertJsonToDataTable(jsonData);   // For Gridview
                 })
             };
             reader.onerror = function (ex) {
@@ -87,6 +80,8 @@
         });
 
         function successFunc(data, status) {
+            addPointLayer(_jsonData, 'Latitude', 'Longitude');
+
             dxGridview.PerformCallback();
 
             var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3', true);

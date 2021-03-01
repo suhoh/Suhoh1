@@ -133,7 +133,7 @@ html
 {
     .header-logo
     {
-        background: url('../Images/logo-small.svg') no-repeat center;
+        background: url('../Images/DX/logo-small.svg') no-repeat center;
         width: 26px;
     }
 }
@@ -208,7 +208,7 @@ html
 
 /* Ellipsis -> Apps Icon */
 .header-menu .adaptive-image {
-    background: url('../Images/adaptive-menu.svg') no-repeat center;
+    background: url('../Images/DX/adaptive-menu.svg') no-repeat center;
     width: 16px;
     height: 16px;
     padding: 0 8px;
@@ -227,7 +227,7 @@ html
     }
 
     .header-menu .adaptive-image {
-        background: url('../Images/application.svg') no-repeat center;
+        background: url('../Images/DX/application.svg') no-repeat center;
     }
 
     /* Show item images */
@@ -239,11 +239,11 @@ html
 
 /* Right area menu */
 .header-menu .toggle-item .image {
-    background: url('../Images/double.svg') no-repeat center;
+    background: url('../Images/DX/double.svg') no-repeat center;
 }
 
 .header-menu .toggle-item.checked .image {
-    background: url('../Images/double-close.svg') no-repeat center;
+    background: url('../Images/DX/double-close.svg') no-repeat center;
 }
 
 .header-menu .image-item
@@ -275,7 +275,7 @@ html
         height: 16px;
         margin: 8px;
         display: inline-block;
-        background: url('../Images/user.svg');
+        background: url('../Images/DX/user.svg');
     }
 
 .header-menu .account-background .account-image

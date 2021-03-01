@@ -36,12 +36,10 @@
     };
   
     function showHideLegend() {
-        if (_isD3Label == false)
-            _isD3Label = true;
-        else
-            _isD3Label = false;
-
+        _isD3Label = !_isD3Label;   // toggle true and false
         var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3', false);
+        if (pieData == null)
+            return;
         drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
     }
 
