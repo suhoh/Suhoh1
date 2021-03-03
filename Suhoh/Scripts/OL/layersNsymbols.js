@@ -27,11 +27,11 @@ const _esriShadedRelief = 'http://server.arcgisonline.com/arcgis/rest/services/W
 const _redCircle = new ol.style.Style({
     image: new ol.style.Circle({
         fill: new ol.style.Fill({   // 100% transparent. Added due to identify not selected without fill
-            color: 'rgba(0, 0, 0, 0)'
+            color: 'rgba(10, 10, 10, 0.5)'
         }),
         stroke: new ol.style.Stroke({
             width: 2,
-            color: 'rgba(0, 255, 0, 1)'
+            color: 'rgba(255, 0, 0, 1)'
         }),
         radius: 6
     })
