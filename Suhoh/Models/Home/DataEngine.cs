@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,19 +10,24 @@ namespace Suhoh.Model
 {
     public class DataEngine
     {
-        public static void JsonToList()
+        public static IEnumerable GetXColumn()
         {
-            //const string json = "[{\"ID\":2,\"fname\":\"Jorge\",\"lname\":\"Pasada\",\"phone\":\"5555555555\",\"company\":\"Test Company1\",\"email\":\"test2@test.com\",\"pass\":\"UHVycGxlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==\",\"registrationdate\":null,\"userrole\":\"A\",\"approveduser\":\"Yes\"}";
-            string json = "[{\"ID\":1,\"fname\":\"Jorge\"}, {\"ID\":2,\"fname\":\"Michael\"}]";
-            //var message = JsonConvert.DeserializeObject<List<KeyValue>>(json);
-            //foreach (var pair in message)
-            //{
-            //    Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
-            //}
+            List<string> XColumn = new List<string>();
+            XColumn.Add("Applicant");
+            XColumn.Add("Project");
+            XColumn.Add("Source");
+            XColumn.Add("Specific Purpose");
+            XColumn.Add("Licence Type");
 
-            //DataSet dset = JsonConvert.DeserializeObject<DataSet>(json);
+            return XColumn;
+        }
+        public static IEnumerable GetYColumn()
+        {
+            List<string> YColumn = new List<string>();
+            YColumn.Add("Quantity_m3");
+            YColumn.Add("Consumptive Use_M3");
 
-            DataTable dt = (DataTable)JsonConvert.DeserializeObject(json, (typeof(DataTable)));
+            return YColumn;
         }
     }
 }

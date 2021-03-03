@@ -6,20 +6,23 @@
 }
 
 @*<h2>D3Graph</h2>*@
-<div id="pieChart"></div>
+<div id="pieChart" style="position:relative;">
+    <div id="chartTitle" class="chartTitle">Applicant VS Quantity_m3</div>
+    <div class="divChartMaximizeButton">
+        <button type="button" class="btnChartMaximize" title="Maximize"></button>
+    </div>
+    <div class="divChartLegendButton">
+        <button type="button" class="btnChartLegend" title="Legend" onclick="showHideLegend()">L</button>
+    </div>
+    <div class="divChartPropertyButton">
+        <button type="button" class="btnChartProperty" title="Property" onclick="showPropertyPopup()">P</button>
+    </div>
+    <div class="divChartSettingButton">
+        <button type="button" class="btnChartClose" title="Close">C</button>
+    </div>
+</div>
 
-<div class="divChartMaximizeButton">
-    <button type="button" class="btnChartMaximize" title="Maximize" ></button>
-</div>
-<div class="divChartLegendButton">
-    <button type="button" class="btnChartLegend" title="Legend" onclick="showHideLegend()">L</button>
-</div>
-<div class="divChartPropertyButton">
-    <button type="button" class="btnChartProperty" title="Property" onclick="showPropertyPopup()">P</button>
-</div>
-<div class="divChartSettingButton">
-    <button type="button" class="btnChartClose" title="Close" >C</button>
-</div>
+
 @* This file will contain events that relates to D3
     Specific functions will be stored under Scripts/D3 folder with separate file names
     - createScatterPlot

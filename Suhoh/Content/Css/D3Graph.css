@@ -1,7 +1,18 @@
-﻿.divChartMaximizeButton {
+﻿/*#xColumnDropDown.dxeButtonEditSys.dxeButtonEdit_Office365 {
+    height: 50px !important;
+}*/
+
+.chartTitle {
+    font-weight: bold;
+    top: 5px;
+    left: 10px;
+    position: absolute;
+}
+
+.divChartMaximizeButton {
     opacity: 1;
-    position: fixed;
-    top: 62px;
+    position: absolute;
+    top: 4px;
     right: 91px;
     z-index: 100;
     /*background-color: yellow;*/
@@ -24,8 +35,8 @@
 
 .divChartLegendButton {
     opacity: 1;
-    position: fixed;
-    top: 62px;
+    position: absolute;
+    top: 4px;
     right: 64px;
     z-index: 100;
     /*background-color: yellow;*/
@@ -48,8 +59,8 @@
 
 .divChartPropertyButton {
     opacity: 1;
-    position: fixed;
-    top: 62px;
+    position: absolute;
+    top: 4px;
     right: 37px;
     z-index: 100;
     /*background-color: yellow;*/
@@ -71,8 +82,8 @@
     }
 .divChartSettingButton {
     opacity: 1;
-    position: fixed;
-    top: 62px;
+    position: absolute;
+    top: 4px;
     right: 10px;
     z-index: 100;
     /*background-color: yellow;*/
@@ -100,12 +111,7 @@
 }
 .thLabelHeading1 {
     font-weight: bold;
-    margin-top: 6px;
-    margin-left: 2px;
-    float: left;
-}
-.thLabelHeading2-1 {
-    font-weight: normal;
+    margin-top: 10px;
     margin-left: 2px;
     float: left;
 }
@@ -120,8 +126,23 @@
     float: left;
     margin-left: 10px;
 }
-.thLabelHeading2-2 {
-    font-weight: normal;
+.thXYColumnHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
     margin-left: 2px;
     float: left;
+}
+.thXColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 10px;
+    margin-left: 2px;
+}
+.thXColumnDropDown {
+    height: 40px;
+}
+.thYColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-left: 2px;
 }

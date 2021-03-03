@@ -16,13 +16,16 @@ namespace Suhoh.Model
         public bool ChkPercentageLabel { get; set; }
         public bool ChkYValueLabel { get; set; }
         public bool ChkXValueLabel { get; set; }
-
+        public string DdXColumn { get; set; }
+        public string DdYColumn { get; set; }
         public ViewModel()
         {
             TitleProperty = "Title";
             ChkPercentageLabel = false;
             ChkYValueLabel = false;
             ChkXValueLabel = false;
+            DdXColumn = "";
+            DdYColumn = "";
         }
     }
 

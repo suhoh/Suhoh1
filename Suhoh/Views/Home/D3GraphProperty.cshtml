@@ -30,11 +30,6 @@
             </th>
         </tr>
         <tr>
-            <th id="thLabelHeading2-1" class="thLabelHeading2-1">
-                Label Contents
-            </th>
-        </tr>
-        <tr>
             <th id="thPercentageChkBox" class="thPercentageChkBox">
                 @Html.DevExpress().CheckBoxFor(settings => Model.ChkPercentageLabel,
                     settings =>
@@ -63,9 +58,44 @@
                     }).GetHtml()
             </th>
         </tr>
+    </table>
+</div>
+
+<div id="divXYColumn" class="divXYColumn">
+    <table>
         <tr>
-            <th id="thLabelHeading2-2" class="thLabelHeading2-2">
-                Show/Hide
+            <th id="thXYColumnHeading1" class="thXYColumnHeading1">
+                XY Columns
+            </th>
+        </tr>
+        <tr>
+            <th id="thXColumnDropDownLabel" class="thXColumnDropDownLabel">
+                X Column
+            </th>
+            <th id="thXColumnDropDown" class="thXColumnDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.DdXColumn,
+                    settings =>
+                    {
+                        settings.Name = "xColumnDropDown";
+                        settings.Width = 167;
+                        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                        settings.Properties.DropDownWidth = 165;
+                    }).BindList(DataEngine.GetXColumn()).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th id="thYColumnDropDownLabel" class="thYColumnDropDownLabel">
+                Y Column
+            </th>
+            <th id="thYColumnDropDown" class="thYColumnDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.DdYColumn,
+                    settings =>
+                    {
+                        settings.Name = "yColumnDropDown";
+                        settings.Width = 167;
+                        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                        settings.Properties.DropDownWidth = 165;
+                    }).BindList(DataEngine.GetYColumn()).GetHtml()
             </th>
         </tr>
     </table>
