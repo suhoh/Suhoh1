@@ -7,6 +7,8 @@
     ViewBag.Title = "DxGridview";
 }
 
+@*Can not add additional Div here*@
+
 @Html.DevExpress().GridView(
     settings =>
     {
@@ -38,16 +40,12 @@
                 });
             }
         }
-        //else
-        //{
-        //    settings.Columns.Add("WellId");
-        //    settings.Columns.Add("Lat");
-        //    settings.Columns.Add("Lon");
-        //    settings.Columns.Add("Top");
-        //    settings.Columns.Add("Base");
-        //    settings.Columns.Add("Depth");
-        //    settings.Columns.Add("TestType");
-        //}
+
+        // check box
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowSelectCheckbox = true;
+        settings.CommandColumn.ShowClearFilterButton = true;
+        settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.Page;
 
         // Scrollbar
         //settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;

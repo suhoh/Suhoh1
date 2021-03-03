@@ -1,6 +1,7 @@
 ﻿
 .dxGridview {
-    font:12px 'Segoe UI', Helvetica, 'Droid Sans', Tahoma, Geneva, sans-serif
+    margin-top: 24px;
+    font:12px 'Segoe UI', Helvetica, 'Droid Sans', Tahoma, Geneva, sans-serif;
 }
 
 .dxgvDataRow_Office365 td.dxgv {
@@ -15,3 +16,107 @@
 .dxgvHeader_Office365.gridSettings1 table {
     color: white !important;
 }
+
+/*Buttons*/
+.divGridviewMaximize {
+    opacity: 1;
+    position: fixed;
+    /*top: 62px;*/
+    right: 91px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+
+.btnGridviewMaximize {
+    background-color: rgba(0,60,136,.5) !important;
+    /*color: blue !important;*/
+    font-weight: bold !important;
+    border: none !important;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 22px;
+    height: 22px;
+    background: url('../Images/Suhoh/Maximize.svg') no-repeat center;
+}
+
+    .btnGridviewMaximize:hover {
+        background-color: rgba(0,60,136,.7) !important;
+    }
+
+.divGridviewLegend {
+    opacity: 1;
+    position: fixed;
+    /*top: 62px;*/
+    right: 64px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+
+.btnGridviewLegend {
+    background-color: rgba(0,60,136,.5) !important;
+    color: white !important;
+    font-weight: bold !important;
+    border: none !important;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 22px;
+    height: 22px;
+    background: url('../Images/Suhoh/Legend.svg') no-repeat center;
+}
+
+    .btnGridviewLegend:hover {
+        background-color: rgba(0,60,136,.7) !important;
+    }
+
+.divGridviewProperty {
+    opacity: 1;
+    position: fixed;
+    /*top: 62px;*/
+    right: 37px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+
+.btnGridviewProperty {
+    background-color: rgba(0,60,136,.5) !important;
+    color: white !important;
+    font-weight: bold !important;
+    border: none !important;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 22px;
+    height: 22px;
+    background: url('../Images/Suhoh/Property.svg') no-repeat center;
+}
+
+    .btnGridviewProperty:hover {
+        background-color: rgba(0,60,136,.7) !important;
+    }
+
+.divGridviewSetting {
+    opacity: 1;
+    position: fixed;
+    /*top: 62px;*/
+    right: 10px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+
+.btnGridviewClose {
+    background-color: rgba(0,60,136,.5) !important;
+    color: white !important;
+    font-weight: bold !important;
+    border: none !important;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 22px;
+    height: 22px;
+}
+
+    .btnGridviewClose:hover {
+        background-color: rgba(0,60,136,.7) !important;
+    }
