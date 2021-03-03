@@ -2,16 +2,17 @@
 // Open layer functions - initMap
 //
 
+var _scaleLine;
+
 function initMap(divMap) {
-    var esriStreets = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer';
-    var _scaleLine = new ol.control.ScaleLine();
+    _scaleLine = new ol.control.ScaleLine();
     var layerStreets = new ol.layer.Tile({
-        zIndex: 1000,
+        zIndex: 0,
         visible: true,
         name: 'layerStreets',
         source: new ol.source.XYZ({
             title: 'layerStreets',
-            url: esriStreets + '/tile/{z}/{y}/{x}',
+            url: _esriStreets + '/tile/{z}/{y}/{x}',
             crossOrigin: "Anonymous"
         })
     });
@@ -26,7 +27,7 @@ function initMap(divMap) {
             _scaleLine
         ]),
         layers: [layerStreets],
-        logo: false,
+        logo: true,
         view: new ol.View({
             center: ol.proj.fromLonLat([-115.979293, 55.528787]),
             zoom: 4
