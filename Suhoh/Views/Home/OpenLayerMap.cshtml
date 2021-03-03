@@ -23,25 +23,24 @@
 
 <head>
 </head>
-<body>
+<body>    
     <div style="width: 100%; height: 100%; position: relative;">
         <div id="map" class="olMap">
         </div>
-        <div style="position:static; top: 62px; left:100px; z-index: 10;">
-            <button type="button" class="btnMapMaximize" title="Maximize"></button>
-        </div>
 
-        @*<div class="divMapLegendButton">
-            <button type="button" class="btnMapLegend" title="Legend" onclick="showHideLegend()">L</button>
+        <div class="divMapMaximizeButton">
+            <button id="btnMapMaximize" type="button" class="btnMapMaximize" title="Maximize" onclick="btnMapMaximizeClick"></button>
+        </div>
+        <div class="divMapLegendButton">
+            <button id="btnMapLegend" type="button" class="btnMapLegend" title="Legend" onclick="btnMapLegendClick">L</button>
         </div>
         <div class="divMapPropertyButton">
-            <button type="button" class="btnMapProperty" title="Property" onclick="showPropertyPopup()">P</button>
+            <button id="btnMapProperty" type="button" class="btnMapProperty" title="Property" onclick="btnMapPropertyClick">P</button>
         </div>
         <div class="divMapSettingButton">
-            <button type="button" class="btnMapClose" title="Close">C</button>
-        </div>*@
+            <button id="btnMapClose" type="button" class="btnMapClose" title="Close" onclick="btnMapCloseClick">C</button>
+        </div>
     </div>
-
 </body>
 
 <div class="loadExcel">
@@ -53,6 +52,22 @@
     var _map;
 
     initMap('map');
+
+    function btnMapMaximizeClick() {
+
+    }
+
+    function btnMapLegendClick() {
+
+    }
+
+    function btnMapPropertyClick() {
+
+    }
+
+    function btnMapCloseClick() {
+
+    }
 
 </script>
 

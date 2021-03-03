@@ -32,7 +32,7 @@
 
         // Update Gridview
         var pGridview = splitterMain.GetPaneByName('paneGridview');
-        dxGridview.SetHeight(pGridview.GetClientHeight());
+        dxGridview.SetHeight(pGridview.GetClientHeight() - 10);
     }
 
 
@@ -114,40 +114,52 @@
     @*@Html.Raw(File.ReadAllText(Server.MapPath(@"~/App_Data/Overview.html")))*@
 
     @Html.DevExpress().Splitter(settings => {
-        settings.Name = "splitterMain";
-        //settings.Height = 800;  // no effect
-        //settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);  // no effect
-        settings.Orientation = Orientation.Vertical;
-        settings.AllowResize = true;
-        settings.SeparatorVisible = true;
-        settings.FullscreenMode = true;
-        settings.Panes.Add(panes => {
-            panes.Panes.Add(mapPane =>
+    settings.Name = "splitterMain";
+    //settings.Height = 800;  // no effect
+    //settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);  // no effect
+    settings.Orientation = Orientation.Vertical;
+    settings.AllowResize = true;
+    settings.SeparatorVisible = true;
+    settings.FullscreenMode = true;
+    settings.Panes.Add(panes => {
+        panes.Panes.Add(mapPane =>
+        {
+            mapPane.Name = "paneMap";
+            mapPane.SetContent(() =>
             {
-                mapPane.Name = "paneMap";
-                mapPane.SetContent(() =>
-                {
-                    Html.RenderPartial("OpenLayerMap", Model);
-                });
+                Html.RenderPartial("OpenLayerMap", Model);
+            });
 
-            });
-            panes.Panes.Add(graphPane =>
+        });
+        panes.Panes.Add(graphPane =>
+        {
+            graphPane.Name = "paneGraph";
+            graphPane.SetContent(() =>
             {
-                graphPane.Name = "paneGraph";
-                graphPane.SetContent(() =>
-                {
-                    Html.RenderPartial("D3Graph", Model);
-                });
+                Html.RenderPartial("D3Graph", Model);
             });
         });
-        settings.Panes.Add(gridviewPane => {
-            gridviewPane.Name = "paneGridview";
-            gridviewPane.Size = Unit.Percentage(30);
-            gridviewPane.SetContent(() => {
-                Html.RenderAction("DxGridview", Model);
-            });
+    });
+    settings.Panes.Add(gridviewPane => {
+        gridviewPane.Name = "paneGridview";
+        gridviewPane.Size = Unit.Percentage(35);
+        gridviewPane.SetContent(() => {
+            ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
+            ViewContext.Writer.Write("<button id='btnGridviewMaximize' type='button' class='btnGridviewMaximize' title='Maximize'></button>");
+            ViewContext.Writer.Write("</div>");
+            ViewContext.Writer.Write("<div class='divGridviewLegend'>");
+            ViewContext.Writer.Write("<button id='btnGridviewLegend' type='button' class='btnGridviewLegend' title='Legend' onclick=''>L</button>");
+            ViewContext.Writer.Write("</div>");
+            ViewContext.Writer.Write("<div class='divGridviewProperty'>");
+            ViewContext.Writer.Write("<button id='btnGridviewProperty' type='button' class='btnGridviewProperty' title='Property' onclick=''>P</button>");
+            ViewContext.Writer.Write("</div>");
+            ViewContext.Writer.Write("<div class='divGridviewSetting'>");
+            ViewContext.Writer.Write("<button id='btnGridviewClose' type='button' class='btnGridviewClose' title='Close'>C</button>");
+            ViewContext.Writer.Write("</div>");
+            Html.RenderAction("DxGridview", Model);
         });
-        settings.ClientSideEvents.PaneResized = "splitterMainResized";
+    });
+    settings.ClientSideEvents.PaneResized = "splitterMainResized";
     }).GetHtml()
 </div>
 

@@ -20,12 +20,12 @@
     background: url('../Images/DX/adaptive-menu.svg') no-repeat center;
 }
 
-/*Command Buttons*/
+/*Buttons*/
 .divMapMaximizeButton {
     opacity: 1;
-    position: fixed;
-    top: 62px;
-    right: 391px;
+    position: absolute;
+    top: 4px;
+    right: 91px;
     z-index: 100;
     /*background-color: yellow;*/
 }
@@ -49,8 +49,8 @@
 
 .divMapLegendButton {
     opacity: 1;
-    position: fixed;
-    top: 62px;
+    position: absolute;
+    top: 4px;
     right: 64px;
     z-index: 100;
     /*background-color: yellow;*/
@@ -75,8 +75,8 @@
 
 .divMapPropertyButton {
     opacity: 1;
-    position: fixed;
-    top: 62px;
+    position: absolute;
+    top: 4px;
     right: 37px;
     z-index: 100;
     /*background-color: yellow;*/
@@ -101,8 +101,8 @@
 
 .divMapSettingButton {
     opacity: 1;
-    position: fixed;
-    top: 62px;
+    position: absolute;
+    top: 4px;
     right: 10px;
     z-index: 100;
     /*background-color: yellow;*/
