@@ -92,10 +92,36 @@
         background-color: rgba(0,60,136,.7) !important;
     }
 
-/*.maxFill {
-    stroke: #71398F;
-    stroke-width: 50;
+/*Property Popup*/
+.thTitleHeading1 {
+    font-weight:bold;
+    margin-left: 2px;
+    float:left;
 }
-    .maxFill:hover {
-        fill: red;
-    }*/
+.thLabelHeading1 {
+    font-weight: bold;
+    margin-top: 6px;
+    margin-left: 2px;
+    float: left;
+}
+.thLabelHeading2-1 {
+    font-weight: normal;
+    margin-left: 2px;
+    float: left;
+}
+.thPercentageChkBox {
+    float: left;
+}
+.thYValueChkBox {
+    float: left;
+    margin-left: 10px;
+}
+.thXValueChkBox {
+    float: left;
+    margin-left: 10px;
+}
+.thLabelHeading2-2 {
+    font-weight: normal;
+    margin-left: 2px;
+    float: left;
+}

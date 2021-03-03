@@ -80,7 +80,7 @@
         });
 
         function successFunc(data, status) {
-            addPointLayer(_jsonData, 'Latitude', 'Longitude');
+            //addPointLayer(_jsonData, 'Latitude', 'Longitude');
 
             dxGridview.PerformCallback();
 
@@ -181,10 +181,10 @@
 
             settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
             settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
-            //settings.SetContent(() =>
-            //{
-            //    Html.RenderPartial("CallbackSearchResult", Model);
-            //});
+            settings.SetContent(() =>
+            {
+                Html.RenderPartial("D3GraphProperty", Model);
+            });
 
             //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
             //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";

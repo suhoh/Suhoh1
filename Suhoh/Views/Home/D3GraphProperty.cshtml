@@ -1,3 +1,72 @@
-﻿
-@using Suhoh.Model
+﻿@using Suhoh.Model
 @model ViewModel
+
+<div id="divTitle" class="divTitle">
+    <table>
+        <tr>
+            <th id="thTitleHeading1" class="thTitleHeading1">Title</th>
+        </tr>
+        <tr>
+            <th>
+                @Html.DevExpress().TextBoxFor(model => model.TitleProperty,
+                          settings =>
+                          {
+                              settings.Name = "propertyTitle";
+                              settings.Width = 240;
+                              settings.Text = "Graph Title";
+                              settings.ControlStyle.CssClass = "titlePropertyBox";
+                          }
+                          ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div id="divLabel" class="divLabel">
+    <table>
+        <tr>
+            <th id="thLabelHeading1" class="thLabelHeading1">
+                Label
+            </th>
+        </tr>
+        <tr>
+            <th id="thLabelHeading2-1" class="thLabelHeading2-1">
+                Label Contents
+            </th>
+        </tr>
+        <tr>
+            <th id="thPercentageChkBox" class="thPercentageChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.ChkPercentageLabel,
+                    settings =>
+                    {
+                        settings.Name = "percentageLabel";
+                        settings.Text = "Percentage";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "percentageChkClick";
+                    }).GetHtml()
+            </th>
+            <th id="thYValueChkBox" class="thYValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.ChkYValueLabel,
+                    settings =>
+                    {
+                        settings.Name = "yValueLabel";
+                        settings.Text = "Y Value";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "yValueChkClick";
+                    }).GetHtml()
+            </th>
+            <th id="thXValueChkBox" class="thXValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.ChkXValueLabel,
+                    settings =>
+                    {
+                        settings.Name = "xValueLabel";
+                        settings.Text = "X Value";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "xValueChkClick";
+                    }).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th id="thLabelHeading2-2" class="thLabelHeading2-2">
+                Show/Hide
+            </th>
+        </tr>
+    </table>
+</div>
