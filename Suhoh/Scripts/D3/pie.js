@@ -28,12 +28,14 @@ function drawPie(divName, data, width, height, radius) {
         .append("svg")
         .attr("width", width)
         .attr("height", height)
-        .append("g")
-        .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+        .append("g");
+        
 
     var pieData = d3.pie()
         .value(function (d) { return d.Y; })
         (data);
+
+    var pieLegendData
 
     var arc = d3.arc()
         .innerRadius(innerRadius)
@@ -62,6 +64,7 @@ function drawPie(divName, data, width, height, radius) {
         .attr("stroke", "black")
         .style("stroke-width", "2px")
         .style("opacity", 0.7)
+        .attr("transform", "translate(" + ((width - 115) / 2) + "," + height / 2 + ")")
         .on("mouseenter", function (data) {
             d3.select(this)
                 .attr("stroke", "black")
@@ -89,5 +92,25 @@ function drawPie(divName, data, width, height, radius) {
             .style("text-anchor", "middle")
             .style("font-size", 14)
     }
+
+    var legend = svg.selectAll(".legend")
+        .data(data)
+        .enter().append("g")
+        .attr("class", "legend");
+        
+
+    legend.append("rect")
+        .attr("width", 7)
+        .attr("height", 7)
+        .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (40 + (idx * 15)) + ")"; })
+        .attr("fill", function (d, idx) { return (color[idx]) });
+
+    legend.append("text")
+        .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (43 + (idx * 15)) + ")"; })
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .style("font-size", "8px")
+        .text(function (data) { return data.X; });
+
     return svg;
 }
