@@ -24,17 +24,27 @@ namespace Suhoh.Controllers
         {
             return View();
         }
+        public ActionResult OpenLayerMapProperty(ViewModel vm)
+        {
+            return View();
+        }
         public ActionResult D3Graph(ViewModel vm)
         {
             return View();
         }
-
+        public ActionResult D3GraphProperty(ViewModel vm)
+        {
+            return View();
+        }
         public ActionResult DxGridview(ViewModel vm)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
             return PartialView("DxGridview", viewModel);
         }
-
+        public ActionResult DxGridviewProperty(ViewModel vm)
+        {
+            return View();
+        }
 
         [HttpPost]
         public ActionResult ConvertJsonToDataTable(string json)

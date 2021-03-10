@@ -11,16 +11,20 @@ namespace Suhoh.Model
     {
         public DataTable DxGridview { get; set; }
 
-        public string TitleProperty { get; set; }
-
+        public string D3GraphTitleProperty { get; set; }
         public bool ChkPercentageLabel { get; set; }
         public bool ChkYValueLabel { get; set; }
         public bool ChkXValueLabel { get; set; }
         public string DdXColumn { get; set; }
         public string DdYColumn { get; set; }
+
+
+
+
+
         public ViewModel()
         {
-            TitleProperty = "Title";
+            D3GraphTitleProperty = "Title";
             ChkPercentageLabel = false;
             ChkYValueLabel = false;
             ChkXValueLabel = false;
