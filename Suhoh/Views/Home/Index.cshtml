@@ -7,7 +7,7 @@
 }
 
 @section LeftPanelContent {
-    @Html.Partial("LeftPanelPartial")
+    @Html.Partial("LeftPanelPartial", Model)
 }
 
 <script>
@@ -115,6 +115,8 @@
 
     @Html.DevExpress().Splitter(settings => {
     settings.Name = "splitterMain";
+    settings.ShowCollapseBackwardButton = true;
+    settings.ShowCollapseForwardButton = true;
     //settings.Height = 800;  // no effect
     //settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);  // no effect
     settings.Orientation = Orientation.Vertical;
@@ -160,7 +162,7 @@
         });
     });
     settings.ClientSideEvents.PaneResized = "splitterMainResized";
-    }).GetHtml()
+}).GetHtml()
 </div>
 
 @*Property popup*@

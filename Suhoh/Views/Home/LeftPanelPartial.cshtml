@@ -1,19 +1,91 @@
+
+@using Suhoh.Model
+@model ViewModel
+
 <h3 class="section-caption contents-caption">Contents</h3>
 
-@Html.DevExpress().TreeView(settings => {
-    settings.Name = "tableOfContentsTreeView";
-    settings.EnableNodeTextWrapping = true;
-    settings.AllowSelectNode = true;
-    settings.Width = Unit.Percentage(100);
-    settings.SyncSelectionMode = SyncSelectionMode.None;
-    settings.NodeLinkMode = ItemLinkMode.ContentBounds;
-    settings.Styles.Node.CssClass = "tree-view-node";
-    settings.Styles.Node.HoverStyle.CssClass = "hovered";
-    settings.Styles.Elbow.CssClass = "tree-view-elbow";
-    settings.ClientSideEvents.NodeClick = "function (s, e) { HideLeftPanelIfRequired(); }";
+@*@Html.DevExpress().TreeView(settings => {
+        settings.Name = "tableOfContentsTreeView";
+        settings.EnableNodeTextWrapping = true;
+        settings.AllowSelectNode = true;
+        settings.Width = Unit.Percentage(100);
+        settings.SyncSelectionMode = SyncSelectionMode.None;
+        settings.NodeLinkMode = ItemLinkMode.ContentBounds;
+        settings.Styles.Node.CssClass = "tree-view-node";
+        settings.Styles.Node.HoverStyle.CssClass = "hovered";
+        settings.Styles.Elbow.CssClass = "tree-view-elbow";
+        settings.ClientSideEvents.NodeClick = "function (s, e) { HideLeftPanelIfRequired(); }";
 
-    settings.PreRender = (source, e) => {
-        ASPxTreeView treeView = (ASPxTreeView)source;
-        treeView.ExpandAll();
-    };
-}).BindToXML(Server.MapPath("~/App_Data/OverviewContents.xml"), "//Nodes/*").GetHtml()
+        settings.PreRender = (source, e) => {
+            ASPxTreeView treeView = (ASPxTreeView)source;
+            treeView.ExpandAll();
+        };
+    }).BindToXML(Server.MapPath("~/App_Data/OverviewContents.xml"), "//Nodes/*").GetHtml()*@
+
+@Html.DevExpress().NavBar(settings =>
+{
+    settings.Name = "navBarMain";
+    settings.AllowExpanding = true;
+    settings.AllowSelectItem = true;
+    settings.AutoCollapse = true;
+    settings.EnableHotTrack = true;
+    settings.EnableAnimation = true;
+    settings.SaveStateToCookies = false;
+    settings.Width = Unit.Parse("100%");
+
+    settings.Groups.Add(group =>
+    {
+        group.Name = "DataSource";
+        group.Text = "Select Data Source";
+        group.Expanded = true;
+        group.SetContentTemplateContent(c =>
+        {
+            //Html.RenderPartial("SelectDataSource", Model);
+        });
+    });
+    settings.Groups.Add(group =>
+    {
+        group.Name = "Layers";
+        group.Text = "Layers";
+        group.SetContentTemplateContent(c =>
+        {
+            //Html.RenderPartial("PrintMap", Model);
+        });
+    });
+    settings.Groups.Add(group =>
+    {
+        group.Name = "Search";
+        group.Text = "Search";
+        group.SetContentTemplateContent(c =>
+        {
+            //Html.RenderPartial("PrintMap", Model);
+        });
+    });
+    settings.Groups.Add(group =>
+    {
+        group.Name = "Goto Location";
+        group.Text = "Goto Location";
+        group.SetContentTemplateContent(c =>
+        {
+            //Html.RenderPartial("PrintMap", Model);
+        });
+    });
+    settings.Groups.Add(group =>
+    {
+        group.Name = "Reports";
+        group.Text = "Reports";
+        group.SetContentTemplateContent(c =>
+        {
+            //Html.RenderPartial("PrintMap", Model);
+        });
+    });
+    settings.Groups.Add(group =>
+    {
+        group.Name = "Settings";
+        group.Text = "Settings";
+        group.SetContentTemplateContent(c =>
+        {
+            //Html.RenderPartial("PrintMap", Model);
+        });
+    });
+}).GetHtml()
