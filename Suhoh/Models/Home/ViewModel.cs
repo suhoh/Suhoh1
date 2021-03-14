@@ -11,6 +11,7 @@ namespace Suhoh.Model
     {
         public DataTable DxGridview { get; set; }
 
+        // Graph
         public string D3GraphTitleProperty { get; set; }
         public bool ChkPercentageLabel { get; set; }
         public bool ChkYValueLabel { get; set; }
@@ -18,7 +19,10 @@ namespace Suhoh.Model
         public string DdXColumn { get; set; }
         public string DdYColumn { get; set; }
 
-
+        // OpenLayers
+        public string OpenLayerTitleProperty { get; set; }
+        public string GoToLocationX { get; set; }
+        public string GoToLocationY { get; set; }
 
 
 

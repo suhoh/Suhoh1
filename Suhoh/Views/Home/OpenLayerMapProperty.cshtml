@@ -1,3 +1,70 @@
 ﻿@using Suhoh.Model
 @model ViewModel
 
+<div id="divTitle" class="divTitle">
+    <table>
+        <tr>
+            <th style="float: left; margin-left: 2px">Open Layer Title</th>
+        </tr>
+        <tr>
+            <th style="float: left; margin-top: 5px">
+                @Html.DevExpress().TextBoxFor(model => model.OpenLayerTitleProperty,
+                          settings =>
+                          {
+                              settings.Name = "OpenLayerPropertyTitle";
+                              settings.Width = 240;
+                              settings.Properties.NullText = "Title";
+                              settings.Text = "";
+                          }
+                          ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div style="margin-top: 10px">
+    <table>
+        <tr>
+            <th style="float: left; margin-left: 2px">Go To Location</th>
+        </tr>
+        <tr>
+            <th class="thOpenLayerGoToXLabel">X:</th>
+            <th class="thOpenLayerGotoXTextBox"> 
+                @Html.DevExpress().TextBoxFor(model => model.GoToLocationX,
+                          settings =>
+                          {
+                              settings.Name = "tbOpenLayerPropertyGoToX";
+                              settings.Width = 120;
+                              settings.Properties.NullText = "Longitude";
+                              settings.Text = "";
+                          }
+                          ).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th class="thOpenLayerGoToYLabel">Y:</th>
+            <th class="thOpenLayerGotoYTextBox">
+                @Html.DevExpress().TextBoxFor(model => model.GoToLocationY,
+                          settings =>
+                          {
+                              settings.Name = "tbOpenLayerPropertyGoToY";
+                              settings.Width = 120;
+                              settings.Properties.NullText = "Latitude";
+                              settings.Text = "";
+                          }
+                          ).GetHtml()
+            </th>
+            <th class="thOpenLayerGoToButton">
+                @Html.DevExpress().Button(
+                settings => 
+                {
+                    settings.Name = "btnOpenLayerPropertyGoTo";
+                    settings.Width = 60;
+                    settings.Text = "Go To";
+                }
+                ).GetHtml()
+            </th>
+        </tr>
+
+    </table>
+</div>
