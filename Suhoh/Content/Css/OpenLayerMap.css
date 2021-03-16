@@ -123,3 +123,37 @@
     .btnMapClose:hover {
         background-color: rgba(0,60,136,.7) !important;
     }
+
+.thOpenLayerGoToXLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 10px;
+    margin-left: 2px;
+}
+
+.thOpenLayerGotoXTextBox {
+    font-weight: normal;
+    float: left;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.thOpenLayerGoToYLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 10px;
+    margin-left: 2px;
+}
+
+.thOpenLayerGotoYTextBox {
+    font-weight: normal;
+    float: left;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.thOpenLayerGoToButton{
+    float: left;
+    margin-top: -10px;
+    margin-left: 30px;
+}

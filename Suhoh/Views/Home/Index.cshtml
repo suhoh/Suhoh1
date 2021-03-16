@@ -252,6 +252,47 @@
                 //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
                 //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
 
+            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPaneProperty', '', true); }";
+        }).GetHtml()
+
+    @*OpenLayer Property popup*@
+    <div>
+        @Html.DevExpress().PopupControl(
+            settings =>
+            {
+                settings.Name = "popupOpenLayerProperty";
+                settings.Width = 250;
+                settings.Height = 350;
+                settings.AllowDragging = true;
+                settings.CloseAction = CloseAction.CloseButton;
+                settings.CloseOnEscape = true;
+                settings.PopupAnimationType = AnimationType.None;
+                settings.HeaderText = "Property";
+
+
+                settings.ShowPinButton = true;
+                settings.ShowCloseButton = true;
+                settings.ShowCollapseButton = true;
+
+                settings.Modal = false;
+
+                settings.PopupAnimationType = AnimationType.Slide;
+
+                settings.ResizingMode = ResizingMode.Live;
+                settings.AllowResize = true;
+                settings.ShowSizeGrip = ShowSizeGrip.True;
+                settings.ShowFooter = false;
+
+                settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+                settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+                settings.SetContent(() =>
+                {
+                    Html.RenderPartial("OpenLayerMapProperty", Model);
+                });
+
+                //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
+                //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
+
                 settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPaneProperty', '', true); }";
             }).GetHtml()
     </div>
