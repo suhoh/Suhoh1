@@ -46,6 +46,16 @@ namespace Suhoh.Controllers
             return View();
         }
 
+        public ActionResult RightPanelPartial(string sender, int paneDir, int paneType)
+        {
+            ViewModel vm = (ViewModel)Session["viewModel"];
+            vm.AddPaneSender = sender;
+            vm.AddPaneType = paneType;
+            vm.AddPaneDirection = paneDir;
+
+            return PartialView("RightPanelPartial", vm);
+        }
+
         [HttpPost]
         public ActionResult ConvertJsonToDataTable(string json)
         {
@@ -57,5 +67,6 @@ namespace Suhoh.Controllers
             Session["viewModel"] = vm;
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
+
     }
 }

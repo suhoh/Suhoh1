@@ -3,5 +3,43 @@
 @model ViewModel
 
 @*GUI interface for add new pane
-  - Graph, Map or Gridview  *@
+    - Graph, Map or Gridview  *@
 
+@Html.DevExpress().RadioButtonListFor(model => model.AddPaneDirection,
+    settings =>
+    {
+        settings.Name = "radioAddPaneDirection";
+        settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+        settings.Properties.Items.Add("Horizontal", 1);
+        settings.Properties.Items.Add("Vertical", 2);
+        settings.Width = 240;
+        settings.Height = 28;
+        settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
+        settings.Properties.ValueType = typeof(Int32);
+        settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioAddPaneDirectionClick";
+    }).GetHtml()
+
+@Html.DevExpress().RadioButtonListFor(model => model.AddPaneType,
+    settings =>
+    {
+        settings.Name = "radioAddPaneType";
+        settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+        settings.Properties.Items.Add("Graph", 1);
+        settings.Properties.Items.Add("Map", 2);
+        settings.Properties.Items.Add("Gridview", 2);
+        settings.Width = 240;
+        settings.Height = 28;
+        settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
+        settings.Properties.ValueType = typeof(Int32);
+        settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioAddPaneTypeClick";
+    }).GetHtml()
+
+@Html.DevExpress().Button(
+    settings =>
+    {
+        settings.Name = "btnAddNewPane";
+        settings.Width = 60;
+        settings.Text = "Add";
+        settings.ClientSideEvents.Click = "btnAddNewPaneClick";
+    }
+).GetHtml()

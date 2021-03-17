@@ -159,6 +159,7 @@
     <Content Include="Content\Images\Suhoh\Property.svg" />
     <Content Include="Content\Images\Suhoh\Legend.svg" />
     <Content Include="Content\Images\Suhoh\Maximize.svg" />
+    <Content Include="Scripts\D3\main.js" />
     <Content Include="Scripts\D3\pie.js" />
     <Content Include="Scripts\D3_v650\d3.js" />
     <Content Include="Scripts\D3_v650\d3.min.js" />
@@ -221,6 +222,7 @@
     <Content Include="Scripts\OL\addLayers.js" />
     <Content Include="Scripts\OL\initMap.js" />
     <Content Include="Scripts\OL\layersNsymbols.js" />
+    <Content Include="Scripts\OL\main.js" />
     <Content Include="Scripts\Ol_v650\ol.css" />
     <Content Include="Scripts\Ol_v650\ol.js" />
     <Content Include="Content\Photo\Alberto_Alonso.jpg" />
@@ -309,6 +311,7 @@
     <Content Include="Views\Home\D3GraphProperty.cshtml" />
     <Content Include="Views\Home\OpenLayerMapProperty.cshtml" />
     <Content Include="Views\Home\AddNewPane.cshtml" />
+    <Content Include="Views\Home\RightPanelPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -340,7 +343,9 @@
     <Compile Include="Models\Scheduler\SchedulerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\Gridview\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

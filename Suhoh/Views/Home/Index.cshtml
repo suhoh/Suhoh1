@@ -6,10 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section LeftPanelContent {
-    @Html.Partial("LeftPanelPartial", Model)
-}
-
 <script>
     var _jsonData;
 
@@ -109,67 +105,34 @@
         excelFile.click();
     }
 
+    // This function will be used for all 3 panels (Map, Graph and Gridview)
+    function radioAddPaneTypeClick(s, e) {
+    }
+
+    function radioAddPaneDirectionClick(s, e) {
+    }
+
     function addNewPane(sender) {
         popupAddNewPane.Show();
     }
 
+    function btnAddNewPaneClick(s, e) {
+        var sender = s.name;
+        var paneDir = radioAddPaneDirection.GetValue();
+        var paneType = radioAddPaneType.GetValue();
+
+        RightPanelPartial.PerformCallback({
+            'sender': sender, 'paneDir': paneDir, 'paneType': paneType
+        });
+    }
+
+    function callbackRightPanelPartial_OnBeginCallback(s, e) {
+        alert('begin callback');
+    }
+    function callbackRightPanelPartial_OnEndCallback(s, e) {
+        alert('end callback');
+    }
 </script>
-
-<div style="width:100%;height:100%;position: relative;" id="MainContent">
-    @*@Html.Raw(File.ReadAllText(Server.MapPath(@"~/App_Data/Overview.html")))*@
-
-    @Html.DevExpress().Splitter(settings => {
-    settings.Name = "splitterMain";
-    settings.ShowCollapseBackwardButton = true;
-    settings.ShowCollapseForwardButton = true;
-    settings.ShowSeparatorImage = true;
-    //settings.Height = 800;  // no effect
-    //settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);  // no effect
-    settings.Orientation = Orientation.Vertical;
-    settings.AllowResize = true;
-    settings.SeparatorVisible = true;
-    settings.FullscreenMode = true;
-    settings.Panes.Add(panes => {
-        panes.Panes.Add(mapPane =>
-        {
-            mapPane.Name = "paneMap";
-            mapPane.SetContent(() =>
-            {
-                Html.RenderPartial("OpenLayerMap", Model);
-            });
-
-        });
-        panes.Panes.Add(graphPane =>
-        {
-            graphPane.Name = "paneGraph";
-            graphPane.SetContent(() =>
-            {
-                Html.RenderPartial("D3Graph", Model);
-            });
-        });
-    });
-    settings.Panes.Add(gridviewPane => {
-        gridviewPane.Name = "paneGridview";
-        gridviewPane.Size = Unit.Percentage(35);
-        gridviewPane.SetContent(() => {
-            ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
-            ViewContext.Writer.Write("<button id='btnGridviewMaximize' type='button' class='btnGridviewMaximize' title='Maximize'></button>");
-            ViewContext.Writer.Write("</div>");
-            ViewContext.Writer.Write("<div class='divGridviewLegend'>");
-            ViewContext.Writer.Write("<button id='btnGridviewLegend' type='button' class='btnGridviewLegend' title='Legend' onclick=''>L</button>");
-            ViewContext.Writer.Write("</div>");
-            ViewContext.Writer.Write("<div class='divGridviewProperty'>");
-            ViewContext.Writer.Write("<button id='btnGridviewProperty' type='button' class='btnGridviewProperty' title='Property' onclick=''>P</button>");
-            ViewContext.Writer.Write("</div>");
-            ViewContext.Writer.Write("<div class='divGridviewSetting'>");
-            ViewContext.Writer.Write("<button id='btnGridviewClose' type='button' class='btnGridviewClose' title='Close' onclick='addNewPane(\"gridview\")'>C</button>");
-            ViewContext.Writer.Write("</div>");
-            Html.RenderAction("DxGridview", Model);
-        });
-    });
-    settings.ClientSideEvents.PaneResized = "splitterMainResized";
-}).GetHtml()
-</div>
 
 @*Add new pane*@
 <div>
@@ -214,85 +177,94 @@
 </div>
 
 
-    @*Graph Property popup*@
-    <div>
-        @Html.DevExpress().PopupControl(
-            settings =>
+@*Graph Property popup*@
+<div>
+    @Html.DevExpress().PopupControl(
+        settings =>
+        {
+            settings.Name = "popupPaneProperty";
+            settings.Width = 250;
+            settings.Height = 350;
+            settings.AllowDragging = true;
+            settings.CloseAction = CloseAction.CloseButton;
+            settings.CloseOnEscape = true;
+            settings.PopupAnimationType = AnimationType.None;
+            settings.HeaderText = "Property";
+
+
+            settings.ShowPinButton = true;
+            settings.ShowCloseButton = true;
+            settings.ShowCollapseButton = true;
+
+            settings.Modal = false;
+
+            settings.PopupAnimationType = AnimationType.Slide;
+
+            settings.ResizingMode = ResizingMode.Live;
+            settings.AllowResize = true;
+            settings.ShowSizeGrip = ShowSizeGrip.True;
+            settings.ShowFooter = false;
+
+            settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+            settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+            settings.SetContent(() =>
             {
-                settings.Name = "popupPaneProperty";
-                settings.Width = 250;
-                settings.Height = 350;
-                settings.AllowDragging = true;
-                settings.CloseAction = CloseAction.CloseButton;
-                settings.CloseOnEscape = true;
-                settings.PopupAnimationType = AnimationType.None;
-                settings.HeaderText = "Property";
+                Html.RenderPartial("D3GraphProperty", Model);
+            });
+
+            //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
+            //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
+
+        settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPaneProperty', '', true); }";
+    }).GetHtml()
+</div>
+
+@*OpenLayer Property popup*@
+<div>
+    @Html.DevExpress().PopupControl(
+        settings =>
+        {
+            settings.Name = "popupOpenLayerProperty";
+            settings.Width = 250;
+            settings.Height = 350;
+            settings.AllowDragging = true;
+            settings.CloseAction = CloseAction.CloseButton;
+            settings.CloseOnEscape = true;
+            settings.PopupAnimationType = AnimationType.None;
+            settings.HeaderText = "Property";
 
 
-                settings.ShowPinButton = true;
-                settings.ShowCloseButton = true;
-                settings.ShowCollapseButton = true;
+            settings.ShowPinButton = true;
+            settings.ShowCloseButton = true;
+            settings.ShowCollapseButton = true;
 
-                settings.Modal = false;
+            settings.Modal = false;
 
-                settings.PopupAnimationType = AnimationType.Slide;
+            settings.PopupAnimationType = AnimationType.Slide;
 
-                settings.ResizingMode = ResizingMode.Live;
-                settings.AllowResize = true;
-                settings.ShowSizeGrip = ShowSizeGrip.True;
-                settings.ShowFooter = false;
+            settings.ResizingMode = ResizingMode.Live;
+            settings.AllowResize = true;
+            settings.ShowSizeGrip = ShowSizeGrip.True;
+            settings.ShowFooter = false;
 
-                settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
-                settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
-                settings.SetContent(() =>
-                {
-                    Html.RenderPartial("D3GraphProperty", Model);
-                });
+            settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+            settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+            settings.SetContent(() =>
+            {
+                Html.RenderPartial("OpenLayerMapProperty", Model);
+            });
 
-                //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
-                //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
+            //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
+            //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
 
-            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPaneProperty', '', true); }";
+            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupOpenLayerProperty', '', true); }";
         }).GetHtml()
-
-    @*OpenLayer Property popup*@
-    <div>
-        @Html.DevExpress().PopupControl(
-            settings =>
-            {
-                settings.Name = "popupOpenLayerProperty";
-                settings.Width = 250;
-                settings.Height = 350;
-                settings.AllowDragging = true;
-                settings.CloseAction = CloseAction.CloseButton;
-                settings.CloseOnEscape = true;
-                settings.PopupAnimationType = AnimationType.None;
-                settings.HeaderText = "Property";
+</div>
 
 
-                settings.ShowPinButton = true;
-                settings.ShowCloseButton = true;
-                settings.ShowCollapseButton = true;
+@section LeftPanelContent {
+    @Html.Partial("LeftPanelPartial", Model)
+}
 
-                settings.Modal = false;
+@Html.Partial("RightPanelPartial", Model)
 
-                settings.PopupAnimationType = AnimationType.Slide;
-
-                settings.ResizingMode = ResizingMode.Live;
-                settings.AllowResize = true;
-                settings.ShowSizeGrip = ShowSizeGrip.True;
-                settings.ShowFooter = false;
-
-                settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
-                settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
-                settings.SetContent(() =>
-                {
-                    Html.RenderPartial("OpenLayerMapProperty", Model);
-                });
-
-                //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
-                //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
-
-                settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPaneProperty', '', true); }";
-            }).GetHtml()
-    </div>

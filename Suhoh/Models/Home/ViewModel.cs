@@ -24,7 +24,10 @@ namespace Suhoh.Model
         public string GoToLocationX { get; set; }
         public string GoToLocationY { get; set; }
 
-
+        // Add new pane
+        public string AddPaneSender { get; set; }
+        public int AddPaneType { get; set; }            // 1: Horizontal, 2: Vertical
+        public int AddPaneDirection { get; set; }  // 1: Graph, 2: Map: 3: Gridview
 
         public ViewModel()
         {
@@ -34,6 +37,9 @@ namespace Suhoh.Model
             ChkXValueLabel = false;
             DdXColumn = "";
             DdYColumn = "";
+
+            AddPaneDirection = 1;
+            AddPaneType = 1;
         }
     }
 

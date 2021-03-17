@@ -11,11 +11,14 @@ namespace Suhoh
             bundles.Add(new ScriptBundle("~/bundles/suhoh").Include(
                 "~/Scripts/BaseScript.js",
                 "~/Scripts/Ol_v650/ol.js",
+                "~/Scripts/OL/main.js",
                 "~/Scripts/OL/layersNsymbols.js",
                 "~/Scripts/OL/initMap.js",
                 "~/Scripts/OL/addLayers.js",
                 "~/Scripts/D3_v650/d3.js",
+                "~/Scripts/D3/main.js",
                 "~/Scripts/D3/pie.js",
+                "~/Scripts/Gridview/main.js",
                 "~/Scripts/SheetJS/xlsx.full.min.js"
             ));
 
