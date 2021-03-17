@@ -92,17 +92,74 @@
         return colorArray;
     }
 
-    function percentageChkClick() {
+    function chkPieLabelClicked(s, e) {
+        var pieTotal = d3.sum(_pieData, function (d) { return d.Y });
+        var isPercentageLabel = eval("percentageLabel").GetChecked();
+        var isYValueLabel = eval("yValueLabel").GetChecked();
+        var isXValueLabel = eval("xValueLabel").GetChecked();
+
+        if (isYValueLabel && !isXValueLabel && !isPercentageLabel) {
+            _pieTextLabel
+                .text(function (d) {
+                    if ((Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) > 5)
+                        return d.data.Y
+                })
+                .attr("display", "block");
+        }
+        else if (isXValueLabel && !isYValueLabel && !isPercentageLabel) {
+            _pieTextLabel
+                .text(function (d) {
+                    if ((Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) > 5)
+                        return d.data.X
+                })
+                .attr("display", "block");
+        }
+        else if (isPercentageLabel && !isXValueLabel && !isYValueLabel) {
+            _pieTextLabel
+                .text(function (d) {
+                    if ((Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) > 5)
+                        return (Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) + "%"
+                })
+                .attr("display", "block");
+        }
+        else if (isPercentageLabel && isYValueLabel && !isXValueLabel) {
+            _pieTextLabel
+                .text(function (d) {
+                    if ((Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) > 5)
+                        return (Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) + "%" + ", " + d.data.Y
+                })
+                .attr("display", "block");
+        }
+        else if (isPercentageLabel && isXValueLabel && !isYValueLabel) {
+            _pieTextLabel
+                .text(function (d) {
+                    if ((Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) > 5)
+                        return (Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) + "%" + ", " + d.data.X
+                })
+                .attr("display", "block");
+        }
+        else if (isYValueLabel && isXValueLabel && !isPercentageLabel) {
+            _pieTextLabel
+                .text(function (d) {
+                    if ((Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) > 5)
+                        return d.data.X + "," + d.data.Y
+                })
+                .attr("display", "block");
+        }
+        else if (isPercentageLabel && isYValueLabel && isXValueLabel) {
+            _pieTextLabel
+                .text(function (d) {
+                    if ((Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) > 5)
+                        return (Math.round((d.data.Y / pieTotal) * 100)).toFixed(1) + "%" + ", " + d.data.Y + ", " + d.data.X
+                })
+                .attr("display", "block");
+        }
+        else {
+            _pieTextLabel.attr("display", "none");
+        }
 
     }
 
-    function yValueChkClick() {
-
-    }
-
-    function xValueChkClick() {
-
-    }
 
 </script>
 
