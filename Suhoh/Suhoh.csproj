@@ -308,6 +308,7 @@
     <Content Include="Views\Home\DxGridviewProperty.cshtml" />
     <Content Include="Views\Home\D3GraphProperty.cshtml" />
     <Content Include="Views\Home\OpenLayerMapProperty.cshtml" />
+    <Content Include="Views\Home\AddNewPane.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
