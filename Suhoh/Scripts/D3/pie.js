@@ -56,6 +56,8 @@ function drawPie(divName, data, width, height, radius) {
         .padAngle(.01)
         .padRadius(50);
 
+    var pieTooltip = d3.select("#" + divName).append("div");
+
     if (width > 400) {
         svg.selectAll("allSlices")
             .data(pieData)
@@ -67,13 +69,27 @@ function drawPie(divName, data, width, height, radius) {
             .style("stroke-width", "2px")
             .style("opacity", 0.7)
             .attr("transform", "translate(" + ((width - 115) / 2) + "," + height / 2 + ")")
-            .on("mouseenter", function (data) {
-                d3.select(this)
-                    .attr("stroke", "black")
-                    .transition()
-                    .duration(200)
-                    .attr("d", arcOver)
-                    .attr("stroke-width", 2);
+            .on("mouseover", function (event, d) {
+                //var x = event.offsetX;
+                //var y = event.offsetY;
+                pieTooltip.transition()
+                    .duration(100)
+                    .style("opacity", 1);
+                pieTooltip
+                    .html(d.data.Y)
+                    .style("text-align", "center")
+                    .style("left", event.offsetX + "px")
+                    .style("top", event.offsetY + "px")
+                    .style("background", "black")
+                    .style("color", "white")
+                    .style("position", "absolute")
+
+                //d3.select(this)
+                //    .attr("stroke", "black")
+                //    .transition()
+                //    .duration(200)
+                //    .attr("d", arcOver)
+                //    .attr("stroke-width", 2);
             })
             .on("mouseleave", function (data) {
                 d3.select(this)
@@ -95,6 +111,12 @@ function drawPie(divName, data, width, height, radius) {
             .style("stroke-width", "2px")
             .style("opacity", 0.7)
             .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
+
+
+
+
+
+
             .on("mouseenter", function (data) {
                 d3.select(this)
                     .attr("stroke", "black")
