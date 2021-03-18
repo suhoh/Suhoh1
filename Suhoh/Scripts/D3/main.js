@@ -3,7 +3,6 @@
 // D3 main functions
 //
 
-
 const _colorScale = d3.interpolateRdYlBu;
 
 const _colorRangeInfo = {

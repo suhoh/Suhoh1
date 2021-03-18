@@ -112,7 +112,9 @@
     function radioAddPaneDirectionClick(s, e) {
     }
 
-    function addNewPane(sender) {
+    var addNewPaneSender;
+    function addNewPane(s) {
+        addNewPaneSender = s.name;
         popupAddNewPane.Show();
     }
 
@@ -122,16 +124,16 @@
         var paneType = radioAddPaneType.GetValue();
 
         RightPanelPartial.PerformCallback({
-            'sender': sender, 'paneDir': paneDir, 'paneType': paneType
+            'sender': addNewPaneSender, 'paneDir': paneDir, 'paneType': paneType
         });
     }
 
     function callbackRightPanelPartial_OnBeginCallback(s, e) {
-        alert('begin callback');
     }
     function callbackRightPanelPartial_OnEndCallback(s, e) {
-        alert('end callback');
+        dxGridview.Refresh();   // test refresh
     }
+
 </script>
 
 @*Add new pane*@

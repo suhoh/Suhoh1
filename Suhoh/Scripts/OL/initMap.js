@@ -1,4 +1,0 @@
-﻿//
-// Open layer functions - initMap
-//
-
