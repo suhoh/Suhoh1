@@ -5,13 +5,15 @@
 var _pieData;
 var _pieSvg = null;
 var _pieTextLabel;
-var _isD3Label;
+
 
 function drawPie(divName, data, width, height, radius) {
+
     if (data == undefined)
         return;
 
     _pieData = data;
+    _pieSum = d3.sum(_pieData, function (d) { return d.Y });
     d3.select("#" + divName).selectAll("svg").remove();
 
     var margin = 40;
@@ -56,7 +58,7 @@ function drawPie(divName, data, width, height, radius) {
         .padAngle(.01)
         .padRadius(50);
 
-    var pieTooltip = d3.select("#" + divName).append("div");
+    var pieTooltip = d3.select("#" + divName).append("div").attr("class", "pieTooltip").style("display", "none");
 
     if (width > 400) {
         svg.selectAll("allSlices")
@@ -69,35 +71,33 @@ function drawPie(divName, data, width, height, radius) {
             .style("stroke-width", "2px")
             .style("opacity", 0.7)
             .attr("transform", "translate(" + ((width - 115) / 2) + "," + height / 2 + ")")
-            .on("mouseover", function (event, d) {
-                //var x = event.offsetX;
-                //var y = event.offsetY;
-                pieTooltip.transition()
-                    .duration(100)
-                    .style("opacity", 1);
-                pieTooltip
-                    .html(d.data.Y)
-                    .style("text-align", "center")
-                    .style("left", event.offsetX + "px")
-                    .style("top", event.offsetY + "px")
-                    .style("background", "black")
-                    .style("color", "white")
-                    .style("position", "absolute")
+            .on("mouseenter", function (event, d) {
+                d3.select(this)
+                    .attr("stroke", "black")
+                    .transition()
+                    .duration(200)
+                    .attr("d", arcOver)
+                    .attr("stroke-width", 2);
 
-                //d3.select(this)
-                //    .attr("stroke", "black")
-                //    .transition()
-                //    .duration(200)
-                //    .attr("d", arcOver)
-                //    .attr("stroke-width", 2);
+                pieTooltip
+                    .style("display", "inline-block")
+                    .style("position", "absolute");
             })
-            .on("mouseleave", function (data) {
+            .on("mousemove", function (event, d) {
+                pieTooltip
+                    .html(d.data.X + "<br/>" + d.data.Y + "<br/>" + Math.round((d.data.Y / _pieSum) * 100).toFixed(1) + "%")
+                    .style("left", event.offsetX + 5 + "px")
+                    .style("top", event.offsetY - 50 + "px")
+            })
+            .on("mouseleave", function (d) {
                 d3.select(this)
                     .attr("stroke", "black")
                     .transition()
                     .duration(200)
                     .attr("d", arcIn)
                     .attr("stroke-width", 2);
+
+                pieTooltip.style("display", "none");
             });
     }
     else {
@@ -111,12 +111,6 @@ function drawPie(divName, data, width, height, radius) {
             .style("stroke-width", "2px")
             .style("opacity", 0.7)
             .attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")")
-
-
-
-
-
-
             .on("mouseenter", function (data) {
                 d3.select(this)
                     .attr("stroke", "black")
@@ -150,7 +144,8 @@ function drawPie(divName, data, width, height, radius) {
     var legend = svg.selectAll(".legend")
         .data(data)
         .enter().append("g")
-        .attr("class", "legend");
+        .attr("class", "D3Legend")
+        .attr("id", "D3Legend");
         
     if (width > 400) {
         legend.append("rect")

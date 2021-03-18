@@ -146,3 +146,16 @@
     float: left;
     margin-left: 2px;
 }
+
+.pieTooltip {
+    /*width: 100%;
+    height: 50px;*/
+    background: white;
+    color: black;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 8px;
+    opacity: 0.7;
+}
