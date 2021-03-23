@@ -457,3 +457,10 @@ a.tree-view-node.hovered
         max-width: 150px;
     }
 }
+
+/*main display area - when callback*/
+.rightPanelPartial {
+    position: relative;
+    top: 50px;
+    left: 272px;
+}

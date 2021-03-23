@@ -2,7 +2,7 @@
     var adjustmentDelegates = [];
     function AddAdjustmentDelegate(adjustmentDelegate) {
         adjustmentDelegates.push(adjustmentDelegate);
-        _map.updateSize();
+        //_map.updateSize();
     }
     function onControlsInitialized(s, e) {
         adjustPageControls();

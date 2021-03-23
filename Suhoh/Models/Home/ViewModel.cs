@@ -27,7 +27,7 @@ namespace Suhoh.Model
         // Add new pane
         public string AddPaneSender { get; set; }
         public int AddPaneType { get; set; }            // 1: Horizontal, 2: Vertical
-        public int AddPaneDirection { get; set; }  // 1: Graph, 2: Map: 3: Gridview
+        public int AddPaneDirection { get; set; }       // 1: Graph, 2: Map: 3: Gridview
 
         public ViewModel()
         {
@@ -41,13 +41,7 @@ namespace Suhoh.Model
             AddPaneDirection = 1;
             AddPaneType = 1;
         }
-    }
 
-    public class KeyValue
-    {
-        public string Key { get; set; }
-        public string Value { get; set; }
     }
-
 
 }

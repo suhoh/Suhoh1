@@ -218,6 +218,7 @@
     <Content Include="Scripts\jQuery\additional-methods.min.js" />
     <Content Include="Scripts\jQuery\jquery.validate.js" />
     <Content Include="Scripts\jQuery\jquery.validate.min.js" />
+    <Content Include="Scripts\MainScript.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\OL\addLayers.js" />
     <Content Include="Scripts\OL\layersNsymbols.js" />

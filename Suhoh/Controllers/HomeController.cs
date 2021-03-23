@@ -17,6 +17,7 @@ namespace Suhoh.Controllers
         {
             ViewModel model = new ViewModel();
 
+            ViewData["RightPanelPartialCallback"] = false;
             Session["viewModel"] = model;
             return View(model);
         }
@@ -46,12 +47,17 @@ namespace Suhoh.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult RightPanelPartial(string sender, int paneDir, int paneType)
         {
             ViewModel vm = (ViewModel)Session["viewModel"];
             vm.AddPaneSender = sender;
             vm.AddPaneType = paneType;
             vm.AddPaneDirection = paneDir;
+
+            var p = Request.Params["OnBeginCallback"];
+
+            ViewData["RightPanelPartialCallback"] = true;
 
             return PartialView("RightPanelPartial", vm);
         }

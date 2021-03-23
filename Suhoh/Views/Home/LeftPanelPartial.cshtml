@@ -35,7 +35,7 @@
 
     settings.Groups.Add(group =>
     {
-        group.Name = "DataSource";
+        group.Name = "dataSource";
         group.Text = "Select Data Source";
         group.Expanded = true;
         group.SetContentTemplateContent(c =>
@@ -45,7 +45,7 @@
     });
     settings.Groups.Add(group =>
     {
-        group.Name = "Layers";
+        group.Name = "layers";
         group.Text = "Layers";
         group.SetContentTemplateContent(c =>
         {
@@ -54,7 +54,7 @@
     });
     settings.Groups.Add(group =>
     {
-        group.Name = "Search";
+        group.Name = "search";
         group.Text = "Search";
         group.SetContentTemplateContent(c =>
         {
@@ -63,7 +63,7 @@
     });
     settings.Groups.Add(group =>
     {
-        group.Name = "Goto Location";
+        group.Name = "gotoLocation";
         group.Text = "Goto Location";
         group.SetContentTemplateContent(c =>
         {
@@ -72,8 +72,17 @@
     });
     settings.Groups.Add(group =>
     {
-        group.Name = "Reports";
+        group.Name = "reports";
         group.Text = "Reports";
+        group.SetContentTemplateContent(c =>
+        {
+            //Html.RenderPartial("PrintMap", Model);
+        });
+    });
+    settings.Groups.Add(group =>
+    {
+        group.Name = "loadMyProject";
+        group.Text = "Load My Project";
         group.SetContentTemplateContent(c =>
         {
             //Html.RenderPartial("PrintMap", Model);

@@ -3,83 +3,75 @@
 
 @*@Html.Raw(File.ReadAllText(Server.MapPath(@"~/App_Data/Overview.html")))*@
 
-@*<h1>Hello world</h1>*@
-
-
-@Html.DevExpress().CallbackPanel(callbackSettings =>
+@Html.DevExpress().Splitter(settings =>
 {
-    callbackSettings.Name = "RightPanelPartial";
-    callbackSettings.CallbackRouteValues = new { Controller = "Home", Action = "RightPanelPartial" };
-    callbackSettings.ClientSideEvents.BeginCallback = "callbackRightPanelPartial_OnBeginCallback";
-    callbackSettings.ClientSideEvents.EndCallback = "callbackRightPanelPartial_OnEndCallback";
-    callbackSettings.SetContent(() =>
+    settings.Name = "splitterMain";
+    settings.ShowCollapseBackwardButton = true;
+    settings.ShowCollapseForwardButton = true;
+    settings.ShowSeparatorImage = true;
+    settings.Orientation = Orientation.Vertical;
+    settings.AllowResize = true;
+    settings.SeparatorVisible = true;
+    settings.FullscreenMode = true;
+
+    settings.Panes.Add(panes =>
     {
-        Html.DevExpress().Splitter(settings =>
+        panes.Panes.Add(mapPane =>
         {
-            settings.Name = "splitterMain";
-            settings.ShowCollapseBackwardButton = true;
-            settings.ShowCollapseForwardButton = true;
-            settings.ShowSeparatorImage = true;
-            settings.Orientation = Orientation.Vertical;
-            settings.AllowResize = true;
-            settings.SeparatorVisible = true;
-            settings.FullscreenMode = true;
-            settings.Panes.Add(panes =>
+            mapPane.Name = "paneMap";
+            mapPane.SetContent(() =>
             {
-                panes.Panes.Add(mapPane =>
-                {
-                    mapPane.Name = "paneMap";
-                    mapPane.SetContent(() =>
-                    {
-                        Html.RenderPartial("OpenLayerMap", Model);
-                    });
-
-                });
-                panes.Panes.Add(graphPane =>
-                {
-                    graphPane.Name = "paneGraph";
-                    graphPane.SetContent(() =>
-                    {
-                        Html.RenderPartial("D3Graph", Model);
-                    });
-                });
-            });
-            settings.Panes.Add(gridviewPaneMain =>
-            {
-                gridviewPaneMain.Size = Unit.Percentage(35);
-                gridviewPaneMain.Panes.Add(gridviewPane =>
-                {
-                    gridviewPane.Name = "paneGridview";
-                    gridviewPane.SetContent(() =>
-                    {         // can't add extra div as part of Gridview. Had to add here
-                        ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
-                        ViewContext.Writer.Write("<button id='btnGridviewMaximize' type='button' class='btnGridviewMaximize' title='Maximize'></button>");
-                        ViewContext.Writer.Write("</div>");
-                        ViewContext.Writer.Write("<div class='divGridviewLegend'>");
-                        ViewContext.Writer.Write("<button id='btnGridviewLegend' type='button' class='btnGridviewLegend' title='Legend' onclick=''>L</button>");
-                        ViewContext.Writer.Write("</div>");
-                        ViewContext.Writer.Write("<div class='divGridviewProperty'>");
-                        ViewContext.Writer.Write("<button id='btnGridviewProperty' type='button' class='btnGridviewProperty' title='Property' onclick=''>P</button>");
-                        ViewContext.Writer.Write("</div>");
-                        ViewContext.Writer.Write("<div class='divGridviewSetting'>");
-                        ViewContext.Writer.Write("<button id='btnGridviewClose' type='button' class='btnGridviewClose' title='Close' onclick='addNewPane(\"gridview\")'>C</button>");
-                        ViewContext.Writer.Write("</div>");
-                        Html.RenderAction("DxGridview", Model);
-                    });
-                });
-                //gridviewPaneMain.Panes.Add(gridviewPane2 =>
-                //{
-                //    gridviewPane2.Name = "paneGridview2";
-                //    //gridviewPane2.Size = Unit.Percentage(35);
-                //    gridviewPane2.SetContent(() =>
-                //    {
-                //        ViewContext.Writer.Write("<h1>Hello world</h1>");
-                //    });
-                //});
+                Html.RenderPartial("OpenLayerMap", Model);
             });
 
-            settings.ClientSideEvents.PaneResized = "splitterMainResized";
-        }).GetHtml();
+        });
+        panes.Panes.Add(graphPane =>
+        {
+            graphPane.Name = "paneGraph";
+            graphPane.SetContent(() =>
+            {
+                Html.RenderPartial("D3Graph", Model);
+            });
+        });
     });
-}).GetHtml()
+    settings.Panes.Add(gridviewPaneMain =>
+    {
+        gridviewPaneMain.Size = Unit.Percentage(35);
+        gridviewPaneMain.Panes.Add(gridviewPane =>
+        {
+            gridviewPane.Name = "paneGridview";
+            gridviewPane.SetContent(() =>
+            {         // can't add extra div as part of Gridview. Had to add here
+                ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
+                ViewContext.Writer.Write("<button id='btnGridviewMaximize' type='button' class='btnGridviewMaximize' title='Maximize'></button>");
+                ViewContext.Writer.Write("</div>");
+                ViewContext.Writer.Write("<div class='divGridviewLegend'>");
+                ViewContext.Writer.Write("<button id='btnGridviewLegend' type='button' class='btnGridviewLegend' title='Legend' onclick=''>L</button>");
+                ViewContext.Writer.Write("</div>");
+                ViewContext.Writer.Write("<div class='divGridviewProperty'>");
+                ViewContext.Writer.Write("<button id='btnGridviewProperty' type='button' class='btnGridviewProperty' title='Property' onclick=''>P</button>");
+                ViewContext.Writer.Write("</div>");
+                ViewContext.Writer.Write("<div class='divGridviewSetting'>");
+                ViewContext.Writer.Write("<button id='btnGridviewClose' type='button' class='btnGridviewClose' title='Close' onclick='addNewPane(\"gridview\")'>C</button>");
+                ViewContext.Writer.Write("</div>");
+                Html.RenderAction("DxGridview", Model);
+            });
+        });
+        if ((bool)ViewData["RightPanelPartialCallback"])
+        {
+            ViewData["RightPanelPartialCallback"] = false;
+            gridviewPaneMain.Panes.Add(gridviewPane2 =>
+            {
+                gridviewPane2.Name = "paneGridview2";
+                //gridviewPane2.Size = Unit.Percentage(35);
+                gridviewPane2.SetContent(() =>
+                {
+                    ViewContext.Writer.Write("<h1>Hello world</h1>");
+                });
+            });
+        }
+    });
+
+    settings.ClientSideEvents.PaneResized = "splitterMainResized";
+}).GetHtml();
 

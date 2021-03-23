@@ -9,6 +9,7 @@ namespace Suhoh
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/suhoh").Include(
+                "~/Scripts/MainScript.js",
                 "~/Scripts/BaseScript.js",
                 "~/Scripts/Ol_v650/ol.js",
                 "~/Scripts/OL/main.js",
