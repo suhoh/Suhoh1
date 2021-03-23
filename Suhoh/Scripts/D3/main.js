@@ -3,7 +3,7 @@
 // D3 main functions
 //
 
-const _colorScale = d3.interpolateRdYlBu;
+const _colorScale = d3.interpolateRdBu;
 const _colorRangeInfo = {
     colorStart: 0,
     colorEnd: 1,
@@ -11,7 +11,7 @@ const _colorRangeInfo = {
 };
 
 var _pieSum;
-var _isD3Legend = false;
+var _isD3Legend = true;
 
 function showHideLegend() {
     _isD3Legend = !_isD3Legend;   // toggle true and false
@@ -19,10 +19,14 @@ function showHideLegend() {
     if (pieData == null)
         return;
     if (_isD3Legend == true)
-        $("#D3Legend").hide();
+        for (i = 0; i < pieData.pieData.length; i++) {
+            $('#D3Legend' + i).show(500);
+        }
     else
-        $("#D3Legend").show();
-    //drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        for (i = 0; i < pieData.pieData.length; i++) {
+            $('#D3Legend' + i).hide(500);
+        }
+    drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }
 
 function showPropertyPopup() {
@@ -138,3 +142,7 @@ function chkPieLabelClicked(s, e) {
 
 }
 
+function tbPropertyTitleKeyDown(s, e) {
+    //console.log(propertyTitle.GetText());
+    document.getElementById("chartTitle").innerHTML = propertyTitle.GetText();
+}

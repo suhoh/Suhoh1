@@ -53,6 +53,8 @@
                     var jsonData = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project;:'bbbb'...}, { ...}]
                     var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
 
+                    addColumnNames(headerNames);
+
                     convertJsonToDataTable(jsonData);   // For Gridview
                 })
             };
@@ -62,6 +64,15 @@
             reader.readAsBinaryString(file);
         };
     };
+
+    function addColumnNames(headerNames) {
+        xColumnDropDown.ClearItems();
+        yColumnDropDown.ClearItems();
+        for (i = 0; i < headerNames.length; i++) {
+            xColumnDropDown.AddItem(headerNames[i], headerNames[i]);
+            yColumnDropDown.AddItem(headerNames[i], headerNames[i]);
+        }
+    }
 
     // Ajax: convert Json to DataTable and will show in Gridview
     function convertJsonToDataTable(json) {
