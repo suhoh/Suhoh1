@@ -60,7 +60,7 @@ function drawPie(divName, data, width, height, radius) {
 
     var pieTooltip = d3.select("#" + divName).append("div").attr("class", "pieTooltip").style("display", "none");
 
-    if (width > 400) {
+    if (width > 400 && _isD3Legend == true) {
         svg.selectAll("allSlices")
             .data(pieData)
             .enter()
@@ -86,8 +86,8 @@ function drawPie(divName, data, width, height, radius) {
             .on("mousemove", function (event, d) {
                 pieTooltip
                     .html(d.data.X + "<br/>" + d.data.Y + "<br/>" + Math.round((d.data.Y / _pieSum) * 100).toFixed(1) + "%")
-                    .style("left", event.offsetX + 5 + "px")
-                    .style("top", event.offsetY - 50 + "px")
+                    .style("left", event.offsetX + 10 + "px")
+                    .style("top", event.offsetY - 60 + "px")
             })
             .on("mouseleave", function (d) {
                 d3.select(this)
@@ -130,7 +130,12 @@ function drawPie(divName, data, width, height, radius) {
     }
 
     var g = svg.append("g")
-        .attr("transform", "translate(" + ((width - 115) / 2) + "," + ((height / 2) + 5) + ")");
+    if (_isD3Legend == true) {
+        g.attr("transform", "translate(" + ((width - 115) / 2) + "," + ((height / 2) + 5) + ")");
+    }
+    else {
+        g.attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")");
+    }
 
     _pieTextLabel = g.selectAll("allSlices")
             .data(pieData)
@@ -141,13 +146,15 @@ function drawPie(divName, data, width, height, radius) {
             .style("font-size", 12)
             .attr("display", "none");
 
+    chkPieLabelClicked();
+
     var legend = svg.selectAll(".legend")
         .data(data)
         .enter().append("g")
         .attr("class", "D3Legend")
-        .attr("id", "D3Legend");
-        
-    if (width > 400) {
+        .attr("id", function (d, idx) { return "D3Legend" + idx});
+
+    if (width > 400 && _isD3Legend == true) {
         legend.append("rect")
             .attr("width", 7)
             .attr("height", 7)
