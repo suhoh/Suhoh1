@@ -48,6 +48,8 @@ var ExcelToJSON = function () {
                 var jsonData = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project;:'bbbb'...}, { ...}]
                 var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
 
+                addColumnNames(headerNames);
+
                 convertJsonToDataTable(jsonData);   // For Gridview
             })
         };

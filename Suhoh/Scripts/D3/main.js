@@ -142,7 +142,17 @@ function chkPieLabelClicked(s, e) {
 
 }
 
-function tbPropertyTitleKeyDown(s, e) {
+function tbPropertyTitleKeyUp(s, e) {
     //console.log(propertyTitle.GetText());
     document.getElementById("chartTitle").innerHTML = propertyTitle.GetText();
+}
+
+
+function addColumnNames(headerNames) {
+    xColumnDropDown.ClearItems();
+    yColumnDropDown.ClearItems();
+    for (i = 0; i < headerNames.length; i++) {
+        xColumnDropDown.AddItem(headerNames[i], headerNames[i]);
+        yColumnDropDown.AddItem(headerNames[i], headerNames[i]);
+    }
 }
