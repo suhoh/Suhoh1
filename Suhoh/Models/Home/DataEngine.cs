@@ -21,6 +21,7 @@ namespace Suhoh.Model
 
             return XColumn;
         }
+
         public static IEnumerable GetYColumn()
         {
             List<string> YColumn = new List<string>();
@@ -28,6 +29,18 @@ namespace Suhoh.Model
             YColumn.Add("Consumptive Use_M3");
 
             return YColumn;
+        }
+
+        public static IEnumerable BasemapList()
+        {
+            List<string> basemapList = new List<string>();
+            basemapList.Add("Streets");
+            basemapList.Add("Topographic");
+            basemapList.Add("Imagery");
+            basemapList.Add("Natl. Geographic");
+            basemapList.Add("Shaded Relief");
+
+            return basemapList;
         }
     }
 }

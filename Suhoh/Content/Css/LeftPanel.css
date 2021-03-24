@@ -1,0 +1,48 @@
+﻿
+.LeftPanelSearchSEC {
+    font-weight: normal;
+    float: left;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+
+.cbLeftPanelSearchSEC {
+    float: left;
+    margin-left: 5px;
+}
+
+.LeftPanelSearchTWP {
+    font-weight: normal;
+    float: left;
+    margin-top: 5px;
+    margin-left: 37px;
+}
+
+.cbLeftPanelSearchTWP {
+    float: left;
+    margin-left: 10px;
+}
+
+.LeftPanelSearchRGE {
+    font-weight: normal;
+    float: left;
+    margin-top: 5px;
+    margin-left: 37px;
+}
+
+.cbLeftPanelSearchRGE {
+    float: left;
+    margin-left: 10px;
+}
+
+.LeftPanelSearchMER {
+    font-weight: normal;
+    float: left;
+    margin-top: 5px;
+    margin-left: 37px;
+}
+
+.cbLeftPanelSearchMER {
+    float: left;
+    margin-left: 10px;
+}
