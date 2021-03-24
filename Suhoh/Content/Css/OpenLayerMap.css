@@ -152,8 +152,16 @@
     margin-left: 10px;
 }
 
-.thOpenLayerGoToButton{
+.thOpenLayerGoToButton {
     float: left;
     margin-top: -10px;
     margin-left: 30px;
+}
+
+.thShowCoordinatesChkBox {
+    float: left;
+}
+
+.thShowLabelChkBox {
+    float: left;
 }

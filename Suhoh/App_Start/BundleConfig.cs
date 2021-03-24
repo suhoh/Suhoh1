@@ -42,6 +42,7 @@ namespace Suhoh
                 "~/Content/Css/OpenLayerMap.css",
                 "~/Content/Css/Content.css",
                 "~/Content/Css/Layout.css",
+                "~/Content/Css/LeftPanel.css",
                 "~/Scripts/Ol_v650/ol.css"));
 
             //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(

@@ -152,6 +152,7 @@
     <Content Include="Content\Css\Content.css" />
     <Content Include="Content\Css\D3Graph.css" />
     <Content Include="Content\Css\DxGridview.css" />
+    <Content Include="Content\Css\LeftPanel.css" />
     <Content Include="Content\Css\OpenLayerMap.css" />
     <Content Include="Content\Images\Suhoh\Logo.svg">
       <SubType>Designer</SubType>
@@ -312,6 +313,7 @@
     <Content Include="Views\Home\OpenLayerMapProperty.cshtml" />
     <Content Include="Views\Home\AddNewPane.cshtml" />
     <Content Include="Views\Home\RightPanelPartial.cshtml" />
+    <Content Include="Views\Home\SearchAts.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

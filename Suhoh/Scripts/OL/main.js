@@ -53,3 +53,48 @@ function btnMapCloseClick() {
 
 }
 
+function chkShowCoordinatesChanged(s, e) {
+
+}
+
+function chkShowLabelChanged(s, e) {
+
+}
+
+function cbBasemapChanged(s, e) {
+
+}
+
+function btnOpenLayerPropertyGoToClick(s, e) {
+    var lon = tbOpenLayerPropertyGoToX.GetText();
+    var lat = tbOpenLayerPropertyGoToY.GetText();
+    zoomToLonLat(lon, lat, 2000, false);
+}
+
+function zoomToLonLat(lon, lat, buffer, isShowSymbol) {
+    var point = new ol.geom.Point([lon, lat]);
+    point.transform('EPSG:4326', 'EPSG:3857');  // from Lat/Lon to Web Mercator
+    var feat = new ol.Feature({
+        geometry: point,
+    });
+
+    if (isShowSymbol == true) {
+        if (_gotoLocationLayer != null)
+            _map.removeLayer(_gotoLocationLayer);
+        var features = [];
+        features.push(feat);
+        var gotoLayer = new ol.source.Vector({
+            features: features
+        });
+        _gotoLocationLayer = new ol.layer.Vector({
+            source: gotoLayer,
+            style: myStarColor
+        });
+        _map.addLayer(_gotoLocationLayer);
+        setTimeout(removeGotoLayer, _gotoLocationSymbolTimer);
+    }
+
+    var ptExtent = feat.getGeometry().getExtent();
+    var bufExtent = new ol.extent.buffer(ptExtent, buffer);
+    _map.getView().fit(bufExtent, { size: _map.getSize(), duration: 1200 });
+}

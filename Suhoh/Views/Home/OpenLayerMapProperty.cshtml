@@ -61,10 +61,58 @@
                     settings.Name = "btnOpenLayerPropertyGoTo";
                     settings.Width = 60;
                     settings.Text = "Go To";
+                    settings.ClientSideEvents.Click = "btnOpenLayerPropertyGoToClick";
                 }
                 ).GetHtml()
             </th>
         </tr>
+    </table>
+</div>
 
+<div style="margin-top: 10px">
+    <table>
+        <tr>
+            <th class="thShowCoordinatesChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.ChkShowCoordinates,
+                       settings =>
+                       {
+                           settings.Name = "chkShowCoordinates";
+                           settings.Text = "Show Coordinates";
+                           settings.Properties.ClientSideEvents.CheckedChanged = "chkShowCoordinatesChanged";
+                       }).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th class="thShowLabelChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.ChkShowLabel,
+                       settings =>
+                       {
+                           settings.Name = "chkShowLabel";
+                           settings.Text = "Show Label";
+                           settings.Properties.ClientSideEvents.CheckedChanged = "chkShowLabelChanged";
+                       }).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div style="margin-top: 10px">
+    <table>
+        <tr>
+            <th style="float: left; margin-left: 2px">Basemap</th>
+        </tr>
+        <tr>
+            <th style="float: left; margin-top: 5px">
+                @Html.DevExpress().ComboBoxFor(model => model.ActiveBasemap,
+                  settings =>
+                  {
+                      settings.Name = "cbBasemap";
+                      settings.Width = 240;
+                      settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                      settings.Properties.DropDownWidth = 239;
+                      settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbBasemapChanged";
+                  }).BindList(DataEngine.BasemapList()).GetHtml()
+            </th>
+        </tr>
     </table>
 </div>
