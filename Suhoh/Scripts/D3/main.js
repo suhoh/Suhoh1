@@ -15,7 +15,11 @@ var _isD3Legend = true;
 
 function showHideLegend() {
     _isD3Legend = !_isD3Legend;   // toggle true and false
-    var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3', false);
+
+    var xColumn = cbXColumnDropDown.GetText();
+    var yColumn = cbYColumnDropDown.GetText();
+
+    var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, false);
     if (pieData == null)
         return;
     if (_isD3Legend == true)
@@ -143,16 +147,26 @@ function chkPieLabelClicked(s, e) {
 }
 
 function tbPropertyTitleKeyUp(s, e) {
-    //console.log(propertyTitle.GetText());
     document.getElementById("chartTitle").innerHTML = propertyTitle.GetText();
 }
 
-
 function addColumnNames(headerNames) {
-    xColumnDropDown.ClearItems();
-    yColumnDropDown.ClearItems();
+    cbXColumnDropDown.ClearItems();
+    cbYColumnDropDown.ClearItems();
     for (i = 0; i < headerNames.length; i++) {
-        xColumnDropDown.AddItem(headerNames[i], headerNames[i]);
-        yColumnDropDown.AddItem(headerNames[i], headerNames[i]);
+        cbXColumnDropDown.AddItem(headerNames[i], headerNames[i]);
+        cbYColumnDropDown.AddItem(headerNames[i], headerNames[i]);
     }
+    if (headerNames != null) {
+        cbXColumnDropDown.SetSelectedIndex(0);
+        cbYColumnDropDown.SetSelectedIndex(3);
+    }
+}
+
+function cbXYColumnDropDownChanged(s, e) {
+    var xColumn = cbXColumnDropDown.GetText();
+    var yColumn = cbYColumnDropDown.GetText();
+
+    var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
+    drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }

@@ -77,10 +77,11 @@
                 @Html.DevExpress().ComboBoxFor(model => model.DdXColumn,
                     settings =>
                     {
-                        settings.Name = "xColumnDropDown";
+                        settings.Name = "cbXColumnDropDown";
                         settings.Width = 167;
                         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
                         settings.Properties.DropDownWidth = 165;
+                        settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnDropDownChanged";
                     }).BindList(DataEngine.GetXColumn()).GetHtml()
             </th>
         </tr>
@@ -92,10 +93,11 @@
                 @Html.DevExpress().ComboBoxFor(model => model.DdYColumn,
                     settings =>
                     {
-                        settings.Name = "yColumnDropDown";
+                        settings.Name = "cbYColumnDropDown";
                         settings.Width = 167;
                         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
                         settings.Properties.DropDownWidth = 165;
+                        settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnDropDownChanged";
                     }).BindList(DataEngine.GetYColumn()).GetHtml()
             </th>
         </tr>

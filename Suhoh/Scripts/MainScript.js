@@ -18,7 +18,10 @@ function splitterMainResized(s, e) {
         // Tried to just update Svg - not working
         //var paneSize = getPaneSize('paneGraph');
         //_pieSvg.attr("width", paneSize.width).attr("height", paneSize.height);
-        var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3', false);
+        var xColumn = cbXColumnDropDown.GetText();
+        var yColumn = cbYColumnDropDown.GetText();
+
+        var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, false);
         drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
     }
 
@@ -77,7 +80,10 @@ function convertJsonToDataTable(json) {
 
         dxGridview.PerformCallback();
 
-        var pieData = getPieData('paneGraph', _jsonData, 'Applicant', 'Quantity_m3', true);
+        var xColumn = cbXColumnDropDown.GetText();
+        var yColumn = cbYColumnDropDown.GetText();
+
+        var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
         _pieSvg = drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
     }
     function errorFunc() {
