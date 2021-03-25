@@ -46,16 +46,44 @@ function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
     var height = pGraph.GetClientHeight();
     var min = Math.min(width, height);
 
+    console.log(groupBy(jsonData, xCol, yCol));
+
     var xyArray = [];
     if (!isInitial)
         xyArray = _pieData;
     else {
-        for (i = 0; i < jsonData.length; i++)
-            xyArray.push({ "X": jsonData[i][xCol], "Y": jsonData[i][yCol] });
+        var xy = groupBy(jsonData, xCol, yCol);
+        for (i = 0; i < xy.length; i++) {
+            xyArray.push({ "X": xy[i][xCol], "Y": xy[i][yCol] });
+        }
+        //for (i = 0; i < jsonData.length; i++)
+        //    xyArray.push({ "X": jsonData[i][xCol], "Y": jsonData[i][yCol] });
     }
 
     return { pieData: xyArray, width: width, height: height, min: min }
 }
+
+
+function groupBy(array, groups, valueKey) {
+    var map = new Map;
+    groups = [].concat(groups);
+    return array.reduce((r, o) => {
+        groups.reduce((m, k, i, { length }) => {
+            var child;
+            if (m.has(o[k])) return m.get(o[k]);
+            if (i + 1 === length) {
+                child = Object
+                    .assign(...groups.map(k => ({ [k]: o[k] })), { [valueKey]: 0 });
+                r.push(child);
+            } else {
+                child = new Map;
+            }
+            m.set(o[k], child);
+            return child;
+        }, map)[valueKey] += +o[valueKey];
+        return r;
+    }, [])
+};
 
 function calculatePoint(i, intervalSize, colorRangeInfo) {
     var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
@@ -148,19 +176,6 @@ function chkPieLabelClicked(s, e) {
 
 function tbPropertyTitleKeyUp(s, e) {
     document.getElementById("chartTitle").innerHTML = propertyTitle.GetText();
-}
-
-function addColumnNames(headerNames) {
-    cbXColumnDropDown.ClearItems();
-    cbYColumnDropDown.ClearItems();
-    for (i = 0; i < headerNames.length; i++) {
-        cbXColumnDropDown.AddItem(headerNames[i], headerNames[i]);
-        cbYColumnDropDown.AddItem(headerNames[i], headerNames[i]);
-    }
-    if (headerNames != null) {
-        cbXColumnDropDown.SetSelectedIndex(0);
-        cbYColumnDropDown.SetSelectedIndex(3);
-    }
 }
 
 function cbXYColumnDropDownChanged(s, e) {

@@ -4,6 +4,7 @@
 //
 
 var _jsonData;
+var _filename;
 
 window.addEventListener('resize', function (event) {
     console.log("window - innerWidth " + window.innerWidth + ", window - innerHeight " + window.innerHeight);
@@ -52,6 +53,7 @@ var ExcelToJSON = function () {
                 var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
 
                 addColumnNames(headerNames);
+                updatePaneTitle();
 
                 convertJsonToDataTable(jsonData);   // For Gridview
             })
@@ -62,6 +64,41 @@ var ExcelToJSON = function () {
         reader.readAsBinaryString(file);
     };
 };
+
+// Todo: need to add column names to all drop downs
+//       need to get column type from code behind
+function addColumnNames(headerNames) {
+    cbXColumnDropDown.ClearItems();
+    cbYColumnDropDown.ClearItems();
+    for (i = 0; i < headerNames.length; i++) {
+        cbXColumnDropDown.AddItem(headerNames[i], headerNames[i]);
+        cbYColumnDropDown.AddItem(headerNames[i], headerNames[i]);
+    }
+    if (headerNames != null) {
+        // Just for testing purpose
+        if (_filename.indexOf('AGWL') > -1) {
+            cbXColumnDropDown.SetSelectedIndex(0);
+            cbYColumnDropDown.SetSelectedIndex(5);
+        }
+        else if (_filename.indexOf('AWWID') > -1) {
+            cbXColumnDropDown.SetSelectedIndex(16);
+            cbYColumnDropDown.SetSelectedIndex(7);
+        }
+        else if (_filename.indexOf('WA_Licences') > -1) {
+            cbXColumnDropDown.SetSelectedIndex(0);
+            cbYColumnDropDown.SetSelectedIndex(14);
+        }
+        else {
+            cbXColumnDropDown.SetSelectedIndex(0);
+            cbYColumnDropDown.SetSelectedIndex(1);
+        }
+    }
+}
+
+function updatePaneTitle() {
+    document.getElementById("chartTitle").innerHTML =
+        _filename + ": " + cbXColumnDropDown.GetText() + " vs " + cbYColumnDropDown.GetText();
+}
 
 // Ajax: convert Json to DataTable and will show in Gridview
 function convertJsonToDataTable(json) {
@@ -100,7 +137,7 @@ function loadExcelFile(evt) {
     document.body.appendChild(excelFile);
 
     $('input[type="file"]').change(function (e) {
-        var fileName = e.target.files[0].name;
+        _filename = e.target.files[0].name;
         var xl2json = new ExcelToJSON();
         xl2json.parseExcel(e.target.files[0]);
 
@@ -137,7 +174,7 @@ function btnAddNewPaneClick(s, e) {
         },
         error: function (xhr, textStatus, errorThrown) {
             alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
-        } 
+        }
     });
 
     //cbRightPanelPartial.PerformCallback({

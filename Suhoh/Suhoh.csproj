@@ -154,12 +154,14 @@
     <Content Include="Content\Css\DxGridview.css" />
     <Content Include="Content\Css\LeftPanel.css" />
     <Content Include="Content\Css\OpenLayerMap.css" />
+    <Content Include="Content\Images\DX\cancel.svg" />
+    <Content Include="Content\Images\DX\settings.svg" />
+    <Content Include="Content\Images\Suhoh\Legend.svg" />
     <Content Include="Content\Images\Suhoh\Logo.svg">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Content\Images\Suhoh\Property.svg" />
-    <Content Include="Content\Images\Suhoh\Legend.svg" />
     <Content Include="Content\Images\Suhoh\Maximize.svg" />
+    <Content Include="Content\Images\Suhoh\Minimize.svg" />
     <Content Include="Scripts\D3\main.js" />
     <Content Include="Scripts\D3\pie.js" />
     <Content Include="Scripts\D3_v650\d3.js" />
