@@ -159,7 +159,7 @@ function addColumnNames(headerNames) {
     }
     if (headerNames != null) {
         cbXColumnDropDown.SetSelectedIndex(0);
-        cbYColumnDropDown.SetSelectedIndex(3);
+        cbYColumnDropDown.SetSelectedIndex(5);
     }
 }
 
@@ -169,4 +169,7 @@ function cbXYColumnDropDownChanged(s, e) {
 
     var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
     drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+
+    propertyTitle.SetText(xColumn + " vs " + yColumn);
+    document.getElementById("chartTitle").innerHTML = xColumn + " vs " + yColumn;
 }

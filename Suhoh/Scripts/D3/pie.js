@@ -9,6 +9,8 @@ var _pieTextLabel;
 
 function drawPie(divName, data, width, height, radius) {
 
+    tbPropertyTitleKeyUp();
+
     if (data == undefined)
         return;
 
