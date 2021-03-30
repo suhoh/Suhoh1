@@ -171,6 +171,10 @@ function btnAddNewPaneClick(s, e) {
         data: { 'sender': sender, 'paneDir': paneDir, 'paneType': paneType },
         success: function (data) {
             $('#divRightPanelPartial').html(data);
+            //splitterMainResized();
+            //$('#divRightPanelPartial').addClass('rightPanelPartial');
+            //$("#divRightPanelPartial").load('Home');
+            //$("#divRightPanelPartial").load('@Url.Content("Home/RightPanelPartial")');
         },
         error: function (xhr, textStatus, errorThrown) {
             alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);

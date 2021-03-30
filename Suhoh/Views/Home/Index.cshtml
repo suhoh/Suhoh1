@@ -144,9 +144,14 @@
     @Html.Partial("RightPanelPartial")
 }*@
 
-<div id="divRightPanelPartial" class="container body-content">
+<div id="divRightPanelPartial">
     @Html.Partial("RightPanelPartial", Model)
 </div>
 
-
+<script>
+    $(document).ready(function () {
+        // init panel settings
+        radioActivePanelSettingsClicked();
+    });
+</script>
 

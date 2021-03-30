@@ -10,6 +10,14 @@ namespace Suhoh.Model
 {
     public class DataEngine
     {
+        public static IEnumerable GetPaneType()
+        {
+            List<string> dropdownList = new List<string>();
+            dropdownList.Add("Map");
+            dropdownList.Add("Graph");
+            dropdownList.Add("Gridview");
+            return dropdownList;
+        }
         public static IEnumerable GetXColumn()
         {
             List<string> XColumn = new List<string>();

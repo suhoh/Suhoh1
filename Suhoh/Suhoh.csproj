@@ -221,6 +221,7 @@
     <Content Include="Scripts\jQuery\additional-methods.min.js" />
     <Content Include="Scripts\jQuery\jquery.validate.js" />
     <Content Include="Scripts\jQuery\jquery.validate.min.js" />
+    <Content Include="Scripts\LeftPanelScript.js" />
     <Content Include="Scripts\MainScript.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\OL\addLayers.js" />
@@ -316,6 +317,7 @@
     <Content Include="Views\Home\AddNewPane.cshtml" />
     <Content Include="Views\Home\RightPanelPartial.cshtml" />
     <Content Include="Views\Home\SearchAts.cshtml" />
+    <Content Include="Views\Home\LeftPanelSettings.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

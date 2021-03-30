@@ -46,3 +46,21 @@
     float: left;
     margin-left: 10px;
 }
+
+/*Panel Settings*/
+.leftPanelSettingsFloatLeft {
+    float: left;
+    margin-left: 10px;
+}
+
+.leftPanelSettings3 {
+    float:left;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.btnChangeLayout {
+    margin-top: 8px;
+    margin-left: 70px;
+    margin-bottom: 30px;
+}

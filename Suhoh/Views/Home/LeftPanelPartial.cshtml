@@ -45,6 +45,15 @@
     });
     settings.Groups.Add(group =>
     {
+        group.Name = "loadMyProject";
+        group.Text = "Load My Project";
+        group.SetContentTemplateContent(c =>
+        {
+            //Html.RenderPartial("PrintMap", Model);
+        });
+    });
+    settings.Groups.Add(group =>
+    {
         group.Name = "layers";
         group.Text = "Layers";
         group.SetContentTemplateContent(c =>
@@ -79,22 +88,14 @@
             //Html.RenderPartial("PrintMap", Model);
         });
     });
-    settings.Groups.Add(group =>
-    {
-        group.Name = "loadMyProject";
-        group.Text = "Load My Project";
-        group.SetContentTemplateContent(c =>
-        {
-            //Html.RenderPartial("PrintMap", Model);
-        });
-    });
+
     settings.Groups.Add(group =>
     {
         group.Name = "Settings";
         group.Text = "Settings";
         group.SetContentTemplateContent(c =>
         {
-            //Html.RenderPartial("PrintMap", Model);
+            Html.RenderPartial("LeftPanelSettings", Model);
         });
     });
 }).GetHtml()

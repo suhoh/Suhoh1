@@ -9,6 +9,17 @@ namespace Suhoh.Model
 {
     public class ViewModel
     {
+        // Panels
+        public int ActivePanelSettings { get; set; }    // 3 panels
+        public int MainPanelCount { get; set; }         // initial number of panels to start with
+        public string MainPanelJson { get; set; }
+        public List<Panel> MainPanels { get; set; }
+        // Add new pane
+        public string AddPaneSender { get; set; }
+        public int AddPaneType { get; set; }            // 1: Horizontal, 2: Vertical
+        public int AddPaneDirection { get; set; }       // 1: Graph, 2: Map: 3: Gridview
+
+        // Gridview
         public DataTable DxGridview { get; set; }
 
         // Graph
@@ -26,11 +37,6 @@ namespace Suhoh.Model
         public bool ChkShowCoordinates { get; set; }
         public bool ChkShowLabel { get; set; }
         public string ActiveBasemap { get; set; }
-
-        // Add new pane
-        public string AddPaneSender { get; set; }
-        public int AddPaneType { get; set; }            // 1: Horizontal, 2: Vertical
-        public int AddPaneDirection { get; set; }       // 1: Graph, 2: Map: 3: Gridview
 
         // Left Pane Search 
         public string cbLeftPanelSearchSEC { get; set; }
@@ -60,8 +66,23 @@ namespace Suhoh.Model
             cbLeftPanelSearchTWP = "";
             cbLeftPanelSearchRGE = "";
             cbLeftPanelSearchMER = "";
-        }
 
+            ActivePanelSettings = 3;
+            MainPanelCount = 3;
+            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map']}, {'name': 'Panel2', 'type': ['Graph']}, {'name': 'Panel3', 'type': ['Gridview']}]";
+        }
     }
 
+    public class Panel
+    {
+        public string Name { get; set; }
+        public IList<string> Type { get; set; }     // Graph, Map: Gridview
+    }
+
+    public enum PaneType
+    {
+        Map,
+        Graph,
+        Gridview
+    }
 }

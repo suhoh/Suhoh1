@@ -46,8 +46,6 @@ function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
     var height = pGraph.GetClientHeight();
     var min = Math.min(width, height);
 
-    console.log(groupBy(jsonData, xCol, yCol));
-
     var xyArray = [];
     if (!isInitial)
         xyArray = _pieData;

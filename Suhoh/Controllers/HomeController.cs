@@ -8,40 +8,55 @@ using System.Web.Mvc;
 using Suhoh.Model;
 using System.Data;
 using Newtonsoft.Json;
+using static Suhoh.Model.ViewModel;
 
 namespace Suhoh.Controllers
-{
-    public class HomeController : Controller
+{    public class HomeController : Controller
     {
         public ActionResult Index()
         {
             ViewModel model = new ViewModel();
 
+            InitMainPanels(model);
+
             ViewData["RightPanelPartialCallback"] = false;
             Session["viewModel"] = model;
             return View(model);
         }
+
+        // @"[{'name': 'Panel1', 'type': ['Map']}, {'name': 'Panel2', 'type': ['Graph']}, {'name': 'Panel3', 'type': ['Gridview']}]"
+        public void InitMainPanels(ViewModel vm)
+        {
+            vm.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(vm.MainPanelJson);
+
+        }
+
         public ActionResult OpenLayerMap(ViewModel vm)
         {
             return View();
         }
+
         public ActionResult OpenLayerMapProperty(ViewModel vm)
         {
             return View();
         }
+
         public ActionResult D3Graph(ViewModel vm)
         {
             return View();
         }
+
         public ActionResult D3GraphProperty(ViewModel vm)
         {
             return View();
         }
+
         public ActionResult DxGridview(ViewModel vm)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
             return PartialView("DxGridview", viewModel);
         }
+
         public ActionResult DxGridviewProperty(ViewModel vm)
         {
             return View();
@@ -67,7 +82,7 @@ namespace Suhoh.Controllers
         {
             ViewModel vm = (ViewModel)Session["viewModel"];
             json = json.Replace("\"\"", "null");    // change 2 double quotes to null due to Json error
-            vm.DxGridview = (DataTable)JsonConvert.DeserializeObject(json, (typeof(DataTable)), 
+            vm.DxGridview = (DataTable)JsonConvert.DeserializeObject(json, (typeof(DataTable)),
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore });
 
             Session["viewModel"] = vm;
