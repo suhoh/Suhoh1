@@ -157,6 +157,7 @@
     <Content Include="Content\Images\DX\cancel.svg" />
     <Content Include="Content\Images\DX\settings.svg" />
     <Content Include="Content\Images\Suhoh\Legend.svg" />
+    <Content Include="Content\Images\Suhoh\Load.svg" />
     <Content Include="Content\Images\Suhoh\Logo.svg">
       <SubType>Designer</SubType>
     </Content>

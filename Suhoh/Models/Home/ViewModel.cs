@@ -46,7 +46,6 @@ namespace Suhoh.Model
 
         public ViewModel()
         {
-            D3GraphTitleProperty = "Applicant vs Quantity_m3";
             ChkPercentageLabel = false;
             ChkYValueLabel = false;
             ChkXValueLabel = false;
