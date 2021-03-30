@@ -53,7 +53,7 @@ var ExcelToJSON = function () {
                 var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
 
                 addColumnNames(headerNames);
-                updatePaneTitle();
+                //updatePaneTitle();
 
                 convertJsonToDataTable(jsonData);   // For Gridview
             })
@@ -92,13 +92,19 @@ function addColumnNames(headerNames) {
             cbXColumnDropDown.SetSelectedIndex(0);
             cbYColumnDropDown.SetSelectedIndex(1);
         }
+        // Chart Property Title Initialization
+        var xColumn = cbXColumnDropDown.GetText();
+        var yColumn = cbYColumnDropDown.GetText();
+
+        propertyTitle.SetText(xColumn + " vs " + yColumn);
+
     }
 }
 
-function updatePaneTitle() {
-    document.getElementById("chartTitle").innerHTML =
-        _filename + ": " + cbXColumnDropDown.GetText() + " vs " + cbYColumnDropDown.GetText();
-}
+//function updatePaneTitle() {
+//    document.getElementById("chartTitle").innerHTML =
+//        _filename + ": " + cbXColumnDropDown.GetText() + " vs " + cbYColumnDropDown.GetText();
+//}
 
 // Ajax: convert Json to DataTable and will show in Gridview
 function convertJsonToDataTable(json) {

@@ -116,7 +116,7 @@ function chkPieLabelClicked(s, e) {
         _pieTextLabel
             .text(function (d) {
                 if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
-                    return d.data.Y
+                    return (d.data.Y).toFixed(1)
             })
             .attr("display", "block");
     }
@@ -140,7 +140,7 @@ function chkPieLabelClicked(s, e) {
         _pieTextLabel
             .text(function (d) {
                 if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
-                    return d.data.Y + ", " + "(" + (Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) + "%" + ")"
+                    return (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) + "%" + ")"
             })
             .attr("display", "block");
     }
@@ -156,7 +156,7 @@ function chkPieLabelClicked(s, e) {
         _pieTextLabel
             .text(function (d) {
                 if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
-                    return d.data.X + ", " + d.data.Y
+                    return d.data.X + ", " + (d.data.Y).toFixed(1)
             })
             .attr("display", "block");
     }
@@ -164,7 +164,7 @@ function chkPieLabelClicked(s, e) {
         _pieTextLabel
             .text(function (d) {
                 if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
-                    return d.data.X + ", " + d.data.Y + ", " + "(" + (Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) + "%" + ")"
+                    return d.data.X + ", " + (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) + "%" + ")"
             })
             .attr("display", "block");
     }

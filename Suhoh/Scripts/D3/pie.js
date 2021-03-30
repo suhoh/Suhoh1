@@ -87,7 +87,7 @@ function drawPie(divName, data, width, height, radius) {
             })
             .on("mousemove", function (event, d) {
                 pieTooltip
-                    .html(d.data.X + "<br/>" + d.data.Y + "<br/>" + Math.round((d.data.Y / _pieSum) * 100).toFixed(1) + "%")
+                    .html(d.data.X + "<br/>" + (d.data.Y).toFixed(1) + "<br/>" + Math.round((d.data.Y / _pieSum) * 100).toFixed(1) + "%")
                     .style("left", event.offsetX + 10 + "px")
                     .style("top", event.offsetY - 60 + "px")
             })
