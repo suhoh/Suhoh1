@@ -29,6 +29,7 @@ namespace Suhoh.Model
         public bool ChkXValueLabel { get; set; }
         public string DdXColumn { get; set; }
         public string DdYColumn { get; set; }
+        public int ColorRampPie { get; set; }
 
         // OpenLayers
         public string OpenLayerTitleProperty { get; set; }
@@ -51,6 +52,7 @@ namespace Suhoh.Model
             ChkXValueLabel = false;
             DdXColumn = "";
             DdYColumn = "";
+            ColorRampPie = 1;
 
             GoToLocationX = "-114.066666";
             GoToLocationY = "51.049999";

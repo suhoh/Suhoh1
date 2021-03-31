@@ -24,10 +24,23 @@ function drawPie(divName, data, width, height, radius) {
     var outerRadius = radius * 0.7;
     var arcInRadius = radius * 0.7;
     var arcOverRadius = radius * 0.75;
-    
-    //var color = d3.scaleOrdinal(d3.schemeCategory10);
+    var colorTheme;
 
-    var color = interpolateColors(data.length, _colorScale, _colorRangeInfo);
+    //var color = d3.scaleOrdinal(d3.schemeCategory10);
+    if (_radioColorRampPieValue == 1)
+        colorTheme = _colorScaleHSL;
+    else if (_radioColorRampPieValue == 2)
+        colorTheme = _colorScaleRainbow;
+    else if (_radioColorRampPieValue == 3)
+        colorTheme = _colorScaleViridis;
+    else if (_radioColorRampPieValue == 4)
+        colorTheme = _colorScaleCool;
+    else if (_radioColorRampPieValue == 5)
+        colorTheme = _colorScaleHcl;
+    else
+        colorTheme = _colorScaleGrey;
+
+    var color = interpolateColors(data.length, colorTheme, _colorRangeInfo);
 
     var svg = d3.select("#" + divName)
         .append("svg")

@@ -112,6 +112,7 @@
 .thTitleHeading1 {
     font-weight:bold;
     margin-left: 2px;
+    margin-bottom: 5px;
     float:left;
 }
 .thLabelHeading1 {
@@ -168,4 +169,12 @@
 .D3GraphtitlePropertyBox {
     float: left;
     font-size: 12px;
+}
+
+.thColorRampHeading {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 2px;
+    float: left;
 }
