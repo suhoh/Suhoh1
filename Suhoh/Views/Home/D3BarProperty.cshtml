@@ -1,0 +1,8 @@
+﻿@using Suhoh.Model
+@model ViewModel
+
+@Html.DevExpress().ColorEdit(settings => {
+    settings.Name = "colorEdit1";
+    settings.Color = System.Drawing.Color.FromName("red");
+    settings.Properties.EnableCustomColors = true;
+}).GetHtml()

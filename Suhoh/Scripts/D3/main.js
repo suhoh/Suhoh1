@@ -17,11 +17,12 @@ const _colorRangeInfo = {
 };
 
 var _pieSum;
-var _isD3Legend = true;
+var _isD3PieLegend = true;
+var _isD3BarLegend = true;
 var _radioColorRampPieValue = 1;
 
 function showHideLegend() {
-    _isD3Legend = !_isD3Legend;   // toggle true and false
+    _isD3PieLegend = !_isD3PieLegend;   // toggle true and false
 
     var xColumn = cbXColumnDropDown.GetText();
     var yColumn = cbYColumnDropDown.GetText();
@@ -29,7 +30,7 @@ function showHideLegend() {
     var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, false);
     if (pieData == null)
         return;
-    if (_isD3Legend == true)
+    if (_isD3PieLegend == true)
         for (i = 0; i < pieData.pieData.length; i++) {
             $('#D3Legend' + i).show(500);
         }
@@ -38,6 +39,7 @@ function showHideLegend() {
             $('#D3Legend' + i).hide(500);
         }
     drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    //drawBar('pieChart', pieData.pieData, pieData.width, pieData.height);
 }
 
 function showPropertyPopup() {
@@ -189,6 +191,7 @@ function cbXYColumnDropDownChanged(s, e) {
 
     var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
     drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    //drawBar('pieChart', pieData.pieData, pieData.width, pieData.height)
 
     propertyTitle.SetText(xColumn + " vs " + yColumn);
     document.getElementById("chartTitle").innerHTML = xColumn + " vs " + yColumn;

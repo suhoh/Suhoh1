@@ -24,6 +24,7 @@ function splitterMainResized(s, e) {
 
         var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, false);
         drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        //drawBar('pieChart', pieData.pieData, pieData.width, pieData.height);
     }
 
     // Update Gridview
@@ -133,7 +134,10 @@ function convertJsonToDataTable(json) {
         var yColumn = cbYColumnDropDown.GetText();
 
         var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
+        //var barData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
+
         _pieSvg = drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        //_barSvg = drawBar('pieChart', pieData.pieData, pieData.width, pieData.height)
     }
     function errorFunc() {
         alert("Error: ConvertJsonToDataTable");

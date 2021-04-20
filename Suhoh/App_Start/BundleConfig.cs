@@ -20,6 +20,7 @@ namespace Suhoh
                 "~/Scripts/D3_v650/d3.js",
                 "~/Scripts/D3/main.js",
                 "~/Scripts/D3/pie.js",
+                "~/Scripts/D3/bar.js",
                 "~/Scripts/Gridview/main.js",
                 "~/Scripts/SheetJS/xlsx.full.min.js"
             ));

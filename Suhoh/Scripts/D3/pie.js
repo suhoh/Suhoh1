@@ -1,5 +1,5 @@
 ﻿//
-// D3 chart functions
+// D3 pie chart functions
 //
 
 var _pieData;
@@ -18,15 +18,12 @@ function drawPie(divName, data, width, height, radius) {
     _pieSum = d3.sum(_pieData, function (d) { return d.Y });
     d3.select("#" + divName).selectAll("svg").remove();
 
-    var margin = 40;
-    //var innerRadius = radius * 0.3;
     var innerRadius = 0;
     var outerRadius = radius * 0.7;
     var arcInRadius = radius * 0.7;
     var arcOverRadius = radius * 0.75;
     var colorTheme;
 
-    //var color = d3.scaleOrdinal(d3.schemeCategory10);
     if (_radioColorRampPieValue == 1)
         colorTheme = _colorScaleHSL;
     else if (_radioColorRampPieValue == 2)
@@ -47,13 +44,10 @@ function drawPie(divName, data, width, height, radius) {
         .attr("width", width)
         .attr("height", height)
         .append("g");
-        //.attr("transform", "translate(-115 0)");
         
     var pieData = d3.pie()
         .value(function (d) { return d.Y; })
         (data);
-
-    var pieLegendData
 
     var arc = d3.arc()
         .innerRadius(innerRadius)
@@ -75,7 +69,7 @@ function drawPie(divName, data, width, height, radius) {
 
     var pieTooltip = d3.select("#" + divName).append("div").attr("class", "pieTooltip").style("display", "none");
 
-    if (width > 400 && _isD3Legend == true) {
+    if (width > 400 && _isD3PieLegend == true) {
         svg.selectAll("allSlices")
             .data(pieData)
             .enter()
@@ -133,6 +127,16 @@ function drawPie(divName, data, width, height, radius) {
                     .duration(200)
                     .attr("d", arcOver)
                     .attr("stroke-width", 2);
+
+                pieTooltip
+                    .style("display", "inline-block")
+                    .style("position", "absolute");
+            })
+            .on("mousemove", function (event, d) {
+                pieTooltip
+                    .html(d.data.X + "<br/>" + (d.data.Y).toFixed(1) + "<br/>" + Math.round((d.data.Y / _pieSum) * 100).toFixed(1) + "%")
+                    .style("left", event.offsetX + 10 + "px")
+                    .style("top", event.offsetY - 60 + "px")
             })
             .on("mouseleave", function (data) {
                 d3.select(this)
@@ -141,11 +145,13 @@ function drawPie(divName, data, width, height, radius) {
                     .duration(200)
                     .attr("d", arcIn)
                     .attr("stroke-width", 2);
+
+                pieTooltip.style("display", "none");
             });
     }
 
     var g = svg.append("g")
-    if (_isD3Legend == true) {
+    if (_isD3PieLegend == true) {
         g.attr("transform", "translate(" + ((width - 115) / 2) + "," + ((height / 2) + 5) + ")");
     }
     else {
@@ -169,7 +175,7 @@ function drawPie(divName, data, width, height, radius) {
         .attr("class", "D3Legend")
         .attr("id", function (d, idx) { return "D3Legend" + idx});
 
-    if (width > 400 && _isD3Legend == true) {
+    if (width > 400 && _isD3PieLegend == true) {
         legend.append("rect")
             .attr("width", 7)
             .attr("height", 7)
