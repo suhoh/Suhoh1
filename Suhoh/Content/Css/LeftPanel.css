@@ -54,7 +54,7 @@
 }
 
 .leftPanelSettings3 {
-    float:left;
+    float: left;
     margin-left: 10px;
     margin-top: 10px;
 }
@@ -64,3 +64,25 @@
     margin-left: 70px;
     margin-bottom: 30px;
 }
+
+/*Select Data Source*/
+.excelFilename {
+    margin-left: 10px;
+}
+
+    .excelFilename.label {
+        margin-top: 6px;
+    }
+    .excelFilename.textBox {
+        float:left;
+    }
+    .excelFilename.loadButton {
+        margin-left: 4px;
+        margin-bottom: 8px;
+        border-radius: 2px;
+        float: left;
+        width: 26px;
+        height: 26px;
+        background: url('../Images/Suhoh/Load.svg') no-repeat;
+        background-size: auto;
+    }

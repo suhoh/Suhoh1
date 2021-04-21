@@ -25,32 +25,44 @@
 </head>
 <body>    
     <div style="width: 100%; height: 100%; position: relative;">
-        <div id="map" class="olMap">
+        <div id="@Model.CreatePanelName" class="olMap">
         </div>
 
         <div class="divMapMaximizeButton">
-            <button id="btnMapMaximize" type="button" class="btnMapMaximize" title="Maximize" onclick="btnMapMaximizeClick()"></button>
+            <button id="@(String.Format("{0}|Maximize", Model.CreatePanelName))" type="button" class="btnMapMaximize" title="Maximize" 
+                    onclick="btnMapMaximizeClick()"></button>
         </div>
+
         <div class="divMapLegendButton">
-            <button id="btnMapLegend" type="button" class="btnMapLegend" title="Legend" onclick="btnMapLegendClick()"></button>
+            <button id="@(String.Format("{0}|Legend", Model.CreatePanelName))" type="button" class="btnMapLegend" title="Legend" 
+                    onclick="btnMapLegendClick()"></button>
         </div>
+
         <div class="divMapPropertyButton">
-            <button id="btnMapProperty" type="button" class="btnMapProperty" title="Property" onclick="btnMapPropertyClick()"></button>
+            <button id="@(String.Format("{0}|Property", Model.CreatePanelName))" type="button" class="btnMapProperty" title="Property" 
+                    onclick="btnMapPropertyClick()"></button>
         </div>
+
         <div class="divMapSettingButton">
-            <button id="btnMapClose" type="button" class="btnMapClose" title="Close" onclick="btnMapCloseClick()"></button>
+            <button id="@(String.Format("{0}|Close", Model.CreatePanelName))" type="button" class="btnMapClose" title="Close" 
+                    onclick="btnMapCloseClick()"></button>
         </div>
     </div>
 </body>
 
-<div class="loadExcel">
+@*<div class="loadExcel">
     <button type="button" class="loadExcelButton" title="Load Excel" onclick="loadExcelFile()"></button>
-</div>
+</div>*@
 
 <script>
 
-    initMap('map');
-    if (_jsonData != null)
-        addPointLayer(_jsonData, 'Latitude', 'Longitude');
+    var divMap = @Model.CreatePanelName;
+    var divId = divMap.id;
+    initMap(divId);
+    if (_jsonData != null) {
+        var map = getMap(divId);
+        if (map != null)
+            addPointLayer(_jsonData, map, 'Latitude', 'Longitude');
+    }
 
 </script>

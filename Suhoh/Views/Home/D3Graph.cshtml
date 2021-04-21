@@ -6,18 +6,38 @@
 }
 
 @*<h2>D3Graph</h2>*@
-<div id="pieChart" style="position:relative;">
-    <div id="chartTitle" class="chartTitle"></div>
+@*<div id="pieChart" style="position:relative;">*@
+<div id="@Model.CreatePanelName" style="position:relative;">
+    <div id="@(String.Format("{0}|Title", Model.CreatePanelName))" class="chartTitle">
+    </div> 
+
     <div class="divChartMaximizeButton">
-        <button type="button" class="btnChartMaximize" title="Maximize"></button>
+        <button id="@(String.Format("{0}|Maximize", Model.CreatePanelName))" type="button" class="btnChartMaximize" title="Maximize"
+                onclick="">
+        </button>
     </div>
+
     <div class="divChartLegendButton">
-        <button type="button" class="btnChartLegend" title="Legend" onclick="showHideLegend()"></button>
+        <button id="@(String.Format("{0}|Legend", Model.CreatePanelName))" type="button" class="btnChartLegend" title="Legend" 
+                onclick="showHideLegend(this)">
+        </button>
     </div>
+
     <div class="divChartPropertyButton">
-        <button type="button" class="btnChartProperty" title="Property" onclick="showPropertyPopup()"></button>
+        <button id="@(String.Format("{0}|Property", Model.CreatePanelName))" type="button" class="btnChartProperty" title="Property" 
+                onclick="showPropertyPopup(this)">
+        </button>
     </div>
+
     <div class="divChartSettingButton">
-        <button type="button" class="btnChartClose" title="Close"></button>
+        <button id="@(String.Format("{0}|Close", Model.CreatePanelName))"  type="button" class="btnChartClose" title="Close"
+                onclick="">
+        </button>
     </div>
 </div>
+
+<script>
+    var divGraph = @Model.CreatePanelName;
+    var divId = divGraph.id;
+    initGraph(divId);
+</script>

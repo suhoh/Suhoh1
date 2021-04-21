@@ -1,21 +1,43 @@
 ﻿//
 // D3 chart functions
 //
+// paneName = divName
+// { 'data': data, 'svg': svg, 'sum': sum, 'textLabel': textLabel, 'colorRamp': colorRamp, 'isLabel': isLabel }
+var _pies = [];     
+var _activePie;
 
-var _pieData;
-var _pieSvg = null;
-var _pieTextLabel;
 
+//var _pieData;
+//var _pieSvg = null;
+//var _pieTextLabel;
+
+function initPie(divName) {
+    _pies.push({
+        'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'sum': null, 'isLegend': true,
+        'textLabel': null, 'colorRamp': null, 'isLabel': false,
+        'isPercentage': false, 'isYValue': false, 'isXValue': false
+    })
+}
+
+function getPie(divName) {
+    for (i = 0; i < _pies.length; i++) {
+        if (_pies[i].divName == divName)
+            return _pies[i]
+    }
+    return null;
+}
 
 function drawPie(divName, data, width, height, radius) {
 
-    tbPropertyTitleKeyUp();
+    tbPropertyTitleKeyUp(divName);
 
     if (data == undefined)
-        return;
+        return null;
 
-    _pieData = data;
-    _pieSum = d3.sum(_pieData, function (d) { return d.Y });
+    var pie = getPie(divName);
+    pie.data = data;    // make it global
+
+    pie.sum = d3.sum(pie.data, function (d) { return d.Y });
     d3.select("#" + divName).selectAll("svg").remove();
 
     var margin = 40;
@@ -40,8 +62,6 @@ function drawPie(divName, data, width, height, radius) {
         .value(function (d) { return d.Y; })
         (data);
 
-    var pieLegendData
-
     var arc = d3.arc()
         .innerRadius(innerRadius)
         .outerRadius(outerRadius)
@@ -62,7 +82,7 @@ function drawPie(divName, data, width, height, radius) {
 
     var pieTooltip = d3.select("#" + divName).append("div").attr("class", "pieTooltip").style("display", "none");
 
-    if (width > 400 && _isD3Legend == true) {
+    if (width > 400 && pie.isLegend == true) {
         svg.selectAll("allSlices")
             .data(pieData)
             .enter()
@@ -87,7 +107,7 @@ function drawPie(divName, data, width, height, radius) {
             })
             .on("mousemove", function (event, d) {
                 pieTooltip
-                    .html(d.data.X + "<br/>" + (d.data.Y).toFixed(1) + "<br/>" + Math.round((d.data.Y / _pieSum) * 100).toFixed(1) + "%")
+                    .html(d.data.X + "<br/>" + (d.data.Y).toFixed(1) + "<br/>" + Math.round((d.data.Y / pie.sum) * 100).toFixed(1) + "%")
                     .style("left", event.offsetX + 10 + "px")
                     .style("top", event.offsetY - 60 + "px")
             })
@@ -132,14 +152,14 @@ function drawPie(divName, data, width, height, radius) {
     }
 
     var g = svg.append("g")
-    if (_isD3Legend == true) {
+    if (pie.isLegend == true) {
         g.attr("transform", "translate(" + ((width - 115) / 2) + "," + ((height / 2) + 5) + ")");
     }
     else {
         g.attr("transform", "translate(" + (width / 2) + "," + (height / 2) + ")");
     }
 
-    _pieTextLabel = g.selectAll("allSlices")
+    pie.textLabel = g.selectAll("allSlices")
             .data(pieData)
             .enter()
             .append('text')
@@ -148,7 +168,7 @@ function drawPie(divName, data, width, height, radius) {
             .style("font-size", 12)
             .attr("display", "none");
 
-    chkPieLabelClicked();
+    //chkPieLabelClicked();
 
     var legend = svg.selectAll(".legend")
         .data(data)
@@ -156,7 +176,7 @@ function drawPie(divName, data, width, height, radius) {
         .attr("class", "D3Legend")
         .attr("id", function (d, idx) { return "D3Legend" + idx});
 
-    if (width > 400 && _isD3Legend == true) {
+    if (width > 400 && pie.isLegend == true) {
         legend.append("rect")
             .attr("width", 7)
             .attr("height", 7)

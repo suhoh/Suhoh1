@@ -1,0 +1,33 @@
+﻿
+@using Suhoh.Model
+@model ViewModel
+
+@Html.DevExpress().Label(settings => {
+    settings.Name = "labelExcelFilename";
+    settings.Text = "Filename";
+    settings.ControlStyle.CssClass = "excelFilename label";
+    settings.Properties.EnableClientSideAPI = true;
+}).GetHtml()
+
+<div>
+    @Html.DevExpress().TextBox(settings =>
+    {
+        settings.Name = "tbExcelFilename";
+        settings.Width = 216;
+        settings.ReadOnly = true;
+        settings.ControlStyle.CssClass = "excelFilename textBox";
+        settings.Properties.NullText = "Select Excel file.";
+        settings.Text = "";
+    }).GetHtml()
+
+    @Html.DevExpress().Button(
+        settings =>
+        {
+            settings.Name = "btnloadExcel";
+            settings.ToolTip = "Load Excel";
+            settings.Text = "";
+            settings.ControlStyle.CssClass = "excelFilename loadButton";
+            settings.ClientSideEvents.Click = "loadExcelFile";
+        }
+    ).GetHtml()
+</div>

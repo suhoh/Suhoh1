@@ -3,8 +3,16 @@
 //
 
 
-var _map;
+var _maps = [];  // { 'map': map, 'divName': divName }
 var _scaleLine;
+
+function getMap(divName) {
+    _maps.forEach(function (m) {
+        if (m.divName == divName)
+            return m.map;
+    })
+    return null;
+}
 
 function initMap(divMap) {
     _scaleLine = new ol.control.ScaleLine();
@@ -19,7 +27,7 @@ function initMap(divMap) {
         })
     });
 
-    _map = new ol.Map({
+    var map = new ol.Map({
         target: divMap,
         controls: ol.control.defaults({
             attributionOptions: {
@@ -35,6 +43,8 @@ function initMap(divMap) {
             zoom: 4
         })
     });
+
+    _maps.push({ 'map': map, 'divName': divMap });
 }
 
 function btnMapMaximizeClick() {

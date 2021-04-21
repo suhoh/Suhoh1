@@ -2,7 +2,6 @@
 @using Suhoh.Model
 @model ViewModel
 
-
 @Html.DevExpress().RadioButtonListFor(model => Model.ActivePanelSettings,
     settings =>
     {
@@ -28,8 +27,9 @@
         settings.Name = "cb1PanelType";
         settings.Width = 250;
         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-        settings.SelectedIndex = 0;
+        settings.SelectedIndex = 4;
         settings.Properties.EnableClientSideAPI = true;
+        settings.ControlStyle.CssClass = "leftPanelSettingsFloatLeft";
         settings.Properties.ClientSideEvents.SelectedIndexChanged = "";
     }).BindList(DataEngine.GetPaneType()).GetHtml()
 </div>
@@ -42,7 +42,7 @@
         settings.Name = "cb2_1PanelType";
         settings.Width = 120;
         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-        settings.SelectedIndex = 0;
+        settings.SelectedIndex = 4;
         settings.Properties.EnableClientSideAPI = true;
         settings.ControlStyle.CssClass = "leftPanelSettingsFloatLeft";
         settings.Properties.ClientSideEvents.SelectedIndexChanged = "";
@@ -53,7 +53,7 @@
         settings.Name = "cb2_2PanelType";
         settings.Width = 120;
         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-        settings.SelectedIndex = 1;
+        settings.SelectedIndex = 0;
         settings.Properties.EnableClientSideAPI = true;
         settings.ControlStyle.CssClass = "leftPanelSettingsFloatLeft";
         settings.Properties.ClientSideEvents.SelectedIndexChanged = "";
@@ -68,7 +68,7 @@
         settings.Name = "cb3_1PanelType";
         settings.Width = 120;
         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-        settings.SelectedIndex = 0;
+        settings.SelectedIndex = 4;
         settings.Properties.EnableClientSideAPI = true;
         settings.ControlStyle.CssClass = "leftPanelSettingsFloatLeft";
         settings.Properties.ClientSideEvents.SelectedIndexChanged = "";
@@ -79,7 +79,7 @@
         settings.Name = "cb3_2PanelType";
         settings.Width = 120;
         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-        settings.SelectedIndex = 1;
+        settings.SelectedIndex = 0;
         settings.Properties.EnableClientSideAPI = true;
         settings.ControlStyle.CssClass = "leftPanelSettingsFloatLeft";
         settings.Properties.ClientSideEvents.SelectedIndexChanged = "";
@@ -90,7 +90,7 @@
         settings.Name = "cb3_3PanelType";
         settings.Width = 250;
         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-        settings.SelectedIndex = 2;
+        settings.SelectedIndex = 5;
         settings.ControlStyle.CssClass = "leftPanelSettings3";
         settings.Properties.ClientSideEvents.SelectedIndexChanged = "";
     }).BindList(DataEngine.GetPaneType()).GetHtml()
@@ -126,7 +126,7 @@
         settings.Name = "cb4_3PanelType";
         settings.Width = 120;
         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-        settings.SelectedIndex = 2;
+        settings.SelectedIndex = 4;
         settings.Properties.EnableClientSideAPI = true;
         settings.ControlStyle.CssClass = "leftPanelSettings3";
         settings.Properties.ClientSideEvents.SelectedIndexChanged = "";
@@ -137,7 +137,7 @@
         settings.Name = "cb4_4PanelType";
         settings.Width = 120;
         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-        settings.SelectedIndex = 2;
+        settings.SelectedIndex = 5;
         settings.Properties.EnableClientSideAPI = true;
         settings.ControlStyle.CssClass = "leftPanelSettings3";
         settings.Properties.ClientSideEvents.SelectedIndexChanged = "";

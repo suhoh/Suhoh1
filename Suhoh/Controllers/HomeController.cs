@@ -17,19 +17,14 @@ namespace Suhoh.Controllers
         {
             ViewModel model = new ViewModel();
 
-            InitMainPanels(model);
+            // @"[{'name': 'Panel1', 'type': ['Map']}, {'name': 'Panel2', 'type': ['Pie']}, {'name': 'Panel3', 'type': ['Gridview']}]"
+            model.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(model.MainPanelJson);
 
             ViewData["RightPanelPartialCallback"] = false;
             Session["viewModel"] = model;
             return View(model);
         }
 
-        // @"[{'name': 'Panel1', 'type': ['Map']}, {'name': 'Panel2', 'type': ['Graph']}, {'name': 'Panel3', 'type': ['Gridview']}]"
-        public void InitMainPanels(ViewModel vm)
-        {
-            vm.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(vm.MainPanelJson);
-
-        }
 
         public ActionResult OpenLayerMap(ViewModel vm)
         {
@@ -63,16 +58,19 @@ namespace Suhoh.Controllers
         }
 
         [HttpPost]
-        public ActionResult RightPanelPartial(string sender, int paneDir, int paneType)
+        public ActionResult RightPanelPartial(string sender, int paneDir, int paneType, string jsonPanels)
         {
             ViewModel vm = (ViewModel)Session["viewModel"];
             vm.AddPaneSender = sender;
             vm.AddPaneType = paneType;
             vm.AddPaneDirection = paneDir;
 
-            var p = Request.Params["OnBeginCallback"];
+            var p = Request.Params["OnBeginCallback"];  // test - send from DevExpress PerformCallback
 
-            ViewData["RightPanelPartialCallback"] = true;
+            ViewBag.IsChangePanels = true;
+            jsonPanels = jsonPanels.Replace("\"", null);    // remove double quot
+            vm.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(jsonPanels);
+            vm.ActivePanelSettings = vm.MainPanels.Count;
 
             return PartialView("RightPanelPartial", vm);
         }

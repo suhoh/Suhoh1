@@ -13,8 +13,11 @@ namespace Suhoh.Model
         public static IEnumerable GetPaneType()
         {
             List<string> dropdownList = new List<string>();
+            dropdownList.Add("Pie");
+            dropdownList.Add("Bar");
+            dropdownList.Add("Line");
+            dropdownList.Add("Scatter");
             dropdownList.Add("Map");
-            dropdownList.Add("Graph");
             dropdownList.Add("Gridview");
             return dropdownList;
         }

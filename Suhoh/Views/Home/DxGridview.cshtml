@@ -12,7 +12,7 @@
 @Html.DevExpress().GridView(
     settings =>
     {
-        settings.Name = "dxGridview";
+        settings.Name = Model.CreatePanelName;  // "dxGridview";
         settings.CallbackRouteValues = new { Controller = "Home", Action = "DxGridview" };
 
         settings.KeyFieldName = "WellId";
@@ -73,3 +73,10 @@
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
 
     }).Bind(Model.DxGridview).GetHtml()
+
+<script>
+    var gridview = @Model.CreatePanelName;
+    var name = gridview.name;
+    console.log('gridview name:' + gridview.name + ", " + gridview.id);
+    initGridview(gridview, name);    
+</script>

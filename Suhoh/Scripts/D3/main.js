@@ -11,18 +11,39 @@ const _colorRangeInfo = {
 };
 
 var _pieSum;
-var _isD3Legend = true;
+//var _isD3Legend = true;
 
-function showHideLegend() {
-    _isD3Legend = !_isD3Legend;   // toggle true and false
+// Panel1Pie1, Panel2Bar1, ...
+function initGraph(divName) {
+    if (divName.toUpperCase().indexOf('PIE') > -1)
+        initPie(divName);
+    //else if (divName.toUpperCase().indexOf('BAR') > -1)
+    //    initPie(divName);
+    //else if (divName.toUpperCase().indexOf('LINE') > -1)
+    //    initPie(divName);
+    //else if (divName.toUpperCase().indexOf('SCATTER') > -1)
+    //    initPie(divName);
+    //else
+        return 1;
+}
 
-    var xColumn = cbXColumnDropDown.GetText();
-    var yColumn = cbYColumnDropDown.GetText();
+function showHideLegend(s, e) {
+    var id = s.id.split('|')[0];
+    var pie = null;
+    if (id.toUpperCase().indexOf('PIE') > -1) {
+        pie = getPie(id);
+    }
+    if (pie == null)
+        return;
 
-    var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, false);
+    pie.isLegend = !pie.isLegend;
+    pie.xCol = cbXColumnDropDown.GetText();
+    pie.yCol = cbYColumnDropDown.GetText();
+
+    var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
     if (pieData == null)
         return;
-    if (_isD3Legend == true)
+    if (pie.isLegend == true)
         for (i = 0; i < pieData.pieData.length; i++) {
             $('#D3Legend' + i).show(500);
         }
@@ -30,11 +51,7 @@ function showHideLegend() {
         for (i = 0; i < pieData.pieData.length; i++) {
             $('#D3Legend' + i).hide(500);
         }
-    drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
-}
-
-function showPropertyPopup() {
-    popupPaneProperty.Show();
+    drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }
 
 function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
@@ -47,15 +64,14 @@ function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
     var min = Math.min(width, height);
 
     var xyArray = [];
-    if (!isInitial)
-        xyArray = _pieData;
+    if (!isInitial) {
+        xyArray = getPie(paneId).data;
+    }
     else {
         var xy = groupBy(jsonData, xCol, yCol);
         for (i = 0; i < xy.length; i++) {
             xyArray.push({ "X": xy[i][xCol], "Y": xy[i][yCol] });
         }
-        //for (i = 0; i < jsonData.length; i++)
-        //    xyArray.push({ "X": jsonData[i][xCol], "Y": jsonData[i][yCol] });
     }
 
     return { pieData: xyArray, width: width, height: height, min: min }
@@ -106,83 +122,109 @@ function interpolateColors(dataLength, colorScale, colorRangeInfo) {
 }
 
 function chkPieLabelClicked(s, e) {
-    var isPercentageLabel = eval("percentageLabel").GetChecked();
-    var isYValueLabel = eval("yValueLabel").GetChecked();
-    var isXValueLabel = eval("xValueLabel").GetChecked();
+    var isPercentageLabel = _activePie.isPercentage = eval("percentageLabel").GetChecked();
+    var isYValueLabel = _activePie.isYValue =  eval("yValueLabel").GetChecked();
+    var isXValueLabel = _activePie.isXValue = eval("xValueLabel").GetChecked();
 
     if (isYValueLabel && !isXValueLabel && !isPercentageLabel) {
-        _pieTextLabel
+        _activePie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
+                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
                     return (d.data.Y).toFixed(1)
             })
             .attr("display", "block");
     }
     else if (isXValueLabel && !isYValueLabel && !isPercentageLabel) {
-        _pieTextLabel
+        _activePie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
+                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
                     return d.data.X
             })
             .attr("display", "block");
     }
     else if (isPercentageLabel && !isXValueLabel && !isYValueLabel) {
-        _pieTextLabel
+        _activePie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
-                    return (Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) + "%"
+                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
+                    return (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%"
             })
             .attr("display", "block");
     }
     else if (isPercentageLabel && isYValueLabel && !isXValueLabel) {
-        _pieTextLabel
+        _activePie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
-                    return (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) + "%" + ")"
+                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
+                    return (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%" + ")"
             })
             .attr("display", "block");
     }
     else if (isPercentageLabel && isXValueLabel && !isYValueLabel) {
-        _pieTextLabel
+        _activePie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
-                    return d.data.X + ", " + "(" + (Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) + "%" + ")"
+                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
+                    return d.data.X + ", " + "(" + (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%" + ")"
             })
             .attr("display", "block");
     }
     else if (isYValueLabel && isXValueLabel && !isPercentageLabel) {
-        _pieTextLabel
+        _activePie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
+                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
                     return d.data.X + ", " + (d.data.Y).toFixed(1)
             })
             .attr("display", "block");
     }
     else if (isPercentageLabel && isYValueLabel && isXValueLabel) {
-        _pieTextLabel
+        _pieTex_activePie.textLabeltLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) > 5)
-                    return d.data.X + ", " + (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _pieSum) * 100)).toFixed(1) + "%" + ")"
+                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
+                    return d.data.X + ", " + (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%" + ")"
             })
             .attr("display", "block");
     }
     else {
-        _pieTextLabel.attr("display", "none");
+        _activePie.textLabel.attr("display", "none");
     }
 
 }
 
+function showPropertyPopup(s) {
+    var id = s.id.split('|')[0];
+    var pie = null;
+    if (id.toUpperCase().indexOf('PIE') > -1) {
+        pie = getPie(id);
+    }
+    if (pie == null)
+        return;
+
+    propertyTitle.SetText(pie.xCol + " vs " + pie.yCol);
+    percentageLabel.SetChecked(pie.isPercentage);
+    yValueLabel.SetChecked(pie.isYValue);
+    xValueLabel.SetChecked(pie.isXValue);
+    cbXColumnDropDown.SetValue(pie.xCol);
+    cbYColumnDropDown.SetValue(pie.yCol);
+
+    _activePie = pie;   // set active pie
+
+    popupPaneProperty.Show();
+}
+
 function tbPropertyTitleKeyUp(s, e) {
-    document.getElementById("chartTitle").innerHTML = propertyTitle.GetText();
+    var caller;
+    if (s.name == undefined)    // called manually
+        caller = s + "|Title";
+    else
+        caller = s.name;
+    document.getElementById(caller).innerHTML = propertyTitle.GetText();
 }
 
 function cbXYColumnDropDownChanged(s, e) {
-    var xColumn = cbXColumnDropDown.GetText();
-    var yColumn = cbYColumnDropDown.GetText();
+    _activePie.xCol = cbXColumnDropDown.GetText();
+    _activePie.yCol = cbYColumnDropDown.GetText();
 
-    var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
-    drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    var pieData = getPieData(_activePie.divName, _jsonData, _activePie.xCol, _activePie.yCol, true);
+    drawPie(_activePie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 
-    propertyTitle.SetText(xColumn + " vs " + yColumn);
-    document.getElementById("chartTitle").innerHTML = xColumn + " vs " + yColumn;
+    propertyTitle.SetText(_activePie.xCol + " vs " + _activePie.yCol);
+    document.getElementById(_activePie.divName + "|Title").innerHTML = _activePie.xCol + " vs " + _activePie.yCol;
 }

@@ -132,17 +132,26 @@
         }).GetHtml()
 </div>
 
-
+<div>
+    @Html.DevExpress().LoadingPanel(
+        settings =>
+        {
+            settings.Name = "loadingPanel";
+            settings.Modal = false;
+            settings.ContainerElementID = "";
+        }
+    ).GetHtml()
+</div>
 
 @section LeftPanelContent {
     @Html.Partial("LeftPanelPartial", Model)
 }
 
 @*@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.Partial("RightPanelPartial")
-}*@
+    {
+        @Html.AntiForgeryToken()
+        @Html.Partial("RightPanelPartial")
+    }*@
 
 <div id="divRightPanelPartial">
     @Html.Partial("RightPanelPartial", Model)

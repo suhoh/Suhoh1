@@ -13,6 +13,7 @@ namespace Suhoh.Model
         public int ActivePanelSettings { get; set; }    // 3 panels
         public int MainPanelCount { get; set; }         // initial number of panels to start with
         public string MainPanelJson { get; set; }
+        public string CreatePanelName { get; set; }     // used when creating panel - Panel1Map1, Panel1Pie1...
         public List<Panel> MainPanels { get; set; }
         // Add new pane
         public string AddPaneSender { get; set; }
@@ -68,7 +69,7 @@ namespace Suhoh.Model
 
             ActivePanelSettings = 3;
             MainPanelCount = 3;
-            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map']}, {'name': 'Panel2', 'type': ['Graph']}, {'name': 'Panel3', 'type': ['Gridview']}]";
+            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Pie1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
     }
 
@@ -80,8 +81,8 @@ namespace Suhoh.Model
 
     public enum PaneType
     {
-        Map,
-        Graph,
-        Gridview
+        Map = 1,
+        Graph = 2,
+        Gridview = 3
     }
 }

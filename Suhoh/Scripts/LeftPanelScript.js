@@ -41,6 +41,61 @@ function SetAllPanelSettings(flag) {
     $('#cb4_4PanelType').hide();
 }
 
+//"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Graph1']}, {'name': 'Panel3', 'type': ['Gridview1']}]"
 function btnChangeLayoutClicked(s, e) {
+    var nPanel = radioActivePanelSettings.GetValue();
+    var panels = [];
+    if (nPanel == 1) {
+        var type = cb1PanelType.GetText();
+        panels.push("{'name':'Panel1', 'type':['" + type + "1']}");
+    }
+    if (nPanel == 2) {
+        var type = cb2_1PanelType.GetText();
+        panels.push("{'name':'Panel1', 'type':['" + type + "1']}");
+        type = cb2_2PanelType.GetText();
+        panels.push("{'name':'Panel2', 'type':['" + type + "1']}");
+    }
+    if (nPanel == 3) {
+        var type = cb3_1PanelType.GetText();
+        panels.push("{'name':'Panel1', 'type':['" + type + "1']}");
+        type = cb3_2PanelType.GetText();
+        panels.push("{'name':'Panel2', 'type':['" + type + "1']}");
+        type = cb3_3PanelType.GetText();
+        panels.push("{'name':'Panel3', 'type':['" + type + "1']}");
+    }
+    if (nPanel == 4) {
+        var type = cb4_1PanelType.GetText();
+        panels.push("{'name':'Panel1', 'type':['" + type + "1']}");
+        type = cb4_2PanelType.GetText();
+        panels.push("{'name':'Panel2', 'type':['" + type + "1']}");
+        type = cb4_3PanelType.GetText();
+        panels.push("{'name':'Panel3', 'type':['" + type + "1']}");
+        type = cb4_4PanelType.GetText();
+        panels.push("{'name':'Panel4', 'type':['" + type + "1']}");
+    }
+
+    // clear array
+    _maps = [];
+    _pies = [];
+    _gridviews = [];
+
+    var url = "Home/RightPanelPartial";
+    $.ajax({
+        type: "POST",
+        url: url,
+        //dataType: "json",
+        data: { 'sender': 'leftPanel', 'paneDir': -1, 'paneType': -1, 'jsonPanels': JSON.stringify(panels) },
+        success: function (data) {
+            $('#divRightPanelPartial').html(data);
+            //splitterMainResized();
+            //$('#divRightPanelPartial').addClass('rightPanelPartial');
+            //$("#divRightPanelPartial").load('Home');
+            //$("#divRightPanelPartial").load('@Url.Content("Home/RightPanelPartial")');
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
+        }
+    });
 
 }
+

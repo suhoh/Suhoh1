@@ -218,6 +218,7 @@
     <Content Include="Content\Images\DX\sign-out.svg" />
     <Content Include="Content\Images\DX\user.svg" />
     <Content Include="Content\Css\Layout.css" />
+    <Content Include="Scripts\Gridview\main.js" />
     <Content Include="Scripts\jQuery\additional-methods.js" />
     <Content Include="Scripts\jQuery\additional-methods.min.js" />
     <Content Include="Scripts\jQuery\jquery.validate.js" />
@@ -319,6 +320,7 @@
     <Content Include="Views\Home\RightPanelPartial.cshtml" />
     <Content Include="Views\Home\SearchAts.cshtml" />
     <Content Include="Views\Home\LeftPanelSettings.cshtml" />
+    <Content Include="Views\Home\LeftPanelSelectDataSource.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -350,9 +352,7 @@
     <Compile Include="Models\Scheduler\SchedulerHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\Gridview\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

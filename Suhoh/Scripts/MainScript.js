@@ -12,23 +12,29 @@ window.addEventListener('resize', function (event) {
 
 function splitterMainResized(s, e) {
     // Update Map
-    _map.updateSize();
+    _maps.forEach(function (m) {
+        m.map.updateSize();
+    })
 
     // Update Graph
-    if (_jsonData != null && _pieSvg != null) {
+    _pies.forEach(function (p) {
         // Tried to just update Svg - not working
         //var paneSize = getPaneSize('paneGraph');
         //_pieSvg.attr("width", paneSize.width).attr("height", paneSize.height);
-        var xColumn = cbXColumnDropDown.GetText();
-        var yColumn = cbYColumnDropDown.GetText();
+        var xColumn = p.xCol;
+        var yColumn = p.yCol;
+        var pieData = getPieData(p.divName, p.data, xColumn, yColumn, false);
+        if (pieData != null)
+            drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 
-        var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, false);
-        drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
-    }
+    });
 
     // Update Gridview
-    var pGridview = splitterMain.GetPaneByName('paneGridview');
-    dxGridview.SetHeight(pGridview.GetClientHeight() - 10);
+    _gridviews.forEach(function (g) {
+        var pGridview = splitterMain.GetPaneByName(g.name);
+        g.gridview.SetHeight(pGridview.GetClientHeight() - 10); // leave room for header
+
+    });
 }
 
 function getPaneSize(paneId) {
@@ -101,11 +107,8 @@ function addColumnNames(headerNames) {
     }
 }
 
-//function updatePaneTitle() {
-//    document.getElementById("chartTitle").innerHTML =
-//        _filename + ": " + cbXColumnDropDown.GetText() + " vs " + cbYColumnDropDown.GetText();
-//}
-
+// Initial loading
+// Panes already created.
 // Ajax: convert Json to DataTable and will show in Gridview
 function convertJsonToDataTable(json) {
     var url = "Home/ConvertJsonToDataTable"
@@ -119,15 +122,29 @@ function convertJsonToDataTable(json) {
     });
 
     function successFunc(data, status) {
-        addPointLayer(_jsonData, 'Latitude', 'Longitude');
+        // Maps
+        _maps.forEach(function (m) {
+            addPointLayer(_jsonData, m.map, 'Latitude', 'Longitude');
+        })
 
-        dxGridview.PerformCallback();
+        // Gridviews
+        _gridviews.forEach(function (g) {
+            g.gridview.PerformCallback();
+        })
 
-        var xColumn = cbXColumnDropDown.GetText();
-        var yColumn = cbYColumnDropDown.GetText();
+        // Graphs
+        _pies.forEach(function (p) {
+            p.xCol = cbXColumnDropDown.GetText();
+            p.yCol = cbYColumnDropDown.GetText();
+            var pieData = getPieData(p.divName, _jsonData, p.xCol, p.yCol, true);     // used to be PaneId
+            if (pieData != null) {
+                var pieSvg = drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+                p.svg = pieSvg;
+            }
+        });
 
-        var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
-        _pieSvg = drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        loadingPanel.Hide();
+
     }
     function errorFunc() {
         alert("Error: ConvertJsonToDataTable");
@@ -143,7 +160,11 @@ function loadExcelFile(evt) {
     document.body.appendChild(excelFile);
 
     $('input[type="file"]').change(function (e) {
+
+        loadingPanel.Show();
+
         _filename = e.target.files[0].name;
+        tbExcelFilename.SetText(_filename);
         var xl2json = new ExcelToJSON();
         xl2json.parseExcel(e.target.files[0]);
 
@@ -174,7 +195,7 @@ function btnAddNewPaneClick(s, e) {
     $.ajax({
         type: "POST",
         url: url,
-        data: { 'sender': sender, 'paneDir': paneDir, 'paneType': paneType },
+        data: { 'sender': sender, 'paneDir': paneDir, 'paneType': paneType, 'jsonPanels': null },
         success: function (data) {
             $('#divRightPanelPartial').html(data);
             //splitterMainResized();

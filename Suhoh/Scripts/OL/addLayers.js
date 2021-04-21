@@ -2,7 +2,7 @@
 // Open layer functions - addLayers
 //
 
-function addPointLayer(jsonData, latColName, lonColName) {
+function addPointLayer(jsonData, map, latColName, lonColName) {
     if (jsonData == null) {
         alert('Error - addPointLayer');
         return;
@@ -23,8 +23,8 @@ function addPointLayer(jsonData, latColName, lonColName) {
         }),
         name: 'testLayer'
     });
-    _map.addLayer(layer);
-    fitToLayer(layer);
+    map.addLayer(layer);
+    fitToLayer(map, layer);
 }
 
 function getSymbol(x, y) {
@@ -38,7 +38,7 @@ function getSymbol(x, y) {
     return symbol;
 }
 
-function fitToLayer(layer) {
+function fitToLayer(map, layer) {
     var extent = layer.getSource().getExtent();
     if (extent[0] == Infinity) {
         return;
@@ -46,5 +46,5 @@ function fitToLayer(layer) {
 
     var buffer = parseInt((extent[2] - extent[0]) / 10);
     extent = ol.extent.buffer(extent, buffer);
-    _map.getView().fit(extent, { size: _map.getSize(), duration: 1500 });
+    map.getView().fit(extent, { size: map.getSize(), duration: 1500 });
 }
