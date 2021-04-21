@@ -246,3 +246,6 @@ function radioColorRampPieClicked(s, e) {
     var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
     drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }
+
+function tbBarPropertyTitleKeyUp(s, e) {
+}

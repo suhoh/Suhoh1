@@ -108,7 +108,7 @@
         background-color: rgba(0,60,136,.7) !important;
     }
 
-/*Property Popup*/
+/*Property Popup Pie Chart*/
 .thTitleHeading1 {
     font-weight:bold;
     margin-left: 2px;
@@ -152,7 +152,9 @@
     float: left;
     margin-left: 2px;
 }
+/*Property Popup Pie Chart End*/
 
+/*Charts ToolTip*/
 .pieTooltip {
     background: white;
     color: black;
@@ -163,6 +165,18 @@
     border-radius: 8px;
     opacity: 0.7;
 }
+
+.barTooltip {
+    background: white;
+    color: black;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 8px;
+    opacity: 0.7;
+}
+/*Charts ToolTip End*/
 
 .D3GraphtitlePropertyBox {
     float: left;
@@ -175,19 +189,4 @@
     margin-bottom: 5px;
     margin-left: 2px;
     float: left;
-}
-
-/*.barChart {
-    background-color: yellow;
-}*/
-
-.barTooltip {
-    background: white;
-    color: black;
-    text-align: center;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-    border-radius: 8px;
-    opacity: 0.7;
 }

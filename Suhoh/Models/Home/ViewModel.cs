@@ -22,7 +22,7 @@ namespace Suhoh.Model
         // Gridview
         public DataTable DxGridview { get; set; }
 
-        // Graph
+        // Graph Pie
         public string D3GraphTitleProperty { get; set; }
         public bool ChkPercentageLabel { get; set; }
         public bool ChkYValueLabel { get; set; }
@@ -30,6 +30,9 @@ namespace Suhoh.Model
         public string DdXColumn { get; set; }
         public string DdYColumn { get; set; }
         public int ColorRampPie { get; set; }
+
+        // Graph Bar
+        public string D3BarTitleProperty { get; set; }
 
         // OpenLayers
         public string OpenLayerTitleProperty { get; set; }
