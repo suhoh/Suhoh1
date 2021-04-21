@@ -3,7 +3,13 @@
 // D3 main functions
 //
 
-const _colorScale = d3.interpolateRdBu;
+const _colorScaleHSL = t => `hsl(${t * 360},100%,50%)`;
+const _colorScaleRainbow = d3.interpolateRainbow;
+const _colorScaleViridis = d3.interpolateViridis;
+const _colorScaleCool = d3.interpolateCool;
+const _colorScaleHcl = d3.interpolateHclLong("red", "blue")
+const _colorScaleGrey = d3.interpolateGreys;
+
 const _colorRangeInfo = {
     colorStart: 0,
     colorEnd: 1,
@@ -11,7 +17,9 @@ const _colorRangeInfo = {
 };
 
 var _pieSum;
-//var _isD3Legend = true;
+var _isD3PieLegend = true;
+var _isD3BarLegend = true;
+var _radioColorRampPieValue = 1;
 
 // Panel1Pie1, Panel2Bar1, ...
 function initGraph(divName) {
@@ -175,7 +183,7 @@ function chkPieLabelClicked(s, e) {
             .attr("display", "block");
     }
     else if (isPercentageLabel && isYValueLabel && isXValueLabel) {
-        _pieTex_activePie.textLabeltLabel
+        _activePie.textLabel
             .text(function (d) {
                 if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
                     return d.data.X + ", " + (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%" + ")"
@@ -227,4 +235,57 @@ function cbXYColumnDropDownChanged(s, e) {
 
     propertyTitle.SetText(_activePie.xCol + " vs " + _activePie.yCol);
     document.getElementById(_activePie.divName + "|Title").innerHTML = _activePie.xCol + " vs " + _activePie.yCol;
+}
+
+// Color Ramp
+function ramp(color, n = 512) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext("2d");
+    canvas.style.margin = "10 -14px";
+    canvas.style.width = "240px";
+    canvas.style.height = "20px";
+    canvas.id = "colorRampCanvas";
+    canvas.style.position = "absolute";
+    canvas.style.border = "1px solid";
+    canvas.style.zIndex = 100;
+    canvas.style.imageRendering = "-moz-crisp-edges";
+    canvas.style.imageRendering = "pixelated";
+    for (let i = 0; i < n; ++i) {
+        context.fillStyle = color(i / (n - 1));
+        context.fillRect(i, 0, 500, 500);
+    }
+    return canvas;
+}
+
+function radioColorRampPieClicked(s, e) {
+    _radioColorRampPieValue = eval("radioColorRampPie").GetValue();
+    var canvas;
+    if (_radioColorRampPieValue == 1) {
+        canvas = ramp(_colorScaleHSL);
+    }
+    else if (_radioColorRampPieValue == 2) {
+        canvas = ramp(_colorScaleRainbow);
+    }
+    else if (_radioColorRampPieValue == 3) {
+        canvas = ramp(_colorScaleViridis);
+    }
+    else if (_radioColorRampPieValue == 4) {
+        canvas = ramp(_colorScaleCool);
+    }
+    else if (_radioColorRampPieValue == 5) {
+        canvas = ramp(_colorScaleHcl);
+    }
+    else {
+        canvas = ramp(_colorScaleGrey);
+    }
+    var div = document.getElementById('divColorRampPie');
+    div.appendChild(canvas);
+
+    var xColumn = cbXColumnDropDown.GetText();
+    var yColumn = cbYColumnDropDown.GetText();
+    var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
+    drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+}
+
+function tbBarPropertyTitleKeyUp(s, e) {
 }

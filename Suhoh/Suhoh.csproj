@@ -163,6 +163,7 @@
     </Content>
     <Content Include="Content\Images\Suhoh\Maximize.svg" />
     <Content Include="Content\Images\Suhoh\Minimize.svg" />
+    <Content Include="Scripts\D3\bar.js" />
     <Content Include="Scripts\D3\main.js" />
     <Content Include="Scripts\D3\pie.js" />
     <Content Include="Scripts\D3_v650\d3.js" />
@@ -321,6 +322,7 @@
     <Content Include="Views\Home\SearchAts.cshtml" />
     <Content Include="Views\Home\LeftPanelSettings.cshtml" />
     <Content Include="Views\Home\LeftPanelSelectDataSource.cshtml" />
+    <Content Include="Views\Home\D3BarProperty.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

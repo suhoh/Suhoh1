@@ -1,5 +1,5 @@
 ﻿//
-// D3 chart functions
+// D3 pie chart functions
 //
 // paneName = divName
 // { 'data': data, 'svg': svg, 'sum': sum, 'textLabel': textLabel, 'colorRamp': colorRamp, 'isLabel': isLabel }
@@ -40,23 +40,32 @@ function drawPie(divName, data, width, height, radius) {
     pie.sum = d3.sum(pie.data, function (d) { return d.Y });
     d3.select("#" + divName).selectAll("svg").remove();
 
-    var margin = 40;
-    //var innerRadius = radius * 0.3;
     var innerRadius = 0;
     var outerRadius = radius * 0.7;
     var arcInRadius = radius * 0.7;
     var arcOverRadius = radius * 0.75;
-    
-    //var color = d3.scaleOrdinal(d3.schemeCategory10);
+    var colorTheme;
 
-    var color = interpolateColors(data.length, _colorScale, _colorRangeInfo);
+    if (_radioColorRampPieValue == 1)
+        colorTheme = _colorScaleHSL;
+    else if (_radioColorRampPieValue == 2)
+        colorTheme = _colorScaleRainbow;
+    else if (_radioColorRampPieValue == 3)
+        colorTheme = _colorScaleViridis;
+    else if (_radioColorRampPieValue == 4)
+        colorTheme = _colorScaleCool;
+    else if (_radioColorRampPieValue == 5)
+        colorTheme = _colorScaleHcl;
+    else
+        colorTheme = _colorScaleGrey;
+
+    var color = interpolateColors(data.length, colorTheme, _colorRangeInfo);
 
     var svg = d3.select("#" + divName)
         .append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g");
-        //.attr("transform", "translate(-115 0)");
         
     var pieData = d3.pie()
         .value(function (d) { return d.Y; })
@@ -140,6 +149,16 @@ function drawPie(divName, data, width, height, radius) {
                     .duration(200)
                     .attr("d", arcOver)
                     .attr("stroke-width", 2);
+
+                pieTooltip
+                    .style("display", "inline-block")
+                    .style("position", "absolute");
+            })
+            .on("mousemove", function (event, d) {
+                pieTooltip
+                    .html(d.data.X + "<br/>" + (d.data.Y).toFixed(1) + "<br/>" + Math.round((d.data.Y / _pieSum) * 100).toFixed(1) + "%")
+                    .style("left", event.offsetX + 10 + "px")
+                    .style("top", event.offsetY - 60 + "px")
             })
             .on("mouseleave", function (data) {
                 d3.select(this)
@@ -148,6 +167,8 @@ function drawPie(divName, data, width, height, radius) {
                     .duration(200)
                     .attr("d", arcIn)
                     .attr("stroke-width", 2);
+
+                pieTooltip.style("display", "none");
             });
     }
 

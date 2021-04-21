@@ -59,6 +59,12 @@ var ExcelToJSON = function () {
                 var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
 
                 addColumnNames(headerNames);
+
+                var canvas = ramp(_colorScaleHSL);
+                var div = document.getElementById('divColorRampPie');
+                div.appendChild(canvas);
+
+
                 //updatePaneTitle();
 
                 convertJsonToDataTable(jsonData);   // For Gridview
@@ -145,6 +151,7 @@ function convertJsonToDataTable(json) {
 
         loadingPanel.Hide();
 
+        //_barSvg = drawBar('pieChart', pieData.pieData, pieData.width, pieData.height)
     }
     function errorFunc() {
         alert("Error: ConvertJsonToDataTable");

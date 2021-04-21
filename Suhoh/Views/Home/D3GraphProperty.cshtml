@@ -103,3 +103,39 @@
         </tr>
     </table>
 </div>
+
+<div id="divColorRamp" class="divColorRamp">
+        <table>
+            <tr>
+                <th id="thColorRampHeading" class="thColorRampHeading">
+                    Color Ramp
+                </th>
+            </tr>
+            <tr>
+                <th id="thRadioColorRampPie" class="thRadioColorRampPie">
+                    @Html.DevExpress().RadioButtonListFor(model => Model.ColorRampPie,
+                        settings =>
+                        {
+                            settings.Name = "radioColorRampPie";
+                            settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+                            settings.Properties.Items.Add("HSL", 1);
+                            settings.Properties.Items.Add("Rainbow", 2);
+                            settings.Properties.Items.Add("Viridis", 3);
+                            settings.Properties.Items.Add("Cool", 4);
+                            settings.Properties.Items.Add("Hcl", 5);
+                            settings.Properties.Items.Add("Grey", 6);
+                            settings.Properties.RepeatColumns = 3;
+                            settings.Width = 240;
+                            settings.Height = 28;
+                            settings.ControlStyle.CssClass = "radioColorRampPie";
+                            settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
+                            settings.Properties.ValueType = typeof(Int32);
+                            settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioColorRampPieClicked";
+                        }).GetHtml()
+                </th>
+            </tr>
+        </table>
+    </div>
+
+<div id="divColorRampPie" class="divColorRampPie">
+</div>

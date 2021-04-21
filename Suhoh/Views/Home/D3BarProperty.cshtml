@@ -1,0 +1,30 @@
+﻿@using Suhoh.Model
+@model ViewModel
+
+@*@Html.DevExpress().ColorEdit(settings => {
+    settings.Name = "colorEdit1";
+    settings.Color = System.Drawing.Color.FromName("red");
+    settings.Properties.EnableCustomColors = true;
+}).GetHtml()*@
+
+<div id="divBarTitle" class="divBarTitle">
+    <table>
+        <tr>
+            <th id="thBarTitleHeading1" class="thBarTitleHeading1">Title</th>
+        </tr>
+        <tr>
+            <th>
+                @Html.DevExpress().TextBoxFor(model => model.D3BarTitleProperty,
+                          settings =>
+                          {
+                              settings.Name = "propertyBarTitle";
+                              settings.Width = 240;
+                              settings.Text = "Graph Title";
+                              settings.ControlStyle.CssClass = "D3BarTitlePropertyBox";
+                              settings.Properties.ClientSideEvents.KeyUp = "tbBarPropertyTitleKeyUp";
+                          }
+                          ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
