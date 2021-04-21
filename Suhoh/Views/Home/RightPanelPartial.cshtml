@@ -174,7 +174,7 @@
     void RenderMyPartial(string paneName, string type)
     {
         Model.CreatePanelName = paneName;
-        if (type.ToUpper().Contains("PIE"))
+        if (type.ToUpper().Contains("PIE") || type.ToUpper().Contains("BAR"))
             Html.RenderPartial("D3Graph", Model);
         else if (type.ToUpper().Contains("MAP"))
             Html.RenderPartial("OpenLayerMap", Model);

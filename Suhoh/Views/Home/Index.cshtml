@@ -80,7 +80,8 @@
             settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
             settings.SetContent(() =>
             {
-                Html.RenderPartial("D3GraphProperty", Model);
+                //Html.RenderPartial("D3GraphProperty", Model);
+                Html.RenderPartial("D3BarProperty", Model);
             });
 
             //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";

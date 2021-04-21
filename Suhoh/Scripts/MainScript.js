@@ -60,10 +60,9 @@ var ExcelToJSON = function () {
 
                 addColumnNames(headerNames);
 
-                var canvas = ramp(_colorScaleHSL);
-                var div = document.getElementById('divColorRampPie');
-                div.appendChild(canvas);
-
+                //var canvas = ramp(_colorScaleHSL);
+                //var div = document.getElementById('divColorRampPie');
+                //div.appendChild(canvas);
 
                 //updatePaneTitle();
 
@@ -79,7 +78,11 @@ var ExcelToJSON = function () {
 
 // Todo: need to add column names to all drop downs
 //       need to get column type from code behind
+
 function addColumnNames(headerNames) {
+}
+
+function addColumnNames_Orig(headerNames) {
     cbXColumnDropDown.ClearItems();
     cbYColumnDropDown.ClearItems();
     for (i = 0; i < headerNames.length; i++) {
@@ -148,10 +151,20 @@ function convertJsonToDataTable(json) {
                 p.svg = pieSvg;
             }
         });
+        _bars.forEach(function (b) {
+            //b.xCol = cbXColumnDropDown.GetText();
+            //b.yCol = cbYColumnDropDown.GetText();
+            b.xCol = "Applicant";
+            b.yCol = "Quantity_m3";
+
+            var barData = getBarData(b.divName, _jsonData, b.xCol, b.yCol, true);     // used to be PaneId
+            if (barData != null) {
+                var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.min / 2);
+                b.svg = barSvg;
+            }
+        });
 
         loadingPanel.Hide();
-
-        //_barSvg = drawBar('pieChart', pieData.pieData, pieData.width, pieData.height)
     }
     function errorFunc() {
         alert("Error: ConvertJsonToDataTable");

@@ -14,7 +14,7 @@ var _activePie;
 function initPie(divName) {
     _pies.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'sum': null, 'isLegend': true,
-        'textLabel': null, 'colorRamp': null, 'isLabel': false,
+        'textLabel': null, 'colorRamp': 1, 'isLabel': false,
         'isPercentage': false, 'isYValue': false, 'isXValue': false
     })
 }
@@ -25,6 +25,29 @@ function getPie(divName) {
             return _pies[i]
     }
     return null;
+}
+
+function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
+    if (jsonData == null)
+        return null;
+
+    var pGraph = splitterMain.GetPaneByName(paneId);
+    var width = pGraph.GetClientWidth();
+    var height = pGraph.GetClientHeight();
+    var min = Math.min(width, height);
+
+    var xyArray = [];
+    if (!isInitial) {
+        xyArray = getPie(paneId).data;
+    }
+    else {
+        var xy = groupBy(jsonData, xCol, yCol);
+        for (i = 0; i < xy.length; i++) {
+            xyArray.push({ "X": xy[i][xCol], "Y": xy[i][yCol] });
+        }
+    }
+
+    return { pieData: xyArray, width: width, height: height, min: min }
 }
 
 function drawPie(divName, data, width, height, radius) {
@@ -46,15 +69,15 @@ function drawPie(divName, data, width, height, radius) {
     var arcOverRadius = radius * 0.75;
     var colorTheme;
 
-    if (_radioColorRampPieValue == 1)
+    if (pie.colorRamp == 1)
         colorTheme = _colorScaleHSL;
-    else if (_radioColorRampPieValue == 2)
+    else if (pie.colorRamp == 2)
         colorTheme = _colorScaleRainbow;
-    else if (_radioColorRampPieValue == 3)
+    else if (pie.colorRamp == 3)
         colorTheme = _colorScaleViridis;
-    else if (_radioColorRampPieValue == 4)
+    else if (pie.colorRamp == 4)
         colorTheme = _colorScaleCool;
-    else if (_radioColorRampPieValue == 5)
+    else if (pie.colorRamp == 5)
         colorTheme = _colorScaleHcl;
     else
         colorTheme = _colorScaleGrey;
@@ -156,7 +179,7 @@ function drawPie(divName, data, width, height, radius) {
             })
             .on("mousemove", function (event, d) {
                 pieTooltip
-                    .html(d.data.X + "<br/>" + (d.data.Y).toFixed(1) + "<br/>" + Math.round((d.data.Y / _pieSum) * 100).toFixed(1) + "%")
+                    .html(d.data.X + "<br/>" + (d.data.Y).toFixed(1) + "<br/>" + Math.round((d.data.Y / pie.sum) * 100).toFixed(1) + "%")
                     .style("left", event.offsetX + 10 + "px")
                     .style("top", event.offsetY - 60 + "px")
             })

@@ -16,17 +16,18 @@ const _colorRangeInfo = {
     useEndAsStart: false,
 };
 
-var _pieSum;
-var _isD3PieLegend = true;
+//var _pieSum;
+//var _isD3PieLegend = true;
+//var _radioColorRampPieValue = 1;
 var _isD3BarLegend = true;
-var _radioColorRampPieValue = 1;
+
 
 // Panel1Pie1, Panel2Bar1, ...
 function initGraph(divName) {
     if (divName.toUpperCase().indexOf('PIE') > -1)
         initPie(divName);
-    //else if (divName.toUpperCase().indexOf('BAR') > -1)
-    //    initPie(divName);
+    else if (divName.toUpperCase().indexOf('BAR') > -1)
+        initBar(divName);
     //else if (divName.toUpperCase().indexOf('LINE') > -1)
     //    initPie(divName);
     //else if (divName.toUpperCase().indexOf('SCATTER') > -1)
@@ -61,30 +62,6 @@ function showHideLegend(s, e) {
         }
     drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }
-
-function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
-    if (jsonData == null)
-        return null;
-
-    var pGraph = splitterMain.GetPaneByName(paneId);
-    var width = pGraph.GetClientWidth();
-    var height = pGraph.GetClientHeight();
-    var min = Math.min(width, height);
-
-    var xyArray = [];
-    if (!isInitial) {
-        xyArray = getPie(paneId).data;
-    }
-    else {
-        var xy = groupBy(jsonData, xCol, yCol);
-        for (i = 0; i < xy.length; i++) {
-            xyArray.push({ "X": xy[i][xCol], "Y": xy[i][yCol] });
-        }
-    }
-
-    return { pieData: xyArray, width: width, height: height, min: min }
-}
-
 
 function groupBy(array, groups, valueKey) {
     var map = new Map;
@@ -198,21 +175,28 @@ function chkPieLabelClicked(s, e) {
 
 function showPropertyPopup(s) {
     var id = s.id.split('|')[0];
-    var pie = null;
+    var graph = null;
     if (id.toUpperCase().indexOf('PIE') > -1) {
-        pie = getPie(id);
+        graph = getPie(id);
     }
-    if (pie == null)
+    if (id.toUpperCase().indexOf('BAR') > -1) {
+        graph = getBar(id);
+    }
+    if (graph == null)
         return;
 
-    propertyTitle.SetText(pie.xCol + " vs " + pie.yCol);
-    percentageLabel.SetChecked(pie.isPercentage);
-    yValueLabel.SetChecked(pie.isYValue);
-    xValueLabel.SetChecked(pie.isXValue);
-    cbXColumnDropDown.SetValue(pie.xCol);
-    cbYColumnDropDown.SetValue(pie.yCol);
+    //propertyTitle.SetText(pie.xCol + " vs " + pie.yCol);
+    propertyBarTitle.SetText(graph.xCol + " vs " + graph.yCol);
 
-    _activePie = pie;   // set active pie
+    //percentageLabel.SetChecked(pie.isPercentage);
+    //yValueLabel.SetChecked(pie.isYValue);
+    //xValueLabel.SetChecked(pie.isXValue);
+    //cbXColumnDropDown.SetValue(pie.xCol);
+    //cbYColumnDropDown.SetValue(pie.yCol);
+    //radioColorRampPie.SetValue(pie.colorRamp);
+
+    _activePie = graph;   // set active pie
+    _activeBar = graph;
 
     popupPaneProperty.Show();
 }
@@ -258,21 +242,21 @@ function ramp(color, n = 512) {
 }
 
 function radioColorRampPieClicked(s, e) {
-    _radioColorRampPieValue = eval("radioColorRampPie").GetValue();
+    _activePie.colorRamp = eval("radioColorRampPie").GetValue();
     var canvas;
-    if (_radioColorRampPieValue == 1) {
+    if (_activePie.colorRamp == 1) {
         canvas = ramp(_colorScaleHSL);
     }
-    else if (_radioColorRampPieValue == 2) {
+    else if (_activePie.colorRamp == 2) {
         canvas = ramp(_colorScaleRainbow);
     }
-    else if (_radioColorRampPieValue == 3) {
+    else if (_activePie.colorRamp == 3) {
         canvas = ramp(_colorScaleViridis);
     }
-    else if (_radioColorRampPieValue == 4) {
+    else if (_activePie.colorRamp == 4) {
         canvas = ramp(_colorScaleCool);
     }
-    else if (_radioColorRampPieValue == 5) {
+    else if (_activePie.colorRamp == 5) {
         canvas = ramp(_colorScaleHcl);
     }
     else {
@@ -281,10 +265,8 @@ function radioColorRampPieClicked(s, e) {
     var div = document.getElementById('divColorRampPie');
     div.appendChild(canvas);
 
-    var xColumn = cbXColumnDropDown.GetText();
-    var yColumn = cbYColumnDropDown.GetText();
-    var pieData = getPieData('paneGraph', _jsonData, xColumn, yColumn, true);
-    drawPie('pieChart', pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    var pieData = getPieData(_activePie.divName, _jsonData, _activePie.xCol, _activePie.yCol, true);
+    drawPie(_activePie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }
 
 function tbBarPropertyTitleKeyUp(s, e) {

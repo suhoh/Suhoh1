@@ -2,8 +2,49 @@
 // D3 bar chart functions
 //
 
-var _barData;
-var _barSvg = null;
+//var _barData;
+//var _barSvg = null;
+
+var _bars = [];
+var _activeBar;
+
+function initBar(divName) {
+    _bars.push({
+        'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'isLegend': true,
+        'textLabel': null, 'color': 1, 'isLabel': false
+    })
+}
+
+function getBar(divName) {
+    for (i = 0; i < _bars.length; i++) {
+        if (_bars[i].divName == divName)
+            return _bars[i]
+    }
+    return null;
+}
+
+function getBarData(paneId, jsonData, xCol, yCol, isInitial) {
+    if (jsonData == null)
+        return null;
+
+    var bGraph = splitterMain.GetPaneByName(paneId);
+    var width = bGraph.GetClientWidth();
+    var height = bGraph.GetClientHeight();
+    var min = Math.min(width, height);
+
+    var xyArray = [];
+    if (!isInitial) {
+        xyArray = getBar(paneId).data;
+    }
+    else {
+        var xy = groupBy(jsonData, xCol, yCol);
+        for (i = 0; i < xy.length; i++) {
+            xyArray.push({ "X": xy[i][xCol], "Y": xy[i][yCol] });
+        }
+    }
+
+    return { barData: xyArray, width: width, height: height, min: min }
+}
 
 function drawBar(divName, data, width, height) {
 
@@ -13,12 +54,14 @@ function drawBar(divName, data, width, height) {
     var marginLeft = 50;
     var marginBottom = 30;
 
-    tbPropertyTitleKeyUp();
+    tbBarPropertyTitleKeyUp();
 
     if (data == undefined)
-        return;
+        return null;
 
-    _barData = data;
+    var bar = getBar(divName);
+    bar.data = data;    // make it global
+
     d3.select("#" + divName).selectAll("svg").remove();
 
     var svg = d3.select("#" + divName)
@@ -31,7 +74,7 @@ function drawBar(divName, data, width, height) {
 
     var x;
     // x and y band
-    if (width > 400 && _isD3PieLegend == true)
+    if (width > 400 && bar.isLegend == true)
         x = d3.scaleBand().rangeRound([0, width - marginLeft - marginRight - 50 - 115]).padding(0.1);
     else
         x = d3.scaleBand().rangeRound([0, width - marginLeft - marginRight - 50]).padding(0.1);
@@ -90,7 +133,8 @@ function drawBar(divName, data, width, height) {
             barTooltip.style("display", "none");
         });
 
-    var yColumn = cbYColumnDropDown.GetText();
+    //var yColumn = cbYColumnDropDown.GetText();
+    var yColumn = "Quantity_m3";
     
     var legend = svg.selectAll(".legend")
         .data(data)
@@ -98,7 +142,7 @@ function drawBar(divName, data, width, height) {
         .attr("class", "D3Legend")
         .attr("id", function (d, idx) { return "D3Legend" + idx });
 
-    if (width > 400 && _isD3PieLegend == true) {
+    if (width > 400 && bar.isLegend == true) {
         legend.append("rect")
             .attr("width", 7)
             .attr("height", 7)
