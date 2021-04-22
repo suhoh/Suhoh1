@@ -23,7 +23,7 @@ namespace Suhoh.Model
         // Gridview
         public DataTable DxGridview { get; set; }
 
-        // Graph Pie
+        // Pie Chart Property
         public string D3GraphTitleProperty { get; set; }
         public bool ChkPercentageLabel { get; set; }
         public bool ChkYValueLabel { get; set; }
@@ -32,8 +32,12 @@ namespace Suhoh.Model
         public string DdYColumn { get; set; }
         public int ColorRampPie { get; set; }
 
-        // Graph Bar
-        public string D3BarTitleProperty { get; set; }
+        // Bar Chart Property
+        public string TbBarTitleProperty { get; set; }
+        public bool CbBarYValueLabel { get; set; }
+        public bool CbBarXValueLabel { get; set; }
+        public string DdBarXColumn { get; set; }
+        public bool CbBarTranspose { get; set; }
 
         // OpenLayers
         public string OpenLayerTitleProperty { get; set; }
@@ -51,12 +55,19 @@ namespace Suhoh.Model
 
         public ViewModel()
         {
+            // Pie Chart Property
             ChkPercentageLabel = false;
             ChkYValueLabel = false;
             ChkXValueLabel = false;
             DdXColumn = "";
             DdYColumn = "";
             ColorRampPie = 1;
+
+            // Bar Chart Property
+            CbBarYValueLabel = false;
+            CbBarXValueLabel = false;
+            DdBarXColumn = "";
+            CbBarTranspose = false;
 
             GoToLocationX = "-114.066666";
             GoToLocationY = "51.049999";

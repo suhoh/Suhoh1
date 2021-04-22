@@ -54,7 +54,7 @@ function drawBar(divName, data, width, height) {
     var marginLeft = 50;
     var marginBottom = 30;
 
-    tbBarPropertyTitleKeyUp();
+    tbBarPropertyTitleKeyUp(divName);
 
     if (data == undefined)
         return null;

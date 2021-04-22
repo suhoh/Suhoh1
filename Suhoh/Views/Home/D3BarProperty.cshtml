@@ -1,11 +1,7 @@
 ﻿@using Suhoh.Model
 @model ViewModel
 
-@*@Html.DevExpress().ColorEdit(settings => {
-    settings.Name = "colorEdit1";
-    settings.Color = System.Drawing.Color.FromName("red");
-    settings.Properties.EnableCustomColors = true;
-}).GetHtml()*@
+
 
 <div id="divBarTitle" class="divBarTitle">
     <table>
@@ -14,7 +10,7 @@
         </tr>
         <tr>
             <th>
-                @Html.DevExpress().TextBoxFor(model => model.D3BarTitleProperty,
+                @Html.DevExpress().TextBoxFor(model => model.TbBarTitleProperty,
                           settings =>
                           {
                               settings.Name = "propertyBarTitle";
@@ -24,6 +20,133 @@
                               settings.Properties.ClientSideEvents.KeyUp = "tbBarPropertyTitleKeyUp";
                           }
                           ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div id="divBarLabel" class="divBarLabel">
+    <table>
+        <tr>
+            <th id="thBarLabelHeading1" class="thBarLabelHeading1">
+                Label
+            </th>
+        </tr>
+        <tr>
+            <th id="thBarXValueChkBox" class="thBarXValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.CbBarXValueLabel,
+                    settings =>
+                    {
+                        settings.Name = "cbBarXValue";
+                        settings.Text = "X Value";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "chkBarLabelClicked";
+                    }).GetHtml()
+            </th>
+            <th id="thBarYValueChkBox" class="thBarYValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.CbBarYValueLabel,
+                    settings =>
+                    {
+                        settings.Name = "cbBarYValue";
+                        settings.Text = "Y Value";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "chkBarLabelClicked";
+                    }).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div id="divBarXYColumn" class="divBarXYColumn">
+    <table>
+        <tr>
+            <th id="thBarXYColumnHeading1" class="thBarXYColumnHeading1">
+                XY Columns
+            </th>
+        </tr>
+        <tr>
+            <th id="thBarXColumnDropDownLabel" class="thBarXColumnDropDownLabel">
+                X Column
+            </th>
+            <th id="thBarXColumnDropDown" class="thBarXColumnDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.DdBarXColumn,
+                    settings =>
+                    {
+                        settings.Name = "cbBarXColumn";
+                        settings.Width = 167;
+                        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                        settings.Properties.DropDownWidth = 165;
+                        settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbBarXYColumnChanged";
+                    }).BindList(DataEngine.GetXColumn()).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th id="thBarYColumnDropDownLabel" class="thBarYColumnDropDownLabel">
+                Y Column
+            </th>
+            <th id="thBarYColumnDropDown" class="thBarYColumnDropDown">
+                @Html.DevExpress().DropDownEdit(settings =>
+                {
+                    settings.Name = "ddBarYColumn";
+                    settings.Width = 167;
+
+                    settings.SetDropDownWindowTemplateContent(c =>
+                    {
+                        @Html.DevExpress().ListBox(listBoxSettings =>
+                        {
+                            listBoxSettings.Name = "lbBarYColumn";
+                            listBoxSettings.Width = 164;
+                            listBoxSettings.Height = 150;
+                            listBoxSettings.Properties.EnableSelectAll = true;
+                            listBoxSettings.Properties.FilteringSettings.ShowSearchUI = true;
+                            listBoxSettings.Properties.SelectionMode = ListEditSelectionMode.CheckColumn;
+                            listBoxSettings.Properties.Items.Add("Quantity_m3", "0").Selected = true;
+                            listBoxSettings.Properties.Items.Add("Consumptive Use_M3", "1");
+                            listBoxSettings.Properties.Items.Add("Pump Rate", "2");
+
+                            listBoxSettings.Properties.ClientSideEvents.SelectedIndexChanged = "cbBarXYColumnChanged";
+                        }).Render();
+                    });
+                }).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div id="divBarTranspose" class="divBarTranspose">
+    <table>
+        <tr>
+            <th id="thBarTransposeHeading1" class="thBarTransposeHeading1">
+                Transpose
+            </th>
+        </tr>
+        <tr>
+            <th id="thBarTransposeChkBox" class="thBarTransposeChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.CbBarTranspose,
+                    settings =>
+                    {
+                        settings.Name = "cbBarTranspose";
+                        settings.Text = "Switch X and Y Axis ";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "chkBarTransposeClicked";
+                    }).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div id="divBarColorPicker" class="divBarColorPicker">
+    <table>
+        <tr>
+            <th id="thBarColorPickerHeading1" class="thBarColorPickerHeading1">
+                Color Picker
+            </th>
+        </tr>
+        <tr>
+            <th id="thBarColorPicker" class="thBarColorPicker">
+                @Html.DevExpress().ColorEdit(settings => {
+                   settings.Name = "ceBarColorPicker";
+                   settings.Width = 240;
+                   settings.Color = System.Drawing.Color.FromName("red");
+                   settings.Properties.EnableCustomColors = true;
+                }).GetHtml()
             </th>
         </tr>
     </table>
