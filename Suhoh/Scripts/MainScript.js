@@ -159,7 +159,7 @@ function convertJsonToDataTable(json) {
 
             var barData = getBarData(b.divName, _jsonData, b.xCol, b.yCol, true);     // used to be PaneId
             if (barData != null) {
-                var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.min / 2);
+                var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height);
                 b.svg = barSvg;
             }
         });

@@ -269,5 +269,31 @@ function radioColorRampPieClicked(s, e) {
     drawPie(_activePie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }
 
+// bar chart
+function chkBarLabelClicked(s, e) {
+
+}
+
+function cbBarXYColumnChanged(s, e) {
+    _activeBar.xCol = cbBarXColumn.GetText();
+    _activeBar.yCol = lbBarYColumn.GetText();
+
+    var barData = getBarData(_activeBar.divName, _jsonData, _activeBar.xCol, _activeBar.yCol, false);
+    drawBar(_activeBar.divName, barData.barData, barData.width, barData.height);
+
+    propertyBarTitle.SetText(_activeBar.xCol + " vs " + _activeBar.yCol);
+    document.getElementById(_activeBar.divName + "|Title").innerHTML = _activeBar.xCol + " vs " + _activeBar.yCol;
+}
+
+function chkBarTransposeClicked(s, e) {
+
+}
+
 function tbBarPropertyTitleKeyUp(s, e) {
+    var caller;
+    if (s.name == undefined)    // called manually
+        caller = s + "|Title";
+    else
+        caller = s.name;
+    document.getElementById(caller).innerHTML = propertyBarTitle.GetText();
 }

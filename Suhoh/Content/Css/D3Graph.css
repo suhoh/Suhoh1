@@ -154,6 +154,65 @@
 }
 /*Property Popup Pie Chart End*/
 
+/*Property Popup Bar Chart*/
+.thBarTitleHeading1 {
+    font-weight: bold;
+    margin-left: 2px;
+    margin-bottom: 5px;
+    float: left;
+}
+.thBarLabelHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    float: left;
+}
+.thBarXValueChkBox {
+    float: left;
+}
+.thBarYValueChkBox {
+    float: left;
+    margin-left: 10px;
+}
+.thBarXYColumnHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    float: left;
+}
+.thBarXColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 10px;
+    margin-left: 2px;
+}
+
+.thBarXColumnDropDown {
+    height: 40px;
+}
+
+.thBarYColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-left: 2px;
+}
+.thBarTransposeHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    float: left;
+}
+.thBarColorPickerHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    margin-bottom: 5px;
+    float: left;
+}
+/*.thBarColorPicker {
+    margin-top: 2px;
+}*/
+/*Property Popup Bar Chart End*/
 /*Charts ToolTip*/
 .pieTooltip {
     background: white;
