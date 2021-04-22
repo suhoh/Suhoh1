@@ -77,6 +77,7 @@ function btnChangeLayoutClicked(s, e) {
     // clear array
     _maps = [];
     _pies = [];
+    _bars = [];
     _gridviews = [];
 
     var url = "Home/RightPanelPartial";

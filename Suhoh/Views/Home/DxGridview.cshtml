@@ -76,7 +76,11 @@
 
 <script>
     var gridview = @Model.CreatePanelName;
-    var name = gridview.name;
+    var name;
+    if (gridview.name != undefined)
+        name = gridview.name;   // callback
+    if (gridview.id != undefined)
+        name = gridview.id;     // ajax
     console.log('gridview name:' + gridview.name + ", " + gridview.id);
-    initGridview(gridview, name);    
+    initGridview(name);    
 </script>

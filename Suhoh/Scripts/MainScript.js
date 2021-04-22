@@ -16,23 +16,30 @@ function splitterMainResized(s, e) {
         m.map.updateSize();
     })
 
-    // Update Graph
+    // Update Pie
     _pies.forEach(function (p) {
         // Tried to just update Svg - not working
         //var paneSize = getPaneSize('paneGraph');
         //_pieSvg.attr("width", paneSize.width).attr("height", paneSize.height);
-        var xColumn = p.xCol;
-        var yColumn = p.yCol;
-        var pieData = getPieData(p.divName, p.data, xColumn, yColumn, false);
+        var pieData = getPieData(p.divName, p.data, p.xCol, p.yCol, false);
         if (pieData != null)
             drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    });
 
+    // Update Bar
+    _bars.forEach(function (b) {
+        var barData = getBarData(b.divName, _jsonData, b.xCol, b.yCol, true);     // used to be PaneId
+        if (barData != null) {
+            var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height);
+            b.svg = barSvg;
+        }
     });
 
     // Update Gridview
     _gridviews.forEach(function (g) {
-        var pGridview = splitterMain.GetPaneByName(g.name);
-        g.gridview.SetHeight(pGridview.GetClientHeight() - 10); // leave room for header
+        var pane = splitterMain.GetPaneByName(g.name);
+        var gv = eval(g.name);
+        gv.SetHeight(pane.GetClientHeight() - 10); // leave room for header
 
     });
 }
@@ -138,7 +145,8 @@ function convertJsonToDataTable(json) {
 
         // Gridviews
         _gridviews.forEach(function (g) {
-            g.gridview.PerformCallback();
+            var gv = eval(g.name);
+            gv.PerformCallback();
         })
 
         // Graphs
@@ -181,6 +189,7 @@ function loadExcelFile(evt) {
 
     $('input[type="file"]').change(function (e) {
 
+        loadingPanel.Hide();
         loadingPanel.Show();
 
         _filename = e.target.files[0].name;

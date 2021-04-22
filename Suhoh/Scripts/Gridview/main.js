@@ -2,8 +2,8 @@
 // Gridview main functions
 //
 
-var _gridviews = [];    // { 'gridview': gridview, 'name': name }
+var _gridviews = [];    // { 'name': name }
 
-function initGridview(gridview, name) {
-    _gridviews.push({ 'gridview': gridview, 'name': name });
+function initGridview( name) {
+    _gridviews.push({ 'name': name });
 }
