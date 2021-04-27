@@ -10,11 +10,13 @@ namespace Suhoh.Model
     public class ViewModel
     {
         // Panels
-        public int ActivePanelSettings { get; set; }    // 3 panels
+        public int ActivePanelSettings { get; set; }    // # of panel setting count
         public int MainPanelCount { get; set; }         // initial number of panels to start with
         public string MainPanelJson { get; set; }
         public string CreatePanelName { get; set; }     // used when creating panel - Panel1Map1, Panel1Pie1...
         public List<Panel> MainPanels { get; set; }
+        public string ActiveProperty { get; set; }      // active property clicked from panel
+
         // Add new pane
         public string AddPaneSender { get; set; }
         public int AddPaneType { get; set; }            // 1: Horizontal, 2: Vertical
@@ -22,6 +24,7 @@ namespace Suhoh.Model
 
         // Gridview
         public DataTable DxGridview { get; set; }
+        public List<ColumnInfo> ColumnInfos { get; set; }   // column name and type
 
         // Pie Chart Property
         public string D3GraphTitleProperty { get; set; }
@@ -55,6 +58,8 @@ namespace Suhoh.Model
 
         public ViewModel()
         {
+            ColumnInfos = new List<ColumnInfo>();
+
             // Pie Chart Property
             ChkPercentageLabel = false;
             ChkYValueLabel = false;
@@ -83,10 +88,17 @@ namespace Suhoh.Model
             cbLeftPanelSearchRGE = "";
             cbLeftPanelSearchMER = "";
 
+            ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
             MainPanelCount = 3;
             MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Bar1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
+    }
+
+    public class ColumnInfo
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
     }
 
     public class Panel

@@ -43,6 +43,7 @@ function SetAllPanelSettings(flag) {
 
 //"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Graph1']}, {'name': 'Panel3', 'type': ['Gridview1']}]"
 function btnChangeLayoutClicked(s, e) {
+    loadingPanel.Hide();
     var nPanel = radioActivePanelSettings.GetValue();
     var panels = [];
     if (nPanel == 1) {
@@ -74,11 +75,7 @@ function btnChangeLayoutClicked(s, e) {
         panels.push("{'name':'Panel4', 'type':['" + type + "1']}");
     }
 
-    // clear array
-    _maps = [];
-    _pies = [];
-    _bars = [];
-    _gridviews = [];
+    clearAllPanels();
 
     var url = "Home/RightPanelPartial";
     $.ajax({

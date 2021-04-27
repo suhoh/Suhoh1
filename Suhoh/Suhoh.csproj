@@ -315,7 +315,7 @@
     <Content Include="Views\Home\DxGridview.cshtml" />
     <Content Include="Scripts\SheetJS\xlsx.full.min.map" />
     <Content Include="Views\Home\DxGridviewProperty.cshtml" />
-    <Content Include="Views\Home\D3GraphProperty.cshtml" />
+    <Content Include="Views\Home\D3PieProperty.cshtml" />
     <Content Include="Views\Home\OpenLayerMapProperty.cshtml" />
     <Content Include="Views\Home\AddNewPane.cshtml" />
     <Content Include="Views\Home\RightPanelPartial.cshtml" />
@@ -323,6 +323,7 @@
     <Content Include="Views\Home\LeftPanelSettings.cshtml" />
     <Content Include="Views\Home\LeftPanelSelectDataSource.cshtml" />
     <Content Include="Views\Home\D3BarProperty.cshtml" />
+    <Content Include="Views\Home\CallbackPopupGraphProperty.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

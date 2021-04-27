@@ -3,40 +3,80 @@
 // Main script 
 //
 
-var _jsonData;
-var _filename;
+var _jsonData;              // loaded data in JSON
+var _columnNames;           // loaded column names    
+var _filename;              // loaded filename
+var _activePropertyName     // currently active property when clicked from panel
 
 window.addEventListener('resize', function (event) {
     console.log("window - innerWidth " + window.innerWidth + ", window - innerHeight " + window.innerHeight);
 })
 
+function clearAllPanels() {
+    // clear array
+    _maps = [];
+    _pies = [];
+    _bars = [];
+    _gridviews = [];
+}
+
 function splitterMainResized(s, e) {
-    // Update Map
-    _maps.forEach(function (m) {
+    // Update all panes
+    updateMaps(_maps);
+    updatePies(_pies);
+    updateBars(_bars);
+    updateGridviewHeights(_gridviews);
+}
+
+function updateMaps(maps) {
+    maps.forEach(function (m) {
         m.map.updateSize();
     })
+}
 
-    // Update Pie
-    _pies.forEach(function (p) {
+function updatePies(pies) {
+    if (pies.length == 0)
+        return;
+    pies.forEach(function (p) {
         // Tried to just update Svg - not working
         //var paneSize = getPaneSize('paneGraph');
         //_pieSvg.attr("width", paneSize.width).attr("height", paneSize.height);
         var pieData = getPieData(p.divName, p.data, p.xCol, p.yCol, false);
         if (pieData != null)
             drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        _activePie = p;
+        // check and see if chkPiePercentageLabel already created. It gets created when opening up Property.
+        if (typeof chkPiePercentageLabel != "undefined" && ASPxClientUtils.IsExists(chkPiePercentageLabel))
+            chkPieLabelClicked();
     });
 
-    // Update Bar
-    _bars.forEach(function (b) {
-        var barData = getBarData(b.divName, _jsonData, b.xCol, b.yCol, true);     // used to be PaneId
+}
+
+function updateBars(bars) {
+    if (bars.length == 0)
+        return;
+    bars.forEach(function (b) {
+        var barData = getBarData(b.divName, b.data, b.xCol, b.yCol, false);     // used to be PaneId
         if (barData != null) {
             var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height);
             b.svg = barSvg;
         }
     });
+}
 
-    // Update Gridview
+function updateGridviews(gridviews) {
+    if (gridviews.length == 0)
+        return;
     _gridviews.forEach(function (g) {
+        var gv = eval(g.name);
+        gv.PerformCallback();
+    })
+}
+
+function updateGridviewHeights(gridviews) {
+    if (gridviews.length == 0)
+        return;
+    gridviews.forEach(function (g) {
         var pane = splitterMain.GetPaneByName(g.name);
         var gv = eval(g.name);
         gv.SetHeight(pane.GetClientHeight() - 10); // leave room for header
@@ -58,21 +98,13 @@ var ExcelToJSON = function () {
         reader.onload = function (e) {
             var data = e.target.result;
             var workbook = XLSX.read(data, {
-                type: 'binary'
+                type: 'binary', cellDates: true, cellNF: false, cellText: false
             });
             workbook.SheetNames.forEach(function (sheetName) {
                 _jsonData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);   // array - _jsonData[0][column name]
-                var jsonData = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project;:'bbbb'...}, { ...}]
-                var headerNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0];
-
-                addColumnNames(headerNames);
-
-                //var canvas = ramp(_colorScaleHSL);
-                //var div = document.getElementById('divColorRampPie');
-                //div.appendChild(canvas);
-
-                //updatePaneTitle();
-
+                var jsonData = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project:'bbbb'...}, { ...}]
+                var columnNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1, dateNF: "yyyy/MM/dd" })[0]; //https://github.com/SheetJS/sheetjs/issues/841
+                columnNames.sort();
                 convertJsonToDataTable(jsonData);   // For Gridview
             })
         };
@@ -82,46 +114,6 @@ var ExcelToJSON = function () {
         reader.readAsBinaryString(file);
     };
 };
-
-// Todo: need to add column names to all drop downs
-//       need to get column type from code behind
-
-function addColumnNames(headerNames) {
-}
-
-function addColumnNames_Orig(headerNames) {
-    cbXColumnDropDown.ClearItems();
-    cbYColumnDropDown.ClearItems();
-    for (i = 0; i < headerNames.length; i++) {
-        cbXColumnDropDown.AddItem(headerNames[i], headerNames[i]);
-        cbYColumnDropDown.AddItem(headerNames[i], headerNames[i]);
-    }
-    if (headerNames != null) {
-        // Just for testing purpose
-        if (_filename.indexOf('AGWL') > -1) {
-            cbXColumnDropDown.SetSelectedIndex(0);
-            cbYColumnDropDown.SetSelectedIndex(5);
-        }
-        else if (_filename.indexOf('AWWID') > -1) {
-            cbXColumnDropDown.SetSelectedIndex(16);
-            cbYColumnDropDown.SetSelectedIndex(7);
-        }
-        else if (_filename.indexOf('WA_Licences') > -1) {
-            cbXColumnDropDown.SetSelectedIndex(0);
-            cbYColumnDropDown.SetSelectedIndex(14);
-        }
-        else {
-            cbXColumnDropDown.SetSelectedIndex(0);
-            cbYColumnDropDown.SetSelectedIndex(1);
-        }
-        // Chart Property Title Initialization
-        var xColumn = cbXColumnDropDown.GetText();
-        var yColumn = cbYColumnDropDown.GetText();
-
-        propertyTitle.SetText(xColumn + " vs " + yColumn);
-
-    }
-}
 
 // Initial loading
 // Panes already created.
@@ -137,39 +129,43 @@ function convertJsonToDataTable(json) {
         error: errorFunc
     });
 
-    function successFunc(data, status) {
+    function successFunc(data, status) {    // returns list of column name and type. DataTypes: int64, String, DateTime, Date, Double )
+        if (status != 'success') {
+            console.log("ConvertJsonToDataTable: no column names returned.");
+            return;
+        }
+        _columnNames = data;
+
         // Maps
+        var mapColNames = getLonLatColumnNames(data);
         _maps.forEach(function (m) {
-            addPointLayer(_jsonData, m.map, 'Latitude', 'Longitude');
+            addPointLayer(_jsonData, m, mapColNames.xCol, mapColNames.yCol);
         })
 
         // Gridviews
-        _gridviews.forEach(function (g) {
-            var gv = eval(g.name);
-            gv.PerformCallback();
-        })
+        updateGridviews(_gridviews)
 
-        // Graphs
+        // Pies
+        var pieColNames = getPieColNames(data);
+
         _pies.forEach(function (p) {
-            p.xCol = cbXColumnDropDown.GetText();
-            p.yCol = cbYColumnDropDown.GetText();
-            var pieData = getPieData(p.divName, _jsonData, p.xCol, p.yCol, true);     // used to be PaneId
+            var pieData = getPieData(p.divName, _jsonData, pieColNames.xCol, pieColNames.yCol, true);
             if (pieData != null) {
                 var pieSvg = drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
                 p.svg = pieSvg;
             }
+            document.getElementById(p.divName + "|Title").innerHTML = p.xCol + " vs " + p.yCol;   // title in panel
         });
-        _bars.forEach(function (b) {
-            //b.xCol = cbXColumnDropDown.GetText();
-            //b.yCol = cbYColumnDropDown.GetText();
-            b.xCol = "Applicant";
-            b.yCol = "Quantity_m3";
 
-            var barData = getBarData(b.divName, _jsonData, b.xCol, b.yCol, true);     // used to be PaneId
+        // Bars
+        var barColNames = getBarColNames(data);
+        _bars.forEach(function (b) {
+            var barData = getBarData(b.divName, _jsonData, barColNames.xCol, barColNames.yCol, true);
             if (barData != null) {
                 var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height);
                 b.svg = barSvg;
             }
+            document.getElementById(b.divName + "|Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
         });
 
         loadingPanel.Hide();
@@ -199,6 +195,54 @@ function loadExcelFile(evt) {
 
     });
     excelFile.click();
+}
+
+function getLonLatColumnNames(columnNames) {
+    if (columnNames == undefined || columnNames.length == 0)
+        return;
+
+    // get x/y column
+    var xCol = null;
+    var yCol = null;
+    for (i = 0; i < columnNames.length; i++) {
+        if (columnNames[i].Name == _lonColName)
+            xCol = columnNames[i].Name;
+        if (columnNames[i].Name == _latColName)
+            yCol = columnNames[i].Name;
+    }
+    return { xCol: xCol, yCol: yCol }
+}
+
+function getPieColNames(columnNames) {
+    if (columnNames == undefined || columnNames.length == 0)
+        return;
+
+    // xCol: String or DateTime, yCol: numbers
+    var xCol = null;
+    var yCol = null;
+    for (i = 0; i < columnNames.length; i++) {
+        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date'))
+            xCol = columnNames[i].Name;
+        if (yCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
+            yCol = columnNames[i].Name;
+    }
+    return { xCol: xCol, yCol: yCol }
+}
+
+function getBarColNames(columnNames) {
+    if (columnNames == undefined || columnNames.length == 0)
+        return;
+
+    // xCol: String or DateTime, yCol: numbers
+    var xCol = null;
+    var yCol = null;
+    for (i = 0; i < columnNames.length; i++) {
+        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date'))
+            xCol = columnNames[i].Name;
+        if (yCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
+            yCol = columnNames[i].Name;
+    }
+    return { xCol: xCol, yCol: yCol }
 }
 
 // This function will be used for all 3 panels (Map, Graph and Gridview)
@@ -242,6 +286,77 @@ function btnAddNewPaneClick(s, e) {
     //});
 }
 
+//
+// Popup property callback
+//
+function callbackPopupGraphProperty_OnBeginCallback(s, e) {
+    popupGraphProperty.Show();
+
+}
+
+function callbackPopupGraphProperty_OnEndCallback(s, e) {
+    var id = _activePropertyName.split('|')[0];
+    if (id.toUpperCase().indexOf('PIE') > -1) {
+        if (_columnNames == undefined || _columnNames.length == 0) {
+            console.log("_columnNames: null or empty.")
+            return;
+        }
+        _columnNames.forEach(function (c) {
+            if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
+                cbPieXColumn.AddItem(c.Name);
+            if (c.Type == 'Int64' || c.Type == 'Double')
+                cbPieYColumn.AddItem(c.Name);
+        });
+
+        var canvas = ramp(_colorScaleHSL);
+        var div = document.getElementById('divColorRampPie');
+        div.appendChild(canvas);
+
+        var pie = getPie(id);
+        _activePie = pie;
+        document.getElementById(pie.divName + "|Title").innerHTML = pie.xCol + " vs " + pie.yCol;   // title in panel
+        propertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol); // title in property
+
+        chkPiePercentageLabel.SetChecked(pie.isPercentage);
+        chkPieYValueLabel.SetChecked(pie.isYValue);
+        chkPieXValueLabel.SetChecked(pie.isXValue);
+        chkPieLabelClicked();
+
+        cbPieXColumn.SetValue(pie.xCol);
+        cbPieYColumn.SetValue(pie.yCol);
+        radioColorRampPie.SetValue(pie.colorRamp);
+        radioColorRampPieClicked();
+    }
+
+    if (id.toUpperCase().indexOf('BAR') > -1) {
+        _columnNames.forEach(function (c) {
+            if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
+                cbBarXColumn.AddItem(c.Name);
+            if (c.Type == 'Int64' || c.Type == 'Double')
+                lbBarYColumn.AddItem(c.Name);
+        });
+
+        var bar = getBar(id);
+        _activeBar = bar;
+        cbBarXColumn.SetValue(bar.xCol);
+        lbBarYColumn.SetValue(bar.yCol);
+        document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
+        propertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
+    }
+
+    //percentageLabel.SetChecked(pie.isPercentage);
+    //yValueLabel.SetChecked(pie.isYValue);
+    //xValueLabel.SetChecked(pie.isXValue);
+    //cbPieXColumn.SetValue(pie.xCol);
+    //cbPieYColumn.SetValue(pie.yCol);
+    //radioColorRampPie.SetValue(pie.colorRamp);
+
+
+}
+
+//
+// Right panel(main) callback
+//
 function callbackRightPanelPartial_OnBeginCallback(s, e) {
     e.customArgs["OnBeginCallback"] = "Hello World";
 }

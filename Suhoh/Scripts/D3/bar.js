@@ -32,9 +32,12 @@ function getBarData(paneId, jsonData, xCol, yCol, isInitial) {
     var height = bGraph.GetClientHeight();
     var min = Math.min(width, height);
 
+    var bar = getBar(paneId);
+    bar.xCol = xCol;
+    bar.yCol = yCol;
     var xyArray = [];
     if (!isInitial) {
-        xyArray = getBar(paneId).data;
+        xyArray = bar.data;
     }
     else {
         var xy = groupBy(jsonData, xCol, yCol);
@@ -133,7 +136,7 @@ function drawBar(divName, data, width, height) {
             barTooltip.style("display", "none");
         });
 
-    //var yColumn = cbYColumnDropDown.GetText();
+    //var yColumn = cbPieYColumn.GetText();
     var yColumn = "Quantity_m3";
     
     var legend = svg.selectAll(".legend")

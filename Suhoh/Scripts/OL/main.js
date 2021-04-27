@@ -2,14 +2,15 @@
 // OpenLayers main functions
 //
 
-
-var _maps = [];  // { 'map': map, 'divName': divName }
+const _lonColName = "Longitude";
+const _latColName = "Latitude";
+var _maps = [];  // { 'divName': divName, 'map': map, 'layer': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude }
 var _scaleLine;
 
 function getMap(divName) {
     _maps.forEach(function (m) {
         if (m.divName == divName)
-            return m.map;
+            return m;
     })
     return null;
 }
@@ -44,7 +45,7 @@ function initMap(divMap) {
         })
     });
 
-    _maps.push({ 'map': map, 'divName': divMap });
+    _maps.push({ 'divName': divMap, 'map': map, 'layer': null, 'data': null, 'xCol':null, 'yCol': null });
 }
 
 function btnMapMaximizeClick() {

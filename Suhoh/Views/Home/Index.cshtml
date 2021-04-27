@@ -44,51 +44,8 @@
             //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
             //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
 
-            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPaneProperty', '', true); }";
+            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupAddNewPane', '', true); }";
         }).GetHtml()
-</div>
-
-@*Graph Property popup*@
-<div>
-    @Html.DevExpress().PopupControl(
-        settings =>
-        {
-            settings.Name = "popupPaneProperty";
-            settings.Width = 250;
-            settings.Height = 370;
-            settings.AllowDragging = true;
-            settings.CloseAction = CloseAction.CloseButton;
-            settings.CloseOnEscape = true;
-            settings.PopupAnimationType = AnimationType.None;
-            settings.HeaderText = "Property";
-
-
-            settings.ShowPinButton = true;
-            settings.ShowCloseButton = true;
-            settings.ShowCollapseButton = true;
-
-            settings.Modal = false;
-
-            settings.PopupAnimationType = AnimationType.Slide;
-
-            settings.ResizingMode = ResizingMode.Live;
-            settings.AllowResize = true;
-            settings.ShowSizeGrip = ShowSizeGrip.True;
-            settings.ShowFooter = false;
-
-            settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
-            settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
-            settings.SetContent(() =>
-            {
-                //Html.RenderPartial("D3GraphProperty", Model);
-                Html.RenderPartial("D3BarProperty", Model);
-            });
-
-            //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
-            //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
-
-        settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPaneProperty', '', true); }";
-    }).GetHtml()
 </div>
 
 @*OpenLayer Property popup*@
@@ -131,6 +88,48 @@
 
             settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupOpenLayerProperty', '', true); }";
         }).GetHtml()
+</div>
+
+<div>
+    @Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "popupGraphProperty";
+        settings.Width = 250;
+        settings.Height = 370;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = "Property";
+
+
+        settings.ShowPinButton = true;
+        settings.ShowCloseButton = true;
+        settings.ShowCollapseButton = true;
+
+        settings.Modal = false;
+
+        settings.PopupAnimationType = AnimationType.Slide;
+
+        settings.ResizingMode = ResizingMode.Live;
+        settings.AllowResize = true;
+        settings.ShowSizeGrip = ShowSizeGrip.True;
+        settings.ShowFooter = false;
+
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+        settings.SetContent(() =>
+        {
+            Html.RenderPartial("CallbackPopupGraphProperty", Model);
+        });
+
+        //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
+        //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
+
+        settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupGraphProperty', '', true); }";
+    }).GetHtml()
+
 </div>
 
 <div>

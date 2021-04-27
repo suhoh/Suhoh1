@@ -11,11 +11,11 @@
                 @Html.DevExpress().TextBoxFor(model => model.D3GraphTitleProperty,
                           settings =>
                           {
-                              settings.Name = "propertyTitle";
+                              settings.Name = "propertyPieTitle";
                               settings.Width = 240;
                               settings.Text = "Graph Title";
                               settings.ControlStyle.CssClass = "D3GraphtitlePropertyBox";
-                              settings.Properties.ClientSideEvents.KeyUp = "tbPropertyTitleKeyUp";
+                              settings.Properties.ClientSideEvents.KeyUp = "tbPiePropertyTitleKeyUp";
                           }
                           ).GetHtml()
             </th>
@@ -35,7 +35,7 @@
                 @Html.DevExpress().CheckBoxFor(settings => Model.ChkPercentageLabel,
                     settings =>
                     {
-                        settings.Name = "percentageLabel";
+                        settings.Name = "chkPiePercentageLabel";
                         settings.Text = "Percentage";
                         settings.Properties.ClientSideEvents.CheckedChanged = "chkPieLabelClicked";
                     }).GetHtml()
@@ -44,7 +44,7 @@
                 @Html.DevExpress().CheckBoxFor(settings => Model.ChkYValueLabel,
                     settings =>
                     {
-                        settings.Name = "yValueLabel";
+                        settings.Name = "chkPieYValueLabel";
                         settings.Text = "Y Value";
                         settings.Properties.ClientSideEvents.CheckedChanged = "chkPieLabelClicked";
                     }).GetHtml()
@@ -53,7 +53,7 @@
                 @Html.DevExpress().CheckBoxFor(settings => Model.ChkXValueLabel,
                     settings =>
                     {
-                        settings.Name = "xValueLabel";
+                        settings.Name = "chkPieXValueLabel";
                         settings.Text = "X Value";
                         settings.Properties.ClientSideEvents.CheckedChanged = "chkPieLabelClicked";
                     }).GetHtml()
@@ -77,7 +77,7 @@
                 @Html.DevExpress().ComboBoxFor(model => model.DdXColumn,
                     settings =>
                     {
-                        settings.Name = "cbXColumnDropDown";
+                        settings.Name = "cbPieXColumn";
                         settings.Width = 167;
                         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
                         settings.Properties.DropDownWidth = 165;
@@ -93,7 +93,7 @@
                 @Html.DevExpress().ComboBoxFor(model => model.DdYColumn,
                     settings =>
                     {
-                        settings.Name = "cbYColumnDropDown";
+                        settings.Name = "cbPieYColumn";
                         settings.Width = 167;
                         settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
                         settings.Properties.DropDownWidth = 165;

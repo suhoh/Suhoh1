@@ -41,9 +41,12 @@ namespace Suhoh.Controllers
             return View();
         }
 
-        public ActionResult D3GraphProperty(ViewModel vm)
+        public ActionResult CallbackPopupGraphProperty(ViewModel vm, string sender)
         {
-            return View();
+            ViewModel viewModel = (ViewModel)Session["viewModel"];
+            viewModel.ActiveProperty = sender;
+            Session["viewModel"] = viewModel;
+            return PartialView("CallbackPopupGraphProperty", viewModel);
         }
 
         public ActionResult DxGridview(ViewModel vm)
@@ -72,6 +75,7 @@ namespace Suhoh.Controllers
             vm.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(jsonPanels);
             vm.ActivePanelSettings = vm.MainPanels.Count;
 
+            Session["viewModel"] = vm;
             return PartialView("RightPanelPartial", vm);
         }
 
@@ -83,8 +87,13 @@ namespace Suhoh.Controllers
             vm.DxGridview = (DataTable)JsonConvert.DeserializeObject(json, (typeof(DataTable)),
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore });
 
+            vm.ColumnInfos.Clear();
+            foreach (DataColumn c in vm.DxGridview.Columns)
+                vm.ColumnInfos.Add(new ColumnInfo { Name = c.ColumnName, Type = c.DataType.Name });
+            vm.ColumnInfos.Sort((a1, a2) => a1.Name.CompareTo(a2.Name));
+
             Session["viewModel"] = vm;
-            return Json("Success", JsonRequestBehavior.AllowGet);
+            return Json(vm.ColumnInfos, JsonRequestBehavior.AllowGet);
         }
 
     }

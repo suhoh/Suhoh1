@@ -46,8 +46,8 @@ function showHideLegend(s, e) {
         return;
 
     pie.isLegend = !pie.isLegend;
-    pie.xCol = cbXColumnDropDown.GetText();
-    pie.yCol = cbYColumnDropDown.GetText();
+    pie.xCol = cbPieXColumn.GetText();
+    pie.yCol = cbPieYColumn.GetText();
 
     var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
     if (pieData == null)
@@ -107,118 +107,111 @@ function interpolateColors(dataLength, colorScale, colorRangeInfo) {
 }
 
 function chkPieLabelClicked(s, e) {
-    var isPercentageLabel = _activePie.isPercentage = eval("percentageLabel").GetChecked();
-    var isYValueLabel = _activePie.isYValue =  eval("yValueLabel").GetChecked();
-    var isXValueLabel = _activePie.isXValue = eval("xValueLabel").GetChecked();
+    var pie = getPie(_activePie.divName);
+    var isPercentageLabel, isYValueLabel, isXValueLabel;
+
+    if (s == undefined) {
+        isPercentageLabel = pie.isPercentage;
+        isYValueLabel = pie.isYValue;
+        isXValueLabel = pie.isXValue;
+    }
+    else {
+        isPercentageLabel = pie.isPercentage = eval("chkPiePercentageLabel").GetChecked();
+        isYValueLabel = pie.isYValue = eval("chkPieYValueLabel").GetChecked();
+        isXValueLabel = pie.isXValue = eval("chkPieXValueLabel").GetChecked();
+    }
 
     if (isYValueLabel && !isXValueLabel && !isPercentageLabel) {
-        _activePie.textLabel
+        pie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
+                if ((Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) > 5)
                     return (d.data.Y).toFixed(1)
             })
             .attr("display", "block");
     }
     else if (isXValueLabel && !isYValueLabel && !isPercentageLabel) {
-        _activePie.textLabel
+        pie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
+                if ((Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) > 5)
                     return d.data.X
             })
             .attr("display", "block");
     }
     else if (isPercentageLabel && !isXValueLabel && !isYValueLabel) {
-        _activePie.textLabel
+        pie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
-                    return (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%"
+                if ((Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) > 5)
+                    return (Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) + "%"
             })
             .attr("display", "block");
     }
     else if (isPercentageLabel && isYValueLabel && !isXValueLabel) {
-        _activePie.textLabel
+        pie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
-                    return (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%" + ")"
+                if ((Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) > 5)
+                    return (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) + "%" + ")"
             })
             .attr("display", "block");
     }
     else if (isPercentageLabel && isXValueLabel && !isYValueLabel) {
-        _activePie.textLabel
+        pie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
-                    return d.data.X + ", " + "(" + (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%" + ")"
+                if ((Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) > 5)
+                    return d.data.X + ", " + "(" + (Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) + "%" + ")"
             })
             .attr("display", "block");
     }
     else if (isYValueLabel && isXValueLabel && !isPercentageLabel) {
-        _activePie.textLabel
+        pie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
+                if ((Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) > 5)
                     return d.data.X + ", " + (d.data.Y).toFixed(1)
             })
             .attr("display", "block");
     }
     else if (isPercentageLabel && isYValueLabel && isXValueLabel) {
-        _activePie.textLabel
+        pie.textLabel
             .text(function (d) {
-                if ((Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) > 5)
-                    return d.data.X + ", " + (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / _activePie.sum) * 100)).toFixed(1) + "%" + ")"
+                if ((Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) > 5)
+                    return d.data.X + ", " + (d.data.Y).toFixed(1) + ", " + "(" + (Math.round((d.data.Y / pie.sum) * 100)).toFixed(1) + "%" + ")"
             })
             .attr("display", "block");
     }
     else {
-        _activePie.textLabel.attr("display", "none");
+        pie.textLabel.attr("display", "none");
     }
 
 }
 
 function showPropertyPopup(s) {
-    var id = s.id.split('|')[0];
-    var graph = null;
-    if (id.toUpperCase().indexOf('PIE') > -1) {
-        graph = getPie(id);
-    }
-    if (id.toUpperCase().indexOf('BAR') > -1) {
-        graph = getBar(id);
-    }
-    if (graph == null)
-        return;
-
-    //propertyTitle.SetText(pie.xCol + " vs " + pie.yCol);
-    propertyBarTitle.SetText(graph.xCol + " vs " + graph.yCol);
-
-    //percentageLabel.SetChecked(pie.isPercentage);
-    //yValueLabel.SetChecked(pie.isYValue);
-    //xValueLabel.SetChecked(pie.isXValue);
-    //cbXColumnDropDown.SetValue(pie.xCol);
-    //cbYColumnDropDown.SetValue(pie.yCol);
-    //radioColorRampPie.SetValue(pie.colorRamp);
-
-    _activePie = graph;   // set active pie
-    _activeBar = graph;
-
-    popupPaneProperty.Show();
+    // callback begin/end functions are in MainScript.js
+    _activePropertyName = s.id; // Panel2Bar1|Property
+    callbackPopupGraphProperty.PerformCallback({
+        'sender': s.id      
+    });
 }
 
-function tbPropertyTitleKeyUp(s, e) {
+function tbPiePropertyTitleKeyUp(s, e) {
     var caller;
     if (s.name == undefined)    // called manually
         caller = s + "|Title";
     else
-        caller = s.name;
-    document.getElementById(caller).innerHTML = propertyTitle.GetText();
+        caller = _activePie.divName + "|Title";
+
+    if (typeof propertyPieTitle !== "undefined" && ASPxClientUtils.IsExists(propertyPieTitle))
+        document.getElementById(caller).innerHTML = propertyPieTitle.GetText();
 }
 
 function cbXYColumnDropDownChanged(s, e) {
-    _activePie.xCol = cbXColumnDropDown.GetText();
-    _activePie.yCol = cbYColumnDropDown.GetText();
+    var pie = getPie(_activePie.divName);
+    pie.xCol = cbPieXColumn.GetText();
+    pie.yCol = cbPieYColumn.GetText();
 
-    var pieData = getPieData(_activePie.divName, _jsonData, _activePie.xCol, _activePie.yCol, true);
-    drawPie(_activePie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, true);
+    drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 
-    propertyTitle.SetText(_activePie.xCol + " vs " + _activePie.yCol);
-    document.getElementById(_activePie.divName + "|Title").innerHTML = _activePie.xCol + " vs " + _activePie.yCol;
+    propertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol);
+    document.getElementById(pie.divName + "|Title").innerHTML = pie.xCol + " vs " + pie.yCol;
 }
 
 // Color Ramp
@@ -242,21 +235,23 @@ function ramp(color, n = 512) {
 }
 
 function radioColorRampPieClicked(s, e) {
-    _activePie.colorRamp = eval("radioColorRampPie").GetValue();
+    var pie = getPie(_activePie.divName);
+    pie.colorRamp = eval("radioColorRampPie").GetValue();
+
     var canvas;
-    if (_activePie.colorRamp == 1) {
+    if (pie.colorRamp == 1) {
         canvas = ramp(_colorScaleHSL);
     }
-    else if (_activePie.colorRamp == 2) {
+    else if (pie.colorRamp == 2) {
         canvas = ramp(_colorScaleRainbow);
     }
-    else if (_activePie.colorRamp == 3) {
+    else if (pie.colorRamp == 3) {
         canvas = ramp(_colorScaleViridis);
     }
-    else if (_activePie.colorRamp == 4) {
+    else if (pie.colorRamp == 4) {
         canvas = ramp(_colorScaleCool);
     }
-    else if (_activePie.colorRamp == 5) {
+    else if (pie.colorRamp == 5) {
         canvas = ramp(_colorScaleHcl);
     }
     else {
@@ -265,8 +260,9 @@ function radioColorRampPieClicked(s, e) {
     var div = document.getElementById('divColorRampPie');
     div.appendChild(canvas);
 
-    var pieData = getPieData(_activePie.divName, _jsonData, _activePie.xCol, _activePie.yCol, true);
-    drawPie(_activePie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    var pieData = getPieData(pie.divName, pie.data, pie.xCol, pie.yCol, false);
+    drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    chkPieLabelClicked();
 }
 
 // bar chart
@@ -275,14 +271,15 @@ function chkBarLabelClicked(s, e) {
 }
 
 function cbBarXYColumnChanged(s, e) {
-    _activeBar.xCol = cbBarXColumn.GetText();
-    _activeBar.yCol = lbBarYColumn.GetText();
+    var bar = getBar(_activeBar.divName);
+    bar.xCol = cbBarXColumn.GetText();
+    bar.yCol = lbBarYColumn.GetText();
 
-    var barData = getBarData(_activeBar.divName, _jsonData, _activeBar.xCol, _activeBar.yCol, false);
-    drawBar(_activeBar.divName, barData.barData, barData.width, barData.height);
+    var barData = getBarData(bar.divName, bar.data, bar.xCol, bar.yCol, false);
+    drawBar(bar.divName, barData.barData, barData.width, barData.height);
 
-    propertyBarTitle.SetText(_activeBar.xCol + " vs " + _activeBar.yCol);
-    document.getElementById(_activeBar.divName + "|Title").innerHTML = _activeBar.xCol + " vs " + _activeBar.yCol;
+    propertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
+    document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
 }
 
 function chkBarTransposeClicked(s, e) {
@@ -291,9 +288,11 @@ function chkBarTransposeClicked(s, e) {
 
 function tbBarPropertyTitleKeyUp(s, e) {
     var caller;
-    if (s.name == undefined)    // called manually
+    if (s.name != undefined)    // called manually
         caller = s + "|Title";
     else
-        caller = s.name;
-    document.getElementById(caller).innerHTML = propertyBarTitle.GetText();
+        caller = s;
+
+    if (typeof propertyBarTitle !== "undefined" && ASPxClientUtils.IsExists(propertyBarTitle))
+        document.getElementById(caller).innerHTML = propertyBarTitle.GetText();
 }

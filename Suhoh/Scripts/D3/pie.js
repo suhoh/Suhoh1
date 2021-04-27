@@ -1,8 +1,7 @@
 ﻿//
 // D3 pie chart functions
 //
-// paneName = divName
-// { 'data': data, 'svg': svg, 'sum': sum, 'textLabel': textLabel, 'colorRamp': colorRamp, 'isLabel': isLabel }
+
 var _pies = [];     
 var _activePie;
 
@@ -13,7 +12,7 @@ var _activePie;
 
 function initPie(divName) {
     _pies.push({
-        'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'sum': null, 'isLegend': true,
+        'title': null, 'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'sum': null, 'isLegend': true,
         'textLabel': null, 'colorRamp': 1, 'isLabel': false,
         'isPercentage': false, 'isYValue': false, 'isXValue': false
     })
@@ -36,9 +35,12 @@ function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
     var height = pGraph.GetClientHeight();
     var min = Math.min(width, height);
 
+    var pie = getPie(paneId);
+    pie.xCol = xCol;
+    pie.yCol = yCol;
     var xyArray = [];
     if (!isInitial) {
-        xyArray = getPie(paneId).data;
+        xyArray = pie.data;
     }
     else {
         var xy = groupBy(jsonData, xCol, yCol);
@@ -51,8 +53,7 @@ function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
 }
 
 function drawPie(divName, data, width, height, radius) {
-
-    tbPropertyTitleKeyUp(divName);
+    tbPiePropertyTitleKeyUp(divName);
 
     if (data == undefined)
         return null;
@@ -211,8 +212,6 @@ function drawPie(divName, data, width, height, radius) {
             .style("text-anchor", "middle")
             .style("font-size", 12)
             .attr("display", "none");
-
-    //chkPieLabelClicked();
 
     var legend = svg.selectAll(".legend")
         .data(data)

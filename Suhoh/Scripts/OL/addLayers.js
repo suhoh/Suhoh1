@@ -2,15 +2,22 @@
 // Open layer functions - addLayers
 //
 
-function addPointLayer(jsonData, map, latColName, lonColName) {
+function addPointLayer(jsonData, map, xCol, yCol) {
     if (jsonData == null) {
-        alert('Error - addPointLayer');
+        console.log('addPointLayer: no data available.');
         return;
     }
+    if (map.map.layer == undefined)
+        map.map.removeLayer(map.map.layer);
 
+    if (xCol != undefined)
+        map.xCol = xCol;
+    if (yCol != undefined)
+        map.yCol = yCol;
+    map.data = jsonData;
     var symbols = [];
     for (var i = 0; i < jsonData.length; i++) {
-        var symbol = getSymbol(jsonData[i][lonColName], jsonData[i][latColName]);
+        var symbol = getSymbol(jsonData[i][map.xCol], jsonData[i][map.yCol]);
         symbols.push(symbol);
     }
 
@@ -23,8 +30,9 @@ function addPointLayer(jsonData, map, latColName, lonColName) {
         }),
         name: 'testLayer'
     });
-    map.addLayer(layer);
-    fitToLayer(map, layer);
+    map.layer = layer;
+    map.map.addLayer(layer);
+    fitToLayer(map.map, layer);
 }
 
 function getSymbol(x, y) {

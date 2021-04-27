@@ -3,171 +3,101 @@
 
 @*@Html.Raw(File.ReadAllText(Server.MapPath(@"~/App_Data/Overview.html")))*@
 
-@Html.DevExpress().Panel(pSettings =>
-{
-    pSettings.Name = "mainPanel";
-    //pSettings.FixedPosition = PanelFixedPosition.WindowRight;
-    pSettings.Collapsible = false;
-    //pSettings.SettingsAdaptivity.CollapseAtWindowInnerWidth = 960;
-    pSettings.Width = Unit.Percentage(100);
-    pSettings.SetContent(() =>
+@Html.DevExpress().Panel(
+    pSettings =>
     {
-        @Html.DevExpress().Splitter(settings =>
+        pSettings.Name = "mainPanel";
+        //pSettings.FixedPosition = PanelFixedPosition.WindowRight;
+        pSettings.Collapsible = false;
+        //pSettings.SettingsAdaptivity.CollapseAtWindowInnerWidth = 960;
+        pSettings.Width = Unit.Percentage(100);
+        pSettings.SetContent(() =>
         {
-            settings.Name = "splitterMain";
-            settings.ShowCollapseBackwardButton = true;
-            settings.ShowCollapseForwardButton = true;
-            settings.ShowSeparatorImage = true;
-            settings.Orientation = Orientation.Vertical;
-            settings.AllowResize = true;
-            settings.SeparatorVisible = true;
-            settings.FullscreenMode = true;
-
-            //settings.ControlStyle.CssClass = "rightPanelPartial";
-
-            // 1 or 2 panels
-            if (Model.ActivePanelSettings <= 2)
+            @Html.DevExpress().Splitter(settings =>
             {
-                settings.Orientation = Orientation.Horizontal;
-                foreach (var mp in Model.MainPanels)
+                settings.Name = "splitterMain";
+                settings.ShowCollapseBackwardButton = true;
+                settings.ShowCollapseForwardButton = true;
+                settings.ShowSeparatorImage = true;
+                settings.Orientation = Orientation.Vertical;
+                settings.AllowResize = true;
+                settings.SeparatorVisible = true;
+                settings.FullscreenMode = true;
+
+                settings.ClientSideEvents.PaneResized = "splitterMainResized";
+
+                //settings.ControlStyle.CssClass = "rightPanelPartial";
+
+                // 1 or 2 panels
+                if (Model.ActivePanelSettings <= 2)
                 {
+                    settings.Orientation = Orientation.Horizontal;
+                    foreach (var mp in Model.MainPanels)
+                    {
+                        settings.Panes.Add(panel1 =>
+                        {
+                            string mainName = mp.Name;
+                            foreach (var type in mp.Type)
+                            {
+                                panel1.Panes.Add(pane =>
+                                {
+                                    pane.Name = mainName + type;    // Panel1Map1
+                                    pane.SetContent(() =>
+                                    {
+                                        RenderMyPartial(pane.Name, type);
+                                    });
+                                });
+                            }
+                        });
+                    }
+                }
+                // 3 or 4 panels
+                if (Model.ActivePanelSettings >= 3 && Model.ActivePanelSettings <= 4)
+                {
+                    settings.Orientation = Orientation.Vertical;
                     settings.Panes.Add(panel1 =>
                     {
-                        string mainName = mp.Name;
-                        foreach (var type in mp.Type)
+                        for (int i = 0; i < 2; i++)
                         {
-                            panel1.Panes.Add(pane =>
+                            string mainName = Model.MainPanels[i].Name;
+                            foreach (var type in Model.MainPanels[i].Type)
                             {
-                                pane.Name = mainName + type;    // Panel1Map1
-                                pane.SetContent(() =>
+                                panel1.Panes.Add(pane =>
                                 {
-                                    RenderMyPartial(pane.Name, type);
+                                    pane.Name = mainName + type;    // Panel1Map1
+                                    pane.SetContent(() =>
+                                    {
+                                        RenderMyPartial(pane.Name, type);
+                                    });
+
                                 });
-                            });
+                            }
                         }
                     });
-                }
-            }
-            // 3 or 4 panels
-            if (Model.ActivePanelSettings >= 3 && Model.ActivePanelSettings <= 4 )
-            {
-                settings.Orientation = Orientation.Vertical;
-                settings.Panes.Add(panel1 =>
-                {
-                    for (int i = 0; i < 2; i++)
+
+                    settings.Panes.Add(panel2 =>
                     {
-                        string mainName = Model.MainPanels[i].Name;
-                        foreach (var type in Model.MainPanels[i].Type)
+                        for (int i = 2; i < Model.MainPanels.Count; i++)
                         {
-                            panel1.Panes.Add(pane =>
+                            string mainName = Model.MainPanels[i].Name;
+                            foreach (var type in Model.MainPanels[i].Type)
                             {
-                                pane.Name = mainName + type;    // Panel1Map1
-                                pane.SetContent(() =>
+                                panel2.Panes.Add(pane =>
                                 {
-                                    RenderMyPartial(pane.Name, type);
+                                    pane.Name = mainName + type;    // Panel1Map1
+                                    pane.SetContent(() =>
+                                    {
+                                        RenderMyPartial(pane.Name, type);
+                                    });
+
                                 });
-
-                            });
-                        }
-                    }
-                });
-
-                settings.Panes.Add(panel2 =>
-                {
-                    for (int i = 2; i < Model.MainPanels.Count; i++)
-                    {
-                        string mainName = Model.MainPanels[i].Name;
-                        foreach (var type in Model.MainPanels[i].Type)
-                        {
-                            panel2.Panes.Add(pane =>
-                            {
-                                pane.Name = mainName + type;    // Panel1Map1
-                                pane.SetContent(() =>
-                                {
-                                    RenderMyPartial(pane.Name, type);
-                                });
-
-                            });
-                        }
-                    }
-                });
-            }
-
-            settings.ClientSideEvents.PaneResized = "splitterMainResized";
-
-            //    settings.Panes.Add(panes =>
-            //    {
-            //        panes.Panes.Add(mapPane =>
-            //        {
-            //            mapPane.Name = "paneMap";
-            //            mapPane.SetContent(() =>
-            //            {
-            //                Html.RenderPartial("OpenLayerMap", Model);
-            //            });
-
-            //        });
-            //        panes.Panes.Add(graphPane =>
-            //        {
-            //            graphPane.Name = "paneGraph";
-            //            graphPane.SetContent(() =>
-            //            {
-            //                Html.RenderPartial("D3Graph", Model);
-            //            });
-            //        });
-            //    });
-            //    settings.Panes.Add(gridviewPaneMain =>
-            //    {
-            //        gridviewPaneMain.Size = Unit.Percentage(35);
-            //        gridviewPaneMain.Panes.Add(gridviewPane =>
-            //        {
-            //            gridviewPane.Name = "paneGridview";
-            //            gridviewPane.SetContent(() =>
-            //            {         // can't add extra div as part of Gridview. Had to add here
-            //                ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
-            //                ViewContext.Writer.Write("<button id='btnGridviewMaximize' type='button' class='btnGridviewMaximize' title='Maximize'></button>");
-            //                ViewContext.Writer.Write("</div>");
-            //                ViewContext.Writer.Write("<div class='divGridviewLegend'>");
-            //                ViewContext.Writer.Write("<button id='btnGridviewLegend' type='button' class='btnGridviewLegend' title='Legend' onclick=''></button>");
-            //                ViewContext.Writer.Write("</div>");
-            //                ViewContext.Writer.Write("<div class='divGridviewProperty'>");
-            //                ViewContext.Writer.Write("<button id='btnGridviewProperty' type='button' class='btnGridviewProperty' title='Property' onclick='addNewPane(\"gridview\")'></button>");
-            //                ViewContext.Writer.Write("</div>");
-            //                ViewContext.Writer.Write("<div class='divGridviewSetting'>");
-            //                ViewContext.Writer.Write("<button id='btnGridviewClose' type='button' class='btnGridviewClose' title='Close'></button>");
-            //                ViewContext.Writer.Write("</div>");
-            //                Html.RenderAction("DxGridview", Model);
-            //            });
-            //        });
-            //        if (ViewBag.IsChangePanels == true)
-            //        {
-            //            ViewData["RightPanelPartialCallback"] = false;
-            //            gridviewPaneMain.Panes.Add(gridviewPane2 =>
-            //            {
-            //                gridviewPane2.Name = "paneGridview2";
-            //                //gridviewPane2.Size = Unit.Percentage(35);
-            //                gridviewPane2.SetContent(() =>
-            //                {
-            //                    ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
-            //                    ViewContext.Writer.Write("<button id='btnGridviewMaximize' type='button' class='btnGridviewMaximize' title='Maximize'></button>");
-            //                    ViewContext.Writer.Write("</div>");
-            //                    ViewContext.Writer.Write("<div class='divGridviewLegend'>");
-            //                    ViewContext.Writer.Write("<button id='btnGridviewLegend' type='button' class='btnGridviewLegend' title='Legend' onclick=''></button>");
-            //                    ViewContext.Writer.Write("</div>");
-            //                    ViewContext.Writer.Write("<div class='divGridviewProperty'>");
-            //                    ViewContext.Writer.Write("<button id='btnGridviewProperty' type='button' class='btnGridviewProperty' title='Property' onclick='addNewPane(\"gridview\")'></button>");
-            //                    ViewContext.Writer.Write("</div>");
-            //                    ViewContext.Writer.Write("<div class='divGridviewSetting'>");
-            //                    ViewContext.Writer.Write("<button id='btnGridviewClose' type='button' class='btnGridviewClose' title='Close'></button>");
-            //                    ViewContext.Writer.Write("</div>");
-            //                });
-            //            });
-            //        }
-            //    });
-
-            //    settings.ClientSideEvents.PaneResized = "splitterMainResized";
-        }).GetHtml();
-    });
-}).GetHtml()
+                            };
+                        };
+                    });
+                };
+            }).GetHtml();
+        });
+    }).GetHtml();
 
 @functions
 {
@@ -199,6 +129,5 @@
         }
 
         //ViewContext.Writer.Write("<h1>" + paneName + "</h1>");
-
     }
 }
