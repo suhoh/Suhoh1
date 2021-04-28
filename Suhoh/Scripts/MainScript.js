@@ -4,6 +4,7 @@
 //
 
 var _jsonData;              // loaded data in JSON
+var _jsonDataGridview       // stringify data for only Gridview
 var _columnNames;           // loaded column names    
 var _filename;              // loaded filename
 var _activePropertyName     // currently active property when clicked from panel
@@ -70,6 +71,7 @@ function updateGridviews(gridviews) {
     _gridviews.forEach(function (g) {
         var gv = eval(g.name);
         gv.PerformCallback();
+        document.getElementById(g.name + "|Title").innerHTML = _filename;
     })
 }
 
@@ -98,14 +100,15 @@ var ExcelToJSON = function () {
         reader.onload = function (e) {
             var data = e.target.result;
             var workbook = XLSX.read(data, {
-                type: 'binary', cellDates: true, cellNF: false, cellText: false
+                type: 'binary', cellDates: true, cellText: false
             });
-            workbook.SheetNames.forEach(function (sheetName) {
-                _jsonData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);   // array - _jsonData[0][column name]
-                var jsonData = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project:'bbbb'...}, { ...}]
-                var columnNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1, dateNF: "yyyy/MM/dd" })[0]; //https://github.com/SheetJS/sheetjs/issues/841
+            workbook.SheetNames.forEach(function (sheetName) {  // https://github.com/SheetJS/sheetjs/issues/841
+                _jsonData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName], { raw: true, dateNF: 'yyyy-mm-dd' });   // array - _jsonData[0][column name]
+                //_jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { raw: true, dateNF: 'yyyy-mm-dd' });   // array - _jsonData[0][column name]
+                _jsonDataGridview = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project:'bbbb'...}, { ...}]
+                var columnNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0]; 
                 columnNames.sort();
-                convertJsonToDataTable(jsonData);   // For Gridview
+                convertJsonToDataTable(_jsonData, _jsonDataGridview);   // For Gridview
             })
         };
         reader.onerror = function (ex) {
@@ -118,12 +121,17 @@ var ExcelToJSON = function () {
 // Initial loading
 // Panes already created.
 // Ajax: convert Json to DataTable and will show in Gridview
-function convertJsonToDataTable(json) {
+function convertJsonToDataTable(jsonData, jsonDataGridview) {
+    if (jsonData == undefined || jsonDataGridview == undefined) {
+        console.log("convertJsonToDataTable: jsonData or jsonDataGridview is null.");
+        return;
+    }
+
     var url = "Home/ConvertJsonToDataTable"
     $.ajax({
         type: "POST",
         url: url,
-        data: { 'json': json },
+        data: { 'json': jsonDataGridview },
         dataType: "json",
         success: successFunc,
         error: errorFunc
@@ -139,7 +147,7 @@ function convertJsonToDataTable(json) {
         // Maps
         var mapColNames = getLonLatColumnNames(data);
         _maps.forEach(function (m) {
-            addPointLayer(_jsonData, m, mapColNames.xCol, mapColNames.yCol);
+            addPointLayer(jsonData, m, mapColNames.xCol, mapColNames.yCol);
         })
 
         // Gridviews
@@ -147,9 +155,8 @@ function convertJsonToDataTable(json) {
 
         // Pies
         var pieColNames = getPieColNames(data);
-
         _pies.forEach(function (p) {
-            var pieData = getPieData(p.divName, _jsonData, pieColNames.xCol, pieColNames.yCol, true);
+            var pieData = getPieData(p.divName, jsonData, pieColNames.xCol, pieColNames.yCol, true);
             if (pieData != null) {
                 var pieSvg = drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
                 p.svg = pieSvg;
@@ -160,7 +167,7 @@ function convertJsonToDataTable(json) {
         // Bars
         var barColNames = getBarColNames(data);
         _bars.forEach(function (b) {
-            var barData = getBarData(b.divName, _jsonData, barColNames.xCol, barColNames.yCol, true);
+            var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, true);
             if (barData != null) {
                 var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height);
                 b.svg = barSvg;
@@ -291,7 +298,6 @@ function btnAddNewPaneClick(s, e) {
 //
 function callbackPopupGraphProperty_OnBeginCallback(s, e) {
     popupGraphProperty.Show();
-
 }
 
 function callbackPopupGraphProperty_OnEndCallback(s, e) {
@@ -301,6 +307,9 @@ function callbackPopupGraphProperty_OnEndCallback(s, e) {
             console.log("_columnNames: null or empty.")
             return;
         }
+
+        cbPieXColumn.ClearItems();
+        cbPieYColumn.ClearItems();
         _columnNames.forEach(function (c) {
             if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
                 cbPieXColumn.AddItem(c.Name);
@@ -329,6 +338,8 @@ function callbackPopupGraphProperty_OnEndCallback(s, e) {
     }
 
     if (id.toUpperCase().indexOf('BAR') > -1) {
+        cbBarXColumn.ClearItems();
+        lbBarYColumn.ClearItems();
         _columnNames.forEach(function (c) {
             if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
                 cbBarXColumn.AddItem(c.Name);
@@ -343,15 +354,6 @@ function callbackPopupGraphProperty_OnEndCallback(s, e) {
         document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
         propertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
     }
-
-    //percentageLabel.SetChecked(pie.isPercentage);
-    //yValueLabel.SetChecked(pie.isYValue);
-    //xValueLabel.SetChecked(pie.isXValue);
-    //cbPieXColumn.SetValue(pie.xCol);
-    //cbPieYColumn.SetValue(pie.yCol);
-    //radioColorRampPie.SetValue(pie.colorRamp);
-
-
 }
 
 //

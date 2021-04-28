@@ -111,6 +111,7 @@
         else if (type.ToUpper().Contains("GRIDVIEW"))
         {
             ViewContext.Writer.Write("<div id='@Model.CreatePanelName' style='position:relative;'>");
+            ViewContext.Writer.Write("<div class='divGridviewTitle' id='" + (String.Format("{0}|Title", Model.CreatePanelName)) + "' ></div>");
             ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}|Maximize", Model.CreatePanelName)) + "' type='button' class='btnGridviewMaximize' title='Maximize'></button>");
             ViewContext.Writer.Write("</div>");

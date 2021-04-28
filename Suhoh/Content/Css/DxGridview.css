@@ -17,7 +17,17 @@
     color: white !important;
 }
 
-/*Buttons*/
+/*Title and Buttons*/
+.divGridviewTitle {
+    opacity: 1;
+    font-weight: bold;
+    position: absolute;
+    /*top: 62px;*/
+    left: 10px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+
 .divGridviewMaximize {
     opacity: 1;
     position: absolute;

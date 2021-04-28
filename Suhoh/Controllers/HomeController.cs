@@ -87,6 +87,20 @@ namespace Suhoh.Controllers
             vm.DxGridview = (DataTable)JsonConvert.DeserializeObject(json, (typeof(DataTable)),
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore });
 
+            //// Convert DateTime to Date
+            //DataTable dtCloned = vm.DxGridview.Clone();
+            //foreach (DataColumn dc in dtCloned.Columns)
+            //{
+            //    if (dc.DataType == typeof(System.DateTime))
+            //        dc.DataType = typeof(System.String);
+            //}
+            //foreach (DataRow row in vm.DxGridview.Rows)
+            //{
+            //    dtCloned.ImportRow(row);
+            //}
+
+
+            // Column name/type
             vm.ColumnInfos.Clear();
             foreach (DataColumn c in vm.DxGridview.Columns)
                 vm.ColumnInfos.Add(new ColumnInfo { Name = c.ColumnName, Type = c.DataType.Name });

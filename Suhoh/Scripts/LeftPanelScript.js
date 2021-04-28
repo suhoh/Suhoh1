@@ -75,7 +75,7 @@ function btnChangeLayoutClicked(s, e) {
         panels.push("{'name':'Panel4', 'type':['" + type + "1']}");
     }
 
-    clearAllPanels();
+    clearAllPanels();   // clears arrays
 
     var url = "Home/RightPanelPartial";
     $.ajax({
@@ -89,6 +89,8 @@ function btnChangeLayoutClicked(s, e) {
             //$('#divRightPanelPartial').addClass('rightPanelPartial');
             //$("#divRightPanelPartial").load('Home');
             //$("#divRightPanelPartial").load('@Url.Content("Home/RightPanelPartial")');
+
+            convertJsonToDataTable(_jsonData, _jsonDataGridview);
         },
         error: function (xhr, textStatus, errorThrown) {
             alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
