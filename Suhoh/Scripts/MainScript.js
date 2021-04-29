@@ -295,64 +295,92 @@ function btnAddNewPaneClick(s, e) {
 
 //
 // Popup property callback
+// Being called from all the panels (pie, bar, map, gridview)
 //
-function callbackPopupGraphProperty_OnBeginCallback(s, e) {
-    popupGraphProperty.Show();
+function showPropertyPopup(s) {
+    _activePropertyName = s.id; // Panel2Bar1|Property
+    callbackPopupPanelProperty.PerformCallback({
+        'sender': s.id
+    });
 }
 
-function callbackPopupGraphProperty_OnEndCallback(s, e) {
+function callbackPopupPanelProperty_OnBeginCallback(s, e) {
+    popupPanelProperty.Show();
+}
+
+function callbackPopupPanelProperty_OnEndCallback(s, e) {
     var id = _activePropertyName.split('|')[0];
-    if (id.toUpperCase().indexOf('PIE') > -1) {
-        if (_columnNames == undefined || _columnNames.length == 0) {
-            console.log("_columnNames: null or empty.")
-            return;
-        }
+    if (id.toUpperCase().indexOf('PIE') > -1)
+        renderPieProperty(id);
+    if (id.toUpperCase().indexOf('BAR') > -1) 
+        renderBarProperty(id)
+    if (id.toUpperCase().indexOf('MAP') > -1)
+        renderMapProperty(id)
+}
 
-        cbPieXColumn.ClearItems();
-        cbPieYColumn.ClearItems();
-        _columnNames.forEach(function (c) {
-            if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
-                cbPieXColumn.AddItem(c.Name);
-            if (c.Type == 'Int64' || c.Type == 'Double')
-                cbPieYColumn.AddItem(c.Name);
-        });
-
-        var canvas = ramp(_colorScaleHSL);
-        var div = document.getElementById('divColorRampPie');
-        div.appendChild(canvas);
-
-        var pie = getPie(id);
-        _activePie = pie;
-        document.getElementById(pie.divName + "|Title").innerHTML = pie.xCol + " vs " + pie.yCol;   // title in panel
-        propertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol); // title in property
-
-        chkPiePercentageLabel.SetChecked(pie.isPercentage);
-        chkPieYValueLabel.SetChecked(pie.isYValue);
-        chkPieXValueLabel.SetChecked(pie.isXValue);
-        chkPieLabelClicked();
-
-        cbPieXColumn.SetValue(pie.xCol);
-        cbPieYColumn.SetValue(pie.yCol);
-        radioColorRampPie.SetValue(pie.colorRamp);
-        radioColorRampPieClicked();
+function renderPieProperty(id) {
+    popupPanelProperty.SetHeaderText("Pie Property");
+    if (_columnNames == undefined || _columnNames.length == 0) {
+        console.log("_columnNames: null or empty.")
+        return;
     }
+    cbPieXColumn.ClearItems();
+    cbPieYColumn.ClearItems();
+    _columnNames.forEach(function (c) {
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
+            cbPieXColumn.AddItem(c.Name);
+        if (c.Type == 'Int64' || c.Type == 'Double')
+            cbPieYColumn.AddItem(c.Name);
+    });
 
-    if (id.toUpperCase().indexOf('BAR') > -1) {
-        cbBarXColumn.ClearItems();
-        lbBarYColumn.ClearItems();
-        _columnNames.forEach(function (c) {
-            if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
-                cbBarXColumn.AddItem(c.Name);
-            if (c.Type == 'Int64' || c.Type == 'Double')
-                lbBarYColumn.AddItem(c.Name);
-        });
+    var canvas = ramp(_colorScaleHSL);
+    var div = document.getElementById('divColorRampPie');
+    div.appendChild(canvas);
 
-        var bar = getBar(id);
-        _activeBar = bar;
-        cbBarXColumn.SetValue(bar.xCol);
-        lbBarYColumn.SetValue(bar.yCol);
-        document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
-        propertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
+    var pie = getPie(id);
+    _activePie = pie;
+    document.getElementById(pie.divName + "|Title").innerHTML = pie.xCol + " vs " + pie.yCol;   // title in panel
+    tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol); // title in property
+
+    chkPiePercentageLabel.SetChecked(pie.isPercentage);
+    chkPieYValueLabel.SetChecked(pie.isYValue);
+    chkPieXValueLabel.SetChecked(pie.isXValue);
+    chkPieLabelClicked();
+
+    cbPieXColumn.SetValue(pie.xCol);
+    cbPieYColumn.SetValue(pie.yCol);
+    radioColorRampPie.SetValue(pie.colorRamp);
+    radioColorRampPieClicked();
+}
+
+function renderBarProperty(id) {
+    popupPanelProperty.SetHeaderText("Bar Property");
+    if (_columnNames == undefined || _columnNames.length == 0) {
+        console.log("_columnNames: null or empty.")
+        return;
+    }
+    cbBarXColumn.ClearItems();
+    lbBarYColumn.ClearItems();
+    _columnNames.forEach(function (c) {
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
+            cbBarXColumn.AddItem(c.Name);
+        if (c.Type == 'Int64' || c.Type == 'Double')
+            lbBarYColumn.AddItem(c.Name);
+    });
+
+    var bar = getBar(id);
+    _activeBar = bar;
+    cbBarXColumn.SetValue(bar.xCol);
+    lbBarYColumn.SetValue(bar.yCol);
+    document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
+    tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
+}
+
+function renderMapProperty(id) {
+    popupPanelProperty.SetHeaderText("Map Property");
+    if (_columnNames == undefined || _columnNames.length == 0) {
+        console.log("_columnNames: null or empty.")
+        return;
     }
 }
 

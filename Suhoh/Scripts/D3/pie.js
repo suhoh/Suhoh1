@@ -53,8 +53,6 @@ function getPieData(paneId, jsonData, xCol, yCol, isInitial) {
 }
 
 function drawPie(divName, data, width, height, radius) {
-    tbPiePropertyTitleKeyUp(divName);
-
     if (data == undefined)
         return null;
 

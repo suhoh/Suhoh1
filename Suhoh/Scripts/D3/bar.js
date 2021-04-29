@@ -50,14 +50,11 @@ function getBarData(paneId, jsonData, xCol, yCol, isInitial) {
 }
 
 function drawBar(divName, data, width, height) {
-
     var svgHeight = height - 30; // svg height will be 30px smaller than panel height to leave room for title
     var marginTop = 30;
     var marginRight = 30;
     var marginLeft = 50;
     var marginBottom = 30;
-
-    tbBarPropertyTitleKeyUp(divName);
 
     if (data == undefined)
         return null;

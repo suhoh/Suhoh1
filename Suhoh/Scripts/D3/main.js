@@ -183,14 +183,6 @@ function chkPieLabelClicked(s, e) {
 
 }
 
-function showPropertyPopup(s) {
-    // callback begin/end functions are in MainScript.js
-    _activePropertyName = s.id; // Panel2Bar1|Property
-    callbackPopupGraphProperty.PerformCallback({
-        'sender': s.id      
-    });
-}
-
 function tbPiePropertyTitleKeyUp(s, e) {
     var caller;
     if (s.name == undefined)    // called manually
@@ -198,8 +190,8 @@ function tbPiePropertyTitleKeyUp(s, e) {
     else
         caller = _activePie.divName + "|Title";
 
-    if (typeof propertyPieTitle !== "undefined" && ASPxClientUtils.IsExists(propertyPieTitle))
-        document.getElementById(caller).innerHTML = propertyPieTitle.GetText();
+    if (typeof tbPropertyPieTitle !== "undefined" && ASPxClientUtils.IsExists(tbPropertyPieTitle))
+        document.getElementById(caller).innerHTML = tbPropertyPieTitle.GetText();
 }
 
 function cbXYColumnDropDownChanged(s, e) {
@@ -210,7 +202,7 @@ function cbXYColumnDropDownChanged(s, e) {
     var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, true);
     drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 
-    propertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol);
+    tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol);
     document.getElementById(pie.divName + "|Title").innerHTML = pie.xCol + " vs " + pie.yCol;
 }
 
@@ -278,7 +270,7 @@ function cbBarXYColumnChanged(s, e) {
     var barData = getBarData(bar.divName, bar.data, bar.xCol, bar.yCol, false);
     drawBar(bar.divName, barData.barData, barData.width, barData.height);
 
-    propertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
+    tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
     document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
 }
 
@@ -291,8 +283,8 @@ function tbBarPropertyTitleKeyUp(s, e) {
     if (s.name != undefined)    // called manually
         caller = s + "|Title";
     else
-        caller = s;
+        caller = _activeBar.divName + "|Title";
 
-    if (typeof propertyBarTitle !== "undefined" && ASPxClientUtils.IsExists(propertyBarTitle))
-        document.getElementById(caller).innerHTML = propertyBarTitle.GetText();
+    if (typeof tbPropertyBarTitle !== "undefined" && ASPxClientUtils.IsExists(tbPropertyBarTitle))
+        document.getElementById(caller).innerHTML = tbPropertyBarTitle.GetText();
 }
