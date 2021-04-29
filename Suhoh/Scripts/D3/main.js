@@ -270,16 +270,41 @@ function chkBarLabelClicked(s, e) {
 
 }
 
+var textSeparator = ";";
+function getSelectedItemsText(items) {
+    var texts = [];
+    for (var i = 0; i < items.length; i++)
+        texts.push(items[i].text);
+    return texts.join(textSeparator);
+}
+
 function cbBarXYColumnChanged(s, e) {
-    var bar = getBar(_activeBar.divName);
-    bar.xCol = cbBarXColumn.GetText();
-    bar.yCol = lbBarYColumn.GetText();
+    //if (_activeBar == undefined)
+    //    return;
+    //var bar = getBar(_activeBar.divName);
+    //bar.xCol = cbBarXColumn.GetText();
 
-    var barData = getBarData(bar.divName, bar.data, bar.xCol, bar.yCol, false);
-    drawBar(bar.divName, barData.barData, barData.width, barData.height);
+    //var selectedItems = lbBarYColumn.GetSelectedItems();
+    //ddBarYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
 
-    propertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
-    document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
+    //var yCols = getSelectedItemsText(selectedItems).split(';');
+
+
+    ////bar.yCol = lbBarYColumn.GetText();
+
+    //var items = lbBarYColumn.GetSelectedItems();
+    //var text = "";
+    //for (var i = 0; i < items.length; i++) {
+    //    text += items[i].text + ";";
+    //}
+    //text = text.substr(0, text.length - 1);
+    //DropDownEdit.SetText(text);
+
+    //var barData = getBarData(bar.divName, bar.data, bar.xCol, bar.yCol, false);
+    //drawBar(bar.divName, barData.barData, barData.width, barData.height);
+
+    //propertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
+    //document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
 }
 
 function chkBarTransposeClicked(s, e) {

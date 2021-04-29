@@ -351,8 +351,15 @@ function callbackPopupGraphProperty_OnEndCallback(s, e) {
         _activeBar = bar;
         cbBarXColumn.SetValue(bar.xCol);
         lbBarYColumn.SetValue(bar.yCol);
+
+        //var selectedItems = lbBarYColumn.GetSelectedItems();
+        //ddBarYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
+
+        //var yCols = getSelectedItemsText(selectedItems).split(';');
+
         document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
         propertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
+
     }
 }
 
