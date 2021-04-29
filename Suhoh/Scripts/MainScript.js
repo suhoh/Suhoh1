@@ -359,19 +359,24 @@ function renderBarProperty(id) {
         console.log("_columnNames: null or empty.")
         return;
     }
-    cbBarXColumn.ClearItems();
-    lbBarYColumn.ClearItems();
+    lbBarXColumn.ClearItems();
+    cbBarYColumn.ClearItems();
     _columnNames.forEach(function (c) {
         if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
-            cbBarXColumn.AddItem(c.Name);
+            lbBarXColumn.AddItem(c.Name);
         if (c.Type == 'Int64' || c.Type == 'Double')
-            lbBarYColumn.AddItem(c.Name);
+            cbBarYColumn.AddItem(c.Name);
     });
 
     var bar = getBar(id);
     _activeBar = bar;
-    cbBarXColumn.SetValue(bar.xCol);
-    lbBarYColumn.SetValue(bar.yCol);
+
+    lbBarXColumn.SetValue(bar.xCol);
+    cbBarYColumn.SetValue(bar.yCol);
+
+    var selectedItems = lbBarXColumn.GetSelectedItems();
+    ddBarXColumn.SetText(getSelectedItemsText(selectedItems));
+
     document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
 }

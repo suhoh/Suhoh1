@@ -39,7 +39,7 @@ namespace Suhoh.Model
         public string TbBarTitleProperty { get; set; }
         public bool CbBarYValueLabel { get; set; }
         public bool CbBarXValueLabel { get; set; }
-        public string DdBarXColumn { get; set; }
+        public string DdBarYColumn { get; set; }
         public bool CbBarTranspose { get; set; }
 
         // OpenLayers
@@ -71,7 +71,7 @@ namespace Suhoh.Model
             // Bar Chart Property
             CbBarYValueLabel = false;
             CbBarXValueLabel = false;
-            DdBarXColumn = "";
+            DdBarYColumn = "";
             CbBarTranspose = false;
 
             // Map

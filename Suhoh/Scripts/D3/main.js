@@ -38,29 +38,48 @@ function initGraph(divName) {
 
 function showHideLegend(s, e) {
     var id = s.id.split('|')[0];
-    var pie = null;
+
     if (id.toUpperCase().indexOf('PIE') > -1) {
-        pie = getPie(id);
+        var pie = getPie(id);
+        if (pie == null)
+            return;
+
+        pie.isLegend = !pie.isLegend;
+
+        var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
+        if (pieData == null)
+            return;
+        if (pie.isLegend == true)
+            for (i = 0; i < pieData.pieData.length; i++) {
+                $('#' + pie.divName + 'pieLegend' + i).show(500);
+            }
+        else
+            for (i = 0; i < pieData.pieData.length; i++) {
+                $('#' + pie.divName + 'pieLegend' + i).hide(500);
+            }
+        drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
     }
-    if (pie == null)
-        return;
 
-    pie.isLegend = !pie.isLegend;
-    pie.xCol = cbPieXColumn.GetText();
-    pie.yCol = cbPieYColumn.GetText();
+    if (id.toUpperCase().indexOf('BAR') > -1) {
+        var bar = getBar(id);
+        if (bar == null)
+            return;
 
-    var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
-    if (pieData == null)
-        return;
-    if (pie.isLegend == true)
-        for (i = 0; i < pieData.pieData.length; i++) {
-            $('#D3Legend' + i).show(500);
-        }
-    else
-        for (i = 0; i < pieData.pieData.length; i++) {
-            $('#D3Legend' + i).hide(500);
-        }
-    drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        bar.isLegend = !bar.isLegend;
+
+        var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, false);
+        if (barData == null)
+            return;
+        if (bar.isLegend == true)
+            for (i = 0; i < barData.barData.length; i++) {
+                $('#' + bar.divName + 'barLegend' + i).show(500);
+            }
+        else
+            for (i = 0; i < barData.barData.length; i++) {
+                $('#' + bar.divName + 'barLegend' + i).hide(500);
+            }
+        drawBar(bar.divName, barData.barData, barData.width, barData.height);
+    }
 }
 
 function groupBy(array, groups, valueKey) {
@@ -271,18 +290,16 @@ function getSelectedItemsText(items) {
 }
 
 function cbBarXYColumnChanged(s, e) {
-    //if (_activeBar == undefined)
-    //    return;
-    //var bar = getBar(_activeBar.divName);
-    //bar.xCol = cbBarXColumn.GetText();
+    if (_activeBar == undefined)
+        return;
+    var bar = getBar(_activeBar.divName);
+    bar.yCol = cbBarYColumn.GetText();
 
-    //var selectedItems = lbBarYColumn.GetSelectedItems();
-    //ddBarYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
+    var selectedItems = lbBarXColumn.GetSelectedItems();
+    ddBarXColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
 
+    bar.xCol = getSelectedItemsText(selectedItems);
     //var yCols = getSelectedItemsText(selectedItems).split(';');
-
-
-    ////bar.yCol = lbBarYColumn.GetText();
 
     //var items = lbBarYColumn.GetSelectedItems();
     //var text = "";
@@ -292,8 +309,8 @@ function cbBarXYColumnChanged(s, e) {
     //text = text.substr(0, text.length - 1);
     //DropDownEdit.SetText(text);
 
-    //var barData = getBarData(bar.divName, bar.data, bar.xCol, bar.yCol, false);
-    //drawBar(bar.divName, barData.barData, barData.width, barData.height);
+    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, true);
+    drawBar(bar.divName, barData.barData, barData.width, barData.height);
 
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
     document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
@@ -305,7 +322,7 @@ function chkBarTransposeClicked(s, e) {
 
 function tbBarPropertyTitleKeyUp(s, e) {
     var caller;
-    if (s.name != undefined)    // called manually
+    if (s.name == undefined)    // called manually
         caller = s + "|Title";
     else
         caller = _activeBar.divName + "|Title";
