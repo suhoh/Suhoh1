@@ -25,39 +25,18 @@ namespace Suhoh.Controllers
             return View(model);
         }
 
-
-        public ActionResult OpenLayerMap(ViewModel vm)
-        {
-            return View();
-        }
-
-        public ActionResult OpenLayerMapProperty(ViewModel vm)
-        {
-            return View();
-        }
-
-        public ActionResult D3Graph(ViewModel vm)
-        {
-            return View();
-        }
-
-        public ActionResult CallbackPopupGraphProperty(ViewModel vm, string sender)
+        public ActionResult CallbackPopupPanelProperty(ViewModel vm, string sender)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
             viewModel.ActiveProperty = sender;
             Session["viewModel"] = viewModel;
-            return PartialView("CallbackPopupGraphProperty", viewModel);
+            return PartialView("CallbackPopupPanelProperty", viewModel);
         }
 
         public ActionResult DxGridview(ViewModel vm)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
             return PartialView("DxGridview", viewModel);
-        }
-
-        public ActionResult DxGridviewProperty(ViewModel vm)
-        {
-            return View();
         }
 
         [HttpPost]
@@ -86,19 +65,6 @@ namespace Suhoh.Controllers
             json = json.Replace("\"\"", "null");    // change 2 double quotes to null due to Json error
             vm.DxGridview = (DataTable)JsonConvert.DeserializeObject(json, (typeof(DataTable)),
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore });
-
-            //// Convert DateTime to Date
-            //DataTable dtCloned = vm.DxGridview.Clone();
-            //foreach (DataColumn dc in dtCloned.Columns)
-            //{
-            //    if (dc.DataType == typeof(System.DateTime))
-            //        dc.DataType = typeof(System.String);
-            //}
-            //foreach (DataRow row in vm.DxGridview.Rows)
-            //{
-            //    dtCloned.ImportRow(row);
-            //}
-
 
             // Column name/type
             vm.ColumnInfos.Clear();

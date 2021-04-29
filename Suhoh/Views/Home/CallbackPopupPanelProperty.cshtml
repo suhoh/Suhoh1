@@ -1,0 +1,20 @@
+﻿@using Suhoh.Model
+@model ViewModel
+
+@Html.DevExpress().CallbackPanel(
+    cbSsettings =>
+    {
+        cbSsettings.Name = "callbackPopupPanelProperty";
+        cbSsettings.CallbackRouteValues = new { Controller = "Home", Action = "CallbackPopupPanelProperty" };
+        cbSsettings.ClientSideEvents.BeginCallback = "callbackPopupPanelProperty_OnBeginCallback";
+        cbSsettings.ClientSideEvents.EndCallback = "callbackPopupPanelProperty_OnEndCallback";
+        cbSsettings.SetContent(() =>
+        {
+            if (Model.ActiveProperty.ToUpper().Contains("PIE"))
+                Html.RenderPartial("D3PieProperty", Model);
+            if (Model.ActiveProperty.ToUpper().Contains("BAR"))
+                Html.RenderPartial("D3BarProperty", Model);
+            if (Model.ActiveProperty.ToUpper().Contains("MAP"))
+                Html.RenderPartial("OLMapProperty", Model);
+        });
+    }).GetHtml()
