@@ -36,33 +36,6 @@ function initGraph(divName) {
         return 1;
 }
 
-function showHideLegend(s, e) {
-    var id = s.id.split('|')[0];
-    var pie = null;
-    if (id.toUpperCase().indexOf('PIE') > -1) {
-        pie = getPie(id);
-    }
-    if (pie == null)
-        return;
-
-    pie.isLegend = !pie.isLegend;
-    pie.xCol = cbPieXColumn.GetText();
-    pie.yCol = cbPieYColumn.GetText();
-
-    var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
-    if (pieData == null)
-        return;
-    if (pie.isLegend == true)
-        for (i = 0; i < pieData.pieData.length; i++) {
-            $('#D3Legend' + i).show(500);
-        }
-    else
-        for (i = 0; i < pieData.pieData.length; i++) {
-            $('#D3Legend' + i).hide(500);
-        }
-    drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
-}
-
 function groupBy(array, groups, valueKey) {
     var map = new Map;
     groups = [].concat(groups);
@@ -191,7 +164,7 @@ function tbPiePropertyTitleKeyUp(s, e) {
         caller = _activePie.divName + "|Title";
 
     if (typeof tbPropertyPieTitle !== "undefined" && ASPxClientUtils.IsExists(tbPropertyPieTitle))
-        document.getElementById(caller).innerHTML = tbPropertyPieTitle.GetText();
+        document.getElementById(caller).innerHTML = tbPropertyPieTitle.GetText();   // updates title in Panel
 }
 
 function cbXYColumnDropDownChanged(s, e) {
@@ -295,8 +268,8 @@ function cbBarXYColumnChanged(s, e) {
     //var barData = getBarData(bar.divName, bar.data, bar.xCol, bar.yCol, false);
     //drawBar(bar.divName, barData.barData, barData.width, barData.height);
 
-    tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
-    document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
+    //tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
+    //document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
 }
 
 function chkBarTransposeClicked(s, e) {
@@ -312,4 +285,48 @@ function tbBarPropertyTitleKeyUp(s, e) {
 
     if (typeof tbPropertyBarTitle !== "undefined" && ASPxClientUtils.IsExists(tbPropertyBarTitle))
         document.getElementById(caller).innerHTML = tbPropertyBarTitle.GetText();
+}
+
+function showHideLegend(s) {
+    var id = s.id.split('|')[0];
+    var pie = null;
+    if (id.toUpperCase().indexOf('PIE') > -1) {
+        pie = getPie(id);
+    }
+    if (pie == null)
+        return;
+
+    pie.isLegend = !pie.isLegend;
+    pie.xCol = cbPieXColumn.GetText();
+    pie.yCol = cbPieYColumn.GetText();
+
+    var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
+    if (pieData == null)
+        return;
+    if (pie.isLegend == true)
+        for (i = 0; i < pieData.pieData.length; i++) {
+            $('#D3Legend' + i).show(500);
+        }
+    else
+        for (i = 0; i < pieData.pieData.length; i++) {
+            $('#D3Legend' + i).hide(500);
+        }
+    drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+}
+
+function btnBarMaximizeClick(s) {
+    var pId = s.id.split('|')[0];
+    var bar = getBar(pId);
+
+    var p1 = splitterMain.GetPaneByName('Panel1Map1');
+    var p11 = p1.GetParentPane();
+
+    var p2 = splitterMain.GetPaneByName('Panel2Bar1');
+    var p3 = splitterMain.GetPaneByName('Panel3Gridview1');
+    p2.Collapse(p1);
+    p3.Collapse(p1);
+}
+
+function btnBarCloseClick(s) {
+
 }

@@ -378,10 +378,14 @@ function renderBarProperty(id) {
 
 function renderMapProperty(id) {
     popupPanelProperty.SetHeaderText("Map Property");
-    if (_columnNames == undefined || _columnNames.length == 0) {
-        console.log("_columnNames: null or empty.")
-        return;
-    }
+
+    //if (_columnNames == undefined || _columnNames.length == 0) {
+    //    console.log("_columnNames: null or empty.")
+    //    return;
+    //}
+
+    var map = getMap(id);
+    _activeMap = map;
 }
 
 //

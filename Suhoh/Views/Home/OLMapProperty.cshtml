@@ -1,6 +1,147 @@
 ﻿@using Suhoh.Model
 @model ViewModel
 
+@*Title*@
+<div id="divTitle" class="divTitle">
+    <table>
+        <tr>
+            <th style="float: left; margin-left: 2px">Open Layer Title</th>
+        </tr>
+        <tr>
+            <th style="float: left; margin-top: 5px">
+                @Html.DevExpress().TextBoxFor(model => model.OpenLayerTitleProperty,
+                          settings =>
+                          {
+                              settings.Name = "tbPropertyOpenLayerTitle";
+                              settings.Width = 240;
+                              settings.Text = "Map Title";  // no effect since it is getting value from model.OpenLayerTitleProperty
+                              settings.ControlStyle.CssClass = "";
+                              settings.Properties.ClientSideEvents.KeyUp = "";
+                          }
+                          ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+@*Show coordinates and show label*@
+<div style="margin-top: 10px">
+    <table>
+        <tr>
+            <th class="thShowCoordinatesChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.ChkShowCoordinates,
+                       settings =>
+                       {
+                           settings.Name = "chkShowCoordinates";
+                           settings.Text = "Show Coordinates";
+                           settings.Properties.ClientSideEvents.CheckedChanged = "chkShowCoordinatesChanged";
+                       }).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th class="thShowLabelChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.ChkShowLabel,
+                       settings =>
+                       {
+                           settings.Name = "chkShowLabel";
+                           settings.Text = "Show Label";
+                           settings.Properties.ClientSideEvents.CheckedChanged = "chkShowLabelChanged";
+                       }).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+@*Lat/lon column names*@
+<table>
+    <tr>
+        <th id="thXYColumnHeading1" class="thXYColumnHeading1">
+            XY Columns
+        </th>
+    </tr>
+    <tr>
+        <th id="thXColumnDropDownLabel" class="thXColumnDropDownLabel">
+            X Column
+        </th>
+        <th id="thXColumnDropDown" class="thXColumnDropDown">
+            @Html.DevExpress().ComboBoxFor(model => model.DdXColumn,
+                settings =>
+                {
+                    settings.Name = "cbMapXColumn";
+                    settings.Width = 167;
+                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    settings.Properties.DropDownWidth = 165;
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnDropDownChanged";
+                }).BindList(DataEngine.GetXColumn()).GetHtml()
+        </th>
+    </tr>
+    <tr>
+        <th id="thYColumnDropDownLabel" class="thYColumnDropDownLabel">
+            Y Column
+        </th>
+        <th id="thYColumnDropDown" class="thYColumnDropDown">
+            @Html.DevExpress().ComboBoxFor(model => model.DdYColumn,
+                settings =>
+                {
+                    settings.Name = "cbMapYColumn";
+                    settings.Width = 167;
+                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    settings.Properties.DropDownWidth = 165;
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnDropDownChanged";
+                }).BindList(DataEngine.GetYColumn()).GetHtml()
+        </th>
+    </tr>
+</table>
+
+@*GoTo location*@
+<div style="margin-top: 10px">
+    <table>
+        <tr>
+            <th style="float: left; margin-left: 2px">Go To Location</th>
+        </tr>
+        <tr>
+            <th class="thOpenLayerGoToXLabel">X:</th>
+            <th class="thOpenLayerGotoXTextBox">
+                @Html.DevExpress().TextBoxFor(model => model.GoToLocationX,
+                          settings =>
+                          {
+                              settings.Name = "tbOpenLayerPropertyGoToX";
+                              settings.Width = 120;
+                              settings.Properties.NullText = "Longitude";
+                              settings.Text = "";
+                          }
+                          ).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th class="thOpenLayerGoToYLabel">Y:</th>
+            <th class="thOpenLayerGotoYTextBox">
+                @Html.DevExpress().TextBoxFor(model => model.GoToLocationY,
+                          settings =>
+                          {
+                              settings.Name = "tbOpenLayerPropertyGoToY";
+                              settings.Width = 120;
+                              settings.Properties.NullText = "Latitude";
+                              settings.Text = "";
+                          }
+                          ).GetHtml()
+            </th>
+            <th class="thOpenLayerGoToButton">
+                @Html.DevExpress().Button(
+                settings =>
+                {
+                    settings.Name = "btnOpenLayerGoToCoordinates";
+                    settings.Width = 60;
+                    settings.Text = "Go To";
+                    settings.ClientSideEvents.Click = "btnOpenLayerPropertyGoToClick";
+                }
+                ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+@*Choose basemap*@
 <div style="margin-top: 10px">
     <table>
         <tr>
@@ -21,121 +162,3 @@
         </tr>
     </table>
 </div>
-@*
-        <div id="divTitle" class="divTitle">
-            <table>
-                <tr>
-                    <th style="float: left; margin-left: 2px">Open Layer Title</th>
-                </tr>
-                <tr>
-                    <th style="float: left; margin-top: 5px">
-                        @Html.DevExpress().TextBoxFor(model => model.OpenLayerTitleProperty,
-                                  settings =>
-                                  {
-                                      settings.Name = "tbPropertyOpenLayerTitle";
-                                      settings.Width = 240;
-                                      settings.Text = "Map Title";  // no effect since it is getting value from model.OpenLayerTitleProperty
-                                      settings.ControlStyle.CssClass = "";
-                                      settings.Properties.ClientSideEvents.KeyUp = "";
-                                  }
-                                  ).GetHtml()
-                    </th>
-                </tr>
-            </table>
-        </div>
-
-        <div style="margin-top: 10px">
-            <table>
-                <tr>
-                    <th style="float: left; margin-left: 2px">Go To Location</th>
-                </tr>
-                <tr>
-                    <th class="thOpenLayerGoToXLabel">X:</th>
-                    <th class="thOpenLayerGotoXTextBox">
-                        @Html.DevExpress().TextBoxFor(model => model.GoToLocationX,
-                                  settings =>
-                                  {
-                                      settings.Name = "tbOpenLayerPropertyGoToX";
-                                      settings.Width = 120;
-                                      settings.Properties.NullText = "Longitude";
-                                      settings.Text = "";
-                                  }
-                                  ).GetHtml()
-                    </th>
-                </tr>
-                <tr>
-                    <th class="thOpenLayerGoToYLabel">Y:</th>
-                    <th class="thOpenLayerGotoYTextBox">
-                        @Html.DevExpress().TextBoxFor(model => model.GoToLocationY,
-                                  settings =>
-                                  {
-                                      settings.Name = "tbOpenLayerPropertyGoToY";
-                                      settings.Width = 120;
-                                      settings.Properties.NullText = "Latitude";
-                                      settings.Text = "";
-                                  }
-                                  ).GetHtml()
-                    </th>
-                    <th class="thOpenLayerGoToButton">
-                        @Html.DevExpress().Button(
-                        settings =>
-                        {
-                            settings.Name = "btnOpenLayerPropertyGoTo";
-                            settings.Width = 60;
-                            settings.Text = "Go To";
-                            settings.ClientSideEvents.Click = "btnOpenLayerPropertyGoToClick";
-                        }
-                        ).GetHtml()
-                    </th>
-                </tr>
-            </table>
-        </div>
-
-        <div style="margin-top: 10px">
-            <table>
-                <tr>
-                    <th class="thShowCoordinatesChkBox">
-                        @Html.DevExpress().CheckBoxFor(settings => Model.ChkShowCoordinates,
-                               settings =>
-                               {
-                                   settings.Name = "chkShowCoordinates";
-                                   settings.Text = "Show Coordinates";
-                                   settings.Properties.ClientSideEvents.CheckedChanged = "chkShowCoordinatesChanged";
-                               }).GetHtml()
-                    </th>
-                </tr>
-                <tr>
-                    <th class="thShowLabelChkBox">
-                        @Html.DevExpress().CheckBoxFor(settings => Model.ChkShowLabel,
-                               settings =>
-                               {
-                                   settings.Name = "chkShowLabel";
-                                   settings.Text = "Show Label";
-                                   settings.Properties.ClientSideEvents.CheckedChanged = "chkShowLabelChanged";
-                               }).GetHtml()
-                    </th>
-                </tr>
-            </table>
-        </div>
-
-    <div style="margin-top: 10px">
-        <table>
-            <tr>
-                <th style="float: left; margin-left: 2px">Basemap</th>
-            </tr>
-            <tr>
-                <th style="float: left; margin-top: 5px">
-                    @Html.DevExpress().ComboBoxFor(model => model.ActiveBasemap,
-                      settings =>
-                      {
-                          settings.Name = "cbBasemap";
-                          settings.Width = 240;
-                          settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                          settings.Properties.DropDownWidth = 239;
-                          settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbBasemapChanged";
-                      }).BindList(DataEngine.BasemapList()).GetHtml()
-                </th>
-            </tr>
-        </table>
-    </div>
-*@

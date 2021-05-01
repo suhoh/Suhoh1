@@ -24,6 +24,7 @@ const _esriShadedRelief = 'http://server.arcgisonline.com/arcgis/rest/services/W
 //const esriImagery = "http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" // with labels
 //const genesisAlberta = "http://maps.alberta.ca/genesis/rest/services/Provincial_Basemap_C/Latest/MapServer";  // not working -
 
+// Symbols
 const _redCircle = new ol.style.Style({
     image: new ol.style.Circle({
         fill: new ol.style.Fill({   // 100% transparent. Added due to identify not selected without fill
@@ -44,5 +45,16 @@ const _cyanStyle = new ol.style.Style({
         fill: new ol.style.Fill({
             color: 'rgba(0, 255, 255, 0.5)'
         })
+    })
+});
+
+const _myStarColor = new ol.style.Style({
+    image: new ol.style.RegularShape({
+        fill: new ol.style.Fill({ color: 'rgba(245, 17, 7, 0.5)' }),    // use rgba instead of text color (red, black...)
+        stroke: new ol.style.Stroke({ color: 'rgba(10, 10, 1, 1)', width: 2 }),
+        points: 5,
+        radius: 10,
+        radius2: 4,
+        angle: 0
     })
 });

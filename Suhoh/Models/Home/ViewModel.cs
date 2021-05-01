@@ -78,9 +78,9 @@ namespace Suhoh.Model
             OpenLayerTitleProperty = "Map Title";
             GoToLocationX = "-114.066666";
             GoToLocationY = "51.049999";
-            ChkShowCoordinates = false;
+            ChkShowCoordinates = true;
             ChkShowLabel = false;
-            ActiveBasemap = "";
+            ActiveBasemap = "Streets";
 
             AddPaneDirection = 1;
             AddPaneType = 1;

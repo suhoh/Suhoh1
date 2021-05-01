@@ -13,7 +13,7 @@
 
     <div class="divChartMaximizeButton">
         <button id="@(String.Format("{0}|Maximize", Model.CreatePanelName))" type="button" class="btnChartMaximize" title="Maximize"
-                onclick="">
+                onclick="btnBarMaximizeClick(this)">
         </button>
     </div>
 
@@ -31,7 +31,7 @@
 
     <div class="divChartSettingButton">
         <button id="@(String.Format("{0}|Close", Model.CreatePanelName))"  type="button" class="btnChartClose" title="Close"
-                onclick="">
+                onclick="btnBarCloseClick(this)">
         </button>
     </div>
 </div>
