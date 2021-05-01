@@ -303,12 +303,12 @@ function showHideLegend(s) {
         return;
     if (pie.isLegend == true)
         for (i = 0; i < pieData.pieData.length; i++) {
-            $('#D3Legend' + i).show(500);
+            $('#' + pie.divName + 'pieLegend' + i).show(500);
         }
     else
         for (i = 0; i < pieData.pieData.length; i++) {
-            $('#D3Legend' + i).hide(500);
-        }
+            $('#' + pie.divName + 'pieLegend' + i).hide(500);
+
     drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }
 
