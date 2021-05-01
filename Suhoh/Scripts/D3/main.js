@@ -244,18 +244,16 @@ function getSelectedItemsText(items) {
 }
 
 function cbBarXYColumnChanged(s, e) {
-    //if (_activeBar == undefined)
-    //    return;
-    //var bar = getBar(_activeBar.divName);
-    //bar.xCol = cbBarXColumn.GetText();
+    if (_activeBar == undefined)
+        return;
+    var bar = getBar(_activeBar.divName);
+    bar.yCol = cbBarYColumn.GetText();
 
-    //var selectedItems = lbBarYColumn.GetSelectedItems();
-    //ddBarYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
+    var selectedItems = lbBarXColumn.GetSelectedItems();
+    ddBarXColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
 
+    bar.xCol = getSelectedItemsText(selectedItems);
     //var yCols = getSelectedItemsText(selectedItems).split(';');
-
-
-    ////bar.yCol = lbBarYColumn.GetText();
 
     //var items = lbBarYColumn.GetSelectedItems();
     //var text = "";
@@ -265,8 +263,8 @@ function cbBarXYColumnChanged(s, e) {
     //text = text.substr(0, text.length - 1);
     //DropDownEdit.SetText(text);
 
-    //var barData = getBarData(bar.divName, bar.data, bar.xCol, bar.yCol, false);
-    //drawBar(bar.divName, barData.barData, barData.width, barData.height);
+    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, true);
+    drawBar(bar.divName, barData.barData, barData.width, barData.height);
 
     //tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
     //document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
@@ -278,7 +276,7 @@ function chkBarTransposeClicked(s, e) {
 
 function tbBarPropertyTitleKeyUp(s, e) {
     var caller;
-    if (s.name != undefined)    // called manually
+    if (s.name == undefined)    // called manually
         caller = s + "|Title";
     else
         caller = _activeBar.divName + "|Title";

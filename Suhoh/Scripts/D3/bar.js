@@ -134,13 +134,17 @@ function drawBar(divName, data, width, height) {
         });
 
     //var yColumn = cbPieYColumn.GetText();
-    var yColumn = "Quantity_m3";
-    
-    var legend = svg.selectAll(".legend")
-        .data(data)
+    var xColumn = bar.xCol;
+
+    var d = [];
+    d.push('a');
+
+
+    var legend = svg.selectAll("legend")
+        .data(d)
         .enter().append("g")
-        .attr("class", "D3Legend")
-        .attr("id", function (d, idx) { return "D3Legend" + idx });
+        .attr("class", "barLegend")
+        .attr("id", function (d, idx) { return bar.divName + "barLegend" + idx });
 
     if (width > 400 && bar.isLegend == true) {
         legend.append("rect")
@@ -154,7 +158,7 @@ function drawBar(divName, data, width, height) {
             .attr("dy", ".35em")
             .style("text-anchor", "start")
             .style("font-size", "8px")
-            .text(yColumn);
+            .text(xColumn);
     }
 
     return svg;

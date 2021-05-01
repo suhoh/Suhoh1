@@ -211,11 +211,11 @@ function drawPie(divName, data, width, height, radius) {
             .style("font-size", 12)
             .attr("display", "none");
 
-    var legend = svg.selectAll(".legend")
+    var legend = svg.selectAll("legend")
         .data(data)
         .enter().append("g")
-        .attr("class", "D3Legend")
-        .attr("id", function (d, idx) { return "D3Legend" + idx});
+        .attr("class", "pieLegend")
+        .attr("id", function (d, idx) { return pie.divName + "pieLegend" + idx});
 
     if (width > 400 && pie.isLegend == true) {
         legend.append("rect")
@@ -231,6 +231,6 @@ function drawPie(divName, data, width, height, radius) {
             .style("font-size", "8px")
             .text(function (data) { return data.X; });
     }
-
+    pie.svg = svg;
     return svg;
 }
