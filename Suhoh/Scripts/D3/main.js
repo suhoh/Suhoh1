@@ -308,6 +308,7 @@ function showHideLegend(s) {
     else
         for (i = 0; i < pieData.pieData.length; i++) {
             $('#' + pie.divName + 'pieLegend' + i).hide(500);
+        }
 
     drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 }

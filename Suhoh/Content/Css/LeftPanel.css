@@ -1,50 +1,85 @@
 ﻿
-.LeftPanelSearchSEC {
+/*Alberta Township System Search*/
+.leftPanelATSLabel {
+    float: left;
+    margin-left: 10px;
+    font-weight: normal;
+}
+
+.leftPanelSearchSEC {
     font-weight: normal;
     float: left;
     margin-top: 5px;
-    margin-left: 20px;
+    margin-left: 44px;
 }
 
-.cbLeftPanelSearchSEC {
+.leftPanelSearchTWP {
+    font-weight: normal;
+    float: left;
+    margin-top: 5px;
+    margin-left: 37px;
+}
+
+.leftPanelSearchRGE {
+    font-weight: normal;
+    float: left;
+    margin-top: 5px;
+    margin-left: 37px;
+}
+
+.chkLeftPanelATS {
     float: left;
     margin-left: 5px;
 }
 
-.LeftPanelSearchTWP {
-    font-weight: normal;
+.cbLeftPanelSearchSEC {
     float: left;
-    margin-top: 5px;
-    margin-left: 37px;
+    margin-left: 10px;
 }
 
 .cbLeftPanelSearchTWP {
     float: left;
-    margin-left: 10px;
-}
-
-.LeftPanelSearchRGE {
-    font-weight: normal;
-    float: left;
-    margin-top: 5px;
-    margin-left: 37px;
+    margin-left: 20px;
 }
 
 .cbLeftPanelSearchRGE {
     float: left;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
-.LeftPanelSearchMER {
+/*Attribute Search*/
+.leftPanelAttributeLabel {
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 10px;
     font-weight: normal;
-    float: left;
-    margin-top: 5px;
-    margin-left: 37px;
 }
 
-.cbLeftPanelSearchMER {
+.chkLeftPanelAttributeSearch {
+    float: left;
+    margin-left: 5px;
+}
+
+.cbLeftPanelAttributeSearch1 {
     float: left;
     margin-left: 10px;
+}
+
+.cbLeftPanelAttributeSearch2 {
+    float: left;
+    margin-left: 10px;
+}
+
+.cbLeftPanelAttributeSearch3 {
+    float: left;
+    margin-left: 10px;
+}
+
+.btnLeftPanelAttributeSearch {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: center;
 }
 
 /*Panel Settings*/
