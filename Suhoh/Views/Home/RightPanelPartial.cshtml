@@ -114,7 +114,7 @@
         else if (type.ToUpper().Contains("GRIDVIEW"))
         {
             ViewContext.Writer.Write("<div id='@Model.CreatePanelName' style='position:relative;'>");
-            ViewContext.Writer.Write("<div class='divGridviewTitle' id='" + (String.Format("{0}|Title", Model.CreatePanelName)) + "' ></div>");
+            ViewContext.Writer.Write("<div class='divGridviewTitle' id='" + (String.Format("{0}|Title", Model.CreatePanelName)) + "' ><span>GRID</span></div>");
             ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}|Maximize", Model.CreatePanelName)) + "' type='button' class='btnGridviewMaximize' title='Maximize' " +
                 "onclick='btnGridviewMaximize(this)'></button>");
@@ -128,7 +128,7 @@
                 "onclick='addNewPane(this)'></button>");
             ViewContext.Writer.Write("</div>");
             ViewContext.Writer.Write("<div class='divGridviewSetting'>");
-            ViewContext.Writer.Write("<button id='" + (String.Format("{0}|Close", Model.CreatePanelName)) + "' type='button' class='btnGridviewClose' title='Close' " + "" +
+            ViewContext.Writer.Write("<button id='" + (String.Format("{0}|Close", Model.CreatePanelName)) + "' type='button' class='btnGridviewClose' title='Close' " + 
                 "onclick='btnGridviewClose(this)'></button>");
             ViewContext.Writer.Write("</div>");
             ViewContext.Writer.Write("</div>");

@@ -10,11 +10,12 @@
 }
 
 .divChartMaximizeButton {
+    float:left;
     opacity: 1;
     position: absolute;
     top: 4px;
     right: 91px;
-    z-index: 100;
+    z-index: 1;
     /*background-color: yellow;*/
 }
 .btnChartMaximize {

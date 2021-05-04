@@ -287,29 +287,48 @@ function tbBarPropertyTitleKeyUp(s, e) {
 
 function showHideLegend(s) {
     var id = s.id.split('|')[0];
-    var pie = null;
+
     if (id.toUpperCase().indexOf('PIE') > -1) {
-        pie = getPie(id);
+        var pie = getPie(id);
+        if (pie == null)
+            return;
+
+        pie.isLegend = !pie.isLegend;
+
+        var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
+        if (pieData == null)
+            return;
+        if (pie.isLegend == true)
+            for (i = 0; i < pieData.pieData.length; i++) {
+                $('#' + pie.divName + 'pieLegend' + i).show(500);
+            }
+        else
+            for (i = 0; i < pieData.pieData.length; i++) {
+                $('#' + pie.divName + 'pieLegend' + i).hide(500);
+            }
+        drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
     }
-    if (pie == null)
-        return;
 
-    pie.isLegend = !pie.isLegend;
-    pie.xCol = cbPieXColumn.GetText();
-    pie.yCol = cbPieYColumn.GetText();
+    if (id.toUpperCase().indexOf('BAR') > -1) {
+        var bar = getBar(id);
+        if (bar == null)
+            return;
 
-    var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
-    if (pieData == null)
-        return;
-    if (pie.isLegend == true)
-        for (i = 0; i < pieData.pieData.length; i++) {
-            $('#' + pie.divName + 'pieLegend' + i).show(500);
-        }
-    else
-        for (i = 0; i < pieData.pieData.length; i++) {
-            $('#' + pie.divName + 'pieLegend' + i).hide(500);
+        bar.isLegend = !bar.isLegend;
 
-    drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, false);
+        if (barData == null)
+            return;
+        if (bar.isLegend == true)
+            for (i = 0; i < barData.barData.length; i++) {
+                $('#' + bar.divName + 'barLegend' + i).show(500);
+            }
+        else
+            for (i = 0; i < barData.barData.length; i++) {
+                $('#' + bar.divName + 'barLegend' + i).hide(500);
+            }
+        drawBar(bar.divName, barData.barData, barData.width, barData.height);
+    }
 }
 
 function btnBarMaximizeClick(s) {
