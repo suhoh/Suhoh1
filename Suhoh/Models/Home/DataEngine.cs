@@ -53,5 +53,35 @@ namespace Suhoh.Model
 
             return basemapList;
         }
+
+        public static IEnumerable SectionList()
+        {
+            List<string> sectionList = new List<string>();
+            for (int i = 1; i <= 36; i++)
+            {
+                sectionList.Add(i.ToString());
+            }                               
+            return sectionList;
+        }
+
+        public static IEnumerable TownshipList()
+        {
+            List<string> townshipList = new List<string>();
+            for (int i = 1; i <= 126; i++)
+            {
+                townshipList.Add(i.ToString());
+            }
+            return townshipList;
+        }
+
+        public static IEnumerable RangeList()
+        {
+            List<string> rangeList = new List<string>();
+            for (int i = 1; i <= 30; i++)
+            {
+                rangeList.Add(i.ToString());
+            }
+            return rangeList;
+        }
     }
 }

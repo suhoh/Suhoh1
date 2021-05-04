@@ -99,3 +99,6 @@ function btnChangeLayoutClicked(s, e) {
 
 }
 
+function btnLeftPanelAttributeSearchClick() {
+
+}

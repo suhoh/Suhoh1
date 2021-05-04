@@ -51,11 +51,15 @@ namespace Suhoh.Model
         public string ActiveBasemap { get; set; }
 
         // Left Pane Search 
-        public string cbLeftPanelSearchSEC { get; set; }
-        public string cbLeftPanelSearchTWP { get; set; }
-        public string cbLeftPanelSearchRGE { get; set; }
-        public string cbLeftPanelSearchMER { get; set; }
-
+        public bool ChkLeftPanelATS { get; set; }
+        public string CbLeftPanelSearchSEC { get; set; }
+        public string CbLeftPanelSearchTWP { get; set; }
+        public string CbLeftPanelSearchRGE { get; set; }
+        public string CbLeftPanelSearchMER { get; set; }
+        public bool ChkLeftPanelAttributeSearch { get; set; }
+        public string CbLeftPanelAttributeSearch1 { get; set; }
+        public string CbLeftPanelAttributeSearch2 { get; set; }
+        public string CbLeftPanelAttributeSearch3 { get; set; }
         public ViewModel()
         {
             ColumnInfos = new List<ColumnInfo>();
@@ -85,10 +89,15 @@ namespace Suhoh.Model
             AddPaneDirection = 1;
             AddPaneType = 1;
 
-            cbLeftPanelSearchSEC = "";
-            cbLeftPanelSearchTWP = "";
-            cbLeftPanelSearchRGE = "";
-            cbLeftPanelSearchMER = "";
+            ChkLeftPanelATS = true;
+            CbLeftPanelSearchSEC = "";
+            CbLeftPanelSearchTWP = "";
+            CbLeftPanelSearchRGE = "";
+            CbLeftPanelSearchMER = "";
+            ChkLeftPanelAttributeSearch = false;
+            CbLeftPanelAttributeSearch1 = "";
+            CbLeftPanelAttributeSearch2 = "";
+            CbLeftPanelAttributeSearch3 = "";
 
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
