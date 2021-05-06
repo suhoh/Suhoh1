@@ -94,6 +94,9 @@ function chkPieLabelClicked(s, e) {
         isXValueLabel = pie.isXValue = eval("chkPieXValueLabel").GetChecked();
     }
 
+    if (pie.textLabel == null)
+        return;
+
     if (isYValueLabel && !isXValueLabel && !isPercentageLabel) {
         pie.textLabel
             .text(function (d) {
@@ -167,7 +170,7 @@ function tbPiePropertyTitleKeyUp(s, e) {
         document.getElementById(caller).innerHTML = tbPropertyPieTitle.GetText();   // updates title in Panel
 }
 
-function cbXYColumnDropDownChanged(s, e) {
+function cbPieXYColumnChanged(s, e) {
     var pie = getPie(_activePie.divName);
     pie.xCol = cbPieXColumn.GetText();
     pie.yCol = cbPieYColumn.GetText();
@@ -177,6 +180,8 @@ function cbXYColumnDropDownChanged(s, e) {
 
     tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol);
     document.getElementById(pie.divName + "|Title").innerHTML = pie.xCol + " vs " + pie.yCol;
+
+    chkPieLabelClicked();
 }
 
 // Color Ramp
@@ -232,7 +237,43 @@ function radioColorRampPieClicked(s, e) {
 
 // bar chart
 function chkBarLabelClicked(s, e) {
+    var bar = getBar(_activeBar.divName);
+    var isXValueLabel, isYValueLabel;
 
+    if (s == undefined) {
+        isXValueLabel = bar.isXValue;
+        isYValueLabel = bar.isYValue;
+    }
+    else {
+        isXValueLabel = bar.isXValue = eval("cbBarXValue").GetChecked();
+        isYValueLabel = bar.isYValue = eval("cbBarYValue").GetChecked();
+    }
+    if (bar.textLabel == null)
+        return;
+
+    if (isXValueLabel && !isYValueLabel) {
+        bar.textLabel
+            .text(function (d) {
+                return (d.X);
+            })
+            .attr("display", "block");
+    }
+    else if (!isXValueLabel && isYValueLabel) {
+        bar.textLabel
+            .text(function (d) {
+                return (d.Y);
+            })
+            .attr("display", "block");
+    }
+    else if (isXValueLabel && isYValueLabel) {
+        bar.textLabel
+            .text(function (d) {
+                return (d.X + ", " + d.Y);
+            })
+            .attr("display", "block");
+    }
+    else
+        bar.textLabel.attr("display", "none");
 }
 
 var textSeparator = ";";
@@ -247,12 +288,20 @@ function cbBarXYColumnChanged(s, e) {
     if (_activeBar == undefined)
         return;
     var bar = getBar(_activeBar.divName);
-    bar.yCol = cbBarYColumn.GetText();
+    bar.xCol = cbBarXColumn.GetText();
 
-    var selectedItems = lbBarXColumn.GetSelectedItems();
-    ddBarXColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
+    var selectedItems = lbBarYColumn.GetSelectedItems();
+    ddBarYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
 
-    bar.xCol = getSelectedItemsText(selectedItems);
+    bar.yCol = getSelectedItemsText(selectedItems);
+    bar.color = ceBarColorPicker.GetText();
+
+    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
+    drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
+
+    tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
+    document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
+
     //var yCols = getSelectedItemsText(selectedItems).split(';');
 
     //var items = lbBarYColumn.GetSelectedItems();
@@ -262,15 +311,10 @@ function cbBarXYColumnChanged(s, e) {
     //}
     //text = text.substr(0, text.length - 1);
     //DropDownEdit.SetText(text);
-
-    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, true);
-    drawBar(bar.divName, barData.barData, barData.width, barData.height);
-
-    //tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
-    //document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
+    chkBarLabelClicked();
 }
 
-function chkBarTransposeClicked(s, e) {
+function radioOrientationBarClicked(s, e) {
 
 }
 
@@ -315,8 +359,9 @@ function showHideLegend(s) {
             return;
 
         bar.isLegend = !bar.isLegend;
+        bar.color = ceBarColorPicker.GetText();
 
-        var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, false);
+        var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, false);
         if (barData == null)
             return;
         if (bar.isLegend == true)
@@ -327,8 +372,18 @@ function showHideLegend(s) {
             for (i = 0; i < barData.barData.length; i++) {
                 $('#' + bar.divName + 'barLegend' + i).hide(500);
             }
-        drawBar(bar.divName, barData.barData, barData.width, barData.height);
+        drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
     }
+}
+
+function ceColorPickerClicked() {
+    if (_activeBar == undefined)
+        return;
+    var bar = getBar(_activeBar.divName);
+    bar.color = ceBarColorPicker.GetText();
+
+    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
+    drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
 }
 
 function btnBarMaximizeClick(s) {

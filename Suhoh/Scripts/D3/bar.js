@@ -11,7 +11,8 @@ var _activeBar;
 function initBar(divName) {
     _bars.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'isLegend': true,
-        'textLabel': null, 'color': 1, 'isLabel': false
+        'textLabel': null, 'color': 1, 'isLabel': false,
+        'isXValue': false, 'isYValue': false, 'color': '#FF00FF'
     })
 }
 
@@ -23,18 +24,20 @@ function getBar(divName) {
     return null;
 }
 
-function getBarData(paneId, jsonData, xCol, yCol, isInitial) {
+function getBarData(paneId, jsonData, xCol, yCol, color, isInitial) {
     if (jsonData == null)
         return null;
 
     var bGraph = splitterMain.GetPaneByName(paneId);
     var width = bGraph.GetClientWidth();
     var height = bGraph.GetClientHeight();
-    var min = Math.min(width, height);
+    //var min = Math.min(width, height);
 
     var bar = getBar(paneId);
     bar.xCol = xCol;
     bar.yCol = yCol;
+    bar.color = color;
+
     var xyArray = [];
     if (!isInitial) {
         xyArray = bar.data;
@@ -46,10 +49,11 @@ function getBarData(paneId, jsonData, xCol, yCol, isInitial) {
         }
     }
 
-    return { barData: xyArray, width: width, height: height, min: min }
+    //return { barData: xyArray, width: width, height: height, min: min, color: color }
+    return { barData: xyArray, width: width, height: height, color: color }
 }
 
-function drawBar(divName, data, width, height) {
+function drawBar(divName, data, width, height, barColor) {
     var svgHeight = height - 30; // svg height will be 30px smaller than panel height to leave room for title
     var marginTop = 30;
     var marginRight = 30;
@@ -94,9 +98,19 @@ function drawBar(divName, data, width, height) {
 
     // y-axis
     var yAxis = d3.axisLeft(y);
+    var yColumn = bar.yCol;
+
     svg.append("g")
         .attr("transform", "translate(" + (marginLeft + marginRight) + ", " + marginTop + ")")
         .call(yAxis);
+
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", "25px")
+        .attr("x", (30 - (height / 2)) + "px")
+        .style("text-anchor", "middle")
+        .attr("font-weight", "bold")
+        .text(yColumn);
 
     var barTooltip = d3.select("#" + divName).append("div").attr("class", "barTooltip").style("display", "none");
 
@@ -105,7 +119,7 @@ function drawBar(divName, data, width, height) {
         .data(data)
         .enter()
         .append("rect")
-        .style("fill", "#FF00FF")
+        .style("fill", barColor)
         .attr("x", function (d) { return x(d.X); })
         .attr("y", function (d) { return y(d.Y); })
         .attr("width", x.bandwidth())
@@ -133,16 +147,27 @@ function drawBar(divName, data, width, height) {
             barTooltip.style("display", "none");
         });
 
-    //var yColumn = cbPieYColumn.GetText();
+    var g = svg.append("g")
+    
+    bar.textLabel = g.selectAll("text")
+        .data(data)
+        .enter()
+        .append('text')
+        .attr("transform", "translate(" + (marginLeft + marginRight) + "," + (height / 2) + ")")
+        .attr("x", function (d) { return x(d.X) + x.bandwidth() / 2 })
+        .attr("y", function (d) { return (y(d.Y) / 2) - 25})
+        .style("text-anchor", "middle")
+        .style("font-size", "12px")
+        .attr("display", "none");
+
     var xColumn = bar.xCol;
-
     var d = [];
-    d.push('a');
-
+    d.push('');
 
     var legend = svg.selectAll("legend")
         .data(d)
-        .enter().append("g")
+        .enter()
+        .append("g")
         .attr("class", "barLegend")
         .attr("id", function (d, idx) { return bar.divName + "barLegend" + idx });
 
@@ -151,7 +176,7 @@ function drawBar(divName, data, width, height) {
             .attr("width", 7)
             .attr("height", 7)
             .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (10 + (idx * 15)) + ")"; })
-            .attr("fill", "#FF00FF");
+            .attr("fill", barColor);
 
         legend.append("text")
             .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (13 + (idx * 15)) + ")"; })
