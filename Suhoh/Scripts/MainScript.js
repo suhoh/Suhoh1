@@ -147,6 +147,8 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         }
         _columnNames = data;
 
+        populateLeftPanelSearchColumn(_columnNames);
+
         // Maps
         var mapColNames = getLonLatColumnNames(data);
         _maps.forEach(function (m) {

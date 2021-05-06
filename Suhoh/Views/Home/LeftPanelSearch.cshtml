@@ -76,31 +76,41 @@
                   settings =>
                   {
                       settings.Name = "cbLeftPanelAttributeSearch1";
-                      settings.Width = 80;
+                      settings.Width = 220;
                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                      settings.Properties.DropDownWidth = 79;
-                      //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelAttributeSearch1Changed";
-                  }).BindList(DataEngine.SectionList()).GetHtml()
+                      settings.Properties.DropDownWidth = 219;
+                      settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelAttributeSearch1Changed";
+                  }).GetHtml()
             </th>
+        </tr>
+        <tr>
             <th class="cbLeftPanelAttributeSearch2">
                 @Html.DevExpress().ComboBoxFor(model => model.CbLeftPanelAttributeSearch2,
                   settings =>
                   {
                       settings.Name = "cbLeftPanelAttributeSearch2";
-                      settings.Width = 40;
+                      settings.Width = 100;
                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                      settings.Properties.DropDownWidth = 39;
+                      settings.Properties.DropDownWidth = 99;
+                      settings.Properties.Items.Add("=", 1);
+                      settings.Properties.Items.Add(">", 2);
+                      settings.Properties.Items.Add(">=", 3);
+                      settings.Properties.Items.Add("<", 4);
+                      settings.Properties.Items.Add("<=", 5);
+                      settings.Properties.Items.Add("Like", 6);
                       //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelAttributeSearch2Changed";
-                  }).BindList(DataEngine.SectionList()).GetHtml()
+                  }).GetHtml()
             </th>
+        </tr>
+        <tr>
             <th class="cbLeftPanelAttributeSearch3">
                 @Html.DevExpress().ComboBoxFor(model => model.CbLeftPanelAttributeSearch3,
                   settings =>
                   {
                       settings.Name = "cbLeftPanelAttributeSearch3";
-                      settings.Width = 80;
+                      settings.Width = 220;
                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                      settings.Properties.DropDownWidth = 79;
+                      settings.Properties.DropDownWidth = 219;
                       //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelAttributeSearch3Changed";
                   }).BindList(DataEngine.SectionList()).GetHtml()
             </th>
