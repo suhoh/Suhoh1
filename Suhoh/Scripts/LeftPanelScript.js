@@ -99,6 +99,20 @@ function btnChangeLayoutClicked(s, e) {
 
 }
 
-function btnLeftPanelAttributeSearchClick() {
+function populateLeftPanelSearchColumn(items) {
+    cbLeftPanelAttributeSearch1.ClearItems();
+    for (i = 0; i < items.length; i++) {
+        cbLeftPanelAttributeSearch1.AddItem(items[i].Name);
+    }
+}
+
+function cbLeftPanelAttributeSearch1Changed(s, e) {
+    var item = cbLeftPanelAttributeSearch1.GetText();
+    for (i = 0; i < _jsonData.length; i++) {
+        //console.log(_jsonData[i].item);
+    }
+}
+
+function btnLeftPanelAttributeSearchClick(s, e) {
 
 }
