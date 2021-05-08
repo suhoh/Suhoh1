@@ -49,7 +49,7 @@
         group.Text = "Load My Project";
         group.SetContentTemplateContent(c =>
         {
-            //Html.RenderPartial("PrintMap", Model);
+            Html.RenderPartial("LeftPanelLoadProject", Model);
         });
     });
     settings.Groups.Add(group =>
@@ -67,7 +67,7 @@
         group.Text = "Search";
         group.SetContentTemplateContent(c =>
         {
-            Html.RenderPartial("SearchAts", Model);
+            Html.RenderPartial("LeftPanelSearch", Model);
         });
     });
     settings.Groups.Add(group =>

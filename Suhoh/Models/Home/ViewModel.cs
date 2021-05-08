@@ -33,14 +33,14 @@ namespace Suhoh.Model
         public bool ChkXValueLabel { get; set; }
         public string DdXColumn { get; set; }
         public string DdYColumn { get; set; }
-        public int ColorRampPie { get; set; }
+        public int RadioColorRampPie { get; set; }
 
         // Bar Chart Property
         public string BarTitle { get; set; }
         public bool CbBarYValueLabel { get; set; }
         public bool CbBarXValueLabel { get; set; }
-        public string DdBarYColumn { get; set; }
-        public bool CbBarTranspose { get; set; }
+        public string DdBarXColumn { get; set; }
+        public int RadioOrientationBar { get; set; }
 
         // OpenLayers
         public string MapTitle { get; set; }
@@ -72,13 +72,13 @@ namespace Suhoh.Model
             ChkXValueLabel = false;
             DdXColumn = "";
             DdYColumn = "";
-            ColorRampPie = 1;
+            RadioColorRampPie = 1;
 
             // Bar Chart Property
             CbBarYValueLabel = false;
             CbBarXValueLabel = false;
-            DdBarYColumn = "";
-            CbBarTranspose = false;
+            DdBarXColumn = "";
+            RadioOrientationBar = 1;
 
             // Map
             MapTitle = "Map Title";

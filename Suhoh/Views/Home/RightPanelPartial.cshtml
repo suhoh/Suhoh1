@@ -119,18 +119,22 @@
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Maximize", Model.CreatePanelName)) + "' type='button' class='btnGridviewMaximize' title='Maximize' " +
                 "onclick='btnGridviewMaximize(this)'></button>");
             ViewContext.Writer.Write("</div>");
+
             ViewContext.Writer.Write("<div class='divGridviewLegend'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Legend", Model.CreatePanelName)) + "' type='button' class='btnGridviewLegend' title='Legend' " +
                 "onclick='btnGridviewLegend(this)'></button>");
             ViewContext.Writer.Write("</div>");
+
             ViewContext.Writer.Write("<div class='divGridviewProperty'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Property", Model.CreatePanelName)) + "' type='button' class='btnGridviewProperty' title='Property' " +
                 "onclick='showPropertyPopup(this)'></button>");
             ViewContext.Writer.Write("</div>");
+
             ViewContext.Writer.Write("<div class='divGridviewSetting'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Close", Model.CreatePanelName)) + "' type='button' class='btnGridviewClose' title='Close' " + 
                 "onclick='btnGridviewClose(this)'></button>");
             ViewContext.Writer.Write("</div>");
+
             ViewContext.Writer.Write("</div>");
 
             Html.RenderPartial("DxGridview", Model);

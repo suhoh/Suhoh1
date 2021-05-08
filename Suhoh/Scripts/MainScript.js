@@ -57,11 +57,14 @@ function updateBars(bars) {
     if (bars.length == 0)
         return;
     bars.forEach(function (b) {
-        var barData = getBarData(b.divName, b.data, b.xCol, b.yCol, false);     // used to be PaneId
+        var barData = getBarData(b.divName, b.data, b.xCol, b.yCol, b.color, false);     // used to be PaneId
         if (barData != null) {
-            var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height);
+            var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.color);
             b.svg = barSvg;
         }
+        _activeBar = b;
+        if (typeof cbBarXValue != "undefined" && ASPxClientUtils.IsExists(cbBarXValue))
+            chkBarLabelClicked();
     });
 }
 
@@ -144,6 +147,8 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         }
         _columnNames = data;
 
+        populateLeftPanelSearchColumn(_columnNames);
+
         // Maps
         var mapColNames = getLonLatColumnNames(data);
         _maps.forEach(function (m) {
@@ -167,9 +172,9 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         // Bars
         var barColNames = getBarColNames(data);
         _bars.forEach(function (b) {
-            var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, true);
+            var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, b.color,  true);
             if (barData != null) {
-                var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height);
+                var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.color);
                 b.svg = barSvg;
             }
             document.getElementById(b.divName + "_Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
@@ -363,26 +368,28 @@ function renderBarProperty(id) {
         console.log("_columnNames: null or empty.")
         return;
     }
-    lbBarXColumn.ClearItems();
-    cbBarYColumn.ClearItems();
+    cbBarXColumn.ClearItems();
+    lbBarYColumn.ClearItems();
     _columnNames.forEach(function (c) {
         if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
-            lbBarXColumn.AddItem(c.Name);
+            cbBarXColumn.AddItem(c.Name);
         if (c.Type == 'Int64' || c.Type == 'Double')
-            cbBarYColumn.AddItem(c.Name);
+            lbBarYColumn.AddItem(c.Name);
     });
 
     var bar = getBar(id);
     _activeBar = bar;
 
-    lbBarXColumn.SetValue(bar.xCol);
-    cbBarYColumn.SetValue(bar.yCol);
+    cbBarXColumn.SetValue(bar.xCol);
+    lbBarYColumn.SetValue(bar.yCol);
 
-    var selectedItems = lbBarXColumn.GetSelectedItems();
-    ddBarXColumn.SetText(getSelectedItemsText(selectedItems));
+    var selectedItems = lbBarYColumn.GetSelectedItems();
+    ddBarYColumn.SetText(getSelectedItemsText(selectedItems));
 
     document.getElementById(bar.divName + "_Title").innerHTML = bar.xCol + " vs " + bar.yCol;
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
+
+    ceBarColorPicker.SetColor(bar.color);
 }
 
 function renderMapProperty(id) {

@@ -44,6 +44,7 @@ function SetAllPanelSettings(flag) {
 //"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Graph1']}, {'name': 'Panel3', 'type': ['Gridview1']}]"
 function btnChangeLayoutClicked(s, e) {
     loadingPanel.Hide();
+    popupPanelProperty.Hide();
     var nPanel = radioActivePanelSettings.GetValue();
     var panels = [];
     if (nPanel == 1) {
@@ -99,6 +100,20 @@ function btnChangeLayoutClicked(s, e) {
 
 }
 
-function btnLeftPanelAttributeSearchClick() {
+function populateLeftPanelSearchColumn(items) {
+    cbLeftPanelAttributeSearch1.ClearItems();
+    for (i = 0; i < items.length; i++) {
+        cbLeftPanelAttributeSearch1.AddItem(items[i].Name);
+    }
+}
+
+function cbLeftPanelAttributeSearch1Changed(s, e) {
+    var item = cbLeftPanelAttributeSearch1.GetText();
+    for (i = 0; i < _jsonData.length; i++) {
+        //console.log(_jsonData[i].item);
+    }
+}
+
+function btnLeftPanelAttributeSearchClick(s, e) {
 
 }

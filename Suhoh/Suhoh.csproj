@@ -318,12 +318,13 @@
     <Content Include="Views\Home\D3PieProperty.cshtml" />
     <Content Include="Views\Home\AddNewPane.cshtml" />
     <Content Include="Views\Home\RightPanelPartial.cshtml" />
-    <Content Include="Views\Home\SearchAts.cshtml" />
+    <Content Include="Views\Home\LeftPanelSearch.cshtml" />
     <Content Include="Views\Home\LeftPanelSettings.cshtml" />
     <Content Include="Views\Home\LeftPanelSelectDataSource.cshtml" />
     <Content Include="Views\Home\D3BarProperty.cshtml" />
     <Content Include="Views\Home\CallbackPopupPanelProperty.cshtml" />
     <Content Include="Views\Home\OLMapProperty.cshtml" />
+    <Content Include="Views\Home\LeftPanelLoadProject.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

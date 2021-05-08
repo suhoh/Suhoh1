@@ -1,8 +1,6 @@
 ﻿@using Suhoh.Model
 @model ViewModel
 
-
-
 <div id="divBarTitle" class="divBarTitle">
     <table>
         <tr>
@@ -67,16 +65,32 @@
                 X Column
             </th>
             <th id="thBarXColumnDropDown" class="thBarXColumnDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.DdBarXColumn,
+                settings =>
+                {
+                    settings.Name = "cbBarXColumn";
+                    settings.Width = 167;
+                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    settings.Properties.DropDownWidth = 165;
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbBarXYColumnChanged";
+                }).BindList(DataEngine.GetXColumn()).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th id="thBarYColumnDropDownLabel" class="thBarYColumnDropDownLabel">
+                Y Column
+            </th>
+            <th id="thBarYColumnDropDown" class="thBarYColumnDropDown">
                 @Html.DevExpress().DropDownEdit(settings =>
                 {
-                settings.Name = "ddBarXColumn";
+                settings.Name = "ddBarYColumn";
                 settings.Width = 167;
 
                     settings.SetDropDownWindowTemplateContent(c =>
                     {
                         @Html.DevExpress().ListBox(listBoxSettings =>
                         {
-                            listBoxSettings.Name = "lbBarXColumn";
+                            listBoxSettings.Name = "lbBarYColumn";
                             listBoxSettings.Width = 164;
                             listBoxSettings.Height = 180;
                             listBoxSettings.Properties.EnableSelectAll = true;
@@ -95,7 +109,7 @@
                             buttonSetting.Name = "lbBarButtonClose";
                             buttonSetting.Text = "Close";
                             buttonSetting.Style.Add("float", "right");
-                            buttonSetting.ClientSideEvents.Click = "function(s, e) { ddBarXColumn.HideDropDown(); }";
+                            buttonSetting.ClientSideEvents.Click = "function(s, e) { ddBarYColumn.HideDropDown(); }";
                             buttonSetting.Height = 26;
                         }).Render();
                         ViewContext.Writer.Write("</div>");
@@ -103,42 +117,33 @@
                 }).GetHtml()
             </th>
         </tr>
-        <tr>
-            <th id="thBarYColumnDropDownLabel" class="thBarYColumnDropDownLabel">
-                Y Column
-            </th>
-            <th id="thBarYColumnDropDown" class="thBarYColumnDropDown">
-                @Html.DevExpress().ComboBoxFor(model => model.DdBarYColumn,
-                settings =>
-                {
-                    settings.Name = "cbBarYColumn";
-                    settings.Width = 167;
-                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                    settings.Properties.DropDownWidth = 165;
-                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbBarXYColumnChanged";
-                }).BindList(DataEngine.GetYColumn()).GetHtml()
-
-            </th>
-        </tr>
     </table>
 </div>
 
-<div id="divBarTranspose" class="divBarTranspose">
+<div id="divBarOrientation" class="divBarOrientation">
     <table>
         <tr>
-            <th id="thBarTransposeHeading1" class="thBarTransposeHeading1">
-                Transpose
+            <th id="thBarOrientationHeading1" class="thBarOrientationHeading1">
+                Orientation
             </th>
         </tr>
         <tr>
-            <th id="thBarTransposeChkBox" class="thBarTransposeChkBox">
-                @Html.DevExpress().CheckBoxFor(settings => Model.CbBarTranspose,
-                    settings =>
-                    {
-                        settings.Name = "cbBarTranspose";
-                        settings.Text = "Switch X and Y Axis ";
-                        settings.Properties.ClientSideEvents.CheckedChanged = "chkBarTransposeClicked";
-                    }).GetHtml()
+            <th id="thBarOrientationRadio" class="thBarOrientationRadio">
+                @Html.DevExpress().RadioButtonListFor(model => Model.RadioOrientationBar,
+                settings =>
+                {
+                    settings.Name = "radioOrientationBar";
+                    settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+                    settings.Properties.Items.Add("Vertical", 1);
+                    settings.Properties.Items.Add("Horizontal", 2);
+                    settings.Properties.RepeatColumns = 3;
+                    settings.Width = 200;
+                    settings.Height = 28;
+                    settings.ControlStyle.CssClass = "radioOrientationBar";
+                    settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
+                    settings.Properties.ValueType = typeof(Int32);
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioOrientationBarClicked";
+                }).GetHtml()
             </th>
         </tr>
     </table>
@@ -158,6 +163,7 @@
                    settings.Width = 240;
                    settings.Color = System.Drawing.Color.FromName("red");
                    settings.Properties.EnableCustomColors = true;
+                   settings.Properties.ClientSideEvents.ColorChanged = "ceColorPickerClicked";
                 }).GetHtml()
             </th>
         </tr>
