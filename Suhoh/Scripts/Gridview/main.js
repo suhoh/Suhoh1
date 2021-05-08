@@ -2,11 +2,12 @@
 // Gridview main functions
 //
 
-var _gridviews = [];    // { 'name': name }
+const _pageSize = 50;
+var _gridviews = [];
 var _activeGridview;
 
 function initGridview(name) {
-    _gridviews.push({ 'name': name });  // DevExpress control name
+    _gridviews.push({ 'name': name, 'pageSize': _pageSize });  // DevExpress control name
 }
 
 function getGridview(divName) {
@@ -17,7 +18,15 @@ function getGridview(divName) {
     return null;
 }
 
-function cbGridviewPageSizeChanged(s, e) {
+// Gridview callback
+function dxGridview_OnBeginCallback(s, e) {
+    e.customArgs["dxGridview_sender"] = s.name;
+}
+function dxGridview_OnEndCallback(s, e) {
+
+}
+
+function cbXYColumnMapChanged(s, e) {
 
 }
 

@@ -9,7 +9,9 @@ const _lonColName = "Longitude";
 const _latColName = "Latitude";
 const _mapX = '-114.06666';
 const _mapY = '51.04999';
-var _maps = []; // { 'divName': divName, 'map': map, 'layer': null, 'scaleLine': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude,
+const _basemap = "Streets";
+
+var _maps = []; // { 'divName': divName, 'map': map, 'layer': null, 'scaleLine': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude, 'basemap': _basemap,
                 //   'mousePosition': null, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null, 'x': null, 'y': null, 'isMaximized': false }
 var _activeMap;
 var _gotoLocationLayer = null;
@@ -114,7 +116,7 @@ function initMap(divName) {
     });
 
     _maps.push({
-        'divName': divName, 'map': map, 'layer': null, 'scaleLine': scaleLine, 'data': null, 'xCol': null, 'yCol': null,
+        'divName': divName, 'map': map, 'layer': null, 'scaleLine': scaleLine, 'data': null, 'xCol': null, 'yCol': null, 'basemap': _basemap,
         'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null,
         'x': _mapX, 'y': _mapY, 'isMaximized': false
     });
@@ -180,7 +182,7 @@ function chkShowLabelChanged(s, e) {
     cbShowLabel.SetEnabled(_activeMap.isLabelOn);
 }
 
-function cbXYColumnMapChanged(s, e) {
+function cbShowLabelChanged(s, e) {
 
 }
 
@@ -189,22 +191,23 @@ function cbBasemapChanged(s, e) {
     var basemap = s.GetText();
     var count = s.GetItemCount();
 
-    var map = getMap(pId).map;
+    var map = getMap(pId);
+    map.basemap = basemap;
     for (i = 0; i < count; i++) {
-        map.getLayers().getArray()[i].setProperties({ visible: false }, true);
+        map.map.getLayers().getArray()[i].setProperties({ visible: false }, true);
     }
     if (basemap == 'Streets')
-        map.getLayers().getArray()[0].setProperties({ visible: true }, false);
+        map.map.getLayers().getArray()[0].setProperties({ visible: true }, false);
     else if (basemap == 'Topographic')
-        map.getLayers().getArray()[1].setProperties({ visible: true }, false);
+        map.map.getLayers().getArray()[1].setProperties({ visible: true }, false);
     else if (basemap == 'Imagery')
-        map.getLayers().getArray()[2].setProperties({ visible: true }, false);
+        map.map.getLayers().getArray()[2].setProperties({ visible: true }, false);
     else if (basemap == 'Natl. Geographic')
-        map.getLayers().getArray()[3].setProperties({ visible: true }, false);
+        map.map.getLayers().getArray()[3].setProperties({ visible: true }, false);
     else if (basemap == 'Shaded Relief')
-        map.getLayers().getArray()[4].setProperties({ visible: true }, false);
+        map.map.getLayers().getArray()[4].setProperties({ visible: true }, false);
     else
-        map.getLayers().getArray()[0].setProperties({ visible: true }, false);
+        map.map.getLayers().getArray()[0].setProperties({ visible: true }, false);
 }
 
 function btnOpenLayerPropertyGoToClick(s, e) {  // s: Panel1Map1|Property|GoTo

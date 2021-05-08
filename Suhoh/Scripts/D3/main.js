@@ -162,9 +162,9 @@ function chkPieLabelClicked(s, e) {
 function tbPiePropertyTitleKeyUp(s, e) {
     var caller;
     if (s.name == undefined)    // called manually
-        caller = s + "|Title";
+        caller = s + "_Title";
     else
-        caller = _activePie.divName + "|Title";
+        caller = _activePie.divName + "_Title";
 
     if (typeof tbPropertyPieTitle !== "undefined" && ASPxClientUtils.IsExists(tbPropertyPieTitle))
         document.getElementById(caller).innerHTML = tbPropertyPieTitle.GetText();   // updates title in Panel
@@ -179,7 +179,7 @@ function cbPieXYColumnChanged(s, e) {
     drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 
     tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol);
-    document.getElementById(pie.divName + "|Title").innerHTML = pie.xCol + " vs " + pie.yCol;
+    document.getElementById(pie.divName + "_Title").innerHTML = pie.xCol + " vs " + pie.yCol;
 
     chkPieLabelClicked();
 }
@@ -300,7 +300,7 @@ function cbBarXYColumnChanged(s, e) {
     drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
 
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
-    document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
+    document.getElementById(bar.divName + "_Title").innerHTML = bar.xCol + " vs " + bar.yCol;
 
     //var yCols = getSelectedItemsText(selectedItems).split(';');
 
@@ -321,9 +321,9 @@ function radioOrientationBarClicked(s, e) {
 function tbBarPropertyTitleKeyUp(s, e) {
     var caller;
     if (s.name == undefined)    // called manually
-        caller = s + "|Title";
+        caller = s + "_Title";
     else
-        caller = _activeBar.divName + "|Title";
+        caller = _activeBar.divName + "_Title";
 
     if (typeof tbPropertyBarTitle !== "undefined" && ASPxClientUtils.IsExists(tbPropertyBarTitle))
         document.getElementById(caller).innerHTML = tbPropertyBarTitle.GetText();

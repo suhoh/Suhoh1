@@ -36,7 +36,10 @@ namespace Suhoh.Controllers
         public ActionResult DxGridview(ViewModel vm, string name)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
-            viewModel.CreatePanelName = name;   // set current panel name to consume in DxGridview
+            if (string.IsNullOrEmpty(name))
+                viewModel.CreatePanelName = Request.Params["dxGridview_sender"];    // called from gridview
+            else
+                viewModel.CreatePanelName = name;                                   // called from PerformCallback
             Session["viewModel"] = viewModel;
             return PartialView("DxGridview", viewModel);
         }

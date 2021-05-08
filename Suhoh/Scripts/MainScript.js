@@ -305,7 +305,7 @@ function btnAddNewPaneClick(s, e) {
 //
 function showPropertyPopup(s) {
     activateButton(s);
-    _activePropertyName = s.id; // Panel2Bar1|Property
+    _activePropertyName = s.id; // Panel2Bar1_Property
     callbackPopupPanelProperty.PerformCallback({
         'sender': s.id
     });
@@ -398,16 +398,17 @@ function renderMapProperty(id) {
 
     popupPanelProperty.SetHeaderText("Map Property");
     chkShowCoordinates.SetChecked(map.isCoordinatesOn);
-    chkShowLabel.SetChecked(map.isCoordinatesOn);
+    chkShowLabel.SetChecked(map.isLabelOn);
     cbShowLabel.SetEnabled(map.isLabelOn);
     tbMapGoToX.SetText(map.x);
     tbMapGoToY.SetText(map.y);
+    cbBasemap.SetValue(map.basemap);
 
+    // XY columns
     if (_columnNames == undefined || _columnNames.length == 0) {
         console.log("_columnNames: null or empty.")
         return;
     }
-
     cbMapXColumn.ClearItems();
     cbMapYColumn.ClearItems();
     _columnNames.forEach(function (c) {
@@ -416,7 +417,6 @@ function renderMapProperty(id) {
             cbMapYColumn.AddItem(c.Name);
         }
     });
-
     cbMapXColumn.SetValue(map.xCol);
     cbMapYColumn.SetValue(map.yCol);
 
@@ -426,6 +426,8 @@ function renderMapProperty(id) {
 function renderGridviewProperty(id) {
     var gv = getGridview(id);
     _activeGridview = gv;
+    cbGridviewPageSize.SetValue(gv.pageSize);
+
     popupPanelProperty.SetHeaderText("Grid Property");
 }
 

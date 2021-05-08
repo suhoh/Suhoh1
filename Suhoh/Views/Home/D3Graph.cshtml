@@ -8,30 +8,6 @@
 <style>
     .divPieOutline {
     }
-
-    .olMap {
-        opacity: 1;
-        background-color: #ffffff;
-        width: 100%;
-        height: 100%;
-        position: static;
-        z-index: 1;
-        /*position: fixed;
-        top: 47px;
-        bottom: 0px;
-        left: 0px;
-        z-index: 1;*/
-    }
-
-        .olMap.outline {
-            border: solid;
-            border-width: 1px;
-            color: red;
-        }
-
-        .olMap.noOutline {
-            border: none;
-        }
 </style>
 
 <div id="@(String.Format("{0}", Model.CreatePanelName))" style="position:relative;" onclick="divPanelClicked(this)">
