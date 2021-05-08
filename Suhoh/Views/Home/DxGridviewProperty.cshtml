@@ -1,2 +1,57 @@
 ﻿@using Suhoh.Model
 @model ViewModel
+
+@*Title*@
+<div id="divGridviewTitle" class="divTitle">
+    <table>
+        <tr>
+            <th style="float: left; margin-left: 2px">Grid Title</th>
+        </tr>
+        <tr>
+            <th style="float: left; margin-top: 5px">
+                @Html.DevExpress().TextBoxFor(model => model.GridviewTitle,
+                          settings =>
+                          {
+                              settings.Name = "tbPropertyMapTitle";
+                              settings.Width = 240;
+                              settings.Text = "Grid Title";  
+                              settings.ControlStyle.CssClass = "";
+                              settings.Properties.ClientSideEvents.KeyUp = "";
+                          }
+                          ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div id="divPageSize" class="divBarXYColumn">
+    <table>
+        <tr>
+            <th id="thBarXYColumnHeading1" class="thBarXYColumnHeading1">
+                Settings
+            </th>
+        </tr>
+        <tr>
+            <th id="thGridviewLabel" class="thGridviewPageSizeLabel">
+                Page Size
+            </th>
+            <th id="thGridviewPageSize" class="thGridviewPageSizeDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.GridviewPageSize,
+                settings =>
+                {
+                    settings.Name = "cbGridviewPageSize";
+                    settings.Width = 60;
+                    settings.Properties.Items.Add("10", 1);
+                    settings.Properties.Items.Add("20", 2);
+                    settings.Properties.Items.Add("50", 3);
+                    settings.Properties.Items.Add("100", 4);
+                    settings.Properties.Items.Add("200", 5);
+                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    settings.Properties.DropDownWidth = 60;
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbGridviewPageSizeChanged";
+                }).GetHtml()
+
+            </th>
+        </tr>
+    </table>
+</div>

@@ -41,7 +41,7 @@
     background-color: rgba(0,60,136,.5) !important;
     /*color: blue !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -66,9 +66,9 @@
 
 .btnGridviewLegend {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
+    /*color: white !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -93,9 +93,9 @@
 
 .btnGridviewProperty {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
-    font-weight: bold !important;
-    border: none !important;
+    /*color: white !important;*/
+    font-weight: bold;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -120,9 +120,9 @@
 
 .btnGridviewClose {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
+    /*color: white !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -135,3 +135,18 @@
     .btnGridviewClose:hover {
         background-color: rgba(0,60,136,.7) !important;
     }
+
+    /*Properties*/
+.thGridviewPageSizeLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 10px;
+    margin-left: 2px;
+}
+
+.thGridviewPageSizeDropDown {
+    font-weight: normal;
+    float: left;
+    margin-top: 7px;
+    margin-left: 10px;
+}

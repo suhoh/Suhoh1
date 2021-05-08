@@ -8,13 +8,13 @@
         </tr>
         <tr>
             <th>
-                @Html.DevExpress().TextBoxFor(model => model.D3GraphTitleProperty,
+                @Html.DevExpress().TextBoxFor(model => model.PieTitle,
                           settings =>
                           {
                               settings.Name = "tbPropertyPieTitle";
                               settings.Width = 240;
                               settings.Text = "Graph Title";
-                              settings.ControlStyle.CssClass = "D3GraphtitlePropertyBox";
+                              settings.ControlStyle.CssClass = "pieTitle";
                               settings.Properties.ClientSideEvents.KeyUp = "tbPiePropertyTitleKeyUp";
                           }
                           ).GetHtml()

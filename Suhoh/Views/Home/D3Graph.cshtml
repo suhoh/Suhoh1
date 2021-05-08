@@ -5,9 +5,38 @@
     ViewBag.Title = "D3Graph";
 }
 
-<div id="@Model.CreatePanelName" style="position:relative;">
-    <div id="@(String.Format("{0}|Title", Model.CreatePanelName))" class="chartTitle">
-        @{ 
+<style>
+    .divPieOutline {
+    }
+
+    .olMap {
+        opacity: 1;
+        background-color: #ffffff;
+        width: 100%;
+        height: 100%;
+        position: static;
+        z-index: 1;
+        /*position: fixed;
+        top: 47px;
+        bottom: 0px;
+        left: 0px;
+        z-index: 1;*/
+    }
+
+        .olMap.outline {
+            border: solid;
+            border-width: 1px;
+            color: red;
+        }
+
+        .olMap.noOutline {
+            border: none;
+        }
+</style>
+
+<div id="@(String.Format("{0}", Model.CreatePanelName))" style="position:relative;" onclick="divPanelClicked(this)">
+    <div id="@(String.Format("{0}_Title", Model.CreatePanelName))" class="chartTitle">
+        @{
             var graphType = "";
             if (Model.CreatePanelName.ToUpper().Contains("PIE"))
             {
@@ -18,31 +47,27 @@
                 graphType = "BAR";
             }
         }
-        <span>@graphType</span>
-    </div> 
+        <span style="font-size: large">@graphType</span>
+    </div>
 
     <div class="divChartMaximizeButton">
-        <button id="@(String.Format("{0}|Maximize", Model.CreatePanelName))" type="button" class="btnChartMaximize" title="Maximize"
-                onclick="btnBarMaximizeClick(this)">
-        </button>
+        <button id="@(String.Format("{0}_Maximize", Model.CreatePanelName))" type="button" class="btnChartMaximize" title="Maximize"
+                onclick="btnBarMaximizeClick(this)"></button>
     </div>
 
     <div class="divChartLegendButton">
-        <button id="@(String.Format("{0}|Legend", Model.CreatePanelName))" type="button" class="btnChartLegend" title="Legend" 
-                onclick="showHideLegend(this)">
-        </button>
+        <button id="@(String.Format("{0}_Legend", Model.CreatePanelName))" type="button" class="btnChartLegend" title="Legend"
+                onclick="showHideLegend(this)"></button>
     </div>
 
     <div class="divChartPropertyButton">
-        <button id="@(String.Format("{0}|Property", Model.CreatePanelName))" type="button" class="btnChartProperty" title="Property" 
-                onclick="showPropertyPopup(this)">
-        </button>
+        <button id="@(String.Format("{0}_Property", Model.CreatePanelName))" type="button" class="btnChartProperty" title="Property"
+                onclick="showPropertyPopup(this)"></button>
     </div>
 
     <div class="divChartSettingButton">
-        <button id="@(String.Format("{0}|Close", Model.CreatePanelName))"  type="button" class="btnChartClose" title="Close"
-                onclick="btnBarCloseClick(this)">
-        </button>
+        <button id="@(String.Format("{0}_Close", Model.CreatePanelName))" type="button" class="btnChartClose" title="Close"
+                onclick="btnBarCloseClick(this)"></button>
     </div>
 </div>
 

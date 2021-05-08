@@ -70,8 +70,8 @@ function updateGridviews(gridviews) {
         return;
     _gridviews.forEach(function (g) {
         var gv = eval(g.name);
-        gv.PerformCallback();
-        document.getElementById(g.name + "|Title").innerHTML = _filename;
+        gv.PerformCallback({ 'name': g.name });
+        document.getElementById(g.name + "_Title").innerHTML = _filename;
     })
 }
 
@@ -161,7 +161,7 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
                 var pieSvg = drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
                 p.svg = pieSvg;
             }
-            document.getElementById(p.divName + "|Title").innerHTML = p.xCol + " vs " + p.yCol;   // title in panel
+            document.getElementById(p.divName + "_Title").innerHTML = p.xCol + " vs " + p.yCol;   // title in panel
         });
 
         // Bars
@@ -172,7 +172,7 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
                 var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height);
                 b.svg = barSvg;
             }
-            document.getElementById(b.divName + "|Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
+            document.getElementById(b.divName + "_Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
         });
 
         loadingPanel.Hide();
@@ -261,6 +261,7 @@ function radioAddPaneDirectionClick(s, e) {
 
 var addNewPaneSender;
 function addNewPane(s) {
+    activateButton(s);
     addNewPaneSender = s.name;
     popupAddNewPane.Show();
 }
@@ -298,6 +299,7 @@ function btnAddNewPaneClick(s, e) {
 // Being called from all the panels (pie, bar, map, gridview)
 //
 function showPropertyPopup(s) {
+    activateButton(s);
     _activePropertyName = s.id; // Panel2Bar1|Property
     callbackPopupPanelProperty.PerformCallback({
         'sender': s.id
@@ -309,13 +311,15 @@ function callbackPopupPanelProperty_OnBeginCallback(s, e) {
 }
 
 function callbackPopupPanelProperty_OnEndCallback(s, e) {
-    var id = _activePropertyName.split('|')[0];
+    var id = _activePropertyName.split('_')[0];
     if (id.toUpperCase().indexOf('PIE') > -1)
         renderPieProperty(id);
     if (id.toUpperCase().indexOf('BAR') > -1) 
         renderBarProperty(id)
     if (id.toUpperCase().indexOf('MAP') > -1)
         renderMapProperty(id)
+    if (id.toUpperCase().indexOf('GRIDVIEW') > -1)
+        renderGridviewProperty(id)
 }
 
 function renderPieProperty(id) {
@@ -339,7 +343,7 @@ function renderPieProperty(id) {
 
     var pie = getPie(id);
     _activePie = pie;
-    document.getElementById(pie.divName + "|Title").innerHTML = pie.xCol + " vs " + pie.yCol;   // title in panel
+    document.getElementById(pie.divName + "_Title").innerHTML = pie.xCol + " vs " + pie.yCol;   // title in panel
     tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol); // title in property
 
     chkPiePercentageLabel.SetChecked(pie.isPercentage);
@@ -377,20 +381,59 @@ function renderBarProperty(id) {
     var selectedItems = lbBarXColumn.GetSelectedItems();
     ddBarXColumn.SetText(getSelectedItemsText(selectedItems));
 
-    document.getElementById(bar.divName + "|Title").innerHTML = bar.xCol + " vs " + bar.yCol;
+    document.getElementById(bar.divName + "_Title").innerHTML = bar.xCol + " vs " + bar.yCol;
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
 }
 
 function renderMapProperty(id) {
-    popupPanelProperty.SetHeaderText("Map Property");
-
-    //if (_columnNames == undefined || _columnNames.length == 0) {
-    //    console.log("_columnNames: null or empty.")
-    //    return;
-    //}
-
     var map = getMap(id);
     _activeMap = map;
+
+    popupPanelProperty.SetHeaderText("Map Property");
+    chkShowCoordinates.SetChecked(map.isCoordinatesOn);
+    chkShowLabel.SetChecked(map.isCoordinatesOn);
+    cbShowLabel.SetEnabled(map.isLabelOn);
+    tbMapGoToX.SetText(map.x);
+    tbMapGoToY.SetText(map.y);
+
+    if (_columnNames == undefined || _columnNames.length == 0) {
+        console.log("_columnNames: null or empty.")
+        return;
+    }
+
+    cbMapXColumn.ClearItems();
+    cbMapYColumn.ClearItems();
+    _columnNames.forEach(function (c) {
+        if (c.Type == 'Int64' || c.Type == 'Double') {
+            cbMapXColumn.AddItem(c.Name);
+            cbMapYColumn.AddItem(c.Name);
+        }
+    });
+
+    cbMapXColumn.SetValue(map.xCol);
+    cbMapYColumn.SetValue(map.yCol);
+
+    tbPropertyMapTitle.SetText(map.xCol + " vs " + map.yCol); // title in property
+}
+
+function renderGridviewProperty(id) {
+    var gv = getGridview(id);
+    _activeGridview = gv;
+    popupPanelProperty.SetHeaderText("Grid Property");
+}
+
+// add red border on property tool
+function activateButton(s) {
+    var prevProp = _activePropertyName;
+    $("#" + prevProp).removeClass("btnPropertyBorder");
+    $("#" + s.id).addClass("btnPropertyBorder")
+}
+
+function deactivateButton(s) {
+    $("#" + prevProp).removeClass("btnPropertyBorder");
+}
+
+function divPanelClicked(s) {
 }
 
 //

@@ -22,7 +22,7 @@
     background-color: rgba(0,60,136,.5) !important;
     /*color: blue !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -45,9 +45,9 @@
 }
 .btnChartLegend {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
+    /*color: white !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -70,9 +70,9 @@
 }
 .btnChartProperty {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
+    /*color: white !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -94,9 +94,9 @@
 }
 .btnChartClose {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
+    /*color: white !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -238,7 +238,7 @@
 }
 /*Charts ToolTip End*/
 
-.D3GraphtitlePropertyBox {
+.pieTitle {
     float: left;
     font-size: 12px;
 }

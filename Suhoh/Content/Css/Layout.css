@@ -464,3 +464,16 @@ a.tree-view-node.hovered
     top: 100px;
     left: 272px;
 }
+
+/*panel border when activated*/
+.btnPropertyBorder {
+    border: solid;
+    border-width: 2px;
+    border-radius: 2px;
+    color: red;
+}
+
+.btnPropertyNoBorder {
+    border: none;
+}
+

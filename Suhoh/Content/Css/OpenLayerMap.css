@@ -39,7 +39,7 @@
     background-color: rgba(0,60,136,.5) !important;
     /*color: blue !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -64,8 +64,8 @@
 
 .btnMapLegend {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
-    font-weight: bold !important;
+    /*color: white !important;*/
+    font-weight: bold;
     border: none !important;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
@@ -91,9 +91,9 @@
 
 .btnMapProperty {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
-    font-weight: bold !important;
-    border: none !important;
+    /*color: white !important;*/
+    font-weight: bold;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -118,9 +118,9 @@
 
 .btnMapClose {
     background-color: rgba(0,60,136,.5) !important;
-    color: white !important;
+    /*color: white !important;*/
     font-weight: bold !important;
-    border: none !important;
+    border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
@@ -223,4 +223,9 @@
 
 .thShowLabelChkBox {
     float: left;
+}
+
+.thShowLabelComboBox {
+    float: left;
+    margin-left: 5px;
 }

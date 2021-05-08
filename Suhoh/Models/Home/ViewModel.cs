@@ -27,7 +27,7 @@ namespace Suhoh.Model
         public List<ColumnInfo> ColumnInfos { get; set; }   // column name and type
 
         // Pie Chart Property
-        public string D3GraphTitleProperty { get; set; }
+        public string PieTitle { get; set; }
         public bool ChkPercentageLabel { get; set; }
         public bool ChkYValueLabel { get; set; }
         public bool ChkXValueLabel { get; set; }
@@ -36,19 +36,21 @@ namespace Suhoh.Model
         public int ColorRampPie { get; set; }
 
         // Bar Chart Property
-        public string TbBarTitleProperty { get; set; }
+        public string BarTitle { get; set; }
         public bool CbBarYValueLabel { get; set; }
         public bool CbBarXValueLabel { get; set; }
         public string DdBarYColumn { get; set; }
         public bool CbBarTranspose { get; set; }
 
         // OpenLayers
-        public string OpenLayerTitleProperty { get; set; }
-        public string GoToLocationX { get; set; }
-        public string GoToLocationY { get; set; }
+        public string MapTitle { get; set; }
         public bool ChkShowCoordinates { get; set; }
         public bool ChkShowLabel { get; set; }
         public string ActiveBasemap { get; set; }
+
+        // Gridview
+        public string GridviewTitle { get; set; }
+        public string GridviewPageSize { get; set; }
 
         // Left Pane Search 
         public bool ChkLeftPanelATS { get; set; }
@@ -79,12 +81,14 @@ namespace Suhoh.Model
             CbBarTranspose = false;
 
             // Map
-            OpenLayerTitleProperty = "Map Title";
-            GoToLocationX = "-114.066666";
-            GoToLocationY = "51.049999";
+            MapTitle = "Map Title";
             ChkShowCoordinates = true;
             ChkShowLabel = false;
             ActiveBasemap = "Streets";
+
+            // Gridview
+            GridviewTitle = "Grid Title";
+            GridviewPageSize = "50";
 
             AddPaneDirection = 1;
             AddPaneType = 1;

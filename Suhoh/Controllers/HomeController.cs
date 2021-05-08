@@ -33,9 +33,11 @@ namespace Suhoh.Controllers
             return PartialView("CallbackPopupPanelProperty", viewModel);
         }
 
-        public ActionResult DxGridview(ViewModel vm)
+        public ActionResult DxGridview(ViewModel vm, string name)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
+            viewModel.CreatePanelName = name;   // set current panel name to consume in DxGridview
+            Session["viewModel"] = viewModel;
             return PartialView("DxGridview", viewModel);
         }
 

@@ -7,8 +7,10 @@ const _zoomToBuffer = 2000;     // zoom to buffer size (2K)
 const _zoomToDuration = 1200;   // duration when zoom to layer
 const _lonColName = "Longitude";
 const _latColName = "Latitude";
+const _mapX = '-114.06666';
+const _mapY = '51.04999';
 var _maps = []; // { 'divName': divName, 'map': map, 'layer': null, 'scaleLine': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude,
-                //   'mousePosition': null, 'isCoordinatesOn': true, 'isMaximized': false }
+                //   'mousePosition': null, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null, 'x': null, 'y': null, 'isMaximized': false }
 var _activeMap;
 var _gotoLocationLayer = null;
 
@@ -19,7 +21,6 @@ function getMap(divName) {
     }
     return null;
 }
-
 
 function initMap(divName) {
     // Basemap
@@ -73,6 +74,17 @@ function initMap(divName) {
             crossOrigin: "Anonymous"
         })
     });
+
+    var layerAts = new ol.layer.Image({
+        source: new ol.source.ImageArcGISRest({
+            ratio: 1,
+            params: {},
+            url: _atsUrl,
+            crossOrigin: "Anonymous"    // Maybe no need this for v631 and above. Need this. cause Tainted issue when printing
+            //https://stackoverflow.com/questions/22710627/tainted-canvases-may-not-be-exported
+        })
+    });
+
     var mousePositionControl = new ol.control.MousePosition({
         coordinateFormat: ol.coordinate.createStringXY(5),
         projection: 'EPSG:4326',
@@ -93,7 +105,7 @@ function initMap(divName) {
         }).extend([
             scaleLine, mousePositionControl
         ]),
-        layers: [layerStreets, layerTopo, layerImagery, layerNatGeo, layerShadedRelief],
+        layers: [layerStreets, layerTopo, layerImagery, layerNatGeo, layerShadedRelief, layerAts],
         logo: false,
         view: new ol.View({
             center: ol.proj.fromLonLat([-115.979293, 55.528787]),
@@ -103,12 +115,13 @@ function initMap(divName) {
 
     _maps.push({
         'divName': divName, 'map': map, 'layer': null, 'scaleLine': scaleLine, 'data': null, 'xCol': null, 'yCol': null,
-        'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isMaximized': false
+        'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null,
+        'x': _mapX, 'y': _mapY, 'isMaximized': false
     });
 }
 
 function btnMapMaximizeClick(s) {
-    var pId = s.id.split('|')[0];
+    var pId = s.id.split('_')[0];
     var map = getMap(pId);
     var p = splitterMain.GetPaneByName(pId);
     p.Expand();
@@ -124,10 +137,14 @@ function btnMapCloseClick(s) {
 }
 
 function btnMapCoordinatesClick(s) {    // called from toolbar
-    var pId = s.id.split('_')[0];       // changed | to _ due to jquery not recognizing |
+    var pId = s.id.split('_')[0];       // changed vertical bar(|) to _ due to jquery not recognizing |
     var map = getMap(pId);
     map.isCoordinatesOn = !map.isCoordinatesOn;
+    enableDisableMapCoordinates(map);
 
+}
+
+function enableDisableMapCoordinates(map) {
     if (map.isCoordinatesOn) {
         var mousePositionControl = new ol.control.MousePosition({
             coordinateFormat: ol.coordinate.createStringXY(5),
@@ -148,13 +165,22 @@ function btnMapCoordinatesClick(s) {    // called from toolbar
         $("#" + map.divName + "_CoordinatesButtonText").html("«");
         $("#" + map.divName + "_Coordinates").hide(500);
     }
+
+    // update check box in map property
+    chkShowCoordinates.SetChecked(map.isCoordinatesOn);
 }
 
 function chkShowCoordinatesChanged(s, e) {
-
+    _activeMap.isCoordinatesOn = !_activeMap.isCoordinatesOn;
+    enableDisableMapCoordinates(_activeMap);
 }
 
 function chkShowLabelChanged(s, e) {
+    _activeMap.isLabelOn = !_activeMap.isLabelOn;
+    cbShowLabel.SetEnabled(_activeMap.isLabelOn);
+}
+
+function cbXYColumnMapChanged(s, e) {
 
 }
 
@@ -182,8 +208,8 @@ function cbBasemapChanged(s, e) {
 }
 
 function btnOpenLayerPropertyGoToClick(s, e) {  // s: Panel1Map1|Property|GoTo
-    var lon = parseFloat(tbOpenLayerPropertyGoToX.GetText());
-    var lat = parseFloat(tbOpenLayerPropertyGoToY.GetText());
+    var lon = parseFloat(tbMapGoToX.GetText());
+    var lat = parseFloat(tbMapGoToY.GetText());
     if (isNaN(lon) || isNaN(lat)) {
         alert("Invalid longitude/latitude.");
         return;

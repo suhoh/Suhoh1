@@ -5,16 +5,16 @@
 <div id="divTitle" class="divTitle">
     <table>
         <tr>
-            <th style="float: left; margin-left: 2px">Open Layer Title</th>
+            <th style="float: left; margin-left: 2px">Map Title</th>
         </tr>
         <tr>
             <th style="float: left; margin-top: 5px">
-                @Html.DevExpress().TextBoxFor(model => model.OpenLayerTitleProperty,
+                @Html.DevExpress().TextBoxFor(model => model.MapTitle,
                           settings =>
                           {
-                              settings.Name = "tbPropertyOpenLayerTitle";
+                              settings.Name = "tbPropertyMapTitle";
                               settings.Width = 240;
-                              settings.Text = "Map Title";  // no effect since it is getting value from model.OpenLayerTitleProperty
+                              settings.Text = "Map Title";  
                               settings.ControlStyle.CssClass = "";
                               settings.Properties.ClientSideEvents.KeyUp = "";
                           }
@@ -48,6 +48,18 @@
                            settings.Properties.ClientSideEvents.CheckedChanged = "chkShowLabelChanged";
                        }).GetHtml()
             </th>
+            <th class="thShowLabelComboBox">
+                @Html.DevExpress().ComboBox(
+                    settings =>
+                    {
+                        settings.Name = "cbShowLabel";
+                        settings.Width = 148;
+                        settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                        settings.Properties.DropDownWidth = 148;
+                        settings.ClientEnabled = false;
+                        settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnDropDownChanged";
+                    }).GetHtml()
+            </th>
         </tr>
     </table>
 </div>
@@ -64,14 +76,14 @@
             X Column
         </th>
         <th id="thXColumnDropDown" class="thXColumnDropDown">
-            @Html.DevExpress().ComboBoxFor(model => model.DdXColumn,
+            @Html.DevExpress().ComboBox(
                 settings =>
                 {
                     settings.Name = "cbMapXColumn";
                     settings.Width = 167;
                     settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
                     settings.Properties.DropDownWidth = 165;
-                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnDropDownChanged";
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnMapChanged";
                 }).BindList(DataEngine.GetXColumn()).GetHtml()
         </th>
     </tr>
@@ -80,14 +92,14 @@
             Y Column
         </th>
         <th id="thYColumnDropDown" class="thYColumnDropDown">
-            @Html.DevExpress().ComboBoxFor(model => model.DdYColumn,
+            @Html.DevExpress().ComboBox(
                 settings =>
                 {
                     settings.Name = "cbMapYColumn";
                     settings.Width = 167;
                     settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
                     settings.Properties.DropDownWidth = 165;
-                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnDropDownChanged";
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbXYColumnMapChanged";
                 }).BindList(DataEngine.GetYColumn()).GetHtml()
         </th>
     </tr>
@@ -102,10 +114,10 @@
         <tr>
             <th class="thOpenLayerGoToXLabel">X:</th>
             <th class="thOpenLayerGotoXTextBox">
-                @Html.DevExpress().TextBoxFor(model => model.GoToLocationX,
+                @Html.DevExpress().TextBox(
                           settings =>
                           {
-                              settings.Name = "tbOpenLayerPropertyGoToX";
+                              settings.Name = "tbMapGoToX";
                               settings.Width = 120;
                               settings.Properties.NullText = "Longitude";
                               settings.Text = "";
@@ -116,10 +128,10 @@
         <tr>
             <th class="thOpenLayerGoToYLabel">Y:</th>
             <th class="thOpenLayerGotoYTextBox">
-                @Html.DevExpress().TextBoxFor(model => model.GoToLocationY,
+                @Html.DevExpress().TextBox(
                           settings =>
                           {
-                              settings.Name = "tbOpenLayerPropertyGoToY";
+                              settings.Name = "tbMapGoToY";
                               settings.Width = 120;
                               settings.Properties.NullText = "Latitude";
                               settings.Text = "";

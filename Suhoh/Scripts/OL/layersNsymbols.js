@@ -24,6 +24,24 @@ const _esriShadedRelief = 'http://server.arcgisonline.com/arcgis/rest/services/W
 //const esriImagery = "http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer" // with labels
 //const genesisAlberta = "http://maps.alberta.ca/genesis/rest/services/Provincial_Basemap_C/Latest/MapServer";  // not working -
 
+var layerBc = new ol.layer.Image({
+    source: new ol.source.ImageArcGISRest({
+        ratio: 1,
+        params: { LAYERS: 'show:2,3,4,5' },
+        url: _bcUrl,
+        crossOrigin: "Anonymous"
+    })
+});
+
+var layerSk = new ol.layer.Image({
+    source: new ol.source.ImageArcGISRest({
+        ratio: 1,
+        params: {},
+        url: _skUrl,
+        crossOrigin: "Anonymous"
+    })
+});
+
 // Symbols
 const _redCircle = new ol.style.Style({
     image: new ol.style.Circle({

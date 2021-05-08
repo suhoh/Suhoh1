@@ -286,7 +286,7 @@ function tbBarPropertyTitleKeyUp(s, e) {
 }
 
 function showHideLegend(s) {
-    var id = s.id.split('|')[0];
+    var id = s.id.split('_')[0];
 
     if (id.toUpperCase().indexOf('PIE') > -1) {
         var pie = getPie(id);
@@ -332,16 +332,16 @@ function showHideLegend(s) {
 }
 
 function btnBarMaximizeClick(s) {
-    var pId = s.id.split('|')[0];
-    var bar = getBar(pId);
+    //var pId = s.id.split('_')[0];
+    //var bar = getBar(pId);
 
-    var p1 = splitterMain.GetPaneByName('Panel1Map1');
-    var p11 = p1.GetParentPane();
+    //var p1 = splitterMain.GetPaneByName('Panel1Map1');
+    //var p11 = p1.GetParentPane();
 
-    var p2 = splitterMain.GetPaneByName('Panel2Bar1');
-    var p3 = splitterMain.GetPaneByName('Panel3Gridview1');
-    p2.Collapse(p1);
-    p3.Collapse(p1);
+    //var p2 = splitterMain.GetPaneByName('Panel2Bar1');
+    //var p3 = splitterMain.GetPaneByName('Panel3Gridview1');
+    //p2.Collapse(p1);
+    //p3.Collapse(p1);
 }
 
 function btnBarCloseClick(s) {

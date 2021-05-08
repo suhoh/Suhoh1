@@ -44,7 +44,7 @@
             //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
             //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
 
-            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupAddNewPane', '', true); }";
+            settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupAddNewPane', '', true); $('#' + _activePropertyName).removeClass('btnPropertyBorder'); }";
         }).GetHtml()
 </div>
 
@@ -71,7 +71,7 @@
         settings.PopupAnimationType = AnimationType.Slide;
 
         settings.ResizingMode = ResizingMode.Live;
-        settings.AllowResize = true;
+        settings.AllowResize = false;
         settings.ShowSizeGrip = ShowSizeGrip.True;
         settings.ShowFooter = false;
 
@@ -85,7 +85,7 @@
         //settings.ClientSideEvents.BeforeResizing = "function(s,e){ MainGridView.SetHeight(1); pageControlGrid.SetVisible(false); }";
         //settings.ClientSideEvents.AfterResizing = "function(s, e){ pageControlGrid.SetVisible(true); MainGridView.SetHeight(document.getElementById('containerDiv').clientHeight);}";
 
-        settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPanelProperty', '', true); }";
+        settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPanelProperty', '', true); $('#' + _activePropertyName).removeClass('btnPropertyBorder'); }";
     }).GetHtml()
 
 </div>

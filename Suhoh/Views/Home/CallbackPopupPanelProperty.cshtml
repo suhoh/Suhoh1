@@ -16,5 +16,7 @@
                 Html.RenderPartial("D3BarProperty", Model);
             if (Model.ActiveProperty.ToUpper().Contains("MAP"))
                 Html.RenderPartial("OLMapProperty", Model);
+            if (Model.ActiveProperty.ToUpper().Contains("GRIDVIEW"))
+                Html.RenderPartial("DxGridviewProperty", Model);
         });
     }).GetHtml()

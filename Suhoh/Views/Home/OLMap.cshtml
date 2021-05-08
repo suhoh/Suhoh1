@@ -19,32 +19,33 @@
         left: 0px;
         z-index: 1;*/
     }
+
 </style>
 
 <head>
 </head>
 <body>
-    <div style="width: 100%; height: 100%; position: relative;">
-        <div id="@Model.CreatePanelName" class="olMap">
+    <div style="width: 100%; height: 100%; position: relative;" >
+        <div id="@Model.CreatePanelName" class="olMap" onclick="divPanelClicked(this)">
         </div>
 
         <div class="divMapMaximizeButton">
-            <button id="@(String.Format("{0}|Maximize", Model.CreatePanelName))" type="button" class="btnMapMaximize" title="Maximize"
+            <button id="@(String.Format("{0}_Maximize", Model.CreatePanelName))" type="button" class="btnMapMaximize" title="Maximize"
                     onclick="btnMapMaximizeClick(this)"></button>
         </div>
 
         <div class="divMapLegendButton">
-            <button id="@(String.Format("{0}|Legend", Model.CreatePanelName))" type="button" class="btnMapLegend" title="Legend"
+            <button id="@(String.Format("{0}_Legend", Model.CreatePanelName))" type="button" class="btnMapLegend" title="Legend"
                     onclick="btnMapLegendClick(this)"></button>
         </div>
 
         <div class="divMapPropertyButton">
-            <button id="@(String.Format("{0}|Property", Model.CreatePanelName))" type="button" class="btnMapProperty" title="Property"
+            <button id="@(String.Format("{0}_Property", Model.CreatePanelName))" type="button" class="btnMapProperty" title="Property"
                     onclick="showPropertyPopup(this)"></button>
         </div>
 
         <div class="divMapCloseButton">
-            <button id="@(String.Format("{0}|Close", Model.CreatePanelName))" type="button" class="btnMapClose" title="Close"
+            <button id="@(String.Format("{0}_Close", Model.CreatePanelName))" type="button" class="btnMapClose" title="Close"
                     onclick="btnMapCloseClick(this)"></button>
         </div>
 
