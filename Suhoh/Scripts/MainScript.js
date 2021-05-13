@@ -389,6 +389,7 @@ function renderBarProperty(id) {
     document.getElementById(bar.divName + "_Title").innerHTML = bar.xCol + " vs " + bar.yCol;
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
 
+    radioOrientationBar.SetValue(bar.isVertical);
     ceBarColorPicker.SetColor(bar.color);
 }
 

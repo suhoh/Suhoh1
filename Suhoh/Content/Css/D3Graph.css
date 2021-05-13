@@ -218,19 +218,32 @@
     border-radius: 8px;
     opacity: 0.7;
 }
+.bar:hover {
+    opacity: 0.5;
+}
 
 .barTooltip {
-    background: white;
-    color: black;
+    line-height: 1;
+    font-weight: bold;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 3px;
     text-align: center;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-    border-radius: 8px;
-    opacity: 0.7;
 }
-/*Charts ToolTip End*/
 
+.barTooltipTriangle {
+    line-height: 1;
+    font-weight: bold;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 10px;
+}
+
+/*Charts ToolTip End*/
 .pieTitle {
     float: left;
     font-size: 12px;
