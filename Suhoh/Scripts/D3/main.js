@@ -314,10 +314,6 @@ function cbBarXYColumnChanged(s, e) {
     chkBarLabelClicked();
 }
 
-function radioOrientationBarClicked(s, e) {
-
-}
-
 function tbBarPropertyTitleKeyUp(s, e) {
     var caller;
     if (s.name == undefined)    // called manually
@@ -359,7 +355,8 @@ function showHideLegend(s) {
             return;
 
         bar.isLegend = !bar.isLegend;
-        bar.color = ceBarColorPicker.GetText();
+        //if (typeof ceBarColorPicker !== "undefined" && ASPxClientUtils.IsExists(ceBarColorPicker))
+        //    bar.color = ceBarColorPicker.GetText();
 
         var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, false);
         if (barData == null)
@@ -374,6 +371,14 @@ function showHideLegend(s) {
             }
         drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
     }
+}
+
+function radioOrientationBarClicked(s, e) {
+    var bar = getBar(_activeBar.divName);
+    bar.isVertical = radioOrientationBar.GetValue();
+
+    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
+    drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
 }
 
 function ceColorPickerClicked() {
