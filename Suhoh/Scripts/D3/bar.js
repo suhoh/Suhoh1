@@ -242,7 +242,6 @@ function drawBar(divName, data, width, height, barColor) {
             .on("mouseleave", function (d) {
                 barTooltip.style("display", "none");
             });
-
     }
 
     var xColumn = bar.xCol;
