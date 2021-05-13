@@ -10,6 +10,7 @@
         @string.Join(" - ", @pageTitleParts.Where(s => !string.IsNullOrEmpty(s)))
     </title>
     <meta name="viewport" content="width=device-width, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="shortcut icon" type="image/png" href="~/Content/Favicon/512px-Icon_S_blue.svg.png" />
 
     @Html.DevExpress().GetStyleSheets(
     new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
@@ -36,7 +37,7 @@
     @RenderSection("Head", false)
 
     <script>
-        // sending the __RequestVerificationToken value manually, 
+        // sending the __RequestVerificationToken value manually,
         //see details: https://github.com/DevExpress/aspnet-security-bestpractices/tree/master/SecurityBestPractices.Mvc#4-preventing-cross-site-request-forgery-csrf
         if (window.jQuery) {
             $.ajaxPrefilter(function (options, originalOptions, xhr) {
