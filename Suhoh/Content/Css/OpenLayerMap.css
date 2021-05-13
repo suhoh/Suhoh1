@@ -62,7 +62,7 @@
     /*background-color: yellow;*/
 }
 
-.btnMapLegend {
+.btnMapLabel {
     background-color: rgba(0,60,136,.5) !important;
     /*color: white !important;*/
     font-weight: bold;
@@ -76,7 +76,7 @@
     background-size: 18px 18px;
 }
 
-    .btnMapLegend:hover {
+    .btnMapLabel:hover {
         background-color: rgba(0,60,136,.7) !important;
     }
 

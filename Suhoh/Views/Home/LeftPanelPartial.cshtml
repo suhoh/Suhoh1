@@ -58,7 +58,7 @@
         group.Text = "Layers";
         group.SetContentTemplateContent(c =>
         {
-            //Html.RenderPartial("PrintMap", Model);
+            Html.RenderPartial("LeftPanelLayerList", Model);
         });
     });
     settings.Groups.Add(group =>
@@ -72,20 +72,11 @@
     });
     settings.Groups.Add(group =>
     {
-        group.Name = "gotoLocation";
-        group.Text = "Goto Location";
-        group.SetContentTemplateContent(c =>
-        {
-            //Html.RenderPartial("PrintMap", Model);
-        });
-    });
-    settings.Groups.Add(group =>
-    {
         group.Name = "reports";
         group.Text = "Reports";
         group.SetContentTemplateContent(c =>
         {
-            //Html.RenderPartial("PrintMap", Model);
+            Html.RenderPartial("LeftPanelReports", Model);
         });
     });
 

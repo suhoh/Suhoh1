@@ -14,7 +14,7 @@
                           {
                               settings.Name = "tbPropertyMapTitle";
                               settings.Width = 240;
-                              settings.Text = "Map Title";  
+                              settings.Text = "Map Title";
                               settings.ControlStyle.CssClass = "";
                               settings.Properties.ClientSideEvents.KeyUp = "";
                           }
@@ -110,8 +110,24 @@
     <table>
         <tr>
             <th style="float: left; margin-left: 2px">Go To Location</th>
+            <th style="float: left">
+                @Html.DevExpress().RadioButtonListFor(model => model.AddPaneDirection,
+                    settings =>
+                    {
+                        settings.Name = "radioMapGoTo";
+                        settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+                        settings.Properties.Items.Add("Lon/Lat", 1);
+                        settings.Properties.Items.Add("ATS", 2);
+                        settings.Width = 160;
+                        settings.Height = 28;
+                        settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
+                        settings.Properties.ValueType = typeof(Int32);
+                        settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioMapGoToClick";
+                    }).GetHtml()
+            </th>
         </tr>
-        <tr>
+        @*Lon/Lat*@
+        <tr id="trGoToLatLonX">
             <th class="thOpenLayerGoToXLabel">X:</th>
             <th class="thOpenLayerGotoXTextBox">
                 @Html.DevExpress().TextBox(
@@ -125,7 +141,7 @@
                           ).GetHtml()
             </th>
         </tr>
-        <tr>
+        <tr id="trGoToLatLonY">
             <th class="thOpenLayerGoToYLabel">Y:</th>
             <th class="thOpenLayerGotoYTextBox">
                 @Html.DevExpress().TextBox(
@@ -142,10 +158,64 @@
                 @Html.DevExpress().Button(
                 settings =>
                 {
-                    settings.Name = "btnOpenLayerGoToCoordinates";
+                    settings.Name = "btnMapGoToCoordinates";
                     settings.Width = 60;
                     settings.Text = "Go To";
-                    settings.ClientSideEvents.Click = "btnOpenLayerPropertyGoToClick";
+                    settings.ClientSideEvents.Click = "btnMapPropertyGoToLonLatClick";
+                }
+                ).GetHtml()
+            </th>
+        </tr>
+        @*ATS*@
+        <tr>
+        <tr id="thAtsHeader">
+            <th style="float: left; font-weight: normal; margin-top: 2px; margin-left: 20px;">Section</th>
+            <th style="float: left; font-weight: normal; margin-top: 2px; margin-left: 37px;">Township</th>
+            <th style="float: left; font-weight: normal; margin-top: 2px; margin-left: 37px;">Range</th>
+        </tr>
+        <tr id="trGoToAts">
+            <th class="cbLeftPanelSearchSEC">
+                @Html.DevExpress().ComboBoxFor(model => model.CbLeftPanelSearchSEC,
+                  settings =>
+                  {
+                      settings.Name = "cbMapSec";
+                      settings.Width = 60;
+                      settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                      settings.Properties.DropDownWidth = 59;
+                      //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelSearchSECChanged";
+                  }).BindList(DataEngine.SectionList()).GetHtml()
+            </th>
+            <th class="cbLeftPanelSearchTWP">
+                @Html.DevExpress().ComboBoxFor(model => model.CbLeftPanelSearchTWP,
+                  settings =>
+                  {
+                      settings.Name = "cbMapTwp";
+                      settings.Width = 60;
+                      settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                      settings.Properties.DropDownWidth = 59;
+                      //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelSearchTWPChanged";
+                  }).BindList(DataEngine.TownshipList()).GetHtml()
+            </th>
+            <th class="cbLeftPanelSearchRGE">
+                @Html.DevExpress().ComboBoxFor(model => model.CbLeftPanelSearchRGE,
+                  settings =>
+                  {
+                      settings.Name = "cbMapRge";
+                      settings.Width = 60;
+                      settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                      settings.Properties.DropDownWidth = 59;
+                      //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelSearchRGEChanged";
+                  }).BindList(DataEngine.RangeList()).GetHtml()
+            </th>
+
+            <th class="thOpenLayerGoToButton">
+                @Html.DevExpress().Button(
+                settings =>
+                {
+                    settings.Name = "btnMapPropertyGoToAts";
+                    settings.Width = 60;
+                    settings.Text = "Go To";
+                    settings.ClientSideEvents.Click = "btnMapPropertyGoToAtsClick";
                 }
                 ).GetHtml()
             </th>

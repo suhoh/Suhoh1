@@ -2,22 +2,29 @@
 // Open layer functions - addLayers
 //
 
-function addPointLayer(jsonData, map, xCol, yCol) {
+function addPointLayer(jsonData, map, xCol, yCol, zCol, isFitToLayer) {
     if (jsonData == null) {
         console.log('addPointLayer: no data available.');
         return;
     }
-    if (map.map.layer == undefined)
-        map.map.removeLayer(map.map.layer);
+    if (map.layer != undefined)
+        map.map.removeLayer(map.layer);
 
     if (xCol != undefined)
         map.xCol = xCol;
     if (yCol != undefined)
         map.yCol = yCol;
+    if (zCol != undefined)
+        map.zCol = zCol;
+
     map.data = jsonData;
     var symbols = [];
+    var symbol;
     for (var i = 0; i < jsonData.length; i++) {
-        var symbol = getSymbol(jsonData[i][map.xCol], jsonData[i][map.yCol]);
+        if (zCol == undefined)
+            symbol = getSymbol(jsonData[i][map.xCol], jsonData[i][map.yCol], null);
+        else
+            symbol = getSymbol(jsonData[i][map.xCol], jsonData[i][map.yCol], jsonData[i][map.zCol]);
         symbols.push(symbol);
     }
 
@@ -25,24 +32,25 @@ function addPointLayer(jsonData, map, xCol, yCol) {
         features: symbols
     });
     var layer = new ol.layer.Vector({
-        source: new ol.source.Vector({
-            features: symbols
-        }),
-        name: 'testLayer'
+        name: 'pointLayer',
+        source: vectorSource,
+        style: pointStyleFunction
     });
     map.layer = layer;
     map.map.addLayer(layer);
-    fitToLayer(map.map, layer);
+    if (isFitToLayer)
+        fitToLayer(map.map, layer);
 }
 
-function getSymbol(x, y) {
+function getSymbol(x, y, z) {
     var point = new ol.geom.Point([x, y]);
     point.transform('EPSG:4326', 'EPSG:3857');  // from Lat/Lon to Web Mercator
     var symbol = new ol.Feature({
         geometry: point,
-        toolTip: 'test'
+        toolTip: 'test',
+        name: z
     });
-    symbol.setStyle(_redCircle);
+    //symbol.setStyle(_redCircle);  // commented out since style is set in pointStyleFunction
     return symbol;
 }
 
@@ -56,3 +64,4 @@ function fitToLayer(map, layer) {
     extent = ol.extent.buffer(extent, buffer);
     map.getView().fit(extent, { size: map.getSize(), duration: 1500 });
 }
+

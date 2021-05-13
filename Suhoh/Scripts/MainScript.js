@@ -150,9 +150,16 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         populateLeftPanelSearchColumn(_columnNames);
 
         // Maps
-        var mapColNames = getLonLatColumnNames(data);
+        // if proper is open and Show Label is checked
+        var labelColName;
+        if (typeof cbShowLabel != "undefined" && ASPxClientUtils.IsExists(cbShowLabel) && ASPxClientUtils.IsExists(chkShowLabel)) {
+            chkShowLabel.SetChecked(false); // uncheck show label checkbox when loading new data
+        }
+         var cNames = getLonLatColumnNames(data);
         _maps.forEach(function (m) {
-            addPointLayer(jsonData, m, mapColNames.xCol, mapColNames.yCol);
+            m.isLabelOn = false;    // set it to false when loading new data
+            m.zCol = cNames.zCol;
+                addPointLayer(jsonData, m, cNames.xCol, cNames.yCol, labelColName, true); // true: zoom to layer
         })
 
         // Gridviews
@@ -179,6 +186,10 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
             }
             document.getElementById(b.divName + "_Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
         });
+
+        // render property popup if shown
+        if (popupPanelProperty.IsVisible())
+            callbackPopupPanelProperty_OnEndCallback();
 
         loadingPanel.Hide();
     }
@@ -216,13 +227,17 @@ function getLonLatColumnNames(columnNames) {
     // get x/y column
     var xCol = null;
     var yCol = null;
+    var zCol = null;    // label column
     for (i = 0; i < columnNames.length; i++) {
         if (columnNames[i].Name == _lonColName)
             xCol = columnNames[i].Name;
         if (columnNames[i].Name == _latColName)
             yCol = columnNames[i].Name;
     }
-    return { xCol: xCol, yCol: yCol }
+    if (xCol != null && yCol != null)
+        zCol = columnNames[0].Name; // take the first one from list
+
+    return { xCol: xCol, yCol: yCol, zCol: zCol }
 }
 
 function getPieColNames(columnNames) {
@@ -402,6 +417,18 @@ function renderMapProperty(id) {
     cbShowLabel.SetEnabled(map.isLabelOn);
     tbMapGoToX.SetText(map.x);
     tbMapGoToY.SetText(map.y);
+    if (map.goToLocation == 1) {    // Lon/Lat
+        $("#thAtsHeader").hide();
+        $('#trGoToAts').hide();
+        $("#trGoToLatLonX").show();
+        $("#trGoToLatLonY").show();
+    }
+    else {                          // ATS
+        $("#thAtsHeader").show();
+        $('#trGoToAts').show();
+        $("#trGoToLatLonX").hide();
+        $("#trGoToLatLonY").hide();
+    }
     cbBasemap.SetValue(map.basemap);
 
     // XY columns
@@ -409,14 +436,17 @@ function renderMapProperty(id) {
         console.log("_columnNames: null or empty.")
         return;
     }
+    cbShowLabel.ClearItems();
     cbMapXColumn.ClearItems();
     cbMapYColumn.ClearItems();
     _columnNames.forEach(function (c) {
+        cbShowLabel.AddItem(c.Name);
         if (c.Type == 'Int64' || c.Type == 'Double') {
             cbMapXColumn.AddItem(c.Name);
             cbMapYColumn.AddItem(c.Name);
         }
     });
+    cbShowLabel.SetSelectedIndex(0);
     cbMapXColumn.SetValue(map.xCol);
     cbMapYColumn.SetValue(map.yCol);
 

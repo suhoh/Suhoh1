@@ -228,6 +228,7 @@
     <Content Include="Scripts\MainScript.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\OL\addLayers.js" />
+    <Content Include="Scripts\OL\label.js" />
     <Content Include="Scripts\OL\layersNsymbols.js" />
     <Content Include="Scripts\OL\main.js" />
     <Content Include="Scripts\Ol_v650\ol.css" />
@@ -325,6 +326,8 @@
     <Content Include="Views\Home\CallbackPopupPanelProperty.cshtml" />
     <Content Include="Views\Home\OLMapProperty.cshtml" />
     <Content Include="Views\Home\LeftPanelLoadProject.cshtml" />
+    <Content Include="Views\Home\LeftPanelLayerList.cshtml" />
+    <Content Include="Views\Home\LeftPanelReports.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -26,10 +26,6 @@ function dxGridview_OnEndCallback(s, e) {
 
 }
 
-function cbXYColumnMapChanged(s, e) {
-
-}
-
 function btnGridviewMaximizeClick(s) {
     var pId = s.id.split('_')[0];
     var map = getMap(pId);

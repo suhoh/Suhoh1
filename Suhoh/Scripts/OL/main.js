@@ -11,8 +11,9 @@ const _mapX = '-114.06666';
 const _mapY = '51.04999';
 const _basemap = "Streets";
 
-var _maps = []; // { 'divName': divName, 'map': map, 'layer': null, 'scaleLine': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude, 'basemap': _basemap,
-                //   'mousePosition': null, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null, 'x': null, 'y': null, 'isMaximized': false }
+var _maps = []; // { 'divName': divName, 'map': map, 'layer': null, 'scaleLine': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude, 'zCol': null, 
+                // 'basemap': _basemap, 'mousePosition': null, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null, 
+                // 'x': null, 'y': null, 'goToLocation': 1, 'sec': 5, 'twp': 24, 'rge': 1, 'isMaximized': false }
 var _activeMap;
 var _gotoLocationLayer = null;
 
@@ -116,9 +117,9 @@ function initMap(divName) {
     });
 
     _maps.push({
-        'divName': divName, 'map': map, 'layer': null, 'scaleLine': scaleLine, 'data': null, 'xCol': null, 'yCol': null, 'basemap': _basemap,
+        'divName': divName, 'map': map, 'layer': null, 'scaleLine': scaleLine, 'data': null, 'xCol': null, 'yCol': null, 'zCol': null, 'basemap': _basemap,
         'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null,
-        'x': _mapX, 'y': _mapY, 'isMaximized': false
+        'x': _mapX, 'y': _mapY, 'goToLocation': 1, 'sec': 5, 'twp': 24, 'rge': 1, 'isMaximized': false
     });
 }
 
@@ -128,10 +129,6 @@ function btnMapMaximizeClick(s) {
     var p = splitterMain.GetPaneByName(pId);
     p.Expand();
     map.isMaximized = !map.isMaximized;
-}
-
-function btnMapLegendClick(s) {
-
 }
 
 function btnMapCloseClick(s) {
@@ -168,8 +165,9 @@ function enableDisableMapCoordinates(map) {
         $("#" + map.divName + "_Coordinates").hide(500);
     }
 
-    // update check box in map property
-    chkShowCoordinates.SetChecked(map.isCoordinatesOn);
+    // check and see if control exist and update check box in map property
+    if (typeof chkShowCoordinates !== "undefined" && ASPxClientUtils.IsExists(chkShowCoordinates))
+        chkShowCoordinates.SetChecked(map.isCoordinatesOn);
 }
 
 function chkShowCoordinatesChanged(s, e) {
@@ -177,13 +175,75 @@ function chkShowCoordinatesChanged(s, e) {
     enableDisableMapCoordinates(_activeMap);
 }
 
+// called from Div
+function btnMapLabelClick(s) {
+    var id = s.id.split('_')[0];
+    var map = getMap(id);
+    if (map == undefined)
+        return;
+
+    map.isLabelOn = !map.isLabelOn;
+    _activeMap = map;   // Set active map
+    if (popupPanelProperty.IsVisible())
+        chkShowLabel.SetChecked(map.isLabelOn);
+    chkShowLabelChanged();
+}
+
+// called from DevExpress
 function chkShowLabelChanged(s, e) {
-    _activeMap.isLabelOn = !_activeMap.isLabelOn;
-    cbShowLabel.SetEnabled(_activeMap.isLabelOn);
+    var map = getMap(_activeMap.divName);
+    if (s != null)  // called from Div then do not change value
+        map.isLabelOn = !map.isLabelOn;
+
+    // Just in case when called when property popup is not shown
+    if (typeof cbShowLabel !== "undefined" && ASPxClientUtils.IsExists(cbShowLabel)) {
+        cbShowLabel.SetEnabled(map.isLabelOn);
+        map.zCol = cbShowLabel.GetText();
+    }
+    addPointLayerHandler(map, false);   // false: do not zoom to layer
 }
 
 function cbShowLabelChanged(s, e) {
+    var map = getMap(_activeMap.divName);
+    map.zCol = cbShowLabel.GetText();
+    addPointLayerHandler(map, false);   // false: do not zoom to layer
+}
 
+function cbXYColumnMapChanged(s, e) {
+    var map = getMap(_activeMap.divName);
+    map.xCol = cbMapXColumn.GetText();
+    map.yCol = cbMapYColumn.GetText();
+    addPointLayerHandler(map, true);
+}
+
+function radioMapGoToClick(s, e) {
+    var map = getMap(_activeMap.divName);
+    map.goToLocation = s.GetValue();
+    showHideGoToLocation(s.GetValue());
+}
+
+// 1: Lon/Lat, 2: ATS
+function showHideGoToLocation(value) {
+    if (value == 1) {    // Lon/Lat
+        $("#thAtsHeader").hide();
+        $("#trGoToAts").hide();
+        $("#trGoToLatLonX").show();
+        $("#trGoToLatLonY").show();
+    }
+    else {  // ATS
+        $("#thAtsHeader").show();
+        $("#trGoToAts").show();
+        $("#trGoToLatLonX").hide();
+        $("#trGoToLatLonY").hide();
+    }
+
+}
+
+function addPointLayerHandler(map, fitToLayer) {
+    if (map.isLabelOn)
+        addPointLayer(map.data, map, map.xCol, map.yCol, map.zCol, fitToLayer);
+    else
+        addPointLayer(map.data, map, map.xCol, map.yCol, null, fitToLayer);
 }
 
 function cbBasemapChanged(s, e) {
@@ -210,7 +270,7 @@ function cbBasemapChanged(s, e) {
         map.map.getLayers().getArray()[0].setProperties({ visible: true }, false);
 }
 
-function btnOpenLayerPropertyGoToClick(s, e) {  // s: Panel1Map1|Property|GoTo
+function btnMapPropertyGoToLonLatClick(s, e) {  // s: Panel1Map1|Property|GoTo
     var lon = parseFloat(tbMapGoToX.GetText());
     var lat = parseFloat(tbMapGoToY.GetText());
     if (isNaN(lon) || isNaN(lat)) {
@@ -219,6 +279,10 @@ function btnOpenLayerPropertyGoToClick(s, e) {  // s: Panel1Map1|Property|GoTo
     }
     var pId = _activeMap.divName;
     zoomToLonLat(pId, lon, lat, true);
+}
+
+function btnMapPropertyGoToAtsClick(s, e) {
+
 }
 
 function zoomToLonLat(paneId, lon, lat, isShowSymbol) {
