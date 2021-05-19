@@ -13,7 +13,7 @@ const _basemap = "Streets";
 
 var _maps = []; // { 'divName': divName, 'map': map, 'layer': null, 'scaleLine': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude, 'zCol': null, 
                 // 'basemap': _basemap, 'mousePosition': null, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null, 
-                // 'x': null, 'y': null, 'goToLocation': 1, 'sec': 5, 'twp': 24, 'rge': 1, 'isMaximized': false }
+                // 'x': null, 'y': null, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false }
 var _activeMap;
 var _gotoLocationLayer = null;
 
@@ -119,7 +119,7 @@ function initMap(divName) {
     _maps.push({
         'divName': divName, 'map': map, 'layer': null, 'scaleLine': scaleLine, 'data': null, 'xCol': null, 'yCol': null, 'zCol': null, 'basemap': _basemap,
         'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null,
-        'x': _mapX, 'y': _mapY, 'goToLocation': 1, 'sec': 5, 'twp': 24, 'rge': 1, 'isMaximized': false
+        'x': _mapX, 'y': _mapY, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false
     });
 }
 
@@ -213,6 +213,7 @@ function cbXYColumnMapChanged(s, e) {
     var map = getMap(_activeMap.divName);
     map.xCol = cbMapXColumn.GetText();
     map.yCol = cbMapYColumn.GetText();
+    tbPropertyMapTitle.SetText(map.xCol + " vs " + map.yCol); // title in property
     addPointLayerHandler(map, true);
 }
 
@@ -281,8 +282,67 @@ function btnMapPropertyGoToLonLatClick(s, e) {  // s: Panel1Map1|Property|GoTo
     zoomToLonLat(pId, lon, lat, true);
 }
 
-function btnMapPropertyGoToAtsClick(s, e) {
+function cbGoToAtsSecChanged(s, e) {
+    var pId = _activeMap.divName;
+    var map = getMap(pId);
+    map.sec = cbGoToAtsSec.GetText();
+}
+function cbGoToAtsTwpChanged(s, e) {
+    var pId = _activeMap.divName;
+    var map = getMap(pId);
+    map.twp = cbGoToAtsTwp.GetText();
+}
+function cbGoToAtsRgeChanged(s, e) {
+    var pId = _activeMap.divName;
+    var map = getMap(pId);
+    map.rge = cbGoToAtsRge.GetText();
+}
+function cbGoToAtsMerChanged(s, e) {
+    var pId = _activeMap.divName;
+    var map = getMap(pId);
+    map.mer = cbGoToAtsMer.GetText();
+}
 
+function btnMapPropertyGoToAtsClick(s, e) {
+    var pId = _activeMap.divName;
+    var map = getMap(pId);
+
+    var sec = map.sec;
+    if (sec < 10)
+        sec = '0' + sec;
+    var twp = map.twp;
+    if (twp < 10)
+        twp = '00' + twp;
+    if (twp >= 10 && twp < 100)
+        twp = '0' + twp;
+    var rge = map.rge;
+    if (rge < 10)
+        rge = '0' + rge;
+    var mer = map.mer;
+
+    var sectionId = sec + '-' + twp + '-' + rge + 'W' + mer;
+    var url = "Home/GetLonLatFromSectionTable";
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {
+            'sectionId': sectionId
+        },
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc
+    });
+
+    function successFunc(data, status) {
+        if (data.X == 0 || data.Y == 0)
+            return;
+        var lon = data.X;
+        var lat = data.Y;
+        zoomToLonLat(pId, lon, lat, true);
+    }
+    function errorFunc() {
+        alert('Error - GetLonLatFromSectionTable');
+    }
 }
 
 function zoomToLonLat(paneId, lon, lat, isShowSymbol) {

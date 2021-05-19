@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AppConfig>
+  <ActiveDatabase>Desktop</ActiveDatabase>
+  <SchemaNames>
+    <SchemaName id="Desktop" username="jysuh" password="Jysuh@1013" name="DESKTOP-88TITA4\sqlexpress"></SchemaName>
+    <SchemaName id="Desktop_Acer" username="jysuh" password="Jysuh@1013" name="DESKTOP-MEBB49J\sqlexpress"></SchemaName>
+    <SchemaName id="MyLaptop" username="jysuh" password="Jysuh@1013" name="DESKTOP-1IHJST4\sqlexpress"></SchemaName>
+  </SchemaNames>
+  <!--Data Sources-->
+  <DataSources>
+    <DataSource id="GRID" description="Section Centroid" type="table" database="GRID.dbo.Section_Centroid_WGS84" active="true" subscribed="true" show="true"></DataSource>
+    <DataSource id="AWWID" description="Alberta Water Well Database" type="table" database="AWWID_WS.dbo.Awwid_Metric" active="true"  subscribed="true" show="true"></DataSource>
+    <DataSource id="AGWL" description="Alberta Groundwater Licence" type="table" database="WA_Licences.dbo.AWL" active="true" subscribed="true" show="true"></DataSource>
+    <DataSource id="ASWL" description="Alberta Surfacewater Licence" type="table" database="WA_Licences.dbo.AWL" active="true" subscribed="true" show="true"></DataSource>
+  </DataSources>
+  <!--Gridview page sizes dropdown list-->
+  <PageSizes>10,20,40,80,160</PageSizes>
+</AppConfig>

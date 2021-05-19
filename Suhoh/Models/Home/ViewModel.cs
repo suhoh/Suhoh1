@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 
 namespace Suhoh.Model
 {
     public class ViewModel
     {
+        public const string _gridTable = "GRID";
+
+        // Application Config
+        public AppConfig AppConfig { get; set; }
+
         // Panels
         public int ActivePanelSettings { get; set; }    // # of panel setting count
         public int MainPanelCount { get; set; }         // initial number of panels to start with
@@ -54,14 +60,12 @@ namespace Suhoh.Model
 
         // Left Pane Search 
         public bool ChkLeftPanelATS { get; set; }
-        public string CbLeftPanelSearchSEC { get; set; }
-        public string CbLeftPanelSearchTWP { get; set; }
-        public string CbLeftPanelSearchRGE { get; set; }
-        public string CbLeftPanelSearchMER { get; set; }
+        public string LeftPanelSearchSEC { get; set; }
+        public string LeftPanelSearchTWP { get; set; }
+        public string LeftPanelSearchRGE { get; set; }
+        public string LeftPanelSearchMER { get; set; }
         public bool ChkLeftPanelAttributeSearch { get; set; }
-        public string CbLeftPanelAttributeSearch1 { get; set; }
-        public string CbLeftPanelAttributeSearch2 { get; set; }
-        public string CbLeftPanelAttributeSearch3 { get; set; }
+        public string CbLeftPanelAttributeOperator { get; set; }
         public ViewModel()
         {
             ColumnInfos = new List<ColumnInfo>();
@@ -94,20 +98,79 @@ namespace Suhoh.Model
             AddPaneType = 1;
 
             ChkLeftPanelATS = true;
-            CbLeftPanelSearchSEC = "";
-            CbLeftPanelSearchTWP = "";
-            CbLeftPanelSearchRGE = "";
-            CbLeftPanelSearchMER = "";
+            LeftPanelSearchSEC = "15";
+            LeftPanelSearchTWP = "24";
+            LeftPanelSearchRGE = "1";
+            LeftPanelSearchMER = "5";
             ChkLeftPanelAttributeSearch = false;
-            CbLeftPanelAttributeSearch1 = "";
-            CbLeftPanelAttributeSearch2 = "";
-            CbLeftPanelAttributeSearch3 = "";
+            CbLeftPanelAttributeOperator = "=";
 
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
             MainPanelCount = 3;
             MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Bar1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
+    }
+
+    // XML AppConfig setting
+    [Serializable]
+    [XmlRoot("AppConfig")]
+    public class AppConfig
+    {
+        [XmlElement(ElementName = "ActiveDatabase")]
+        public string ActiveDatabase { get; set; }
+
+        // Database Schema
+        [XmlArray(ElementName = "SchemaNames")]
+        [XmlArrayItem(typeof(SchemaName), ElementName = "SchemaName")]
+        public SchemaName[] Schemas { get; set; }
+
+        // Data sources
+        [XmlArray(ElementName = "DataSources")]
+        [XmlArrayItem(typeof(DataSourceInfo), ElementName = "DataSource")]
+        public DataSourceInfo[] DataSources { get; set; }
+
+        [XmlElement(ElementName = "ExcelFilePath")]
+        public string ExcelFilePath { get; set; }
+
+        [XmlElement(ElementName = "PageSizes")]
+        public string PageSizes { get; set; }
+    }
+
+    public class SchemaName
+    {
+        [XmlAttribute(AttributeName = "id")]
+        public string Id { get; set; }
+        [XmlAttribute(AttributeName = "username")]
+        public string Username { get; set; }
+        [XmlAttribute(AttributeName = "password")]
+        public string Password { get; set; }
+        [XmlAttribute(AttributeName = "name")]
+        public string Name { get; set; }
+    }
+
+    public class DataSourceInfo
+    {
+        [XmlAttribute(AttributeName = "id")]
+        public string Id { get; set; }
+        [XmlAttribute(AttributeName = "description")]
+        public string Description { get; set; }
+        [XmlAttribute(AttributeName = "type")]
+        public string Type { get; set; }
+        [XmlAttribute(AttributeName = "database")]
+        public string Database { get; set; }
+        [XmlAttribute(AttributeName = "active")]
+        public bool Active { get; set; }
+        [XmlAttribute(AttributeName = "subscribed")]
+        public bool Subscribed { get; set; }
+        [XmlAttribute(AttributeName = "show")]
+        public bool Show { get; set; }
+    }
+
+    public class XY
+    {
+        public double X { get; set; }
+        public double Y { get; set; }
     }
 
     public class ColumnInfo

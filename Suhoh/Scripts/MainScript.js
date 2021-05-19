@@ -418,6 +418,7 @@ function renderMapProperty(id) {
     cbShowLabel.SetEnabled(map.isLabelOn);
     tbMapGoToX.SetText(map.x);
     tbMapGoToY.SetText(map.y);
+    radioMapGoTo.SetValue(map.goToLocation);
     if (map.goToLocation == 1) {    // Lon/Lat
         $("#thAtsHeader").hide();
         $('#trGoToAts').hide();
@@ -430,6 +431,10 @@ function renderMapProperty(id) {
         $("#trGoToLatLonX").hide();
         $("#trGoToLatLonY").hide();
     }
+    cbGoToAtsSec.SetValue(map.sec);
+    cbGoToAtsTwp.SetValue(map.twp);
+    cbGoToAtsRge.SetValue(map.rge);
+    cbGoToAtsMer.SetValue(map.mer);
     cbBasemap.SetValue(map.basemap);
 
     // XY columns

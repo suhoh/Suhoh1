@@ -9,18 +9,27 @@ using Suhoh.Model;
 using System.Data;
 using Newtonsoft.Json;
 using static Suhoh.Model.ViewModel;
+using System.Web.Hosting;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace Suhoh.Controllers
 {    public class HomeController : Controller
     {
+        AppConfig _appConfig;
+
         public ActionResult Index()
         {
+            _appConfig = ReadConfigXml("App_Data", "AppConfig.xml");
+            Session["appConfig"] = _appConfig;
+
             ViewModel model = new ViewModel();
+            model.AppConfig = _appConfig;
 
             // @"[{'name': 'Panel1', 'type': ['Map']}, {'name': 'Panel2', 'type': ['Pie']}, {'name': 'Panel3', 'type': ['Gridview']}]"
             model.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(model.MainPanelJson);
 
-            ViewData["RightPanelPartialCallback"] = false;
+            ViewData["RightPanelPartialCallback"] = false;  // test
             Session["viewModel"] = model;
             return View(model);
         }
@@ -81,5 +90,25 @@ namespace Suhoh.Controllers
             return Json(vm.ColumnInfos, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult GetLonLatFromSectionTable(string sectionId)
+        {
+            AppConfig appConfig = (AppConfig)Session["appConfig"];
+            XY lonLat = DataEngine.GetLonLatFromSectionTable(appConfig, sectionId);
+            return Json(lonLat, JsonRequestBehavior.AllowGet);
+        }
+
+        public AppConfig ReadConfigXml(string folder, string filename)
+        {
+            AppConfig appConfig = new AppConfig();
+            string filePath = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, folder, filename);
+            XmlSerializer serializer = new XmlSerializer(typeof(AppConfig));
+
+            StreamReader sr = new StreamReader(filePath);
+            appConfig = (AppConfig)serializer.Deserialize(sr);
+            sr.Close();
+
+            return appConfig;
+        }
     }
 }
