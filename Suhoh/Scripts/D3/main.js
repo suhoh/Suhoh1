@@ -79,8 +79,12 @@ function interpolateColors(dataLength, colorScale, colorRangeInfo) {
     return colorArray;
 }
 
-function chkPieLabelClicked(s, e) {
-    var pie = getPie(_activePie.divName);
+function chkPieLabelClicked(s, e, id) {
+    var pie;
+    if (id != null)
+        pie = getPie(id);
+    else
+        pie = getPie(_activePie.divName);
     var isPercentageLabel, isYValueLabel, isXValueLabel;
 
     if (s == undefined) {
@@ -181,7 +185,7 @@ function cbPieXYColumnChanged(s, e) {
     tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol);
     document.getElementById(pie.divName + "_Title").innerHTML = pie.xCol + " vs " + pie.yCol;
 
-    chkPieLabelClicked();
+    chkPieLabelClicked(null, null, pie.divName);
 }
 
 // Color Ramp
@@ -232,12 +236,16 @@ function radioColorRampPieClicked(s, e) {
 
     var pieData = getPieData(pie.divName, pie.data, pie.xCol, pie.yCol, false);
     drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
-    chkPieLabelClicked();
+    chkPieLabelClicked(null, null, pie.divName);
 }
 
 // bar chart
-function chkBarLabelClicked(s, e) {
-    var bar = getBar(_activeBar.divName);
+function chkBarLabelClicked(s, e, id) {
+    var bar;
+    if (id != null)
+        bar = getBar(id);
+    else
+        bar = getBar(_activeBar.divName);
     var isXValueLabel, isYValueLabel;
 
     if (s == undefined) {
@@ -245,8 +253,8 @@ function chkBarLabelClicked(s, e) {
         isYValueLabel = bar.isYValue;
     }
     else {
-        isXValueLabel = bar.isXValue = eval("cbBarXValue").GetChecked();
-        isYValueLabel = bar.isYValue = eval("cbBarYValue").GetChecked();
+        isXValueLabel = bar.isXValue = eval("chkBarXValueLabel").GetChecked();
+        isYValueLabel = bar.isYValue = eval("chkBarYValueLabel").GetChecked();
     }
     if (bar.textLabel == null)
         return;
@@ -257,6 +265,9 @@ function chkBarLabelClicked(s, e) {
                 return (d.X);
             })
             .attr("display", "block");
+        //barTextLabel
+        //    .html(d.X)
+        //    .style("display", "block");
     }
     else if (!isXValueLabel && isYValueLabel) {
         bar.textLabel
@@ -311,7 +322,7 @@ function cbBarXYColumnChanged(s, e) {
     //}
     //text = text.substr(0, text.length - 1);
     //DropDownEdit.SetText(text);
-    chkBarLabelClicked();
+    chkBarLabelClicked(null, null, bar.divName);
 }
 
 function tbBarPropertyTitleKeyUp(s, e) {
@@ -333,7 +344,12 @@ function showHideLegend(s) {
         if (pie == null)
             return;
 
+        _activePie = pie;
         pie.isLegend = !pie.isLegend;
+
+        //chkPiePercentageLabel.SetChecked(pie.isPercentage);
+        //chkPieYValueLabel.SetChecked(pie.isYValue);
+        //chkPieXValueLabel.SetChecked(pie.isXValue);
 
         var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, false);
         if (pieData == null)
@@ -347,6 +363,7 @@ function showHideLegend(s) {
                 $('#' + pie.divName + 'pieLegend' + i).hide(500);
             }
         drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+        chkPieLabelClicked(null, null, id);
     }
 
     if (id.toUpperCase().indexOf('BAR') > -1) {
@@ -354,7 +371,11 @@ function showHideLegend(s) {
         if (bar == null)
             return;
 
+        _activeBar = bar;
         bar.isLegend = !bar.isLegend;
+
+        //chkBarXValueLabel.SetChecked(bar.isXValue);
+        //chkBarYValueLabel.SetChecked(bar.isYValue);
         //if (typeof ceBarColorPicker !== "undefined" && ASPxClientUtils.IsExists(ceBarColorPicker))
         //    bar.color = ceBarColorPicker.GetText();
 
@@ -370,7 +391,9 @@ function showHideLegend(s) {
                 $('#' + bar.divName + 'barLegend' + i).hide(500);
             }
         drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
+        chkBarLabelClicked(null, null, id);
     }
+    
 }
 
 function radioOrientationBarClicked(s, e) {
@@ -389,6 +412,8 @@ function ceColorPickerClicked() {
 
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
+
+    chkBarLabelClicked(null, null, bar.divName);
 }
 
 function btnBarMaximizeClick(s) {

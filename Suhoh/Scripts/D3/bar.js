@@ -150,7 +150,8 @@ function drawBar(divName, data, width, height, barColor) {
 
     var barTooltip = d3.select("#" + divName).append("div").attr("class", "barTooltip").style("display", "none");
     var barTooltipTriangle = d3.select("#" + divName).append("div").attr("class", "barTooltipTriangle").style("display", "none");
-
+    var axisLabelTooltip = d3.select("#" + divName).append("div").attr("class", "axisLabelTooltip").style("display", "none");
+    //var barTextLabel = d3.select("#" + divName).append("div").attr("class", "barTextLabel").style("display", "none");
     // bar
     if (bar.isVertical == 1) {
         svg.selectAll("bar")
@@ -169,7 +170,7 @@ function drawBar(divName, data, width, height, barColor) {
                     .transition()
                     .duration(200)
                     .style("left", marginLeft + marginRight + x(d.X) + "px")
-                    .style("top", event.offsetY + (y(d.Y) - event.offsetY) + 6 + "px");
+                    .style("top", y(d.Y) + 6 + "px");
 
                 barTooltip
                     .style("display", "inline-block")
@@ -180,7 +181,7 @@ function drawBar(divName, data, width, height, barColor) {
                     .transition()
                     .duration(200)
                     .style("left", marginLeft + marginRight + x(d.X) + (x.bandwidth() / 2) - 5 + "px")
-                    .style("top", event.offsetY + (y(d.Y) - event.offsetY) + 40 + "px")
+                    .style("top", y(d.Y) + 40 + "px");
 
                 barTooltipTriangle
                     .style("display", "inline-block")
@@ -212,9 +213,12 @@ function drawBar(divName, data, width, height, barColor) {
             .enter()
             .append("rect")
             .style("fill", barColor)
-            .attr("x", marginLeft + marginRight)
-            .attr("y", function (d) { return y(d.X) + marginTop + (y.bandwidth() / 4); })
-            .attr("height", y.bandwidth() / 2)
+            .attr("x", marginLeft + marginRight + 1)
+            .attr("y", function (d) {
+                console.log(y(d.X));
+                return marginTop + y(d.X) + (y.bandwidth() / 6);
+            })
+            .attr("height", y.bandwidth() / 1.5)
             .attr("width", function (d) {
                 if (x(d.Y) < 0)
                     return;
@@ -224,24 +228,53 @@ function drawBar(divName, data, width, height, barColor) {
             .on("mouseenter", function (event, d) {
                 barTooltip
                     .transition()
-                    .duration(100)
-                    .style("opacity", 0.7)
-                    .attr("stroke", "black")
-                    .attr("stroke-width", 2);
+                    .duration(200)
+                    .style("left", marginLeft + marginRight + x(d.Y) + 15 + "px")
+                    .style("top", marginTop + marginTop + y(d.X) + (y.bandwidth() / 2) - 20 + "px")
 
                 barTooltip
                     .style("display", "inline-block")
-                    .style("position", "absolute");
-            })
-            .on("mousemove", function (event, d) {
-                barTooltip
-                    .html(d.X + "<br/>" + (d.Y).toFixed(1))
-                    .style("left", event.offsetX - 15 + "px")
-                    .style("top", event.offsetY - 15 + "px")
+                    .style("position", "absolute")
+                    .html(d.X + "<br/>" + (d.Y).toFixed(1));
+
+                barTooltipTriangle
+                    .transition()
+                    .duration(200)
+                    .style("left", x(d.Y) + marginLeft + marginRight + 6 + "px")
+                    .style("top", marginTop + marginTop + y(d.X) + (y.bandwidth() / 2) - 10 + "px");
+
+                barTooltipTriangle
+                    .style("display", "inline-block")
+                    .style("position", "absolute")
+                    .html("&#x25C0");
             })
             .on("mouseleave", function (d) {
                 barTooltip.style("display", "none");
+                barTooltipTriangle.style("display", "none");
             });
+
+        var g = svg.append("g")
+
+        bar.textLabel = g.selectAll("text")
+            .data(data)
+            .enter()
+            .append('text')
+            .attr("x", function (d) { return marginLeft + marginRight + (x(d.Y) / 2) })
+            .attr("y", function (d) { return marginTop + y(d.X) + (y.bandwidth() / 2) + 5 })
+            .style("text-anchor", "left")
+            .style("font-size", "12px")
+            .attr("display", "none");
+
+        //barTextLabel
+        //    .transition()
+        //    .duration(200)
+        //    .style("left", marginLeft + marginRight + 30 + "px")
+        //    .style("top", marginTop + y(d.X) + (y.bandwidth() / 2) + 5 + "px")
+
+        //barTextLabel
+        //    .style("display", "inline-block")
+        //    .style("position", "absolute")
+        //    .html(d.X + "<br/>" + (d.Y).toFixed(1));
     }
 
     var xColumn = bar.xCol;
@@ -270,19 +303,40 @@ function drawBar(divName, data, width, height, barColor) {
             .text(xColumn);
     }
 
-    d3.selectAll(".x .tick")
-        .data(data)
-        .on("mouseover", function (event, d) {
-            barTooltip
-                .style("display", "inline-block")
-                .style("position", "absolute")
-                .html(d.X)
-                .style("left", event.offsetX + "px")
-                .style("top", event.offsetY - 25 + "px");
-        })
-        .on("mouseleave", function (d) {
-            barTooltip.style("display", "none");
-        });
+    if (bar.isVertical == 1) {
+        d3.select("#" + divName)
+            .selectAll(".x .tick")
+            .data(data)
+            .on("mouseover", function (event, d) {
+                axisLabelTooltip
+                    .style("display", "inline-block")
+                    .style("position", "absolute")
+                    .style("height", 12 + "px")
+                    .html(d.X)
+                    .style("left", event.offsetX + "px")
+                    .style("top", event.offsetY - 25 + "px");
+            })
+            .on("mouseleave", function (d) {
+                axisLabelTooltip.style("display", "none");
+            });
+    }
+    else {
+        d3.select("#" + divName)
+            .selectAll(".y .tick")
+            .data(data)
+            .on("mouseover", function (event, d) {
+                axisLabelTooltip
+                    .style("display", "inline-block")
+                    .style("position", "absolute")
+                    .style("height", 12 + "px")
+                    .html(d.X)
+                    .style("left", event.offsetX + "px")
+                    .style("top", event.offsetY - 25 + "px");
+            })
+            .on("mouseleave", function (d) {
+                axisLabelTooltip.style("display", "none");
+            });
+    }
 
 
     return svg;
