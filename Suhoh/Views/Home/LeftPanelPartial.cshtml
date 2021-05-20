@@ -40,7 +40,7 @@
         group.Expanded = true;
         group.SetContentTemplateContent(c =>
         {
-            Html.RenderPartial("LeftPanelSelectDataSource", Model);
+            @Html.RenderPartial("LeftPanelSelectDataSource", Model);
         });
     });
     settings.Groups.Add(group =>

@@ -4,7 +4,6 @@
 //
 
 var _activePanelSettings;
-var _
 
 function radioActivePanelSettingsClicked(s, e) {
     SetAllPanelSettings(false);
@@ -101,6 +100,9 @@ function btnChangeLayoutClicked(s, e) {
 
 }
 
+//
+// Left Panel Search by ATS and attributes
+//
 function populateLeftPanelSearchColumn(items) {
     // Fill in operand1
     cbLeftPanelAttributeSearch1.ClearItems();
@@ -110,34 +112,52 @@ function populateLeftPanelSearchColumn(items) {
     if (items.length > 0)
         cbLeftPanelAttributeSearch1.SetSelectedIndex(0);    // set first item as selected
 
-    //// Fill in operand3
-    //cbLeftPanelAttributeSearch3.ClearItems();
-    //var column = cbLeftPanelAttributeSearch1.SetSelectedIndex(0);
-    //var distinctValues = getDistinctValues(_jsonData, column);
-    //distinctValues.Sort();
-    //distinctValues.forEach(function (v) {
-    //    cbLeftPanelAttributeSearch3.AddItem(v);
-    //});
-    //cbLeftPanelAttributeSearch3.SetSelectedIndex(0);
+    // Fill in operand3
+    cbLeftPanelAttributeSearch3.ClearItems();
+    var column = cbLeftPanelAttributeSearch1.GetText();
+    var type = getColumnInfo(items, column).Type;
+    if (type == 'String') {
+        var distinctValues = getDistinctValues(_jsonData, column);
+        distinctValues.sort();
+        distinctValues.forEach(function (v) {
+            cbLeftPanelAttributeSearch3.AddItem(v);
+        });
+        cbLeftPanelAttributeSearch3.SetSelectedIndex(0);
+    }
 }
 
-// Get distinct value for selected column
-function getDistinctValues(json, column) {
-    var d = [];
-    json.filter(function (item) {
-        var i = d.findIndex(x => x.name == item.name);
-        if (i <= -1) {
-            d.push({ id: item.id, name: item.name });
+function getColumnInfo(items, columnName) {
+    for (i = 0; i < items.length; i++)
+        if (items[i].Name == columnName)
+            return items[i];
+    return null;
+}
+
+function getDistinctValues(jsonData, column) {
+    var lookup = {};
+    var items = jsonData;
+    var result = [];
+
+    for (var item, i = 0; item = items[i++];) {
+        var name = item[column];
+
+        if (!(name in lookup)) {
+            lookup[name] = 1;
+            result.push(name);
         }
-        return null;
-    });;
+    }
+    return result;
 }
 
 function cbLeftPanelAttributeSearch1Changed(s, e) {
-    var item = cbLeftPanelAttributeSearch1.GetText();
-    for (i = 0; i < _jsonData.length; i++) {
-        //console.log(_jsonData[i].item);
-    }
+    var column = cbLeftPanelAttributeSearch1.GetText();
+    cbLeftPanelAttributeSearch3.ClearItems();
+    var distinctValues = getDistinctValues(_jsonData, column);
+    distinctValues.sort();
+    distinctValues.forEach(function (v) {
+        cbLeftPanelAttributeSearch3.AddItem(v);
+    });
+    cbLeftPanelAttributeSearch3.SetSelectedIndex(0);
 }
 
 function cbLeftPanelAttributeSearch2Changed(s, e) {
