@@ -223,24 +223,36 @@
 }
 
 .barTooltip {
+    height: 24px;
     line-height: 1;
     font-weight: bold;
     padding: 8px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    background: rgba(0, 0, 0, 1);
+    color: #ffffff;
     border-radius: 3px;
     text-align: center;
 }
 
-.barTooltipTriangle {
+.axisLabelTooltip {
+    height: 12px;
     line-height: 1;
     font-weight: bold;
     padding: 8px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #fff;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
     border-radius: 3px;
     text-align: center;
-    font-size: 10px;
+}
+
+.barTextLabel {
+    height: 24px;
+    line-height: 1;
+    font-weight: bold;
+    padding: 8px;
+    background: rgba(0, 0, 0, 1);
+    color: #ffffff;
+    border-radius: 3px;
+    text-align: center;
 }
 
 /*Charts ToolTip End*/

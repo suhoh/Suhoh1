@@ -48,7 +48,7 @@ function updatePies(pies) {
         _activePie = p;
         // check and see if chkPiePercentageLabel already created. It gets created when opening up Property.
         if (typeof chkPiePercentageLabel != "undefined" && ASPxClientUtils.IsExists(chkPiePercentageLabel))
-            chkPieLabelClicked();
+            chkPieLabelClicked(null, null, p.divName);
     });
 
 }
@@ -64,7 +64,7 @@ function updateBars(bars) {
         }
         _activeBar = b;
         if (typeof cbBarXValue != "undefined" && ASPxClientUtils.IsExists(cbBarXValue))
-            chkBarLabelClicked();
+            chkBarLabelClicked(null, null, b.divName);
     });
 }
 
@@ -369,7 +369,7 @@ function renderPieProperty(id) {
     chkPiePercentageLabel.SetChecked(pie.isPercentage);
     chkPieYValueLabel.SetChecked(pie.isYValue);
     chkPieXValueLabel.SetChecked(pie.isXValue);
-    chkPieLabelClicked();
+    chkPieLabelClicked(null, null, pie.divName);
 
     cbPieXColumn.SetValue(pie.xCol);
     cbPieYColumn.SetValue(pie.yCol);
@@ -395,6 +395,10 @@ function renderBarProperty(id) {
     var bar = getBar(id);
     _activeBar = bar;
 
+    chkBarXValueLabel.SetChecked(bar.isXValue);
+    chkBarYValueLabel.SetChecked(bar.isYValue);
+    chkBarLabelClicked(null, null, bar.divName);
+    
     cbBarXColumn.SetValue(bar.xCol);
     lbBarYColumn.SetValue(bar.yCol);
 

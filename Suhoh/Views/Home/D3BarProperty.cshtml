@@ -35,7 +35,7 @@
                 @Html.DevExpress().CheckBoxFor(settings => Model.CbBarXValueLabel,
                     settings =>
                     {
-                        settings.Name = "cbBarXValue";
+                        settings.Name = "chkBarXValueLabel";
                         settings.Text = "X Value";
                         settings.Properties.ClientSideEvents.CheckedChanged = "chkBarLabelClicked";
                     }).GetHtml()
@@ -44,7 +44,7 @@
                 @Html.DevExpress().CheckBoxFor(settings => Model.CbBarYValueLabel,
                     settings =>
                     {
-                        settings.Name = "cbBarYValue";
+                        settings.Name = "chkBarYValueLabel";
                         settings.Text = "Y Value";
                         settings.Properties.ClientSideEvents.CheckedChanged = "chkBarLabelClicked";
                     }).GetHtml()
