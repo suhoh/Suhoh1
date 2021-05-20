@@ -134,26 +134,27 @@
                           settings =>
                           {
                               settings.Name = "tbMapGoToX";
-                              settings.Width = 120;
+                              settings.Width = 90;
                               settings.Properties.NullText = "Longitude";
                               settings.Text = "";
                           }
                           ).GetHtml()
             </th>
-        </tr>
-        <tr id="trGoToLatLonY">
             <th class="thOpenLayerGoToYLabel">Y:</th>
             <th class="thOpenLayerGotoYTextBox">
                 @Html.DevExpress().TextBox(
                           settings =>
                           {
                               settings.Name = "tbMapGoToY";
-                              settings.Width = 120;
+                              settings.Width = 90;
                               settings.Properties.NullText = "Latitude";
                               settings.Text = "";
                           }
                           ).GetHtml()
             </th>
+        </tr>
+        <tr id="trGoToLatLonY">
+
             <th class="thOpenLayerGoToButton">
                 @Html.DevExpress().Button(
                 settings =>
@@ -169,43 +170,55 @@
         @*ATS*@
         <tr>
         <tr id="thAtsHeader">
-            <th style="float: left; font-weight: normal; margin-top: 2px; margin-left: 20px;">Section</th>
-            <th style="float: left; font-weight: normal; margin-top: 2px; margin-left: 37px;">Township</th>
-            <th style="float: left; font-weight: normal; margin-top: 2px; margin-left: 37px;">Range</th>
+            <th style="float: left; font-weight: normal; margin-top: -2px; margin-left: 11px; margin-bottom: 2px">Section</th>
+            <th style="float: left; font-weight: normal; margin-top: -2px; margin-left: 18px;">Township</th>
+            <th style="float: left; font-weight: normal; margin-top: -2px; margin-left: 17px;">Range</th>
+            <th style="float: left; font-weight: normal; margin-top: -2px; margin-left: 26px;">Mer.</th>
         </tr>
         <tr id="trGoToAts">
             <th class="cbLeftPanelSearchSEC">
-                @Html.DevExpress().ComboBoxFor(model => model.CbLeftPanelSearchSEC,
+                @Html.DevExpress().ComboBox(
                   settings =>
                   {
-                      settings.Name = "cbMapSec";
-                      settings.Width = 60;
+                      settings.Name = "cbGoToAtsSec";
+                      settings.Width = 47;
                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                      settings.Properties.DropDownWidth = 59;
-                      //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelSearchSECChanged";
+                      settings.Properties.DropDownWidth = 46;
+                      settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbGoToAtsSecChanged";
                   }).BindList(DataEngine.SectionList()).GetHtml()
             </th>
             <th class="cbLeftPanelSearchTWP">
-                @Html.DevExpress().ComboBoxFor(model => model.CbLeftPanelSearchTWP,
+                @Html.DevExpress().ComboBox(
                   settings =>
                   {
-                      settings.Name = "cbMapTwp";
-                      settings.Width = 60;
+                      settings.Name = "cbGoToAtsTwp";
+                      settings.Width = 55;
                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                      settings.Properties.DropDownWidth = 59;
-                      //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelSearchTWPChanged";
+                      settings.Properties.DropDownWidth = 54;
+                      settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbGoToAtsTwpChanged";
                   }).BindList(DataEngine.TownshipList()).GetHtml()
             </th>
             <th class="cbLeftPanelSearchRGE">
-                @Html.DevExpress().ComboBoxFor(model => model.CbLeftPanelSearchRGE,
+                @Html.DevExpress().ComboBox(
                   settings =>
                   {
-                      settings.Name = "cbMapRge";
-                      settings.Width = 60;
+                      settings.Name = "cbGoToAtsRge";
+                      settings.Width = 47;
                       settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
-                      settings.Properties.DropDownWidth = 59;
-                      //settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLeftPanelSearchRGEChanged";
+                      settings.Properties.DropDownWidth = 46;
+                      settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbGoToAtsRgeChanged";
                   }).BindList(DataEngine.RangeList()).GetHtml()
+            </th>
+            <th class="cbLeftPanelSearchMER">
+                @Html.DevExpress().ComboBox(
+                  settings =>
+                  {
+                      settings.Name = "cbGoToAtsMer";
+                      settings.Width = 45;
+                      settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                      settings.Properties.DropDownWidth = 44;
+                      settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbGoToAtsMerChanged";
+                  }).BindList(DataEngine.MeridianList()).GetHtml()
             </th>
 
             <th class="thOpenLayerGoToButton">
@@ -224,7 +237,7 @@
 </div>
 
 @*Choose basemap*@
-<div style="margin-top: 10px">
+<div style="margin-top: 3px">
     <table>
         <tr>
             <th style="float: left; margin-left: 2px">Basemap</th>

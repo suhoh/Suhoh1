@@ -4,6 +4,7 @@
 //
 
 var _activePanelSettings;
+var _
 
 function radioActivePanelSettingsClicked(s, e) {
     SetAllPanelSettings(false);
@@ -101,10 +102,35 @@ function btnChangeLayoutClicked(s, e) {
 }
 
 function populateLeftPanelSearchColumn(items) {
+    // Fill in operand1
     cbLeftPanelAttributeSearch1.ClearItems();
     for (i = 0; i < items.length; i++) {
         cbLeftPanelAttributeSearch1.AddItem(items[i].Name);
     }
+    if (items.length > 0)
+        cbLeftPanelAttributeSearch1.SetSelectedIndex(0);    // set first item as selected
+
+    //// Fill in operand3
+    //cbLeftPanelAttributeSearch3.ClearItems();
+    //var column = cbLeftPanelAttributeSearch1.SetSelectedIndex(0);
+    //var distinctValues = getDistinctValues(_jsonData, column);
+    //distinctValues.Sort();
+    //distinctValues.forEach(function (v) {
+    //    cbLeftPanelAttributeSearch3.AddItem(v);
+    //});
+    //cbLeftPanelAttributeSearch3.SetSelectedIndex(0);
+}
+
+// Get distinct value for selected column
+function getDistinctValues(json, column) {
+    var d = [];
+    json.filter(function (item) {
+        var i = d.findIndex(x => x.name == item.name);
+        if (i <= -1) {
+            d.push({ id: item.id, name: item.name });
+        }
+        return null;
+    });;
 }
 
 function cbLeftPanelAttributeSearch1Changed(s, e) {
@@ -112,6 +138,14 @@ function cbLeftPanelAttributeSearch1Changed(s, e) {
     for (i = 0; i < _jsonData.length; i++) {
         //console.log(_jsonData[i].item);
     }
+}
+
+function cbLeftPanelAttributeSearch2Changed(s, e) {
+
+}
+
+function cbLeftPanelAttributeSearch3Changed(s, e) {
+
 }
 
 function btnLeftPanelAttributeSearchClick(s, e) {

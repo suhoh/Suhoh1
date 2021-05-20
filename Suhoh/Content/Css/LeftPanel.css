@@ -39,12 +39,17 @@
 
 .cbLeftPanelSearchTWP {
     float: left;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .cbLeftPanelSearchRGE {
     float: left;
-    margin-left: 20px;
+    margin-left: 10px;
+}
+
+.cbLeftPanelSearchMER {
+    float: left;
+    margin-left: 10px;
 }
 
 /*Attribute Search*/
