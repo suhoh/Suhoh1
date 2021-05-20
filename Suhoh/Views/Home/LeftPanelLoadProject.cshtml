@@ -1,9 +1,61 @@
 ﻿@using Suhoh.Model
 @model ViewModel
 
-@{
-    ViewBag.Title = "LeftPanelLoadProject";
-}
+<div>
+    <table>
+        <tr>
+            <th>
+                @Html.DevExpress().RadioButtonListFor(model => model.RadioLeftPanelSaveLoad,
+                    settings =>
+                    {
+                        settings.Name = "radioLeftPanelSaveLoad";
+                        settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+                        settings.Properties.Items.Add("Save", 1);
+                        settings.Properties.Items.Add("Load", 2);
+                        settings.Width = 200;
+                        settings.Height = 28;
+                        settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
+                        settings.Properties.ValueType = typeof(Int32);
+                        settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioLeftPanelSaveLoadClick";
+                    }).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
 
-<h4 style="margin-left: 12px">Henry will work on this soon.</h4>
+<div id="divLeftPanelSaveProject">
+    <table>
+        <tr>
+            <th class="LeftPanelSaveLoadProjectTitle">Project Name</th>
+        </tr>
+        <tr>
+            <th class="tbLeftPanelSaveProjectName">
+                @Html.DevExpress().TextBox(
+                             settings =>
+                             {
+                                 settings.Name = "tbLeftPanelSaveProjectName";
+                                 settings.Width = 180;
+                                 settings.Text = "";
+                                 settings.ControlStyle.CssClass = "";
+                                 settings.Properties.ClientSideEvents.KeyUp = "";
+                             }
+                             ).GetHtml()
+            </th>
+            <th class="btnLeftPanelSaveProjectName">
+                @Html.DevExpress().Button(
+               settings =>
+               {
+                   settings.Name = "btnLeftPanelSaveProjectName";
+                   settings.Width = 30;
+                   settings.Text = "Save";
+                   settings.ClientSideEvents.Click = "btnLeftPanelSaveProjectNameClick";
+               }
+               ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
 
+<div id="divLeftPanelLoadProject">
+    @Html.Partial("LeftPanelProjectGridview", Model)
+</div>

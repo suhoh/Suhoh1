@@ -66,6 +66,13 @@ namespace Suhoh.Model
         public string LeftPanelSearchMER { get; set; }
         public bool ChkLeftPanelAttributeSearch { get; set; }
         public string CbLeftPanelAttributeOperator { get; set; }
+
+        // Left panel load project
+        public int RadioLeftPanelSaveLoad { get; set; }
+
+        public List<Project> Projects;
+        
+
         public ViewModel()
         {
             ColumnInfos = new List<ColumnInfo>();
@@ -104,6 +111,8 @@ namespace Suhoh.Model
             LeftPanelSearchMER = "5";
             ChkLeftPanelAttributeSearch = false;
             CbLeftPanelAttributeOperator = "=";
+
+            RadioLeftPanelSaveLoad = 1;
 
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
@@ -165,6 +174,12 @@ namespace Suhoh.Model
         public bool Subscribed { get; set; }
         [XmlAttribute(AttributeName = "show")]
         public bool Show { get; set; }
+    }
+
+    public class Project
+    {
+        public string ProjectName { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 
     public class XY

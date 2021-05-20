@@ -116,7 +116,7 @@
         margin-top: 6px;
     }
     .excelFilename.textBox {
-        float:left;
+        float: left;
     }
     .excelFilename.loadButton {
         margin-left: 4px;
@@ -128,3 +128,26 @@
         background: url('../Images/Suhoh/Load.svg') no-repeat;
         background-size: auto;
     }
+
+/*Save Load Project*/
+.LeftPanelSaveLoadProjectTitle {
+    float: left;
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+.tbLeftPanelSaveProjectName {
+    float: left;
+    margin-left: 15px;
+}
+
+.btnLeftPanelSaveProjectName {
+    float: left;
+    margin-left: 10px;
+    margin-top: -1px;
+}
+
+.divLeftPanelLoadProject {
+    margin-left: 15px;
+    background-color: yellow;
+}
