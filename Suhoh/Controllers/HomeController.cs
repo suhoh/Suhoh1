@@ -53,6 +53,14 @@ namespace Suhoh.Controllers
             return PartialView("DxGridview", viewModel);
         }
 
+        public ActionResult LeftPanelProjectGridview(ViewModel vm)
+        {
+            ViewModel viewModel = (ViewModel)Session["viewModel"];
+
+            Session["viewModel"] = viewModel;
+            return PartialView("LeftPanelProjectGridview", viewModel);
+        }
+
         [HttpPost]
         public ActionResult RightPanelPartial(string sender, int paneDir, int paneType, string jsonPanels)
         {

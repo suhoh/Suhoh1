@@ -1,0 +1,66 @@
+﻿@using Suhoh.Model
+@model ViewModel
+
+@{
+    ViewBag.Title = "LeftPanelProjectGridview";
+}
+
+@Html.DevExpress().GridView(
+    settings =>
+    {
+        settings.Name = "gvLeftPanelProject";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "LeftPanelProjectGridview" };
+        //settings.ClientSideEvents.BeginCallback = "dxGridview_OnBeginCallback";
+        //settings.ClientSideEvents.EndCallback = "dxGridview_OnEndCallback";
+
+        settings.KeyFieldName = "ProjectName";   // TODO: need to have unique column here
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        //settings.Width = 220;
+        settings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
+        settings.ControlStyle.CssClass = "divLeftPanelLoadProject";
+        settings.Styles.Header.Paddings.Padding = 3;
+
+        // Columns
+        settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Disabled;
+        settings.SettingsResizing.Visualization = ResizingMode.Live;
+        settings.SettingsBehavior.AllowEllipsisInText = true;
+
+
+        settings.Columns.Add(gvColumns1 =>
+        {
+            gvColumns1.FieldName = "ProjectName";
+            gvColumns1.Width = 120;
+        });
+        settings.Columns.Add(gvColumns2 =>
+        {
+            gvColumns2.FieldName = "CreationDate";
+            gvColumns2.Width = 120;
+        });
+
+        // Scrollbar
+        //settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        //settings.Settings.VerticalScrollableHeight = 100;
+
+        // Focus row
+        settings.SettingsBehavior.AllowFocusedRow = true;
+        settings.Styles.FocusedRow.BackColor = System.Drawing.Color.FromArgb(113, 57, 143);
+
+        // Alternating color
+        settings.Styles.AlternatingRow.BackColor = System.Drawing.Color.FromArgb(248, 243, 250);
+        settings.Styles.AlternatingRow.Enabled = DefaultBoolean.True;
+
+        // Gridlines - depends on theme
+        settings.Settings.GridLines = GridLines.Both;
+
+        // page size
+        settings.SettingsPager.PageSize = Convert.ToInt16(Model.GridviewPageSize);
+
+        // Paging
+        settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+        //settings.SettingsPager.Position = PagerPosition.Bottom;
+        //settings.SettingsPager.FirstPageButton.Visible = true;
+        //settings.SettingsPager.LastPageButton.Visible = true;
+        //settings.SettingsPager.PageSizeItemSettings.Visible = true;
+
+    }).Bind(DataEngine.ProjectList()).GetHtml()

@@ -149,5 +149,14 @@ namespace Suhoh.Model
             }
             return meridianList;
         }
+
+        public static IEnumerable ProjectList()
+        {
+            List<Project> projects = new List<Project>();
+            projects.Add(new Project { ProjectName = "Henry Suh", CreationDate = DateTime.Now });
+            projects.Add(new Project { ProjectName = "Sangmin Lee", CreationDate = DateTime.Now });
+            projects.Add(new Project { ProjectName = "James Suh", CreationDate = DateTime.Now });
+            return projects;
+        }
     }
 }

@@ -151,3 +151,20 @@ function cbLeftPanelAttributeSearch3Changed(s, e) {
 function btnLeftPanelAttributeSearchClick(s, e) {
 
 }
+
+function radioLeftPanelSaveLoadClick(s, e) {
+    var radioSelected = radioLeftPanelSaveLoad.GetValue();
+
+    if (radioSelected == 1) {
+        $("#divLeftPanelSaveProject").show();
+        $("#divLeftPanelLoadProject").hide();
+    }
+    else {
+        $("#divLeftPanelSaveProject").hide();
+        $("#divLeftPanelLoadProject").show();
+    }
+}
+
+function btnLeftPanelSaveProjectNameClick(s, e) {
+
+}

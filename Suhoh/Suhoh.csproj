@@ -334,6 +334,7 @@
     <Content Include="Views\Home\LeftPanelLoadProject.cshtml" />
     <Content Include="Views\Home\LeftPanelLayerList.cshtml" />
     <Content Include="Views\Home\LeftPanelReports.cshtml" />
+    <Content Include="Views\Home\LeftPanelProjectGridview.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
