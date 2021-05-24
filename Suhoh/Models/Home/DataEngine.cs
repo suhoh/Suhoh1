@@ -156,6 +156,8 @@ namespace Suhoh.Model
             projects.Add(new Project { ProjectName = "Henry Suh", CreationDate = DateTime.Now });
             projects.Add(new Project { ProjectName = "Sangmin Lee", CreationDate = DateTime.Now });
             projects.Add(new Project { ProjectName = "James Suh", CreationDate = DateTime.Now });
+            projects.Add(new Project { ProjectName = "Jae", CreationDate = DateTime.Now });
+            projects.Add(new Project { ProjectName = "Test project", CreationDate = DateTime.Now });
             return projects;
         }
     }

@@ -104,7 +104,7 @@
 .btnChangeLayout {
     margin-top: 8px;
     margin-left: 70px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 /*Select Data Source*/
@@ -130,6 +130,10 @@
     }
 
 /*Save Load Project*/
+.radioLeftPanelSaveLoad {
+    margin-left: 50px;
+}
+
 .LeftPanelSaveLoadProjectTitle {
     float: left;
     margin-left: 15px;
@@ -145,9 +149,23 @@
     float: left;
     margin-left: 10px;
     margin-top: -1px;
+    margin-bottom: 10px;
 }
 
 .divLeftPanelLoadProject {
-    margin-left: 15px;
-    background-color: yellow;
+    margin-left: 7px;
+}
+
+.btnLeftPanelDeleteProjectName {
+    float: left;
+    margin-left: 70px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.btnLeftPanelLoadProjectName {
+    float: left;
+    margin-left: 10px;
+    margin-top: 8px;
+    margin-bottom: 10px;
 }

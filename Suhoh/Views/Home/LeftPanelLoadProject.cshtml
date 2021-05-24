@@ -11,9 +11,10 @@
                         settings.Name = "radioLeftPanelSaveLoad";
                         settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
                         settings.Properties.Items.Add("Save", 1);
-                        settings.Properties.Items.Add("Load", 2);
-                        settings.Width = 200;
+                        settings.Properties.Items.Add("Load/Delete", 2);
+                        settings.Width = 180;
                         settings.Height = 28;
+                        settings.ControlStyle.CssClass = "radioLeftPanelSaveLoad";
                         settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
                         settings.Properties.ValueType = typeof(Int32);
                         settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioLeftPanelSaveLoadClick";
@@ -28,7 +29,7 @@
         <tr>
             <th class="LeftPanelSaveLoadProjectTitle">Project Name</th>
         </tr>
-        <tr>
+        <tr style="margin-bottom: 10px">
             <th class="tbLeftPanelSaveProjectName">
                 @Html.DevExpress().TextBox(
                              settings =>
@@ -37,6 +38,7 @@
                                  settings.Width = 180;
                                  settings.Text = "";
                                  settings.ControlStyle.CssClass = "";
+                                 settings.Properties.NullText = "Enter project name";
                                  settings.Properties.ClientSideEvents.KeyUp = "";
                              }
                              ).GetHtml()
@@ -57,5 +59,28 @@
 </div>
 
 <div id="divLeftPanelLoadProject">
-    @Html.Partial("LeftPanelProjectGridview", Model)
+    <div>
+        @Html.Action("LeftPanelProjectGridview", Model)
+    </div>
+
+    @Html.DevExpress().Button(
+    settings =>
+    {
+        settings.Name = "btnLeftPanelDeleteProjectName";
+        settings.Width = 25;
+        settings.Text = "Delete";
+        settings.ControlStyle.CssClass = "btnLeftPanelDeleteProjectName";
+        settings.ClientSideEvents.Click = "btnLeftPanelSaveProjectNameClick";
+    }
+    ).GetHtml()
+    @Html.DevExpress().Button(
+    settings =>
+    {
+        settings.Name = "btnLeftPanelLoadProjectName";
+        settings.Width = 25;
+        settings.Text = "Load";
+        settings.ControlStyle.CssClass = "btnLeftPanelLoadProjectName";
+        settings.ClientSideEvents.Click = "btnLeftPanelSaveProjectNameClick";
+    }
+    ).GetHtml()
 </div>

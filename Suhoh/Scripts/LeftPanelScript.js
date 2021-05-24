@@ -5,6 +5,10 @@
 
 var _activePanelSettings;
 
+function navBarMainChanged(s, e) {
+    var gExpand = s.groupsExpanding;
+}
+
 function radioActivePanelSettingsClicked(s, e) {
     SetAllPanelSettings(false);
     var panel = radioActivePanelSettings.GetValue();
@@ -149,13 +153,35 @@ function getDistinctValues(jsonData, column) {
     return result;
 }
 
+function getItemTextIndex(cb, item) {
+    for (var i = 0; i < cb.GetItemCount(); i++) {
+        if (cb.GetItem(i).text == item)
+            return i;
+    }
+    return null;
+}
+
+function replaceItemText(cb, from, to) {
+    var idx = getItemTextIndex(cbLeftPanelAttributeSearch2, from);
+    if (idx != null) {
+        cbLeftPanelAttributeSearch2.RemoveItem(idx);
+        cbLeftPanelAttributeSearch2.AddItem(to);
+    }
+}
+
 function cbLeftPanelAttributeSearch1Changed(s, e) {
     var column = cbLeftPanelAttributeSearch1.GetText();
+    var type = getColumnInfo(_columnNames, column).Type;
+    if (type == "Int64" || type == "Double")    // change Like dropdown2 to Between and vice versa
+        replaceItemText(cbLeftPanelAttributeSearch2, 'Like', 'Between');
+    else 
+        replaceItemText(cbLeftPanelAttributeSearch2, 'Between', 'Like');
+
     cbLeftPanelAttributeSearch3.ClearItems();
     var distinctValues = getDistinctValues(_jsonData, column);
     distinctValues.sort();
     distinctValues.forEach(function (v) {
-        cbLeftPanelAttributeSearch3.AddItem(v);
+        cbLeftPanelAttributeSearch3.AddItem(v.toString());
     });
     cbLeftPanelAttributeSearch3.SetSelectedIndex(0);
 }
@@ -182,6 +208,7 @@ function radioLeftPanelSaveLoadClick(s, e) {
     else {
         $("#divLeftPanelSaveProject").hide();
         $("#divLeftPanelLoadProject").show();
+        gvLeftPanelProject.Refresh();
     }
 }
 

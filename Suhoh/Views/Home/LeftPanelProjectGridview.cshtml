@@ -14,33 +14,34 @@
         //settings.ClientSideEvents.EndCallback = "dxGridview_OnEndCallback";
 
         settings.KeyFieldName = "ProjectName";   // TODO: need to have unique column here
-        settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
-        //settings.Width = 220;
+        settings.Width = System.Web.UI.WebControls.Unit.Percentage(95);
         settings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.ControlStyle.CssClass = "divLeftPanelLoadProject";
         settings.Styles.Header.Paddings.Padding = 3;
 
         // Columns
-        settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Disabled;
-        settings.SettingsResizing.Visualization = ResizingMode.Live;
+        //settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Disabled;
+        //settings.SettingsResizing.Visualization = ResizingMode.Live;
         settings.SettingsBehavior.AllowEllipsisInText = true;
 
 
         settings.Columns.Add(gvColumns1 =>
         {
             gvColumns1.FieldName = "ProjectName";
-            gvColumns1.Width = 120;
+            gvColumns1.Width = 160;
         });
         settings.Columns.Add(gvColumns2 =>
         {
             gvColumns2.FieldName = "CreationDate";
-            gvColumns2.Width = 120;
+            gvColumns2.Caption = "Date";
+            gvColumns2.Width = 80;
+            gvColumns2.PropertiesEdit.DisplayFormatString = "yyyy/MM/dd";
         });
 
         // Scrollbar
-        //settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
-        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
-        //settings.Settings.VerticalScrollableHeight = 100;
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        //settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.VerticalScrollableHeight = 90;
 
         // Focus row
         settings.SettingsBehavior.AllowFocusedRow = true;

@@ -33,6 +33,8 @@
     settings.SaveStateToCookies = false;
     settings.Width = Unit.Parse("100%");
 
+    settings.ClientSideEvents.ExpandedChanged = "navBarMainChanged";
+
     settings.Groups.Add(group =>
     {
         group.Name = "dataSource";
@@ -54,8 +56,8 @@
     });
     settings.Groups.Add(group =>
     {
-        group.Name = "layers";
-        group.Text = "Layers";
+        group.Name = "mapLayers";
+        group.Text = "Map Layers";
         group.SetContentTemplateContent(c =>
         {
             Html.RenderPartial("LeftPanelLayerList", Model);
