@@ -170,6 +170,7 @@
     <Content Include="Content\Images\Suhoh\Maximize.svg" />
     <Content Include="Content\Images\Suhoh\Minimize.svg" />
     <Content Include="Scripts\D3\bar.js" />
+    <Content Include="Scripts\D3\barStack.js" />
     <Content Include="Scripts\D3\main.js" />
     <Content Include="Scripts\D3\pie.js" />
     <Content Include="Scripts\D3_v650\d3.js" />

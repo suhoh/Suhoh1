@@ -57,6 +57,15 @@ function groupBy(array, groups, valueKey) {
     }, [])
 };
 
+function sumStr(str) {
+    let strArr = str.split(",");
+    let sum = strArr.reduce(function (total, num) {
+        return parseFloat(total) + parseFloat(num);
+    });
+
+    return sum;
+}
+
 function calculatePoint(i, intervalSize, colorRangeInfo) {
     var { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
     return (useEndAsStart
@@ -432,3 +441,4 @@ function btnBarMaximizeClick(s) {
 function btnBarCloseClick(s) {
 
 }
+
