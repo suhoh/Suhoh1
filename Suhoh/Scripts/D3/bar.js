@@ -14,6 +14,10 @@ function initBar(divName) {
         'textLabel': null, 'color': 1, 'isLabel': false,
         'isXValue': false, 'isYValue': false, 'color': '#FF6600', 'isVertical': 1
     })
+
+    //for (i = 0; i < _testStackBarData.length; i++) {
+    //    var a = _testStackBarData[i].Y.split(',');
+    //}
 }
 
 function getBar(divName) {
@@ -34,8 +38,8 @@ function getBarData(paneId, jsonData, xCol, yCol, color, isInitial) {
     //var min = Math.min(width, height);
 
     var bar = getBar(paneId);
-    bar.xCol = xCol;
-    bar.yCol = yCol;
+    bar.xCol = xCol;    // Applicant
+    bar.yCol = yCol;    // Elevation; Quantity_m3
     bar.color = color;
 
     var xyArray = [];
@@ -152,6 +156,7 @@ function drawBar(divName, data, width, height, barColor) {
     var barTooltipTriangle = d3.select("#" + divName).append("div").attr("class", "barTooltipTriangle").style("display", "none");
     var axisLabelTooltip = d3.select("#" + divName).append("div").attr("class", "axisLabelTooltip").style("display", "none");
     //var barTextLabel = d3.select("#" + divName).append("div").attr("class", "barTextLabel").style("display", "none");
+
     // bar
     if (bar.isVertical == 1) {
         svg.selectAll("bar")
@@ -161,10 +166,10 @@ function drawBar(divName, data, width, height, barColor) {
             .attr("class", "bar")
             .style("fill", barColor)
             .attr("x", function (d) { return x(d.X); })
-            .attr("y", function (d) { return y(d.Y); })
+            .attr("y", function (d) { return y(d.Y) - 5; })
             .attr("width", x.bandwidth())
             .attr("height", function (d) { return svgHeight - y(d.Y) - marginTop - marginBottom - 30; })
-            .attr("transform", "translate(" + (marginLeft + marginRight) + ", 30)")
+            .attr("transform", "translate(" + (marginLeft + marginRight) + ", 35)")
             .on("mouseenter", function (event, d) {
                 barTooltip
                     .transition()

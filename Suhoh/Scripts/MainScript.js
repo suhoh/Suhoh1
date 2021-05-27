@@ -179,9 +179,11 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         // Bars
         var barColNames = getBarColNames(data);
         _bars.forEach(function (b) {
-            var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, b.color,  true);
+            //var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, b.color,  true);
+            var barData = getBarData(b.divName, _testStackBarData, barColNames.xCol, barColNames.yCol, b.color, true);
             if (barData != null) {
-                var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.color);
+                //var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.color);
+                var barSvg = drawBar(b.divName, _testStackBarData, barData.width, barData.height, barData.color);
                 b.svg = barSvg;
             }
             document.getElementById(b.divName + "_Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
