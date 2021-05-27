@@ -11,6 +11,7 @@ namespace Suhoh.Model
     public class ViewModel
     {
         public const string _gridTable = "GRID";
+        public const string _projectTable = "Projects";
 
         // Application Config
         public AppConfig AppConfig { get; set; }
@@ -70,7 +71,7 @@ namespace Suhoh.Model
         // Left panel load project
         public int RadioLeftPanelSaveLoad { get; set; }
 
-        public List<Project> Projects;
+        public IEnumerable Projects;
         
 
         public ViewModel()
@@ -178,8 +179,11 @@ namespace Suhoh.Model
 
     public class Project
     {
+        public string Email { get; set; }
         public string ProjectName { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public string Flag { get; set; }
     }
 
     public class XY

@@ -29,6 +29,78 @@ namespace Suhoh.Model
             return lonLat;
         }
 
+        public static IEnumerable GetProjectList(AppConfig appConfig, string email)
+        {
+            string result = string.Empty;
+            string connString = GetConnectionString(appConfig);
+            DataSourceInfo dInfo = appConfig.DataSources.Where(g => g.Id.ToUpper().Equals(ViewModel._projectTable.ToUpper())).First();
+            string query = "select Email, Name, CreationDate, UpdatedDate from " + dInfo.Database + " where email = '" + email + "' and Flag = 'C' order by updatedDate";
+            DataTable dt = SelectFromTable("SelectProject", connString, query);
+            if (dt == null)
+                return null;
+            IEnumerable e = dt.AsEnumerable().Select(row => new Project
+            {
+                Email = row["Email"].ToString(),
+                ProjectName = row["Name"].ToString(),
+                CreationDate = Convert.ToDateTime(row["CreationDate"]),
+                UpdatedDate = Convert.ToDateTime(row["CreationDate"])
+            }).ToList();
+
+            return e;
+        }
+
+        public static string SaveProject(AppConfig appConfig, string email, string name)
+        {
+            string result = string.Empty;
+            string connString = GetConnectionString(appConfig);
+            DataSourceInfo dInfo = appConfig.DataSources.Where(g => g.Id.ToUpper().Equals(ViewModel._projectTable.ToUpper())).First();
+            string query = "insert into " + dInfo.Database + " values(" +
+                           "'" + email + "'," +
+                           "'" + name + "'," +
+                           "'" + DateTime.Now + "'," +  // created date
+                           "'" + DateTime.Now + "'," +   // updated date
+                           "'C')";           // create
+            result = RunNonSelectQuery(connString, query);
+            return result;
+        }
+
+        public static string DeleteProject(AppConfig appConfig, string email, string name)
+        {
+            string result = "Fail";
+            string connString = GetConnectionString(appConfig);
+            DataSourceInfo dInfo = appConfig.DataSources.Where(g => g.Id.ToUpper().Equals(ViewModel._projectTable.ToUpper())).First();
+            string query = "update " + dInfo.Database + " set Flag = 'D', UpdatedDate = '" + DateTime.Now + "' where Email = '" + email + "'" + " and Name = '" + name + "'";
+            result = RunNonSelectQuery(connString, query);
+            return result;
+        }
+
+        // update, insert or delete
+        public static string RunNonSelectQuery(string connString, string query)
+        {
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand sqlCommand = new SqlCommand();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
+            try
+            {
+                sqlConnection.Open();
+                sqlCommand = sqlConnection.CreateCommand();
+                sqlCommand.CommandText = query;
+                sqlCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                sqlConnection.Close();
+                return ex.Message;
+            }
+            finally
+            {
+                sqlCommand.Dispose();
+                if (sqlConnection.State != ConnectionState.Closed)
+                    sqlConnection.Close();
+            }
+            return "Success";
+        }
+
         // Using DataSet
         public static DataTable SelectFromTable(string sender, string connString, string query)
         {
@@ -65,6 +137,8 @@ namespace Suhoh.Model
                                ";Data Source=" + activeSchema.Name;
             return connString;
         }
+
+
 
         public static IEnumerable GetPaneType()
         {

@@ -8,10 +8,12 @@
 @Html.DevExpress().GridView(
     settings =>
     {
-        settings.Name = "gvLeftPanelProject";
+        settings.Name = "gvLeftPanelProjects";
         settings.CallbackRouteValues = new { Controller = "Home", Action = "LeftPanelProjectGridview" };
-        //settings.ClientSideEvents.BeginCallback = "dxGridview_OnBeginCallback";
-        //settings.ClientSideEvents.EndCallback = "dxGridview_OnEndCallback";
+        settings.ClientSideEvents.BeginCallback = "gvLeftPanelProjects_OnBeginCallback";
+        settings.ClientSideEvents.EndCallback = "gvLeftPanelProjects_OnEndCallback";
+        settings.ClientSideEvents.FocusedRowChanged = "gvLeftPanelProjectsFocusedRowChanged";
+        //settings.ClientSideEvents.SelectionChanged = "gvLeftPanelProjectsSelectionChanged";
 
         settings.KeyFieldName = "ProjectName";   // TODO: need to have unique column here
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(95);
@@ -41,7 +43,7 @@
         // Scrollbar
         settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
         //settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
-        settings.Settings.VerticalScrollableHeight = 90;
+        settings.Settings.VerticalScrollableHeight = 110;
 
         // Focus row
         settings.SettingsBehavior.AllowFocusedRow = true;
@@ -64,4 +66,4 @@
         //settings.SettingsPager.LastPageButton.Visible = true;
         //settings.SettingsPager.PageSizeItemSettings.Visible = true;
 
-    }).Bind(DataEngine.ProjectList()).GetHtml()
+    }).Bind(Model.Projects).GetHtml()

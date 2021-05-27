@@ -28,6 +28,7 @@ namespace Suhoh.Controllers
 
             // @"[{'name': 'Panel1', 'type': ['Map']}, {'name': 'Panel2', 'type': ['Pie']}, {'name': 'Panel3', 'type': ['Gridview']}]"
             model.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(model.MainPanelJson);
+            model.Projects = DataEngine.GetProjectList(_appConfig, "suhohconsultingltd@gmail.com");
 
             ViewData["RightPanelPartialCallback"] = false;  // test
             Session["viewModel"] = model;
@@ -106,6 +107,37 @@ namespace Suhoh.Controllers
             return Json(lonLat, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult GetProjectList(string email)
+        {
+            ViewModel vm = (ViewModel)Session["viewModel"];
+            AppConfig appConfig = (AppConfig)Session["appConfig"];            
+            vm.Projects = DataEngine.GetProjectList(appConfig, email);
+            Session["viewModel"] = vm;
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult SaveProject(string projectName)
+        {
+            string result = string.Empty;
+            AppConfig appConfig = (AppConfig)Session["appConfig"];
+            string email = "suhohconsultingltd@gmail.com";
+            result = DataEngine.SaveProject(appConfig, email, projectName);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        // Setting Flag to D in database
+        public ActionResult DeleteProject(string projectName)
+        {
+            string result = string.Empty;
+            AppConfig appConfig = (AppConfig)Session["appConfig"];
+            string email = "suhohconsultingltd@gmail.com";
+            result = DataEngine.DeleteProject(appConfig, email, projectName);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         public AppConfig ReadConfigXml(string folder, string filename)
         {
             AppConfig appConfig = new AppConfig();
@@ -118,5 +150,6 @@ namespace Suhoh.Controllers
 
             return appConfig;
         }
+
     }
 }

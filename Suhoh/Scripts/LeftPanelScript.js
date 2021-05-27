@@ -198,20 +198,122 @@ function btnLeftPanelAttributeSearchClick(s, e) {
 
 }
 
+//
+// Load My Project
+//
 function radioLeftPanelSaveLoadClick(s, e) {
     var radioSelected = radioLeftPanelSaveLoad.GetValue();
 
-    if (radioSelected == 1) {
+    if (radioSelected == 1) {   // Save
         $("#divLeftPanelSaveProject").show();
         $("#divLeftPanelLoadProject").hide();
     }
-    else {
+    else {                      // Load
         $("#divLeftPanelSaveProject").hide();
         $("#divLeftPanelLoadProject").show();
-        gvLeftPanelProject.Refresh();
+        gvLeftPanelProjects.Refresh();
     }
 }
 
+// Save project
 function btnLeftPanelSaveProjectNameClick(s, e) {
+    var pName = tbLeftPanelSaveProjectName.GetText();
+    if (pName.length == 0) {
+        alert("Enter project name.");
+        return;
+    }
 
+    var url = "Home/SaveProject"
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { 'projectName': pName },
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc
+    });
+
+    function successFunc(data, status) {
+        var email = "suhohconsultingltd@gmail.com";
+        getProjectList(email);
+
+        radioLeftPanelSaveLoad.SetValue(2); // Save
+        radioLeftPanelSaveLoadClick();
+        // Make last added project name focused.
+        gvLeftPanelProjects.MakeRowVisible(gvLeftPanelProjects.pageRowCount);
+        gvLeftPanelProjects.SetFocusedRowIndex(gvLeftPanelProjects.pageRowCount);   // doesn't work
+    }
+
+    function errorFunc(data, status) {
+
+    }
+}
+
+// Delete project
+function btnLeftPanelDeleteProjectNameClick(s, e) {
+    var projectName = gvLeftPanelProjects.GetRowKey(gvLeftPanelProjects.GetFocusedRowIndex());
+    if (projectName == undefined) {
+        alert("Select project to delete.");
+        return;
+    }
+
+    var url = "Home/DeleteProject"
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { 'projectName': projectName },
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc
+    });
+    function successFunc(data, status) {
+        var email = "suhohconsultingltd@gmail.com";
+        getProjectList(email);
+
+    }
+    function errorFunc(data, status) {
+    }
+}
+
+// Get project list
+function getProjectList(email) {
+    var email = "suhohconsultingltd@gmail.com";
+    var url = "Home/GetProjectList"
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { 'email': email },
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc
+    });
+    function successFunc(data, status) {
+        gvLeftPanelProjects.PerformCallback();
+    }
+
+    function errorFunc(data, status) {
+    }
+}
+
+// Load project
+function btnLeftPanelLoadProjectNameClick(s, e) {
+}
+
+// Gridview callback
+function gvLeftPanelProjectsFocusedRowChanged(s, e) {
+    var projectName = s.GetRowKey(s.GetFocusedRowIndex());
+}
+
+function gvLeftPanelProjectsSelectionChanged(s, e) {
+    s.GetSelectedFieldValues("ProjectName", function (values) {
+        var pName = values.join(',');
+    });
+}
+
+function gvLeftPanelProjects_OnBeginCallback(s, e) {
+
+}
+
+function gvLeftPanelProjects_OnEndCallback(s, e) {
+    //gvLeftPanelProjects.Refresh();
 }
