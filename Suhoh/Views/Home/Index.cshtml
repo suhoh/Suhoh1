@@ -1,4 +1,5 @@
 @using Suhoh.Model
+@using System.Drawing
 @model ViewModel
 
 @{
@@ -90,6 +91,60 @@
         settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('popupPanelProperty', '', true); $('#' + _activePropertyName).removeClass('btnPropertyBorder'); }";
     }).GetHtml()
 
+</div>
+
+<div>
+    @Html.DevExpress().PopupControl(
+    settings =>
+    {
+        settings.Name = "pcErrorModalDialog";
+        settings.Width = 260;
+        settings.MaxWidth = 350;
+        settings.AllowDragging = true;
+        settings.CloseAction = CloseAction.CloseButton;
+        settings.CloseOnEscape = true;
+        settings.PopupAnimationType = AnimationType.None;
+        settings.HeaderText = "Message";
+        settings.ControlStyle.CssClass = "popupMessage";
+        settings.Modal = true;
+        settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+        settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+
+        //settings.Styles.Header.BackColor = Color.FromArgb(0xFCFADD);
+
+        settings.SetContent(() =>
+        {
+            using (Html.BeginForm("ErrorModalView", "Home", FormMethod.Post, new { id = "errorForm", @class = "", @style = "width: auto" }))
+            {
+                ViewContext.Writer.Write("<div style='text-align:center'>");
+                Html.DevExpress().Label(
+                    labelSettings =>
+                    {
+                        labelSettings.Name = "errorLabel";
+                        labelSettings.ControlStyle.CssClass = "";
+                        labelSettings.Text = "A popup window's header is displayed at the top of a window and can consist of the Header Image";
+                        labelSettings.AssociatedControlName = "Total amount";
+                    }
+                )
+                .Render();
+
+                ViewContext.Writer.Write("<br/><br/>");
+
+                @Html.DevExpress().Button(btnSettings =>
+                {
+                    btnSettings.Name = "btnErrorOk";
+                    btnSettings.Width = 70;
+                    btnSettings.Height = 20;
+                    btnSettings.Text = "Ok";
+                    btnSettings.ClientSideEvents.Click = "function(s, e){ pcErrorModalDialog.Hide(); }"; ;
+                    btnSettings.UseSubmitBehavior = false;
+                }).GetHtml();
+                ViewContext.Writer.Write("</div>");
+            };
+        });
+
+        settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer('pcErrorModalDialog', '', true); }";
+    }).GetHtml()
 </div>
 
 <div>

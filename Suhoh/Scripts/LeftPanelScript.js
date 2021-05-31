@@ -4,6 +4,7 @@
 //
 
 var _activePanelSettings;
+var _testEmail = "suhohconsultingltd@gmail.com";
 
 function navBarMainChanged(s, e) {
     var gExpand = s.groupsExpanding;
@@ -211,19 +212,20 @@ function radioLeftPanelSaveLoadClick(s, e) {
     else {                      // Load
         $("#divLeftPanelSaveProject").hide();
         $("#divLeftPanelLoadProject").show();
-        gvLeftPanelProjects.Refresh();
+        if (!_isSaveProject)
+            gvLeftPanelProjects.Refresh();
     }
 }
 
 // Save project
+var _isSaveProject = false;
 function btnLeftPanelSaveProjectNameClick(s, e) {
     var pName = tbLeftPanelSaveProjectName.GetText();
     if (pName.length == 0) {
-        alert("Enter project name.");
+        showMessage("Enter project name and click 'Save'.", "Message");
         return;
     }
-
-    var url = "Home/SaveProject"
+    var url = "Home/GetProjectCount";
     $.ajax({
         type: "POST",
         url: url,
@@ -234,14 +236,33 @@ function btnLeftPanelSaveProjectNameClick(s, e) {
     });
 
     function successFunc(data, status) {
-        var email = "suhohconsultingltd@gmail.com";
-        getProjectList(email);
+        if (data > 0) {
+            showMessage("Project name already exist.", "Message");
+            return;
+        }
+        else {
+            url = "Home/SaveProject"
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { 'projectName': pName },
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
 
-        radioLeftPanelSaveLoad.SetValue(2); // Save
-        radioLeftPanelSaveLoadClick();
-        // Make last added project name focused.
-        gvLeftPanelProjects.MakeRowVisible(gvLeftPanelProjects.pageRowCount);
-        gvLeftPanelProjects.SetFocusedRowIndex(gvLeftPanelProjects.pageRowCount);   // doesn't work
+            function successFunc(data, status) {
+                _isSaveProject = true;
+                radioLeftPanelSaveLoad.SetValue(2); // switch to save GUI
+                radioLeftPanelSaveLoadClick();
+                refreshProjectList(_testEmail);
+            }
+
+            function errorFunc(data, status) {
+
+            }
+
+        }
     }
 
     function errorFunc(data, status) {
@@ -267,18 +288,18 @@ function btnLeftPanelDeleteProjectNameClick(s, e) {
         error: errorFunc
     });
     function successFunc(data, status) {
-        var email = "suhohconsultingltd@gmail.com";
-        getProjectList(email);
+        refreshProjectList(_testEmail);
 
     }
     function errorFunc(data, status) {
     }
 }
 
-// Get project list
-function getProjectList(email) {
-    var email = "suhohconsultingltd@gmail.com";
-    var url = "Home/GetProjectList"
+// Get project list from database
+// Stores list to ViewModel.Projects
+// Refreshes gridview
+function refreshProjectList(email) {
+    var url = "Home/RefreshProjectList"
     $.ajax({
         type: "POST",
         url: url,
@@ -299,7 +320,6 @@ function getProjectList(email) {
 function btnLeftPanelLoadProjectNameClick(s, e) {
 }
 
-// Gridview callback
 function gvLeftPanelProjectsFocusedRowChanged(s, e) {
     var projectName = s.GetRowKey(s.GetFocusedRowIndex());
 }
@@ -315,5 +335,11 @@ function gvLeftPanelProjects_OnBeginCallback(s, e) {
 }
 
 function gvLeftPanelProjects_OnEndCallback(s, e) {
-    //gvLeftPanelProjects.Refresh();
+    if (_isSaveProject) {
+        _isSaveProject = false;
+        // Make last added project name focused.
+        gvLeftPanelProjects.MakeRowVisible(gvLeftPanelProjects.pageRowCount - 1);
+        gvLeftPanelProjects.SetFocusedRowIndex(gvLeftPanelProjects.pageRowCount - 1);
+    }
+
 }

@@ -477,3 +477,7 @@ a.tree-view-node.hovered
     border: none;
 }
 
+.popupMessage {
+    color: red !important;  /*doesn't work*/
+    font-weight: bold !important;
+}

@@ -7,7 +7,7 @@ var _gridviews = [];
 var _activeGridview;
 
 function initGridview(name) {
-    _gridviews.push({ 'name': name, 'pageSize': _pageSize });  // DevExpress control name
+    _gridviews.push({ 'name': name, 'isHeaderFilter': false, 'isGrouping': false, 'pageSize': _pageSize });  // DevExpress control name
 }
 
 function getGridview(divName) {
@@ -41,3 +41,16 @@ function btnGridviewLegendClick(s) {
 function btnGridviewCloseClick(s) {
 
 }
+
+function chkHeaderFilterChecked(s, e) {
+    var pId = s.name.split('_')[0];
+    var gv = getGridview(pId);
+    gv.isHeaderFilter = s.GetChecked();
+}
+
+function chkGroupingChecked(s, e) {
+    var pId = s.name.split('_')[0];
+    var gv = getGridview(pId);
+    gv.isGrouping = s.GetChecked();
+}
+

@@ -13,6 +13,12 @@ window.addEventListener('resize', function (event) {
     console.log("window - innerWidth " + window.innerWidth + ", window - innerHeight " + window.innerHeight);
 })
 
+function showMessage(msg, level) {
+    errorLabel.SetText(msg);
+    pcErrorModalDialog.SetHeaderText(level);
+    pcErrorModalDialog.Show();
+}
+
 function clearAllPanels() {
     // clear array
     _maps = [];

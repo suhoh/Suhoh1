@@ -29,7 +29,7 @@ namespace Suhoh.Model
             return lonLat;
         }
 
-        public static IEnumerable GetProjectList(AppConfig appConfig, string email)
+        public static IEnumerable RefreshProjectList(AppConfig appConfig, string email)
         {
             string result = string.Empty;
             string connString = GetConnectionString(appConfig);
@@ -47,6 +47,16 @@ namespace Suhoh.Model
             }).ToList();
 
             return e;
+        }
+
+        public static int GetProjectCount(AppConfig appConfig, string email, string name)
+        {
+            string connString = GetConnectionString(appConfig);
+            DataSourceInfo dInfo = appConfig.DataSources.Where(g => g.Id.ToUpper().Equals(ViewModel._projectTable.ToUpper())).First();
+            string query = "select count(*) count from " + dInfo.Database + " where email = '" + email + "' and name = '" + name + "' and Flag = 'C'";
+            DataTable dt = SelectFromTable("GetProjectCount", connString, query);
+            int count = Convert.ToInt16(dt.Rows[0][0]);
+            return count;
         }
 
         public static string SaveProject(AppConfig appConfig, string email, string name)

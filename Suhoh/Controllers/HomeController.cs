@@ -28,7 +28,7 @@ namespace Suhoh.Controllers
 
             // @"[{'name': 'Panel1', 'type': ['Map']}, {'name': 'Panel2', 'type': ['Pie']}, {'name': 'Panel3', 'type': ['Gridview']}]"
             model.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(model.MainPanelJson);
-            model.Projects = DataEngine.GetProjectList(_appConfig, "suhohconsultingltd@gmail.com");
+            model.Projects = DataEngine.RefreshProjectList(_appConfig, "suhohconsultingltd@gmail.com");
 
             ViewData["RightPanelPartialCallback"] = false;  // test
             Session["viewModel"] = model;
@@ -108,13 +108,24 @@ namespace Suhoh.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetProjectList(string email)
+        public ActionResult RefreshProjectList(string email)
         {
             ViewModel vm = (ViewModel)Session["viewModel"];
             AppConfig appConfig = (AppConfig)Session["appConfig"];            
-            vm.Projects = DataEngine.GetProjectList(appConfig, email);
+            vm.Projects = DataEngine.RefreshProjectList(appConfig, email);
             Session["viewModel"] = vm;
             return Json("Success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult GetProjectCount(string projectName)
+        {
+            int count = 0;
+            AppConfig appConfig = (AppConfig)Session["appConfig"];
+
+            string email = "suhohconsultingltd@gmail.com";
+            count = DataEngine.GetProjectCount(appConfig, email, projectName);
+            return Json(count, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -122,6 +133,7 @@ namespace Suhoh.Controllers
         {
             string result = string.Empty;
             AppConfig appConfig = (AppConfig)Session["appConfig"];
+
             string email = "suhohconsultingltd@gmail.com";
             result = DataEngine.SaveProject(appConfig, email, projectName);
             return Json(result, JsonRequestBehavior.AllowGet);

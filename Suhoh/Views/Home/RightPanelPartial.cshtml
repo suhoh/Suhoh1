@@ -113,8 +113,29 @@
             Html.RenderPartial("OLMap", Model);
         else if (type.ToUpper().Contains("GRIDVIEW"))
         {
+            // Toolbar buttons - Maximize, property, legend...
             ViewContext.Writer.Write("<div id='@Model.CreatePanelName' style='position:relative;'>");
             ViewContext.Writer.Write("<div class='divGridviewTitle' id='" + (String.Format("{0}_Title", Model.CreatePanelName)) + "' ><span style='font-size: large;'>GRID</span></div>");
+
+            // Header filter, Grouping checkbox
+            ViewContext.Writer.Write("<div id='" + (String.Format("{0}_HeaderFilter", Model.CreatePanelName)) + "' ><span style='text-align:right;'>");
+                Html.DevExpress().CheckBox(cbsettings =>
+                {
+                    cbsettings.Name = String.Format("{0}_HeaderFilter", Model.CreatePanelName);
+                    cbsettings.Text = "Header Filter";
+                    cbsettings.ControlStyle.CssClass = "divGridviewHeaderFilter";
+                    cbsettings.Properties.ClientSideEvents.CheckedChanged = "chkHeaderFilterChecked";
+                }).GetHtml();
+                Html.DevExpress().CheckBox(cbsettings =>
+                {
+                    cbsettings.Name = String.Format("{0}_Grouping", Model.CreatePanelName);
+                    cbsettings.Text = "Grouping";
+                    cbsettings.ControlStyle.CssClass = "divGridviewGrouping";
+                    cbsettings.Properties.ClientSideEvents.CheckedChanged = "chkGroupingChecked";
+                }).GetHtml();
+            ViewContext.Writer.Write("</span></div>");
+
+
             ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Maximize", Model.CreatePanelName)) + "' type='button' class='btnGridviewMaximize' title='Maximize' " +
                 "onclick='btnGridviewMaximize(this)'></button>");
@@ -131,7 +152,7 @@
             ViewContext.Writer.Write("</div>");
 
             ViewContext.Writer.Write("<div class='divGridviewSetting'>");
-            ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Close", Model.CreatePanelName)) + "' type='button' class='btnGridviewClose' title='Close' " + 
+            ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Close", Model.CreatePanelName)) + "' type='button' class='btnGridviewClose' title='Close' " +
                 "onclick='btnGridviewClose(this)'></button>");
             ViewContext.Writer.Write("</div>");
 
