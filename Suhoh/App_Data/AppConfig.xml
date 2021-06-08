@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <AppConfig>
-  <ActiveDatabase>Desktop</ActiveDatabase>
+  <ActiveDatabase>Andy</ActiveDatabase>
   <SchemaNames>
     <SchemaName id="Desktop" username="jysuh" password="Jysuh@1013" name="DESKTOP-88TITA4\sqlexpress"></SchemaName>
     <SchemaName id="Desktop_Acer" username="jysuh" password="Jysuh@1013" name="DESKTOP-MEBB49J\sqlexpress"></SchemaName>
     <SchemaName id="MyLaptop" username="jysuh" password="Jysuh@1013" name="DESKTOP-1IHJST4\sqlexpress"></SchemaName>
+    <SchemaName id="Andy" username="suhoh" password="Suhoh@2021" name="ANDY\sqlexpress"></SchemaName>
   </SchemaNames>
   <!--Data Sources-->
   <DataSources>

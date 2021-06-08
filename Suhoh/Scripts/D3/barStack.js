@@ -100,11 +100,11 @@ function drawBar(divName, data, width, height, barColor) {
         y = d3.scaleBand().rangeRound([svgHeight - marginTop - marginBottom - 30, 0]);
     }
 
-    //var yArray = [];
-    //for (i = 0; i < data.length; i++) {
-    //    yArray.push(sumStr(data[i].Y));
-    //}
-    //var yMax = Math.max(...yArray);
+    var yArray = [];
+    for (i = 0; i < data.length; i++) {
+        yArray.push(sumStr(data[i].Y1 + ',' + data[i].Y2 + ',' + data[i].Y3));
+    }
+    var yMax = Math.max(...yArray);
 
     var subGroup = data.slice(1);
     //console.log(subGroup);
@@ -117,7 +117,7 @@ function drawBar(divName, data, width, height, barColor) {
     if (bar.isVertical == 1) {
         x.domain(data.map(function (d) { return d.X; }));
         //y.domain([0, d3.max(data, function (d) { return d.Y; })]);
-        y.domain([0, 60]);
+        y.domain([0, yMax]);
     }
     else {
         x.domain([0, d3.max(data, function (d) { return d.Y; })]);
@@ -173,14 +173,6 @@ function drawBar(divName, data, width, height, barColor) {
         .domain(_testStackBarDataColumns)
         .range(['#e41a1c', '#377eb8', '#4daf4a'])
 
-    //var mouseover = function (d) {
-    //    var subgroupName = d3.select(this.parentNode).datum().key;
-    //    var subgroupValue = d.data[subgroupName];
-    //    tooltip
-    //        .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
-    //        .style("opacity", 1)
-    //}
-
     var barTooltip = d3.select("#" + divName).append("div").attr("class", "barTooltip").style("display", "none");
     var barTooltipTriangle = d3.select("#" + divName).append("div").attr("class", "barTooltipTriangle").style("display", "none");
     var axisLabelTooltip = d3.select("#" + divName).append("div").attr("class", "axisLabelTooltip").style("display", "none");
@@ -202,22 +194,79 @@ function drawBar(divName, data, width, height, barColor) {
             .attr("height", function (d) { return y(d[0]) - y(d[1]); })
             .attr("width", x.bandwidth())
             .attr("transform", "translate(" + (marginLeft + marginRight) + ", 30)")
-            .on('mouseover', function (d, i) {
+            .on('mouseenter', function (event, d) {
                 var subgroupName = d3.select(this.parentNode).datum().key;
-                var subgroupValue = i.data[subgroupName];
+                var subgroupValue = d.data[subgroupName];
                 barTooltip
                     .transition()
                     .duration(200)
-                    .style("left", marginLeft + marginRight + "px")
-                    .style("top", 100 + "px");
+                    .style("left", marginLeft + marginRight + x(d.data.X) + (x.bandwidth() / 2) - 58 + "px") // 58: (box size / 2) + padding
+                    .style("top", y(d[1]) + "px");
 
                 barTooltip
                     .style("display", "inline-block")
                     .style("position", "absolute")
                     .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
                     .style("opacity", 1)
+            })
+            .on("mouseleave", function (d) {
+                barTooltip.style("display", "none");
+            });
+
+        d3.select("#" + divName)
+            .selectAll(".x .tick")
+            .data(data)
+            .on("mouseover", function (event, d) {
+                axisLabelTooltip
+                    .style("display", "inline-block")
+                    .style("position", "absolute")
+                    .style("height", 12 + "px")
+                    .html(d.X)
+                    .style("left", event.offsetX + "px")
+                    .style("top", event.offsetY - 25 + "px");
+            })
+            .on("mouseleave", function (d) {
+                axisLabelTooltip.style("display", "none");
             });
     }
+
+    var legend = svg.selectAll("legend")
+        .data(stackedData)
+        .enter()
+        .append("g")
+        .attr("class", "barLegend")
+        .attr("id", function (d, idx) { return bar.divName + "barLegend" + idx });
+
+    if (width > 400 && bar.isLegend == true) {
+        legend.append("rect")
+            .attr("width", 7)
+            .attr("height", 7)
+            .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (10 + (idx * 15)) + ")"; })
+            .attr("fill", function (d) { return color(d.key) });
+
+        legend.append("text")
+            .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (13 + (idx * 15)) + ")"; })
+            .attr("dy", ".35em")
+            .style("text-anchor", "start")
+            .style("font-size", "8px")
+            .text(function (d) {
+                return d.key;
+            })
+    }
+
+    var g = svg.append("g")
+
+    //bar.textLabel = g.selectAll("text")
+    //    .data(data)
+    //    .enter()
+    //    .append('text')
+    //    .attr("transform", "translate(" + (marginLeft + marginRight) + "," + (height / 2) + ")")
+    //    .attr("x", function (d) { return x(d.X) + x.bandwidth() / 2 })
+    //    .attr("y", function (d) { return (y(d.Y) / 2) - 25 })
+    //    .style("text-anchor", "middle")
+    //    .style("font-size", "12px")
+    //    .attr("display", "none");
+
     //if (bar.isVertical == 1) {
     //    svg.selectAll("bar")
     //        .data(data)
