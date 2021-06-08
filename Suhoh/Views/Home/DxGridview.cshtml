@@ -13,7 +13,8 @@
     settings =>
     {
         settings.Name = Model.CreatePanelName;  // "dxGridview";
-        settings.CallbackRouteValues = new { Controller = "Home", Action = "DxGridview" };
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "DxGridview", EnableCheckedListMode = true };
+        settings.ClientSideEvents.Init = "dxGridview_Init";
         settings.ClientSideEvents.BeginCallback = "dxGridview_OnBeginCallback";
         settings.ClientSideEvents.EndCallback = "dxGridview_OnEndCallback";
 
@@ -51,6 +52,17 @@
         settings.CommandColumn.ShowClearFilterButton = true;
         settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.Page;
 
+        // Header filter
+        settings.Settings.ShowHeaderFilterButton = Model.IsHeaderFilter;
+        settings.SettingsPopup.HeaderFilter.Height = 200;
+        settings.SettingsPopup.HeaderFilter.SettingsAdaptivity.MinHeight = 300;
+        foreach (GridViewDataColumn column in settings.Columns)
+            column.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
+
+        // Grouping
+        settings.Settings.ShowGroupPanel = Model.IsGrouping;
+        settings.SettingsBehavior.AllowGroup = true;
+
         // Scrollbar
         //settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
         settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
@@ -75,10 +87,13 @@
         settings.SettingsPager.FirstPageButton.Visible = true;
         settings.SettingsPager.LastPageButton.Visible = true;
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
+        settings.SettingsPager.EnableAdaptivity = true;
 
     }).Bind(Model.DxGridview).GetHtml()
 
-<script>
+@*-- Header filter and grouping doesn't work
+-- Had to move initGridview call to MainScript.js and LeftPanelScript where it initiates grdiview*@
+@*<script>
     var gridview = @Model.CreatePanelName;
     var name;
     if (gridview.name != undefined)
@@ -87,4 +102,4 @@
         name = gridview.id;     // ajax
     console.log('gridview name:' + gridview.name + ", " + gridview.id);
     initGridview(name);    
-</script>
+</script>*@

@@ -3,6 +3,7 @@
 // Main script 
 //
 
+var _initialLoad = true;    // initGridview is being called
 var _jsonData;              // loaded data in JSON
 var _jsonDataGridview       // stringify data for only Gridview
 var _columnNames;           // loaded column names    
@@ -79,7 +80,7 @@ function updateGridviews(gridviews) {
         return;
     _gridviews.forEach(function (g) {
         var gv = eval(g.name);
-        gv.PerformCallback({ 'name': g.name });
+        gv.PerformCallback();
         document.getElementById(g.name + "_Title").innerHTML = _filename;
     })
 }
@@ -307,6 +308,9 @@ function btnAddNewPaneClick(s, e) {
         data: { 'sender': sender, 'paneDir': paneDir, 'paneType': paneType, 'jsonPanels': null },
         success: function (data) {
             $('#divRightPanelPartial').html(data);
+
+            //$('#divRightPanelPartial').empty().append.html(data); // another way
+
             //splitterMainResized();
             //$('#divRightPanelPartial').addClass('rightPanelPartial');
             //$("#divRightPanelPartial").load('Home');
@@ -474,7 +478,6 @@ function renderMapProperty(id) {
 function renderGridviewProperty(id) {
     var gv = getGridview(id);
     _activeGridview = gv;
-    cbGridviewPageSize.SetValue(gv.pageSize);
 
     popupPanelProperty.SetHeaderText("Grid Property");
 }

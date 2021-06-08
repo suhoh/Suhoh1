@@ -43,13 +43,13 @@ namespace Suhoh.Controllers
             return PartialView("CallbackPopupPanelProperty", viewModel);
         }
 
-        public ActionResult DxGridview(ViewModel vm, string name)
+        public ActionResult DxGridview(ViewModel vm)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
-            if (string.IsNullOrEmpty(name))
-                viewModel.CreatePanelName = Request.Params["dxGridview_sender"];    // called from gridview
-            else
-                viewModel.CreatePanelName = name;                                   // called from PerformCallback
+            viewModel.CreatePanelName = Request.Params["dxGridview_sender"];
+            viewModel.IsHeaderFilter = Convert.ToBoolean(Request.Params["dxGridview_HeaderFilter"]);
+            viewModel.IsGrouping = Convert.ToBoolean(Request.Params["dxGridview_Grouping"]);
+
             Session["viewModel"] = viewModel;
             return PartialView("DxGridview", viewModel);
         }
@@ -57,6 +57,8 @@ namespace Suhoh.Controllers
         public ActionResult LeftPanelProjectGridview(ViewModel vm)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
+
+            viewModel.IsGrouping = Convert.ToBoolean(Request.Params["dxGridview_Grouping"]);
 
             Session["viewModel"] = viewModel;
             return PartialView("LeftPanelProjectGridview", viewModel);
@@ -73,7 +75,6 @@ namespace Suhoh.Controllers
             var p = Request.Params["OnBeginCallback"];  // test - send from DevExpress PerformCallback
 
             ViewBag.IsChangePanels = true;
-            jsonPanels = jsonPanels.Replace("\"", null);    // remove double quot
             vm.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(jsonPanels);
             vm.ActivePanelSettings = vm.MainPanels.Count;
 
@@ -88,6 +89,7 @@ namespace Suhoh.Controllers
             json = json.Replace("\"\"", "null");    // change 2 double quotes to null due to Json error
             vm.DxGridview = (DataTable)JsonConvert.DeserializeObject(json, (typeof(DataTable)),
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore });
+            vm.DxGridview.TableName = "JsonTable";
 
             // Column name/type
             vm.ColumnInfos.Clear();

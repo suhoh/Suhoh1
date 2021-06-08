@@ -54,35 +54,46 @@ function btnChangeLayoutClicked(s, e) {
     var panels = [];
     if (nPanel == 1) {
         var type = cb1PanelType.GetText();
-        panels.push("{'name':'Panel1', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel1', 'type': [type + '1'] });
     }
     if (nPanel == 2) {
         var type = cb2_1PanelType.GetText();
-        panels.push("{'name':'Panel1', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel1', 'type': [type + '1'] });
         type = cb2_2PanelType.GetText();
-        panels.push("{'name':'Panel2', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel2', 'type': [type + '1'] });
     }
     if (nPanel == 3) {
         var type = cb3_1PanelType.GetText();
-        panels.push("{'name':'Panel1', 'type':['" + type + "1']}");
+        panels.push({'name':'Panel1', 'type':[type + '1']});
         type = cb3_2PanelType.GetText();
-        panels.push("{'name':'Panel2', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel2', 'type': [type + '1'] });
         type = cb3_3PanelType.GetText();
-        panels.push("{'name':'Panel3', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel3', 'type': [type + '1'] });
     }
     if (nPanel == 4) {
         var type = cb4_1PanelType.GetText();
-        panels.push("{'name':'Panel1', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel1', 'type': [type + '1'] });
         type = cb4_2PanelType.GetText();
-        panels.push("{'name':'Panel2', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel2', 'type': [type + '1'] });
         type = cb4_3PanelType.GetText();
-        panels.push("{'name':'Panel3', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel3', 'type': [type + '1'] });
         type = cb4_4PanelType.GetText();
-        panels.push("{'name':'Panel4', 'type':['" + type + "1']}");
+        panels.push({ 'name': 'Panel4', 'type': [type + '1'] });
     }
 
     clearAllPanels();   // clears arrays
 
+    // Push gridview panel info
+    panels.forEach(function (p) {
+        p.type.forEach(function (t) {
+            if (t.toUpperCase().indexOf('GRIDVIEW') > -1)
+                initGridview(p.name + t);   // Moved out of DxGridview.cshtml under <Script> section due to callback issue
+            // When callback, DxGridview gets refresh and no code should be included
+        })
+        console.log(p);
+    });
+
+    // Could use PerformCallback
     var url = "Home/RightPanelPartial";
     $.ajax({
         type: "POST",
@@ -91,6 +102,7 @@ function btnChangeLayoutClicked(s, e) {
         data: { 'sender': 'leftPanel', 'paneDir': -1, 'paneType': -1, 'jsonPanels': JSON.stringify(panels) },
         success: function (data) {
             $('#divRightPanelPartial').html(data);
+
             //splitterMainResized();
             //$('#divRightPanelPartial').addClass('rightPanelPartial');
             //$("#divRightPanelPartial").load('Home');
@@ -316,8 +328,12 @@ function refreshProjectList(email) {
     }
 }
 
+var _test9 = false;
+
 // Load project
 function btnLeftPanelLoadProjectNameClick(s, e) {
+    _test9 = !_test9;
+    gvLeftPanelProjects.PerformCallback();
 }
 
 function gvLeftPanelProjectsFocusedRowChanged(s, e) {
@@ -331,7 +347,7 @@ function gvLeftPanelProjectsSelectionChanged(s, e) {
 }
 
 function gvLeftPanelProjects_OnBeginCallback(s, e) {
-
+    e.customArgs["dxGridview_Grouping"] = _test9;
 }
 
 function gvLeftPanelProjects_OnEndCallback(s, e) {
@@ -341,5 +357,4 @@ function gvLeftPanelProjects_OnEndCallback(s, e) {
         gvLeftPanelProjects.MakeRowVisible(gvLeftPanelProjects.pageRowCount - 1);
         gvLeftPanelProjects.SetFocusedRowIndex(gvLeftPanelProjects.pageRowCount - 1);
     }
-
 }

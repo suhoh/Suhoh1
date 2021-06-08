@@ -40,6 +40,11 @@
             gvColumns2.PropertiesEdit.DisplayFormatString = "yyyy/MM/dd";
         });
 
+        // Grouping
+        settings.Settings.ShowGroupPanel = Model.IsGrouping;
+        settings.SettingsBehavior.AllowGroup = true;
+        settings.SettingsBehavior.AllowSort = true;
+
         // Scrollbar
         settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
         //settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
@@ -67,3 +72,4 @@
         //settings.SettingsPager.PageSizeItemSettings.Visible = true;
 
     }).Bind(Model.Projects).GetHtml()
+

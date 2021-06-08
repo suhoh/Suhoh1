@@ -35,7 +35,8 @@ namespace Suhoh.Model
             string connString = GetConnectionString(appConfig);
             DataSourceInfo dInfo = appConfig.DataSources.Where(g => g.Id.ToUpper().Equals(ViewModel._projectTable.ToUpper())).First();
             string query = "select Email, Name, CreationDate, UpdatedDate from " + dInfo.Database + " where email = '" + email + "' and Flag = 'C' order by updatedDate";
-            DataTable dt = SelectFromTable("SelectProject", connString, query);
+            //DataTable dt = SelectFromTable("SelectProject", connString, query);
+            DataTable dt = SelectFromTable2(connString, query);
             if (dt == null)
                 return null;
             IEnumerable e = dt.AsEnumerable().Select(row => new Project
@@ -139,6 +140,30 @@ namespace Suhoh.Model
             return dTable;
         }
 
+        // Using DataTable
+        public static DataTable SelectFromTable2(string connString, string query, string tableName = null)
+        {
+            DataTable dTable = null;
+            SqlConnection c = null;
+            try
+            {
+                c = new SqlConnection(connString);
+                c.Open();
+                SqlCommand cmd = c.CreateCommand();
+                cmd.CommandText = query;
+                SqlDataAdapter a = new SqlDataAdapter(cmd);
+                dTable = new DataTable(tableName);
+                a.Fill(dTable);
+                c.Close();
+            }
+            catch (Exception ex)
+            {
+                c.Close();
+                throw new Exception("---" + query + "\n" + ex.Message);
+            }
+            return dTable;
+        }
+
         public static string GetConnectionString(AppConfig appConfig)
         {
             var activeSchema = appConfig.Schemas.Where(p => p.Id.Equals(appConfig.ActiveDatabase)).First();
@@ -152,13 +177,13 @@ namespace Suhoh.Model
 
         public static IEnumerable GetPaneType()
         {
-            List<string> dropdownList = new List<string>();
-            dropdownList.Add("Pie");
-            dropdownList.Add("Bar");
-            dropdownList.Add("Line");
-            dropdownList.Add("Scatter");
-            dropdownList.Add("Map");
-            dropdownList.Add("Gridview");
+            List<PaneType> dropdownList = new List<PaneType>();
+            dropdownList.Add(PaneType.Pie);
+            dropdownList.Add(PaneType.Bar);
+            dropdownList.Add(PaneType.Line);
+            dropdownList.Add(PaneType.Scatter);
+            dropdownList.Add(PaneType.Map);
+            dropdownList.Add(PaneType.Gridview);
             return dropdownList;
         }
         public static IEnumerable GetXColumn()

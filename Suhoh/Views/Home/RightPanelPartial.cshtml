@@ -119,20 +119,20 @@
 
             // Header filter, Grouping checkbox
             ViewContext.Writer.Write("<div id='" + (String.Format("{0}_HeaderFilter", Model.CreatePanelName)) + "' ><span style='text-align:right;'>");
-                Html.DevExpress().CheckBox(cbsettings =>
-                {
-                    cbsettings.Name = String.Format("{0}_HeaderFilter", Model.CreatePanelName);
-                    cbsettings.Text = "Header Filter";
-                    cbsettings.ControlStyle.CssClass = "divGridviewHeaderFilter";
-                    cbsettings.Properties.ClientSideEvents.CheckedChanged = "chkHeaderFilterChecked";
-                }).GetHtml();
-                Html.DevExpress().CheckBox(cbsettings =>
-                {
-                    cbsettings.Name = String.Format("{0}_Grouping", Model.CreatePanelName);
-                    cbsettings.Text = "Grouping";
-                    cbsettings.ControlStyle.CssClass = "divGridviewGrouping";
-                    cbsettings.Properties.ClientSideEvents.CheckedChanged = "chkGroupingChecked";
-                }).GetHtml();
+            Html.DevExpress().CheckBox(cbsettings =>
+            {
+                cbsettings.Name = String.Format("{0}_HeaderFilter", Model.CreatePanelName);
+                cbsettings.Text = "Header Filter";
+                cbsettings.ControlStyle.CssClass = "divGridviewHeaderFilter";
+                cbsettings.Properties.ClientSideEvents.CheckedChanged = "chkHeaderFilterGroupingChecked";
+            }).GetHtml();
+            Html.DevExpress().CheckBox(cbsettings =>
+            {
+                cbsettings.Name = String.Format("{0}_Grouping", Model.CreatePanelName);
+                cbsettings.Text = "Grouping";
+                cbsettings.ControlStyle.CssClass = "divGridviewGrouping";
+                cbsettings.Properties.ClientSideEvents.CheckedChanged = "chkHeaderFilterGroupingChecked";
+            }).GetHtml();
             ViewContext.Writer.Write("</span></div>");
 
 
@@ -164,3 +164,7 @@
         //ViewContext.Writer.Write("<h1>" + paneName + "</h1>");
     }
 }
+
+<script>
+
+</script>

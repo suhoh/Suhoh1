@@ -21,6 +21,8 @@ namespace Suhoh.Model
         public int MainPanelCount { get; set; }         // initial number of panels to start with
         public string MainPanelJson { get; set; }
         public string CreatePanelName { get; set; }     // used when creating panel - Panel1Map1, Panel1Pie1...
+        public bool IsHeaderFilter { get; set; }
+        public bool IsGrouping { get; set; }
         public List<Panel> MainPanels { get; set; }
         public string ActiveProperty { get; set; }      // active property clicked from panel
 
@@ -101,6 +103,7 @@ namespace Suhoh.Model
             // Gridview
             GridviewTitle = "Grid Title";
             GridviewPageSize = "50";
+            IsHeaderFilter = IsGrouping = false;
 
             AddPaneDirection = 1;
             AddPaneType = 1;
@@ -206,8 +209,11 @@ namespace Suhoh.Model
 
     public enum PaneType
     {
-        Map = 1,
-        Graph = 2,
-        Gridview = 3
+        Pie,
+        Bar,
+        Line,
+        Scatter,
+        Map,
+        Gridview
     }
 }
