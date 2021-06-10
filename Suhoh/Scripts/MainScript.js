@@ -66,7 +66,7 @@ function updateBars(bars) {
     bars.forEach(function (b) {
         var barData = getBarData(b.divName, b.data, b.xCol, b.yCol, b.color, false);     // used to be PaneId
         if (barData != null) {
-            var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.color);
+            var barSvg = drawBar(b.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
             b.svg = barSvg;
         }
         _activeBar = b;
@@ -186,13 +186,11 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         // Bars
         var barColNames = getBarColNames(data);
         _bars.forEach(function (b) {
-            //var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, b.color,  true);
-            //var barData = getBarData(b.divName, _testStackBarData, barColNames.xCol, barColNames.yCol, b.color, true);
-            var barData = getBarData_new(b.divName, jsonData, barColNames.xCol, "Quantity_m3;Longitude;Latitude", b.color, true);
-
+            //var barData = getBarData(b.divName, jsonData, barColNames.xCol, 'Consumptive Use_M3;Quantity_m3', b.color, true);
+            var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, b.color, true);
             if (barData != null) {
-                //var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.color);
-                var barSvg = drawBar(b.divName, _testStackBarData, barData.width, barData.height, barData.color);
+                var barSvg = drawBar(b.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
+                //var barSvg = drawBar(b.divName, _testStackBarData, _testStackBarDataColumns, barData.width, barData.height, barData.color);
                 b.svg = barSvg;
             }
             document.getElementById(b.divName + "_Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
@@ -415,7 +413,6 @@ function renderBarProperty(id) {
     
     cbBarXColumn.SetValue(bar.xCol);
     //lbBarYColumn.SetValue(bar.yCol);
-    var items = bar.yCol.split(';');
     for (var i = 0; i < lbBarYColumn.GetItemCount(); i++) {
         var item = lbBarYColumn.GetItem(i);
         if (bar.yCol.indexOf(item.value) > -1) {

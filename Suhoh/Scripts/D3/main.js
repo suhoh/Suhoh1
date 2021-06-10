@@ -58,7 +58,7 @@ function groupBy(array, groups, valueKey) {
 };
 
 function sumStr(str) {
-    let strArr = str.split(",");
+    let strArr = str.toString().split(",");
     let sum = strArr.reduce(function (total, num) {
         return parseFloat(total) + parseFloat(num);
     });
@@ -271,12 +271,12 @@ function chkBarLabelClicked(s, e, id) {
     if (isXValueLabel && !isYValueLabel) {
         bar.textLabel
             .text(function (d) {
-                return (d.X);
+                return (d.key);
             })
             .attr("display", "block");
-        //barTextLabel
-        //    .html(d.X)
-        //    .style("display", "block");
+        var text_element = bar.svg.select(".barTextLabel");
+        var textWidth = text_element.node().getComputedTextLength();
+        alert(textWidth);
     }
     else if (!isXValueLabel && isYValueLabel) {
         bar.textLabel
@@ -284,6 +284,7 @@ function chkBarLabelClicked(s, e, id) {
                 return (d.Y);
             })
             .attr("display", "block");
+        
     }
     else if (isXValueLabel && isYValueLabel) {
         bar.textLabel
@@ -362,8 +363,8 @@ function cbBarXYColumnChanged(s, e) {
     bar.yCol = getSelectedItemsText(selectedItems);
     bar.color = ceBarColorPicker.GetText();
 
-    var barData = getBarData_new(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
-    drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
+    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
+    drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
 
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
     document.getElementById(bar.divName + "_Title").innerHTML = bar.xCol + " vs " + bar.yCol;
@@ -445,7 +446,7 @@ function showHideLegend(s) {
             for (i = 0; i < barData.barData.length; i++) {
                 $('#' + bar.divName + 'barLegend' + i).hide(500);
             }
-        drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
+        drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
         chkBarLabelClicked(null, null, id);
     }
     
@@ -456,7 +457,7 @@ function radioOrientationBarClicked(s, e) {
     bar.isVertical = radioOrientationBar.GetValue();
 
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
-    drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
+    drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
 }
 
 function ceColorPickerClicked() {
@@ -466,7 +467,7 @@ function ceColorPickerClicked() {
     bar.color = ceBarColorPicker.GetText();
 
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
-    drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
+    drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
 
     chkBarLabelClicked(null, null, bar.divName);
 }
