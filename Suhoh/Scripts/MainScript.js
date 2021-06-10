@@ -187,7 +187,9 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         var barColNames = getBarColNames(data);
         _bars.forEach(function (b) {
             //var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, b.color,  true);
-            var barData = getBarData(b.divName, _testStackBarData, barColNames.xCol, barColNames.yCol, b.color, true);
+            //var barData = getBarData(b.divName, _testStackBarData, barColNames.xCol, barColNames.yCol, b.color, true);
+            var barData = getBarData_new(b.divName, jsonData, barColNames.xCol, "Quantity_m3;Longitude;Latitude", b.color, true);
+
             if (barData != null) {
                 //var barSvg = drawBar(b.divName, barData.barData, barData.width, barData.height, barData.color);
                 var barSvg = drawBar(b.divName, _testStackBarData, barData.width, barData.height, barData.color);
@@ -412,7 +414,14 @@ function renderBarProperty(id) {
     chkBarLabelClicked(null, null, bar.divName);
     
     cbBarXColumn.SetValue(bar.xCol);
-    lbBarYColumn.SetValue(bar.yCol);
+    //lbBarYColumn.SetValue(bar.yCol);
+    var items = bar.yCol.split(';');
+    for (var i = 0; i < lbBarYColumn.GetItemCount(); i++) {
+        var item = lbBarYColumn.GetItem(i);
+        if (bar.yCol.indexOf(item.value) > -1) {
+            item.selected = true;
+        }
+    }
 
     var selectedItems = lbBarYColumn.GetSelectedItems();
     ddBarYColumn.SetText(getSelectedItemsText(selectedItems));

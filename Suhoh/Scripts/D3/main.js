@@ -304,6 +304,52 @@ function getSelectedItemsText(items) {
     return texts.join(textSeparator);
 }
 
+//
+// Replace this with old getBarData
+//
+function getBarData_new(paneId, jsonData, xCol, yCol, color, isInitial) {
+    if (jsonData == null)
+        return null;
+
+    var bGraph = splitterMain.GetPaneByName(paneId);
+    var width = bGraph.GetClientWidth();
+    var height = bGraph.GetClientHeight();
+    //var min = Math.min(width, height);
+
+    var bar = getBar(paneId);
+    bar.xCol = xCol;    // Applicant
+    bar.yCol = yCol;    // Elevation; Quantity_m3
+    bar.color = color;
+
+    // Y columns
+    var yCols = yCol.split(';');
+    var colArray = '';;
+    for (i = 0; i < yCols.length; i++)
+        colArray += "'" + yCols[i] + "'" + ",";
+    colArray = "[" + colArray.substring(0, colArray.length - 1) + "]";
+
+    var xyArray = [];
+    if (!isInitial) {
+        xyArray = bar.data;
+    }
+    else {
+        var xy = [];
+        for (i = 0; i < yCols.length; i++) {
+            xy.push(groupBy(jsonData, xCol, yCols[i])); // 3 dimensional array
+        }
+        for (j = 0; j < xy[0].length; j++) {    // take first array length
+            var s = { X: xy[0][j][xCol] };
+            for (k = 0; k < yCols.length; k++) {
+                s[yCols[k]] = xy[k][j][yCols[k]]
+            }
+            xyArray.push(s);
+        }
+    }
+
+    //return { barData: xyArray, width: width, height: height, min: min, color: color }
+    return { barData: xyArray, colData: colArray, width: width, height: height, color: color }
+}
+
 function cbBarXYColumnChanged(s, e) {
     if (_activeBar == undefined)
         return;
@@ -316,7 +362,7 @@ function cbBarXYColumnChanged(s, e) {
     bar.yCol = getSelectedItemsText(selectedItems);
     bar.color = ceBarColorPicker.GetText();
 
-    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
+    var barData = getBarData_new(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.width, barData.height, barData.color);
 
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);
