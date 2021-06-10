@@ -8,7 +8,7 @@
 var _bars = [];
 var _activeBar;
 
-function initBar(divName) {
+function initBar_old(divName) {
     _bars.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'isLegend': true,
         'textLabel': null, 'color': 1, 'isLabel': false,
@@ -20,7 +20,7 @@ function initBar(divName) {
     //}
 }
 
-function getBar(divName) {
+function getBar_old(divName) {
     for (i = 0; i < _bars.length; i++) {
         if (_bars[i].divName == divName)
             return _bars[i]
@@ -28,7 +28,7 @@ function getBar(divName) {
     return null;
 }
 
-function getBarData(paneId, jsonData, xCol, yCol, color, isInitial) {
+function getBarData_old(paneId, jsonData, xCol, yCol, color, isInitial) {
     if (jsonData == null)
         return null;
 
@@ -57,7 +57,7 @@ function getBarData(paneId, jsonData, xCol, yCol, color, isInitial) {
     return { barData: xyArray, width: width, height: height, color: color }
 }
 
-function drawBar(divName, data, width, height, barColor) {
+function drawBar_old(divName, data, width, height, barColor) {
     var svgHeight = height - 30; // svg height will be 30px smaller than panel height to leave room for title
     var marginTop = 30;
     var marginRight = 30;
