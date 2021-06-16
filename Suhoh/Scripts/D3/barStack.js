@@ -196,6 +196,8 @@ function drawBar(divName, data, columns, width, height, barColor) {
         .domain(columns)
         .range(['#e41a1c', '#377eb8', '#4daf4a'])
 
+    $('#barTooltip').remove();
+
     var barTooltip = d3.select("#" + divName).append("div").attr("id", "barTooltip").attr("class", "barTooltip").style("display", "none");
     var barTooltipTriangle = d3.select("#" + divName).append("div").attr("class", "barTooltipTriangle").style("display", "none");
     var axisLabelTooltip = d3.select("#" + divName).append("div").attr("class", "axisLabelTooltip").style("display", "none");
@@ -225,7 +227,7 @@ function drawBar(divName, data, columns, width, height, barColor) {
                 barTooltip
                     .style("display", "inline-block")
                     .style("position", "absolute")
-                    .html("Subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
+                    .html(subgroupName + "<br>" + subgroupValue)
                     .style("opacity", 1)
 
                 barTooltip
@@ -303,8 +305,8 @@ function drawBar(divName, data, columns, width, height, barColor) {
         .attr("id", "barTextLabel")
         .attr("class", "barTextLabel")
         .attr("x", function (d) { return x(d.data.X) })
-        .attr("y", function (d) { return y(d[1]); })
-        .attr("transform", "translate(" + (marginLeft + marginRight) + ", 30)")
+        .attr("y", function (d) { return y(d[1]) })
+        .attr("transform", "translate(" + (marginLeft + marginRight + (x.bandwidth() / 2)) + ", 30)")
         .style("text-anchor", "left")
         .style("font-size", "12px")
         .attr("display", "none");

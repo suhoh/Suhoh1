@@ -412,13 +412,8 @@ function renderBarProperty(id) {
     chkBarLabelClicked(null, null, bar.divName);
     
     cbBarXColumn.SetValue(bar.xCol);
-    //lbBarYColumn.SetValue(bar.yCol);
-    for (var i = 0; i < lbBarYColumn.GetItemCount(); i++) {
-        var item = lbBarYColumn.GetItem(i);
-        if (bar.yCol.indexOf(item.value) > -1) {
-            item.selected = true;
-        }
-    }
+    var items = bar.yCol.split(';');
+    lbBarYColumn.SelectValues(items);
 
     var selectedItems = lbBarYColumn.GetSelectedItems();
     ddBarYColumn.SetText(getSelectedItemsText(selectedItems));
