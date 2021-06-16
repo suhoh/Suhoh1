@@ -65,12 +65,17 @@ namespace Suhoh.Controllers
         }
 
         [HttpPost]
-        public ActionResult RightPanelPartial(string sender, int paneDir, int paneType, string jsonPanels)
+        public ActionResult RightPanelPartial(string sender, int paneDir, int paneType, string jsonPanels, bool isNewLayout)
         {
             ViewModel vm = (ViewModel)Session["viewModel"];
             vm.AddPaneSender = sender;
             vm.AddPaneType = paneType;
             vm.AddPaneDirection = paneDir;
+
+            if (isNewLayout)
+            {
+                vm.IsGrouping = true;
+            }
 
             var p = Request.Params["OnBeginCallback"];  // test - send from DevExpress PerformCallback
 

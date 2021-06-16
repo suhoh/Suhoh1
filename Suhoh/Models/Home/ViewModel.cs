@@ -103,7 +103,8 @@ namespace Suhoh.Model
             // Gridview
             GridviewTitle = "Grid Title";
             GridviewPageSize = "50";
-            IsHeaderFilter = IsGrouping = false;
+            // show group panel intially but then it will be hide through JQuery due to cshtml not being able to show/hide
+            IsHeaderFilter = IsGrouping = true; 
 
             AddPaneDirection = 1;
             AddPaneType = 1;
