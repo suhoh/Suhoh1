@@ -88,9 +88,8 @@ function btnChangeLayoutClicked(s, e) {
         p.type.forEach(function (t) {
             if (t.toUpperCase().indexOf('GRIDVIEW') > -1)
                 initGridview(p.name + t);   // Moved out of DxGridview.cshtml under <Script> section due to callback issue
-            // When callback, DxGridview gets refresh and no code should be included
+                                            // When callback, DxGridview gets refresh and no code should be included
         })
-        console.log(p);
     });
 
     // Could use PerformCallback
@@ -99,14 +98,11 @@ function btnChangeLayoutClicked(s, e) {
         type: "POST",
         url: url,
         //dataType: "json",
-        data: { 'sender': 'leftPanel', 'paneDir': -1, 'paneType': -1, 'jsonPanels': JSON.stringify(panels) },
+        data: { 'sender': 'leftPanel', 'paneDir': -1, 'paneType': -1, 'jsonPanels': JSON.stringify(panels), 'isNewLayout': true },
         success: function (data) {
             $('#divRightPanelPartial').html(data);
 
-            //splitterMainResized();
-            //$('#divRightPanelPartial').addClass('rightPanelPartial');
-            //$("#divRightPanelPartial").load('Home');
-            //$("#divRightPanelPartial").load('@Url.Content("Home/RightPanelPartial")');
+            showHideGroupPanels();
 
             convertJsonToDataTable(_jsonData, _jsonDataGridview);
         },

@@ -62,6 +62,7 @@
         // Grouping
         settings.Settings.ShowGroupPanel = Model.IsGrouping;
         settings.SettingsBehavior.AllowGroup = true;
+        settings.SettingsBehavior.AllowSort = true;
 
         // Scrollbar
         //settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
@@ -91,15 +92,16 @@
 
     }).Bind(Model.DxGridview).GetHtml()
 
+
 @*-- Header filter and grouping doesn't work
--- Had to move initGridview call to MainScript.js and LeftPanelScript where it initiates grdiview*@
+    -- Had to move initGridview call to MainScript.js and LeftPanelScript where it initiates grdiview*@
 @*<script>
-    var gridview = @Model.CreatePanelName;
-    var name;
-    if (gridview.name != undefined)
-        name = gridview.name;   // callback
-    if (gridview.id != undefined)
-        name = gridview.id;     // ajax
-    console.log('gridview name:' + gridview.name + ", " + gridview.id);
-    initGridview(name);    
-</script>*@
+        var gridview = @Model.CreatePanelName;
+        var name;
+        if (gridview.name != undefined)
+            name = gridview.name;   // callback
+        if (gridview.id != undefined)
+            name = gridview.id;     // ajax
+        console.log('gridview name:' + gridview.name + ", " + gridview.id);
+        initGridview(name);
+    </script>*@

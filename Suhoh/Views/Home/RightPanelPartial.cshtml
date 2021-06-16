@@ -158,13 +158,15 @@
 
             ViewContext.Writer.Write("</div>");
 
+            ViewContext.Writer.Write("<div id='test999'>");
             Html.RenderPartial("DxGridview", Model);
+            ViewContext.Writer.Write("</div>");
         }
 
         //ViewContext.Writer.Write("<h1>" + paneName + "</h1>");
     }
 }
 
-<script>
+@*<script>
 
-</script>
+</script>*@

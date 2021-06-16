@@ -11,7 +11,7 @@ var _filename;              // loaded filename
 var _activePropertyName     // currently active property when clicked from panel
 
 window.addEventListener('resize', function (event) {
-    console.log("window - innerWidth " + window.innerWidth + ", window - innerHeight " + window.innerHeight);
+    //console.log("window - innerWidth " + window.innerWidth + ", window - innerHeight " + window.innerHeight);
 })
 
 function showMessage(msg, level) {
@@ -85,6 +85,16 @@ function updateGridviews(gridviews) {
     })
 }
 
+// Update single gridview
+function updateGridviewHeight(gridview) {
+    if (gridview == undefined)
+        return;
+    var pane = splitterMain.GetPaneByName(gridview.name);
+    var gv = eval(gridview.name);
+    gv.SetHeight(pane.GetClientHeight() - 10); // leave room for header
+}
+
+// Update all gridviews
 function updateGridviewHeights(gridviews) {
     if (gridviews.length == 0)
         return;
@@ -412,13 +422,8 @@ function renderBarProperty(id) {
     chkBarLabelClicked(null, null, bar.divName);
     
     cbBarXColumn.SetValue(bar.xCol);
-    //lbBarYColumn.SetValue(bar.yCol);
-    for (var i = 0; i < lbBarYColumn.GetItemCount(); i++) {
-        var item = lbBarYColumn.GetItem(i);
-        if (bar.yCol.indexOf(item.value) > -1) {
-            item.selected = true;
-        }
-    }
+    var items = bar.yCol.split(';');
+    lbBarYColumn.SelectValues(items);
 
     var selectedItems = lbBarYColumn.GetSelectedItems();
     ddBarYColumn.SetText(getSelectedItemsText(selectedItems));

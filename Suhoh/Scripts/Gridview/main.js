@@ -20,6 +20,28 @@ function getGridview(divName) {
 }
 
 // Gridview callback
+function showHideGroupPanel(gridview) {
+    // show/hide group panel here because PerformCallback doesn't refresh properly
+    if (gridview == undefined)
+        return;
+    if (gridview.isGrouping)
+        $('#' + gridview.name + '_grouppanel').show();
+    else
+        $('#' + gridview.name + '_grouppanel').hide();
+    updateGridviewHeight(gridview);
+}
+
+function showHideGroupPanels() {
+    // show/hide group panel here because PerformCallback doesn't refresh properly
+    _gridviews.forEach(function (gv) {
+        if (gv.isGrouping)
+            $('#' + gv.name + '_grouppanel').show();
+        else
+            $('#' + gv.name + '_grouppanel').hide();
+        updateGridviewHeight(gv);
+    });
+}
+
 function dxGridview_OnBeginCallback(s, e) {
     var gv = getGridview(s.name);
     e.customArgs["dxGridview_sender"] = s.name;
@@ -27,7 +49,11 @@ function dxGridview_OnBeginCallback(s, e) {
     e.customArgs["dxGridview_Grouping"] = gv.isGrouping;
 }
 function dxGridview_OnEndCallback(s, e) {
+    var gv = getGridview(s.name);
+    var headerFilter = s.name + "_HeaderFilter";
+    eval(headerFilter).SetChecked(gv.isHeaderFilter);
 
+    showHideGroupPanel(gv);
 }
 
 function dxGridview_Init(s, e) {
@@ -61,6 +87,7 @@ function chkHeaderFilterGroupingChecked(s, e) {
     var gv = getGridview(pId);
     gv.isHeaderFilter = eval(pId + "_HeaderFilter").GetChecked();
     gv.isGrouping = eval(pId + "_Grouping").GetChecked();
+
     eval(pId).PerformCallback();   // Refresh gridview
 }
 
