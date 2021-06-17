@@ -273,19 +273,15 @@ function chkBarLabelClicked(s, e, id) {
             .text(function (d) {
                 return (d.key);
             })
-            //.attr("transform", "translate(" + (-($('#barTooltip').width() / 2)) + ", 30)")
             .attr("display", "block");
-        var text_element = bar.svg.select(".barTextLabel");
-        var textBox = text_element.getBBox();
-        var textWidth = textBox.width;
-        //bar.textLabel
-            //.attr("transform", "translate(" + (-(textWidth / 2)) + ", 0)");
-        alert(textWidth);
+        //var text_element = bar.svg.select(".barTextLabel");
+        //var textBox = text_element.getBBox();
+        //var textWidth = textBox.width;
     }
     else if (!isXValueLabel && isYValueLabel) {
         bar.textLabel
             .text(function (d) {
-                return (d.Y);
+                return (d[1].toFixed(1));
             })
             .attr("display", "block");
         
@@ -293,7 +289,7 @@ function chkBarLabelClicked(s, e, id) {
     else if (isXValueLabel && isYValueLabel) {
         bar.textLabel
             .text(function (d) {
-                return (d.X + ", " + d.Y);
+                return (d.key + ", " + d[1].toFixed(1));
             })
             .attr("display", "block");
     }
