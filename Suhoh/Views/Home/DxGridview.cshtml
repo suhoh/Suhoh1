@@ -3,11 +3,12 @@
 
 @using System.Data
 
-@{
-    ViewBag.Title = "DxGridview";
+@functions {
+    void SetGroupPanelVisibility(MVCxGridView grid, bool visible)
+    {
+        grid.Settings.ShowGroupPanel = visible;
+    }
 }
-
-@*Can not add additional Div here*@
 
 @Html.DevExpress().GridView(
     settings =>
@@ -23,9 +24,6 @@
         settings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.ControlStyle.CssClass = "dxGridview";
         settings.Styles.Header.Paddings.Padding = 3;
-
-        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
-        //settings.Settings.VerticalScrollableHeight = 100;
 
         // Columns
         settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
@@ -60,9 +58,17 @@
             column.SettingsHeaderFilter.Mode = GridHeaderFilterMode.CheckedList;
 
         // Grouping
-        settings.Settings.ShowGroupPanel = Model.IsGrouping;
+        //settings.Settings.ShowGroupPanel = Model.IsGrouping;
         settings.SettingsBehavior.AllowGroup = true;
         settings.SettingsBehavior.AllowSort = true;
+
+        // Shrink page button
+        settings.SettingsPager.EnableAdaptivity = true;
+
+        // Scrollbar
+        settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+        settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+        //settings.Settings.VerticalScrollableHeight = 100;   // will be set from client
 
         // Scrollbar
         //settings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
@@ -90,18 +96,15 @@
         settings.SettingsPager.PageSizeItemSettings.Visible = true;
         settings.SettingsPager.EnableAdaptivity = true;
 
+        // Had to create internal function instead of Callback from client
+        // https://github.com/DevExpress-Examples/gridview-how-to-toggle-auto-filter-row-visibility-e4882/blob/14.1.7%2B/CS/E4882/Views/Home/GridViewPartial.cshtml
+        settings.PreRender = (s, e) =>
+        {
+            SetGroupPanelVisibility(s as MVCxGridView, Model.IsGrouping);
+        };
+        settings.BeforeGetCallbackResult = (s, e) =>
+        {
+            SetGroupPanelVisibility(s as MVCxGridView, Model.IsGrouping);
+        };
+
     }).Bind(Model.DxGridview).GetHtml()
-
-
-@*-- Header filter and grouping doesn't work
-    -- Had to move initGridview call to MainScript.js and LeftPanelScript where it initiates grdiview*@
-@*<script>
-        var gridview = @Model.CreatePanelName;
-        var name;
-        if (gridview.name != undefined)
-            name = gridview.name;   // callback
-        if (gridview.id != undefined)
-            name = gridview.id;     // ajax
-        console.log('gridview name:' + gridview.name + ", " + gridview.id);
-        initGridview(name);
-    </script>*@
