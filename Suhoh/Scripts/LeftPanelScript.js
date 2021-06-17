@@ -102,8 +102,6 @@ function btnChangeLayoutClicked(s, e) {
         success: function (data) {
             $('#divRightPanelPartial').html(data);
 
-            showHideGroupPanels();
-
             convertJsonToDataTable(_jsonData, _jsonDataGridview);
         },
         error: function (xhr, textStatus, errorThrown) {

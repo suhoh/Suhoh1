@@ -76,10 +76,11 @@ namespace Suhoh.Controllers
             {
                 vm.IsGrouping = true;
             }
+            
 
             var p = Request.Params["OnBeginCallback"];  // test - send from DevExpress PerformCallback
+            ViewBag.IsChangePanels = true;              // test ViewBag
 
-            ViewBag.IsChangePanels = true;
             vm.MainPanels = JsonConvert.DeserializeObject<List<Panel>>(jsonPanels);
             vm.ActivePanelSettings = vm.MainPanels.Count;
 
