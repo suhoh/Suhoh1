@@ -273,9 +273,13 @@ function chkBarLabelClicked(s, e, id) {
             .text(function (d) {
                 return (d.key);
             })
+            //.attr("transform", "translate(" + (-($('#barTooltip').width() / 2)) + ", 30)")
             .attr("display", "block");
         var text_element = bar.svg.select(".barTextLabel");
-        var textWidth = text_element.node().getComputedTextLength();
+        var textBox = text_element.getBBox();
+        var textWidth = textBox.width;
+        //bar.textLabel
+            //.attr("transform", "translate(" + (-(textWidth / 2)) + ", 0)");
         alert(textWidth);
     }
     else if (!isXValueLabel && isYValueLabel) {
