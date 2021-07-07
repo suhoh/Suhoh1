@@ -109,12 +109,12 @@ namespace Suhoh.Model
             AddPaneDirection = 1;
             AddPaneType = 1;
 
-            ChkLeftPanelATS = true;
+            ChkLeftPanelATS = false;
             LeftPanelSearchSEC = "15";
             LeftPanelSearchTWP = "24";
             LeftPanelSearchRGE = "1";
             LeftPanelSearchMER = "5";
-            ChkLeftPanelAttributeSearch = false;
+            ChkLeftPanelAttributeSearch = true;
             CbLeftPanelAttributeOperator = "=";
 
             RadioLeftPanelSaveLoad = 1;
