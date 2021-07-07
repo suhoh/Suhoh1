@@ -34,6 +34,8 @@ function splitterMainResized(s, e) {
     updatePies(_pies);
     updateBars(_bars);
     updateGridviewHeights(_gridviews);
+
+    chkBarLabelClicked(null, null, _bars.divName);
 }
 
 function updateMaps(maps) {
@@ -57,7 +59,6 @@ function updatePies(pies) {
         if (typeof chkPiePercentageLabel != "undefined" && ASPxClientUtils.IsExists(chkPiePercentageLabel))
             chkPieLabelClicked(null, null, p.divName);
     });
-
 }
 
 function updateBars(bars) {
@@ -102,7 +103,6 @@ function updateGridviewHeights(gridviews) {
         var pane = splitterMain.GetPaneByName(g.name);
         var gv = eval(g.name);
         gv.SetHeight(pane.GetClientHeight() - 10); // leave room for header
-
     });
 }
 
@@ -112,7 +112,6 @@ function getPaneSize(paneId) {
     var height = pGraph.GetClientHeight();
     return { width: width, height: height }
 }
-
 
 var ExcelToJSON = function () {
     this.parseExcel = function (file) {
