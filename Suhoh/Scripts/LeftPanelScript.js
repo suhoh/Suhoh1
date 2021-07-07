@@ -277,10 +277,16 @@ function btnLeftPanelSaveProjectNameClick(s, e) {
 }
 
 // Delete project
-function btnLeftPanelDeleteProjectNameClick(s, e) {
+function btnConfirmOkCancel(s, e) {
+    var isDelete = false;
+    if (s.name == 'btnConfirmCancel') {
+        pcConfirmModalDialog.Hide();
+        return;
+    }
+
     var projectName = gvLeftPanelProjects.GetRowKey(gvLeftPanelProjects.GetFocusedRowIndex());
     if (projectName == undefined) {
-        alert("Select project to delete.");
+        showMessage("Select project to delete.", "Warning");
         return;
     }
 
@@ -295,11 +301,25 @@ function btnLeftPanelDeleteProjectNameClick(s, e) {
     });
     function successFunc(data, status) {
         refreshProjectList(_testEmail);
+        pcConfirmModalDialog.Hide();
 
     }
     function errorFunc(data, status) {
+        pcConfirmModalDialog.Hide();
     }
+
 }
+
+function btnLeftPanelDeleteProjectNameClick(s, e) {
+    var projectName = gvLeftPanelProjects.GetRowKey(gvLeftPanelProjects.GetFocusedRowIndex());
+    if (projectName == undefined) {
+        showMessage("Select project to delete.", "Warning");
+        return;
+    }
+    confirmMessage.SetText("Are you sure you want to delete '" + projectName + "' project?");
+    pcConfirmModalDialog.Show();
+}
+
 
 // Get project list from database
 // Stores list to ViewModel.Projects
@@ -322,11 +342,8 @@ function refreshProjectList(email) {
     }
 }
 
-var _test9 = false;
-
 // Load project
 function btnLeftPanelLoadProjectNameClick(s, e) {
-    _test9 = !_test9;
     gvLeftPanelProjects.PerformCallback();
 }
 
@@ -341,7 +358,6 @@ function gvLeftPanelProjectsSelectionChanged(s, e) {
 }
 
 function gvLeftPanelProjects_OnBeginCallback(s, e) {
-    e.customArgs["dxGridview_Grouping"] = _test9;
 }
 
 function gvLeftPanelProjects_OnEndCallback(s, e) {

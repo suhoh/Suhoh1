@@ -20,8 +20,14 @@ namespace Suhoh.Controllers
 
         public ActionResult Index()
         {
+            string hostname = System.Net.Dns.GetHostName();
+            string hostname2 = System.Environment.GetEnvironmentVariable("COMPUTERNAME");
+
             _appConfig = ReadConfigXml("App_Data", "AppConfig.xml");
+
+
             Session["appConfig"] = _appConfig;
+            _appConfig.ActiveDatabase = GetActiveDatabase(_appConfig);
 
             ViewModel model = new ViewModel();
             model.AppConfig = _appConfig;
@@ -33,6 +39,13 @@ namespace Suhoh.Controllers
             ViewData["RightPanelPartialCallback"] = false;  // test
             Session["viewModel"] = model;
             return View(model);
+        }
+
+        public string GetActiveDatabase(AppConfig appConfig)
+        {
+            string hostname = System.Net.Dns.GetHostName();
+            var activeSchema = appConfig.Schemas.Where(n => n.Name.ToUpper().Contains(hostname.ToUpper())).First();
+            return activeSchema.Id;
         }
 
         public ActionResult CallbackPopupPanelProperty(ViewModel vm, string sender)
@@ -57,9 +70,6 @@ namespace Suhoh.Controllers
         public ActionResult LeftPanelProjectGridview(ViewModel vm)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
-
-            viewModel.IsGrouping = Convert.ToBoolean(Request.Params["dxGridview_Grouping"]);
-
             Session["viewModel"] = viewModel;
             return PartialView("LeftPanelProjectGridview", viewModel);
         }
