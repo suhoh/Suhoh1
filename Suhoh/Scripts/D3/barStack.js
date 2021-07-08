@@ -14,8 +14,9 @@ var _svgHeight;
 function initBar(divName) {
     _bars.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'isLegend': true,
-        'textLabel': null, 'color': 1, 'isLabel': false,
-        'isXValue': false, 'isYValue': false, 'color': '#FF6600', 'isVertical': 1
+        'textLabel': null, 'isLabel': false,
+        'isXValue': false, 'isYValue': false, 'isVertical': 1,
+        'color': ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF']
     })
 }
 
@@ -173,7 +174,8 @@ function drawBar(divName, data, columns, width, height, barColor) {
 
     var color = d3.scaleOrdinal()
         .domain(columns)
-        .range(['#e41a1c', '#377eb8', '#4daf4a'])
+        //.range(['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'])
+        .range(barColor)
 
     $('#barTooltip').remove();
 
@@ -196,7 +198,10 @@ function createBar(bar, svg, stackedData, x, y, color) {
         .data(stackedData)
         .enter()
         .append("g")
-        .attr("fill", function (d) { return color(d.key) })
+        .attr("fill", function (d) {
+            console.log(color(d.key));
+            return color(d.key)
+        })
         .selectAll("rect")
         .data(function (d) { return d; })
         .enter()

@@ -431,7 +431,7 @@ function renderBarProperty(id) {
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
 
     radioOrientationBar.SetValue(bar.isVertical);
-    ceBarColorPicker.SetColor(bar.color);
+    ceBarColorPicker.SetColor(bar.color[0]);
 }
 
 function renderMapProperty(id) {

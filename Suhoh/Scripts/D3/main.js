@@ -315,7 +315,8 @@ function cbBarXYColumnChanged(s, e) {
     ddBarYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
 
     bar.yCol = getSelectedItemsText(selectedItems);
-    bar.color = ceBarColorPicker.GetText();
+    //bar.color = ceBarColorPicker.GetText();
+    bar.color = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
 
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
@@ -412,13 +413,15 @@ function radioOrientationBarClicked(s, e) {
 
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
+    chkBarLabelClicked(null, null, bar.divName);
 }
 
 function ceColorPickerClicked() {
     if (_activeBar == undefined)
         return;
     var bar = getBar(_activeBar.divName);
-    bar.color = ceBarColorPicker.GetText();
+    //bar.color = ceBarColorPicker.GetText();
+    bar.color = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
 
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
