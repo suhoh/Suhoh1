@@ -123,6 +123,7 @@ var ExcelToJSON = function () {
             });
             workbook.SheetNames.forEach(function (sheetName) {  // https://github.com/SheetJS/sheetjs/issues/841
                 _jsonData = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName], { raw: true, dateNF: 'yyyy-mm-dd' });   // array - _jsonData[0][column name]
+                _jsonData = addSeqNo(_jsonData);    // add sequence number
                 //_jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { raw: true, dateNF: 'yyyy-mm-dd' });   // array - _jsonData[0][column name]
                 _jsonDataGridview = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project:'bbbb'...}, { ...}]
                 var columnNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0]; 
@@ -136,6 +137,13 @@ var ExcelToJSON = function () {
         reader.readAsBinaryString(file);
     };
 };
+
+function addSeqNo(json) {
+    for (var i = 0; i < json.length; i++) {
+        json[i]['Seq'] = i;
+    }
+    return json;
+}
 
 // Initial loading
 // Panes already created.

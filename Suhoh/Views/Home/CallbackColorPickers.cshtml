@@ -1,0 +1,27 @@
+﻿
+@using Suhoh.Model
+@model ViewModel
+
+@Html.DevExpress().CallbackPanel(
+    cbSsettings =>
+    {
+        cbSsettings.Name = "callbackColorPickers";
+        cbSsettings.CallbackRouteValues = new { Controller = "Home", Action = "CallbackColorPickers" };
+        cbSsettings.ClientSideEvents.BeginCallback = "callbackColorPickers_OnBeginCallback";
+        cbSsettings.ClientSideEvents.EndCallback = "callbackColorPickers_OnEndCallback";
+        cbSsettings.SetContent(() =>
+        {
+            string[] cols = Model.YColNames.Split(';');
+            foreach (var i in cols)
+            {
+                @Html.DevExpress().ColorEdit(settings =>
+                {
+                    settings.Name = "ceBarColorPicker" + i.ToString();
+                    settings.Width = 240;
+                    settings.Color = System.Drawing.Color.FromName("red");
+                    settings.Properties.EnableCustomColors = true;
+                    settings.Properties.ClientSideEvents.ColorChanged = "ceColorPickerClicked";
+                }).GetHtml();
+            }
+        });
+    }).GetHtml()

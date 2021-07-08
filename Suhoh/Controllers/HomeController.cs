@@ -56,6 +56,15 @@ namespace Suhoh.Controllers
             return PartialView("CallbackPopupPanelProperty", viewModel);
         }
 
+        public ActionResult CallbackColorPickers(ViewModel vm, string ycol)
+        {
+            ViewModel viewModel = (ViewModel)Session["viewModel"];
+            viewModel.YColNames = ycol;
+            Session["viewModel"] = viewModel;
+
+            return PartialView("CallbackColorPickers", viewModel);
+        }
+
         public ActionResult DxGridview(ViewModel vm)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];

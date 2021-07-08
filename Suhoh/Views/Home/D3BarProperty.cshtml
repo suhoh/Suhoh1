@@ -149,7 +149,7 @@
     </table>
 </div>
 
-<div id="divBarColorPicker" class="divBarColorPicker">
+@*<div id="divBarColorPicker" class="divBarColorPicker">
     <table>
         <tr>
             <th id="thBarColorPickerHeading1" class="thBarColorPickerHeading1">
@@ -168,4 +168,8 @@
             </th>
         </tr>
     </table>
+</div>*@
+
+<div>
+    @Html.Partial("CallbackColorPickers", Model)
 </div>
