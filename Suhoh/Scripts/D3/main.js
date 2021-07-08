@@ -333,6 +333,10 @@ function cbBarXYColumnChanged(s, e) {
     //text = text.substr(0, text.length - 1);
     //DropDownEdit.SetText(text);
     chkBarLabelClicked(null, null, bar.divName);
+
+    if (s.name == 'lbBarYColumn')
+        callbackColorPickers.PerformCallback({ 'ycol': bar.yCol });
+
 }
 
 function tbBarPropertyTitleKeyUp(s, e) {
@@ -443,3 +447,10 @@ function btnBarCloseClick(s) {
 
 }
 
+function callbackColorPickers_OnBeginCallback(s, e) {
+
+}
+
+function callbackColorPickers_OnEndCallback(s, e) {
+    //ceBarColorPicker.SetColor("#0000FF");
+}

@@ -50,6 +50,7 @@ namespace Suhoh.Model
         public bool CbBarXValueLabel { get; set; }
         public string DdBarXColumn { get; set; }
         public int RadioOrientationBar { get; set; }
+        public string YColNames { get; set; }
 
         // OpenLayers
         public string MapTitle { get; set; }
@@ -93,6 +94,7 @@ namespace Suhoh.Model
             CbBarXValueLabel = false;
             DdBarXColumn = "";
             RadioOrientationBar = 1;
+            YColNames = string.Empty;
 
             // Map
             MapTitle = "Map Title";

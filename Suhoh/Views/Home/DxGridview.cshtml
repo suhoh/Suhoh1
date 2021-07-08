@@ -107,4 +107,22 @@
             SetGroupPanelVisibility(s as MVCxGridView, Model.IsGrouping);
         };
 
+        // Store filter and filtered rows
+        settings.BeforeGetCallbackResult += (s, e) =>
+        {
+            var grid = s as MVCxGridView;
+            var filter = grid.FilterExpression;
+            if (!String.IsNullOrEmpty(filter))
+            {
+                var keys = "";
+                for (int i = 0; i < grid.VisibleRowCount; i++)
+                {
+                    var key = grid.GetRowValues(i, grid.KeyFieldName).ToString();
+                    keys += key + "|";
+                }
+                //store keys here to obtain only filtered rows from your model  
+                //store the fitler expressin here
+            }
+        };
+
     }).Bind(Model.DxGridview).GetHtml()
