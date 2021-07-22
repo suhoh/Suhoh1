@@ -12,16 +12,27 @@
         cbSsettings.SetContent(() =>
         {
             string[] cols = Model.YColNames.Split(';');
-            foreach (var i in cols)
+
+            ViewContext.Writer.Write("<Label class='colorPickerHeading'>Color</Label>");
+
+            ViewContext.Writer.Write("<div id='divColorPicker' class='divColorPicker'>");
+            for (int i = 0; i < cols.Length; i++)
             {
+                ViewContext.Writer.Write("<div id='divColorPickerText' class='divColorPickerText'>");
+                    ViewContext.Writer.Write(cols[i]);
+                ViewContext.Writer.Write("</div>");
+
+                ViewContext.Writer.Write("<div id='divColorPickerDropDown' class='divColorPickerDropDown'>");
                 @Html.DevExpress().ColorEdit(settings =>
                 {
                     settings.Name = "ceBarColorPicker" + i.ToString();
-                    settings.Width = 240;
-                    settings.Color = System.Drawing.Color.FromName("red");
+                    settings.Width = 120;
+                    settings.Color = System.Drawing.ColorTranslator.FromHtml(Model.BarColors[i]);
                     settings.Properties.EnableCustomColors = true;
                     settings.Properties.ClientSideEvents.ColorChanged = "ceColorPickerClicked";
                 }).GetHtml();
+                ViewContext.Writer.Write("</div>");
             }
+            ViewContext.Writer.Write("</div>");
         });
     }).GetHtml()

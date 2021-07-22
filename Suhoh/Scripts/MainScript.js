@@ -356,7 +356,7 @@ function showPropertyPopup(s) {
 }
 
 function callbackPopupPanelProperty_OnBeginCallback(s, e) {
-    popupPanelProperty.Show();
+    //popupPanelProperty.Show();
 }
 
 function callbackPopupPanelProperty_OnEndCallback(s, e) {
@@ -372,6 +372,13 @@ function callbackPopupPanelProperty_OnEndCallback(s, e) {
 }
 
 function renderPieProperty(id) {
+    var pie = getPie(id);
+    if (pie.data == null)
+        return;
+
+    popupPanelProperty.Show();
+    _activePie = pie;
+
     popupPanelProperty.SetHeaderText("Pie Property");
     if (_columnNames == undefined || _columnNames.length == 0) {
         console.log("_columnNames: null or empty.")
@@ -390,8 +397,7 @@ function renderPieProperty(id) {
     var div = document.getElementById('divColorRampPie');
     div.appendChild(canvas);
 
-    var pie = getPie(id);
-    _activePie = pie;
+
     document.getElementById(pie.divName + "_Title").innerHTML = pie.xCol + " vs " + pie.yCol;   // title in panel
     tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol); // title in property
 
@@ -407,6 +413,13 @@ function renderPieProperty(id) {
 }
 
 function renderBarProperty(id) {
+    var bar = getBar(id);
+    if (bar.data == null)
+        return;
+
+    popupPanelProperty.Show();
+    _activeBar = bar;
+
     popupPanelProperty.SetHeaderText("Bar Property");
     if (_columnNames == undefined || _columnNames.length == 0) {
         console.log("_columnNames: null or empty.")
@@ -420,9 +433,6 @@ function renderBarProperty(id) {
         if (c.Type == 'Int64' || c.Type == 'Double')
             lbBarYColumn.AddItem(c.Name);
     });
-
-    var bar = getBar(id);
-    _activeBar = bar;
 
     chkBarXValueLabel.SetChecked(bar.isXValue);
     chkBarYValueLabel.SetChecked(bar.isYValue);
@@ -439,11 +449,16 @@ function renderBarProperty(id) {
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
 
     radioOrientationBar.SetValue(bar.isVertical);
-    ceBarColorPicker.SetColor(bar.color[0]);
+    document.getElementById('divColorPickerText').innerHTML = selectedItems[0].text;
+    ceBarColorPicker0.SetColor(bar.color[0]); // To do AndyLee
 }
 
 function renderMapProperty(id) {
     var map = getMap(id);
+    if (map.data == null)
+        return;
+
+    popupPanelProperty.Show();
     _activeMap = map;
 
     popupPanelProperty.SetHeaderText("Map Property");
@@ -495,6 +510,10 @@ function renderMapProperty(id) {
 
 function renderGridviewProperty(id) {
     var gv = getGridview(id);
+    //if (gv.data == null) // To do Jae -- no data
+    //    return;
+
+    //popupPanelProperty.Show();
     _activeGridview = gv;
 
     popupPanelProperty.SetHeaderText("Grid Property");

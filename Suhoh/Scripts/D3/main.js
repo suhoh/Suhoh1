@@ -314,9 +314,13 @@ function cbBarXYColumnChanged(s, e) {
     var selectedItems = lbBarYColumn.GetSelectedItems();
     ddBarYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
 
+    if(selectedItems.length == 0)
+        $('#divColorPicker').remove();
+
     bar.yCol = getSelectedItemsText(selectedItems);
     //bar.color = ceBarColorPicker.GetText();
-    bar.color = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
+    //bar.color = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
+    bar.color = _barColors;
 
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
@@ -336,7 +340,7 @@ function cbBarXYColumnChanged(s, e) {
     chkBarLabelClicked(null, null, bar.divName);
 
     if (s.name == 'lbBarYColumn')
-        callbackColorPickers.PerformCallback({ 'ycol': bar.yCol });
+        callbackColorPickers.PerformCallback({ 'ycol': bar.yCol, 'barColors': bar.color });
 
 }
 
@@ -420,12 +424,19 @@ function radioOrientationBarClicked(s, e) {
     chkBarLabelClicked(null, null, bar.divName);
 }
 
-function ceColorPickerClicked() {
+function ceColorPickerClicked(s, e) {
     if (_activeBar == undefined)
         return;
+
+    var cIdx = s.name.substr(s.name.length - 1, 1);
+    _barColors[cIdx] = s.GetText();
+    //console.log(cIdx);
+
     var bar = getBar(_activeBar.divName);
     //bar.color = ceBarColorPicker.GetText();
-    bar.color = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
+    //bar.color = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
+    bar.color = _barColors;
+    
 
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);

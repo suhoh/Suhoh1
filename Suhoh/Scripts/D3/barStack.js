@@ -10,13 +10,15 @@ const _marginBottom = 30;
 var _bars = [];
 var _activeBar;
 var _svgHeight;
+var _barColors = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
 
 function initBar(divName) {
+    
     _bars.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'isLegend': true,
         'textLabel': null, 'isLabel': false,
         'isXValue': false, 'isYValue': false, 'isVertical': 1,
-        'color': ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF']
+        'color': _barColors
     })
 }
 
@@ -72,6 +74,12 @@ function drawBar(divName, data, columns, width, height, barColor) {
     bar.data = data;    // make it global
 
     d3.select("#" + divName).selectAll("svg").remove();
+
+    if (columns[0].length == 0) {
+        $('#divColorPickerDropDown').remove();
+        return;
+    }
+    //console.log(columns);
 
     _svgHeight = height - 30; // svg height will be 30px smaller than panel height to leave room for title
 
@@ -199,7 +207,7 @@ function createBar(bar, svg, stackedData, x, y, color) {
         .enter()
         .append("g")
         .attr("fill", function (d) {
-            console.log(color(d.key));
+            //console.log(color(d.key));
             return color(d.key)
         })
         .selectAll("rect")

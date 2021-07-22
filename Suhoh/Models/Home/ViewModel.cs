@@ -51,6 +51,7 @@ namespace Suhoh.Model
         public string DdBarXColumn { get; set; }
         public int RadioOrientationBar { get; set; }
         public string YColNames { get; set; }
+        public string[] BarColors { get; set; }
 
         // OpenLayers
         public string MapTitle { get; set; }
@@ -95,6 +96,7 @@ namespace Suhoh.Model
             DdBarXColumn = "";
             RadioOrientationBar = 1;
             YColNames = string.Empty;
+            BarColors = new string[] { "#e41a1c" }; ; // initial bar color
 
             // Map
             MapTitle = "Map Title";
