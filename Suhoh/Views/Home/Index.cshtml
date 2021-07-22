@@ -171,7 +171,7 @@
 
         settings.SetContent(() =>
         {
-            using (Html.BeginForm("ConfirmModalView", "Home", FormMethod.Post, new { id = "errorForm", @class = "", @style = "width: auto" }))
+            using (Html.BeginForm("ConfirmModalView", "Home", FormMethod.Post, new { id = "confirmForm", @class = "", @style = "width: auto" }))
             {
                 ViewContext.Writer.Write("<div style='text-align:center'>");
                 Html.DevExpress().Label(

@@ -188,7 +188,11 @@ function cbPieXYColumnChanged(s, e) {
     pie.xCol = cbPieXColumn.GetText();
     pie.yCol = cbPieYColumn.GetText();
 
-    var pieData = getPieData(pie.divName, _jsonData, pie.xCol, pie.yCol, true);
+    var jsonData = _jsonData;
+    if (_filteredData != null)
+        jsonData = _filteredData;
+
+    var pieData = getPieData(pie.divName, jsonData, pie.xCol, pie.yCol, true);
     drawPie(pie.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
 
     tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol);
@@ -318,7 +322,11 @@ function cbBarXYColumnChanged(s, e) {
     //bar.color = ceBarColorPicker.GetText();
     bar.color = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
 
-    var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
+    var jsonData = _jsonData;
+    if (_filteredData != null)
+        jsonData = _filteredData;
+
+    var barData = getBarData(bar.divName, jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
 
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol);

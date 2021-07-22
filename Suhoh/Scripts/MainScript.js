@@ -31,8 +31,8 @@ function clearAllPanels() {
 function splitterMainResized(s, e) {
     // Update all panes
     updateMaps(_maps);
-    updatePies(_pies);
-    updateBars(_bars);
+    updatePies(_pies, false);
+    updateBars(_bars, false);
     updateGridviewHeights(_gridviews);
 
     chkBarLabelClicked(null, null, _bars.divName);
@@ -44,14 +44,14 @@ function updateMaps(maps) {
     })
 }
 
-function updatePies(pies) {
+function updatePies(pies, isInitial) {
     if (pies.length == 0)
         return;
     pies.forEach(function (p) {
         // Tried to just update Svg - not working
         //var paneSize = getPaneSize('paneGraph');
         //_pieSvg.attr("width", paneSize.width).attr("height", paneSize.height);
-        var pieData = getPieData(p.divName, p.data, p.xCol, p.yCol, false);
+        var pieData = getPieData(p.divName, p.data, p.xCol, p.yCol, isInitial);
         if (pieData != null)
             drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
         _activePie = p;
@@ -61,11 +61,11 @@ function updatePies(pies) {
     });
 }
 
-function updateBars(bars) {
+function updateBars(bars, isInitial) {
     if (bars.length == 0)
         return;
     bars.forEach(function (b) {
-        var barData = getBarData(b.divName, b.data, b.xCol, b.yCol, b.color, false);     // used to be PaneId
+        var barData = getBarData(b.divName, b.data, b.xCol, b.yCol, b.color, isInitial);     // used to be PaneId
         if (barData != null) {
             var barSvg = drawBar(b.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
             b.svg = barSvg;
@@ -79,7 +79,7 @@ function updateBars(bars) {
 function updateGridviews(gridviews) {
     if (gridviews.length == 0)
         return;
-    _gridviews.forEach(function (g) {
+    gridviews.forEach(function (g) {
         var gv = eval(g.name);
         gv.PerformCallback();
         document.getElementById(g.name + "_Title").innerHTML = _filename;
@@ -187,7 +187,15 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         })
 
         // Gridviews
-        updateGridviews(_gridviews)
+        _filteredData = null;
+        _gridviews.forEach(function (g) {
+            g.isHeaderFilter = false;   // set local array
+            g.isGrouping = false;       // set local array
+            var gv = eval(g.name);      // DevExpress control
+            gv.ClearFilter();
+            gv.PerformCallback();
+            document.getElementById(g.name + "_Title").innerHTML = _filename;
+        })
 
         // Pies
         var pieColNames = getPieColNames(data);
@@ -203,11 +211,9 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         // Bars
         var barColNames = getBarColNames(data);
         _bars.forEach(function (b) {
-            //var barData = getBarData(b.divName, jsonData, barColNames.xCol, 'Consumptive Use_M3;Quantity_m3', b.color, true);
             var barData = getBarData(b.divName, jsonData, barColNames.xCol, barColNames.yCol, b.color, true);
             if (barData != null) {
                 var barSvg = drawBar(b.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
-                //var barSvg = drawBar(b.divName, _testStackBarData, _testStackBarDataColumns, barData.width, barData.height, barData.color);
                 b.svg = barSvg;
             }
             document.getElementById(b.divName + "_Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
@@ -439,7 +445,7 @@ function renderBarProperty(id) {
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
 
     radioOrientationBar.SetValue(bar.isVertical);
-    ceBarColorPicker.SetColor(bar.color[0]);
+    ceBarColorPicker0.SetColor(bar.color[0]);
 }
 
 function renderMapProperty(id) {

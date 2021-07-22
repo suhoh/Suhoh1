@@ -45,7 +45,7 @@ function getBarData(paneId, jsonData, xCol, yCol, color, isInitial) {
 
     var xyArray = [];
     if (!isInitial) {
-        xyArray = bar.data;
+        xyArray = bar.data; // use existing data
     }
     else {
         var xy = [];

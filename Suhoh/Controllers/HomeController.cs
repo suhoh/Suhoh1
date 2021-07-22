@@ -76,6 +76,13 @@ namespace Suhoh.Controllers
             return PartialView("DxGridview", viewModel);
         }
 
+        [HttpPost]
+        public ActionResult GetGridviewKeys(ViewModel vm)
+        {
+            ViewModel viewModel = (ViewModel)Session["viewModel"];            
+            return Json(viewModel.GridviewKeys, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult LeftPanelProjectGridview(ViewModel vm)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
@@ -96,7 +103,6 @@ namespace Suhoh.Controllers
                 vm.IsGrouping = true;
             }
             
-
             var p = Request.Params["OnBeginCallback"];  // test - send from DevExpress PerformCallback
             ViewBag.IsChangePanels = true;              // test ViewBag
 

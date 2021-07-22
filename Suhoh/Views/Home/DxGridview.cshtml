@@ -19,7 +19,7 @@
         settings.ClientSideEvents.BeginCallback = "dxGridview_OnBeginCallback";
         settings.ClientSideEvents.EndCallback = "dxGridview_OnEndCallback";
 
-        settings.KeyFieldName = "Applicant";   // TODO: need to have unique column here
+        settings.KeyFieldName = "Seq";   // TODO: need to have unique column here
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.ControlStyle.CssClass = "dxGridview";
@@ -34,6 +34,8 @@
         {
             foreach (DataColumn c in Model.DxGridview.Columns)
             {
+                if (c.ColumnName == "Seq")
+                    continue;
                 settings.Columns.Add(column =>
                 {
                     if (c.DataType.Name == "DateTime")
@@ -110,9 +112,10 @@
         // Store filter and filtered rows
         settings.BeforeGetCallbackResult += (s, e) =>
         {
+            ViewModel vm = (ViewModel)Session["viewModel"];
             var grid = s as MVCxGridView;
-            var filter = grid.FilterExpression;
-            if (!String.IsNullOrEmpty(filter))
+            vm.FilterExpression = grid.FilterExpression;
+            if (!String.IsNullOrEmpty(Model.FilterExpression))
             {
                 var keys = "";
                 for (int i = 0; i < grid.VisibleRowCount; i++)
@@ -120,9 +123,11 @@
                     var key = grid.GetRowValues(i, grid.KeyFieldName).ToString();
                     keys += key + "|";
                 }
-                //store keys here to obtain only filtered rows from your model  
-                //store the fitler expressin here
+                if (keys.Length > 0)
+                    keys = keys.Substring(0, keys.Length - 1);  // remove last vertical bar
+                vm.GridviewKeys = keys;
             }
+            Session["viewModel"] = vm;
         };
 
     }).Bind(Model.DxGridview).GetHtml()

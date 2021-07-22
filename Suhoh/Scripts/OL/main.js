@@ -4,7 +4,7 @@
 
 const _gotoLocationSymbolTimer = 15000; // remove symbol after 15 seconds
 const _zoomToBuffer = 2000;     // zoom to buffer size (2K)
-const _zoomToDuration = 1200;   // duration when zoom to layer
+const _zoomToDuration = 1000;   // duration when zoom to layer
 const _lonColName = "Longitude";
 const _latColName = "Latitude";
 const _mapX = '-114.06666';

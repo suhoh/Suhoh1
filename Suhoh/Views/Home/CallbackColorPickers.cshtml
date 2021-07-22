@@ -12,16 +12,18 @@
         cbSsettings.SetContent(() =>
         {
             string[] cols = Model.YColNames.Split(';');
+            int idx = 0;
             foreach (var i in cols)
             {
                 @Html.DevExpress().ColorEdit(settings =>
                 {
-                    settings.Name = "ceBarColorPicker" + i.ToString();
+                    settings.Name = "ceBarColorPicker" + idx.ToString();
                     settings.Width = 240;
                     settings.Color = System.Drawing.Color.FromName("red");
                     settings.Properties.EnableCustomColors = true;
                     settings.Properties.ClientSideEvents.ColorChanged = "ceColorPickerClicked";
                 }).GetHtml();
+                ++idx;
             }
         });
     }).GetHtml()
