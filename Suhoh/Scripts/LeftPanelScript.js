@@ -253,18 +253,18 @@ function btnLeftPanelSaveProjectNameClick(s, e) {
                 url: url,
                 data: { 'projectName': pName },
                 dataType: "json",
-                success: successFunc,
-                error: errorFunc
+                success: successFunc2,
+                error: errorFunc2
             });
 
-            function successFunc(data, status) {
+            function successFunc2(data, status) {
                 _isSaveProject = true;
                 radioLeftPanelSaveLoad.SetValue(2); // switch to save GUI
                 radioLeftPanelSaveLoadClick();
                 refreshProjectList(_testEmail);
             }
 
-            function errorFunc(data, status) {
+            function errorFunc2(data, status) {
 
             }
 

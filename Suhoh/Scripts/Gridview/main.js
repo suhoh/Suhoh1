@@ -6,6 +6,8 @@ const _pageSize = 50;
 var _gridviews = [];
 var _activeGridview;
 var _headerFilterPanel, _groupingPanel;
+var _gridviewKeys = '';     // stored filtered keys (Seq)
+var _filteredData = null;  // stores filtered data from Gridview
 
 function initGridview(name) {
     _gridviews.push({ 'name': name, 'isHeaderFilter': false, 'isGrouping': false, 'pageSize': _pageSize });  // DevExpress control name
@@ -29,6 +31,58 @@ function dxGridview_OnEndCallback(s, e) {
     var gv = getGridview(s.name);
     var headerFilter = s.name + "_HeaderFilter";
     eval(headerFilter).SetChecked(gv.isHeaderFilter);
+
+    // Re-draw charts and maps
+    var url = "Home/GetGridviewKeys"
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { },
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc
+    });
+
+    function successFunc(data, status) {    // data: 11|33|234
+        if (data.length == 0)
+            return;
+        var orClause = getOrClause('x.Seq', data);
+        _filteredData = _jsonData.filter(function (x) {
+            return eval(orClause);
+        });
+
+        // Update dataset and Redraw pies
+        _pies.forEach(function (p) {
+            p.data = _filteredData;
+        });
+        updatePies(_pies, true);    // true: isInitial
+
+        // Update dataset and Redraw bars
+        _bars.forEach(function (b) {
+            b.data = _filteredData;
+        });
+        updateBars(_bars, true);    // true: isInitial
+
+        // Update dataset and Redraw maps
+        _maps.forEach(function (m) {
+            m.isLabelOn = false;    // set it to false when loading new data
+            addPointLayer(_filteredData, m, null, null, null, true); // true: zoom to layer
+        })
+    }
+
+    function errorFunc(data, status) {
+        console.log('Home/GetGridviewKeys: ' + status);
+    }
+}
+
+function getOrClause(operand, keys) {
+    var k = keys.split('|');
+    var orClause = "";
+    k.forEach(function (c) {
+        orClause += operand + "==" + c + "||";
+    });
+    orClause = orClause.substr(0, orClause.length - 2); // remove ||
+    return orClause;
 }
 
 function dxGridview_Init(s, e) {

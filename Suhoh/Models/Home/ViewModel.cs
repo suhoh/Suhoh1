@@ -21,8 +21,6 @@ namespace Suhoh.Model
         public int MainPanelCount { get; set; }         // initial number of panels to start with
         public string MainPanelJson { get; set; }
         public string CreatePanelName { get; set; }     // used when creating panel - Panel1Map1, Panel1Pie1...
-        public bool IsHeaderFilter { get; set; }
-        public bool IsGrouping { get; set; }
         public List<Panel> MainPanels { get; set; }
         public string ActiveProperty { get; set; }      // active property clicked from panel
 
@@ -62,6 +60,10 @@ namespace Suhoh.Model
         // Gridview
         public string GridviewTitle { get; set; }
         public string GridviewPageSize { get; set; }
+        public bool IsHeaderFilter { get; set; }
+        public bool IsGrouping { get; set; }
+        public string FilterExpression { get; set; }
+        public string GridviewKeys { get; set; }
 
         // Left Pane Search 
         public bool ChkLeftPanelATS { get; set; }
@@ -107,8 +109,9 @@ namespace Suhoh.Model
             // Gridview
             GridviewTitle = "Grid Title";
             GridviewPageSize = "50";
-            // show group panel intially but then it will be hide through JQuery due to cshtml not being able to show/hide
-            IsHeaderFilter = IsGrouping = false; 
+            IsHeaderFilter = IsGrouping = false;
+            FilterExpression = string.Empty;
+            GridviewKeys = string.Empty;
 
             AddPaneDirection = 1;
             AddPaneType = 1;

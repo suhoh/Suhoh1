@@ -62,6 +62,6 @@ function fitToLayer(map, layer) {
 
     var buffer = parseInt((extent[2] - extent[0]) / 10);
     extent = ol.extent.buffer(extent, buffer);
-    map.getView().fit(extent, { size: map.getSize(), duration: 1500 });
+    map.getView().fit(extent, { size: map.getSize(), duration: _zoomToDuration });
 }
 
