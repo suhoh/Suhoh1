@@ -98,7 +98,7 @@ namespace Suhoh.Model
             DdBarXColumn = "";
             RadioOrientationBar = 1;
             YColNames = string.Empty;
-            BarColors = new string[] { "#e41a1c" }; ; // initial bar color
+            BarColors = new string[] { "#e41a1c" }; // initial bar color
 
             // Map
             MapTitle = "Map Title";

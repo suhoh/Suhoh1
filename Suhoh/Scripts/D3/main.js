@@ -445,11 +445,11 @@ function ceColorPickerClicked(s, e) {
     //bar.color = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
     bar.color = _barColors;
     
-
     var barData = getBarData(bar.divName, _jsonData, bar.xCol, bar.yCol, bar.color, true);
     drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
 
     chkBarLabelClicked(null, null, bar.divName);
+    callbackColorPickers.PerformCallback({ 'ycol': bar.yCol, 'barColors': bar.color });
 }
 
 function btnBarMaximizeClick(s) {
