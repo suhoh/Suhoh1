@@ -81,7 +81,7 @@ function updateGridviews(gridviews) {
         return;
     gridviews.forEach(function (g) {
         var gv = eval(g.name);
-        gv.PerformCallback();
+        gv.PerformCallback({ 'isLoad': false });
         document.getElementById(g.name + "_Title").innerHTML = _filename;
     })
 }
@@ -173,6 +173,8 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
 
         populateLeftPanelSearchColumn(_columnNames);
 
+        _filteredData = null;   // Reset filtered data to null which applies all panel
+
         // Maps
         // if proper is open and Show Label is checked
         var labelColName;
@@ -187,13 +189,12 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         })
 
         // Gridviews
-        _filteredData = null;
         _gridviews.forEach(function (g) {
             g.isHeaderFilter = false;   // set local array
             g.isGrouping = false;       // set local array
             var gv = eval(g.name);      // DevExpress control
             gv.ClearFilter();
-            gv.PerformCallback();
+            gv.PerformCallback({ 'isLoad': true } );
             document.getElementById(g.name + "_Title").innerHTML = _filename;
         })
 
@@ -470,8 +471,8 @@ function renderBarProperty(id) {
 
 function renderMapProperty(id) {
     var map = getMap(id);
-    if (map.data == null)
-        return;
+    //if (map.data == null)
+    //    return;
 
     popupPanelProperty.Show();
     _activeMap = map;
@@ -528,7 +529,7 @@ function renderGridviewProperty(id) {
     //if (gv.data == null) // To do Jae -- no data
     //    return;
 
-    //popupPanelProperty.Show();
+    popupPanelProperty.Show();
     _activeGridview = gv;
 
     popupPanelProperty.SetHeaderText("Grid Property");
