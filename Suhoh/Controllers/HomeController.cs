@@ -48,14 +48,16 @@ namespace Suhoh.Controllers
             return activeSchema.Id;
         }
 
-        public ActionResult CallbackPopupPanelProperty(ViewModel vm, string sender)
+        public ActionResult CallbackPopupPanelProperty(ViewModel vm, string sender, string yCol)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
             viewModel.ActiveProperty = sender;
+            viewModel.YColNames = yCol;
             Session["viewModel"] = viewModel;
             return PartialView("CallbackPopupPanelProperty", viewModel);
         }
 
+        // ycol: aaa;bbb;
         public ActionResult CallbackColorPickers(ViewModel vm, string ycol, string[] barColors)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];

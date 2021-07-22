@@ -34,8 +34,8 @@
         {
             foreach (DataColumn c in Model.DxGridview.Columns)
             {
-                if (c.ColumnName == "Seq")
-                    continue;
+                //if (c.ColumnName == "Seq")
+                //    continue;
                 settings.Columns.Add(column =>
                 {
                     if (c.DataType.Name == "DateTime")

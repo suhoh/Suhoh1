@@ -356,8 +356,17 @@ function btnAddNewPaneClick(s, e) {
 function showPropertyPopup(s) {
     activateButton(s);
     _activePropertyName = s.id; // Panel2Bar1_Property
+
+    // Set y column for bar graph for use when property opens
+    var yCol = '';
+    if (_activePropertyName.indexOf('BAR')) {
+        var id = _activePropertyName.split('_')[0];
+        var b = getBar(id);
+        yCol = b.yCol;
+    }
+
     callbackPopupPanelProperty.PerformCallback({
-        'sender': s.id
+        'sender': s.id, 'yCol': yCol
     });
 }
 
