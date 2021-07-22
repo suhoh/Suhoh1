@@ -68,12 +68,15 @@ namespace Suhoh.Controllers
             return PartialView("CallbackColorPickers", viewModel);
         }
 
-        public ActionResult DxGridview(ViewModel vm)
+        public ActionResult DxGridview(ViewModel vm, bool? isLoad)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
             viewModel.CreatePanelName = Request.Params["dxGridview_sender"];
             viewModel.IsHeaderFilter = Convert.ToBoolean(Request.Params["dxGridview_HeaderFilter"]);
             viewModel.IsGrouping = Convert.ToBoolean(Request.Params["dxGridview_Grouping"]);
+
+            if (isLoad.HasValue && isLoad.Value == true)
+                viewModel.GridviewKeys = string.Empty;
 
             Session["viewModel"] = viewModel;
             return PartialView("DxGridview", viewModel);

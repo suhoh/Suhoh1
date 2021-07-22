@@ -29,8 +29,11 @@ function dxGridview_OnBeginCallback(s, e) {
 }
 function dxGridview_OnEndCallback(s, e) {
     var gv = getGridview(s.name);
+    // Adjust checkboxes
     var headerFilter = s.name + "_HeaderFilter";
     eval(headerFilter).SetChecked(gv.isHeaderFilter);
+    var grouping = s.name + "_Grouping";
+    eval(grouping).SetChecked(gv.isGrouping);
 
     // Re-draw charts and maps
     var url = "Home/GetGridviewKeys"
@@ -117,7 +120,7 @@ function chkHeaderFilterGroupingChecked(s, e) {
     gv.isHeaderFilter = eval(pId + "_HeaderFilter").GetChecked();
     gv.isGrouping = eval(pId + "_Grouping").GetChecked();
 
-    eval(pId).PerformCallback();   // Refresh gridview
+    eval(pId).PerformCallback({ 'isLoad': false });   // Refresh gridview
 }
 
 
