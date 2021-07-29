@@ -117,8 +117,8 @@
             ViewContext.Writer.Write("<div id='@Model.CreatePanelName' style='position:relative;'>");
             ViewContext.Writer.Write("<div class='divGridviewTitle' id='" + (String.Format("{0}_Title", Model.CreatePanelName)) + "' ><span style='font-size: large;'>GRID</span></div>");
 
+            ViewContext.Writer.Write("<div id='" + (String.Format("{0}_Tools", Model.CreatePanelName)) + "' ><span style='text-align:right;'>");
             // Header filter, Grouping checkbox
-            ViewContext.Writer.Write("<div id='" + (String.Format("{0}_HeaderFilter", Model.CreatePanelName)) + "' ><span style='text-align:right;'>");
             Html.DevExpress().CheckBox(cbsettings =>
             {
                 cbsettings.Name = String.Format("{0}_HeaderFilter", Model.CreatePanelName);
@@ -126,6 +126,7 @@
                 cbsettings.ControlStyle.CssClass = "divGridviewHeaderFilter";
                 cbsettings.Properties.ClientSideEvents.CheckedChanged = "chkHeaderFilterGroupingChecked";
             }).GetHtml();
+            // Grouping
             Html.DevExpress().CheckBox(cbsettings =>
             {
                 cbsettings.Name = String.Format("{0}_Grouping", Model.CreatePanelName);
@@ -135,14 +136,20 @@
             }).GetHtml();
             ViewContext.Writer.Write("</span></div>");
 
+            // Toolbars
+            ViewContext.Writer.Write("<div class='divGridviewReset'>");
+            ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Reset", Model.CreatePanelName)) + "' type='button' class='btnGridviewReset' title='Reset' " +
+            "onclick='btnGridviewResetClick(this)'>A</button>");
+            ViewContext.Writer.Write("</div>");
+
             ViewContext.Writer.Write("<div class='divGridviewMaximize'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Maximize", Model.CreatePanelName)) + "' type='button' class='btnGridviewMaximize' title='Maximize' " +
-                "onclick='btnGridviewMaximize(this)'></button>");
+                "onclick='btnGridviewMaximizeClick(this)'></button>");
             ViewContext.Writer.Write("</div>");
 
             ViewContext.Writer.Write("<div class='divGridviewLegend'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Legend", Model.CreatePanelName)) + "' type='button' class='btnGridviewLegend' title='Legend' " +
-                "onclick='btnGridviewLegend(this)'></button>");
+                "onclick='btnGridviewLegendClick(this)'></button>");
             ViewContext.Writer.Write("</div>");
 
             ViewContext.Writer.Write("<div class='divGridviewProperty'>");
@@ -152,7 +159,7 @@
 
             ViewContext.Writer.Write("<div class='divGridviewSetting'>");
             ViewContext.Writer.Write("<button id='" + (String.Format("{0}_Close", Model.CreatePanelName)) + "' type='button' class='btnGridviewClose' title='Close' " +
-                "onclick='btnGridviewClose(this)'></button>");
+                "onclick='btnGridviewCloseClick(this)'></button>");
             ViewContext.Writer.Write("</div>");
 
             ViewContext.Writer.Write("</div>");

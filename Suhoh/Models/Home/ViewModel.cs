@@ -63,7 +63,8 @@ namespace Suhoh.Model
         public bool IsHeaderFilter { get; set; }
         public bool IsGrouping { get; set; }
         public string FilterExpression { get; set; }
-        public string GridviewKeys { get; set; }
+        public string GridviewKeys { get; set; }    // gets generated in DxGridview.cshtml
+        public bool IsReload { get; set; }          // true when load or reload data
 
         // Left Pane Search 
         public bool ChkLeftPanelATS { get; set; }
@@ -112,6 +113,7 @@ namespace Suhoh.Model
             IsHeaderFilter = IsGrouping = false;
             FilterExpression = string.Empty;
             GridviewKeys = string.Empty;
+            IsReload = false;
 
             AddPaneDirection = 1;
             AddPaneType = 1;
