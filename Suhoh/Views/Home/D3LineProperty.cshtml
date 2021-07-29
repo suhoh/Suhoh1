@@ -1,21 +1,21 @@
 ﻿@using Suhoh.Model
 @model ViewModel
 
-<div id="divBarTitle" class="divBarTitle">
+<div id="divLineTitle" class="divLineTitle">
     <table>
         <tr>
-            <th id="thBarTitleHeading1" class="thBarTitleHeading1">Title</th>
+            <th id="thLineTitleHeading1" class="thLineTitleHeading1">Title</th>
         </tr>
         <tr>
             <th>
-                @Html.DevExpress().TextBoxFor(model => model.BarTitle,
+                @Html.DevExpress().TextBoxFor(model => model.LineTitle,
                           settings =>
                           {
-                              settings.Name = "tbPropertyBarTitle";
+                              settings.Name = "tbPropertyLineTitle";
                               settings.Width = 240;
                               settings.Text = "Graph Title";
-                              settings.ControlStyle.CssClass = "D3BarTitlePropertyBox";
-                              settings.Properties.ClientSideEvents.KeyUp = "tbBarPropertyTitleKeyUp";
+                              settings.ControlStyle.CssClass = "D3LineTitlePropertyBox";
+                              settings.Properties.ClientSideEvents.KeyUp = "tbLinePropertyTitleKeyUp";
                           }
                           ).GetHtml()
             </th>
@@ -23,74 +23,74 @@
     </table>
 </div>
 
-<div id="divBarLabel" class="divBarLabel">
+<div id="divLineLabel" class="divLineLabel">
     <table>
         <tr>
-            <th id="thBarLabelHeading1" class="thBarLabelHeading1">
+            <th id="thLineLabelHeading1" class="thLineLabelHeading1">
                 Label
             </th>
         </tr>
         <tr>
-            <th id="thBarXValueChkBox" class="thBarXValueChkBox">
-                @Html.DevExpress().CheckBoxFor(settings => Model.CbBarXValueLabel,
+            <th id="thLineXValueChkBox" class="thLineXValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.CbLineXValueLabel,
                     settings =>
                     {
-                        settings.Name = "chkBarXValueLabel";
+                        settings.Name = "chkLineXValueLabel";
                         settings.Text = "X Value";
-                        settings.Properties.ClientSideEvents.CheckedChanged = "chkBarLabelClicked";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "chkLineLabelClicked";
                     }).GetHtml()
             </th>
-            <th id="thBarYValueChkBox" class="thBarYValueChkBox">
-                @Html.DevExpress().CheckBoxFor(settings => Model.CbBarYValueLabel,
+            <th id="thLineYValueChkBox" class="thLineYValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.CbLineYValueLabel,
                     settings =>
                     {
-                        settings.Name = "chkBarYValueLabel";
+                        settings.Name = "chkLineYValueLabel";
                         settings.Text = "Y Value";
-                        settings.Properties.ClientSideEvents.CheckedChanged = "chkBarLabelClicked";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "chkLineLabelClicked";
                     }).GetHtml()
             </th>
         </tr>
     </table>
 </div>
 
-<div id="divBarXYColumn" class="divBarXYColumn">
+<div id="divLineXYColumn" class="divLineXYColumn">
     <table>
         <tr>
-            <th id="thBarXYColumnHeading1" class="thBarXYColumnHeading1">
+            <th id="thLineXYColumnHeading1" class="thLineXYColumnHeading1">
                 XY Columns
             </th>
         </tr>
         <tr>
-            <th id="thBarXColumnDropDownLabel" class="thBarXColumnDropDownLabel">
+            <th id="thLineXColumnDropDownLabel" class="thLineXColumnDropDownLabel">
                 X Column
             </th>
-            <th id="thBarXColumnDropDown" class="thBarXColumnDropDown">
-                @Html.DevExpress().ComboBoxFor(model => model.DdBarXColumn,
+            <th id="thLineXColumnDropDown" class="thLineXColumnDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.DdLineXColumn,
                 settings =>
                 {
-                    settings.Name = "cbBarXColumn";
+                    settings.Name = "cbLineXColumn";
                     settings.Width = 167;
                     settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
                     settings.Properties.DropDownWidth = 165;
-                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbBarXYColumnChanged";
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLineXYColumnChanged";
                 }).BindList(DataEngine.GetXColumn()).GetHtml()
             </th>
         </tr>
         <tr>
-            <th id="thBarYColumnDropDownLabel" class="thBarYColumnDropDownLabel">
+            <th id="thLineYColumnDropDownLabel" class="thLineYColumnDropDownLabel">
                 Y Column
             </th>
-            <th id="thBarYColumnDropDown" class="thBarYColumnDropDown">
+            <th id="thLineYColumnDropDown" class="thLineYColumnDropDown">
                 @Html.DevExpress().DropDownEdit(settings =>
                 {
-                settings.Name = "ddBarYColumn";
+                settings.Name = "ddLineYColumn";
                 settings.Width = 167;
 
                     settings.SetDropDownWindowTemplateContent(c =>
                     {
                         @Html.DevExpress().ListBox(listBoxSettings =>
                         {
-                            listBoxSettings.Name = "lbBarYColumn";
+                            listBoxSettings.Name = "lbLineYColumn";
                             listBoxSettings.Width = 164;
                             listBoxSettings.Height = 180;
                             listBoxSettings.Properties.EnableSelectAll = true;
@@ -100,16 +100,16 @@
                             listBoxSettings.Properties.Items.Add("Consumptive Use_M3", "1");
                             listBoxSettings.Properties.Items.Add("Pump Rate", "2");
 
-                            listBoxSettings.Properties.ClientSideEvents.SelectedIndexChanged = "cbBarXYColumnChanged";
+                            listBoxSettings.Properties.ClientSideEvents.SelectedIndexChanged = "cbLineXYColumnChanged";
                             //listBoxSettings.Properties.ClientSideEvents.Init = "cbBarXYColumnChanged";
                         }).Render();
                         ViewContext.Writer.Write("<div style=\"margin: 6px; overflow: hidden;\">");
                         Html.DevExpress().Button(buttonSetting =>
                         {
-                            buttonSetting.Name = "lbBarButtonClose";
+                            buttonSetting.Name = "lbLineButtonClose";
                             buttonSetting.Text = "Close";
                             buttonSetting.Style.Add("float", "right");
-                            buttonSetting.ClientSideEvents.Click = "function(s, e) { ddBarYColumn.HideDropDown(); }";
+                            buttonSetting.ClientSideEvents.Click = "function(s, e) { ddLineYColumn.HideDropDown(); }";
                             buttonSetting.Height = 26;
                         }).Render();
                         ViewContext.Writer.Write("</div>");
@@ -120,29 +120,30 @@
     </table>
 </div>
 
-<div id="divBarOrientation" class="divBarOrientation">
+<div id="divLineShape" class="divLineShape">
     <table>
         <tr>
-            <th id="thBarOrientationHeading1" class="thBarOrientationHeading1">
-                Orientation
+            <th id="thLineShapeHeading1" class="thLineShapeHeading1">
+                Line Shape
             </th>
         </tr>
         <tr>
-            <th id="thBarOrientationRadio" class="thBarOrientationRadio">
-                @Html.DevExpress().RadioButtonListFor(model => Model.RadioOrientationBar,
+            <th id="thLineShapeRadio" class="thLineShapeRadio">
+                @Html.DevExpress().RadioButtonListFor(model => Model.RadioLineShape,
                 settings =>
                 {
-                    settings.Name = "radioOrientationBar";
+                    settings.Name = "radioLineShape";
                     settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
-                    settings.Properties.Items.Add("Vertical", 1);
-                    settings.Properties.Items.Add("Horizontal", 2);
+                    settings.Properties.Items.Add("Line1", 1);
+                    settings.Properties.Items.Add("Line2", 2);
+                    settings.Properties.Items.Add("Line3", 3);
                     settings.Properties.RepeatColumns = 3;
                     settings.Width = 200;
                     settings.Height = 28;
-                    settings.ControlStyle.CssClass = "radioOrientationBar";
+                    settings.ControlStyle.CssClass = "radioLineShape";
                     settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
                     settings.Properties.ValueType = typeof(Int32);
-                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioOrientationBarClicked";
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioLineShapeClicked";
                 }).GetHtml()
             </th>
         </tr>
@@ -150,5 +151,5 @@
 </div>
 
 <div>
-    @Html.Partial("CallbackBarColorPickers", Model)
+    @Html.Partial("CallbackLineColorPickers", Model)
 </div>

@@ -25,6 +25,7 @@ function clearAllPanels() {
     _maps = [];
     _pies = [];
     _bars = [];
+    _lines = [];
     _gridviews = [];
 }
 
@@ -220,6 +221,17 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
             document.getElementById(b.divName + "_Title").innerHTML = b.xCol + " vs " + b.yCol;   // title in panel
         });
 
+        // Lines
+        var lineColNames = getLineColNames(data);
+        _lines.forEach(function (l) {
+            var lineData = getLineData(l.divName, jsonData, lineColNames.xCol, lineColNames.yCol, l.color, true);
+            if (lineData != null) {
+                var lineSvg = drawLine(l.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
+                l.svg = lineSvg;
+            }
+            document.getElementById(l.divName + "_Title").innerHTML = l.xCol + " vs " + l.yCol; // title in panel
+        });
+
         // render property popup if shown
         if (popupPanelProperty.IsVisible())
             callbackPopupPanelProperty_OnEndCallback();
@@ -305,6 +317,22 @@ function getBarColNames(columnNames) {
     return { xCol: xCol, yCol: yCol }
 }
 
+function getLineColNames(columnNames) {
+    if (columnNames == undefined || columnNames.length == 0)
+        return;
+
+    // xCol: String or DateTime, yCol: numbers
+    var xCol = null;
+    var yCol = null;
+    for (i = 0; i < columnNames.length; i++) {
+        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date'))
+            xCol == columnNames[i].Name;
+        if (yCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
+            yCol = columnNames[i].Name;
+    }
+    return { xCol: xCol, yCol: yCol }
+}
+
 // This function will be used for all 3 panels (Map, Graph and Gridview)
 function radioAddPaneTypeClick(s, e) {
 }
@@ -360,10 +388,14 @@ function showPropertyPopup(s) {
 
     // Set y column for bar graph for use when property opens
     var yCol = '';
-    if (_activePropertyName.indexOf('BAR')) {
+    var chart;
+    if (_activePropertyName.toUpperCase().indexOf('BAR') > -1 || _activePropertyName.toUpperCase().indexOf('LINE') > -1) {
         var id = _activePropertyName.split('_')[0];
-        var b = getBar(id);
-        yCol = b.yCol;
+        if (id.toUpperCase().indexOf('BAR') > -1)
+            chart = getBar(id);
+        if (id.toUpperCase().indexOf('LINE') > -1)
+            chart = getLine(id);
+        yCol = chart.yCol;
     }
 
     callbackPopupPanelProperty.PerformCallback({
@@ -381,6 +413,8 @@ function callbackPopupPanelProperty_OnEndCallback(s, e) {
         renderPieProperty(id);
     if (id.toUpperCase().indexOf('BAR') > -1) 
         renderBarProperty(id)
+    if (id.toUpperCase().indexOf('LINE') > -1)
+        renderLineProperty(id)
     if (id.toUpperCase().indexOf('MAP') > -1)
         renderMapProperty(id)
     if (id.toUpperCase().indexOf('GRIDVIEW') > -1)
@@ -465,14 +499,26 @@ function renderBarProperty(id) {
     tbPropertyBarTitle.SetText(bar.xCol + " vs " + bar.yCol); // title in property
 
     radioOrientationBar.SetValue(bar.isVertical);
-    document.getElementById('divColorPickerText').innerHTML = selectedItems[0].text;
+    document.getElementById('divBarColorPickerText').innerHTML = selectedItems[0].text;
     ceBarColorPicker0.SetColor(bar.color[0]); // To do AndyLee
+}
+
+function renderLineProperty(id) {
+    var line = getLine(id);
+    //if (line.data == null)
+    //    return;
+
+    popupPanelProperty.Show();
+    _activeline = line;
+
+    popupPanelProperty.SetHeaderText("Line Property");
+    _activeLine = line;
 }
 
 function renderMapProperty(id) {
     var map = getMap(id);
-    //if (map.data == null)
-    //    return;
+    if (map.data == null)
+        return;
 
     popupPanelProperty.Show();
     _activeMap = map;

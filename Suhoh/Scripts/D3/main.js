@@ -28,8 +28,8 @@ function initGraph(divName) {
         initPie(divName);
     else if (divName.toUpperCase().indexOf('BAR') > -1)
         initBar(divName);
-    //else if (divName.toUpperCase().indexOf('LINE') > -1)
-    //    initPie(divName);
+    else if (divName.toUpperCase().indexOf('LINE') > -1)
+        initLine(divName);
     //else if (divName.toUpperCase().indexOf('SCATTER') > -1)
     //    initPie(divName);
     //else
@@ -319,7 +319,7 @@ function cbBarXYColumnChanged(s, e) {
     ddBarYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
 
     if(selectedItems.length == 0)
-        $('#divColorPicker').remove();
+        $('#divBarColorPicker').remove();
 
     bar.yCol = getSelectedItemsText(selectedItems);
     //bar.color = ceBarColorPicker.GetText();
@@ -348,7 +348,7 @@ function cbBarXYColumnChanged(s, e) {
     chkBarLabelClicked(null, null, bar.divName);
 
     if (s.name == 'lbBarYColumn')
-        callbackColorPickers.PerformCallback({ 'ycol': bar.yCol, 'barColors': bar.color });
+        callbackBarColorPickers.PerformCallback({ 'barYcol': bar.yCol, 'barColors': bar.color });
 
 }
 
@@ -432,7 +432,7 @@ function radioOrientationBarClicked(s, e) {
     chkBarLabelClicked(null, null, bar.divName);
 }
 
-function ceColorPickerClicked(s, e) {
+function ceBarColorPickerClicked(s, e) {
     if (_activeBar == undefined)
         return;
 
@@ -449,7 +449,7 @@ function ceColorPickerClicked(s, e) {
     drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
 
     chkBarLabelClicked(null, null, bar.divName);
-    callbackColorPickers.PerformCallback({ 'ycol': bar.yCol, 'barColors': bar.color });
+    callbackBarColorPickers.PerformCallback({ 'ycol': bar.yCol, 'barColors': bar.color });
 }
 
 function btnBarMaximizeClick(s) {
@@ -469,10 +469,46 @@ function btnBarCloseClick(s) {
 
 }
 
-function callbackColorPickers_OnBeginCallback(s, e) {
+function callbackBarColorPickers_OnBeginCallback(s, e) {
 
 }
 
-function callbackColorPickers_OnEndCallback(s, e) {
+function callbackBarColorPickers_OnEndCallback(s, e) {
     //ceBarColorPicker.SetColor("#0000FF");
+}
+
+// Line Chart
+function tbLinePropertyTitleKeyUp(s, e) {
+    var caller;
+    if (s.name == undefined)    // called manually
+        caller = s + "_Title";
+    else
+        caller = _activeLine.divName + "_Title";
+
+    if (typeof tbPropertyLineTitle !== "undefined" && ASPxClientUtils.IsExists(tbPropertyLineTitle))
+        document.getElementById(caller).innerHTML = tbPropertyLineTitle.GetText();
+}
+
+function chkLineLabelClicked(s, e, id) {
+
+}
+
+function cbLineXYColumnChanged(s, e) {
+
+}
+
+function radioLineShapeClicked(s, e) {
+
+}
+
+function callbackLineColorPickers_OnBeginCallback(s, e) {
+
+}
+
+function callbackLineColorPickers_OnEndCallback(s, e) {
+    
+}
+
+function ceLineColorPickerClicked(s, e) {
+
 }

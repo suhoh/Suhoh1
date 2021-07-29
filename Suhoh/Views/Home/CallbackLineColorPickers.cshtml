@@ -1,0 +1,42 @@
+﻿
+@using Suhoh.Model
+@model ViewModel
+
+@Html.DevExpress().CallbackPanel(
+    cbSsettings =>
+    {
+        cbSsettings.Name = "callbackLineColorPickers";
+        cbSsettings.CallbackRouteValues = new { Controller = "Home", Action = "CallbackLineColorPickers" };
+        cbSsettings.ClientSideEvents.BeginCallback = "callbackLineColorPickers_OnBeginCallback";
+        cbSsettings.ClientSideEvents.EndCallback = "callbackLineColorPickers_OnEndCallback";
+        cbSsettings.SetContent(() =>
+        {
+            if (Model.LineYColNames.Length > 0)
+            {
+                string[] lineCols = Model.LineYColNames.Split(';');
+
+                ViewContext.Writer.Write("<Label class='lineColorPickerHeading'>Color</Label>");
+
+                ViewContext.Writer.Write("<div id='divLineColorPicker' class='divLineColorPicker'>");
+                for (int i = 0; i < lineCols.Length; i++)
+                {
+                    ViewContext.Writer.Write("<div id='divLineColorPickerText' class='divLineColorPickerText'>");
+                    ViewContext.Writer.Write(lineCols[i]);
+                    ViewContext.Writer.Write("</div>");
+
+                    ViewContext.Writer.Write("<div id='divLineColorPickerDropDown' class='divLineColorPickerDropDown'>");
+                    @Html.DevExpress().ColorEdit(settings =>
+                    {
+                        settings.Name = "ceLineColorPicker" + i.ToString();
+                        settings.Width = 120;
+                        settings.Color = System.Drawing.ColorTranslator.FromHtml(Model.LineColors[i]);
+                        settings.Properties.EnableCustomColors = true;
+                        settings.Properties.ClientSideEvents.ColorChanged = "ceLineColorPickerClicked";
+                    }).GetHtml();
+                    ViewContext.Writer.Write("</div>");
+                }
+                ViewContext.Writer.Write("</div>");
+            }
+        });
+    }).GetHtml()
+

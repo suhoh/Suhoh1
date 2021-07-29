@@ -14,6 +14,8 @@
                 Html.RenderPartial("D3PieProperty", Model);
             if (Model.ActiveProperty.ToUpper().Contains("BAR"))
                 Html.RenderPartial("D3BarProperty", Model);
+            if (Model.ActiveProperty.ToUpper().Contains("LINE"))
+                Html.RenderPartial("D3LineProperty", Model);
             if (Model.ActiveProperty.ToUpper().Contains("MAP"))
                 Html.RenderPartial("OLMapProperty", Model);
             if (Model.ActiveProperty.ToUpper().Contains("GRIDVIEW"))

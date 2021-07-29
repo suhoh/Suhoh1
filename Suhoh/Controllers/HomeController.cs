@@ -51,21 +51,34 @@ namespace Suhoh.Controllers
         public ActionResult CallbackPopupPanelProperty(ViewModel vm, string sender, string yCol)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
+            if (sender.ToUpper().Contains("BAR"))
+                viewModel.BarYColNames = yCol;
+            if (sender.ToUpper().Contains("LINE"))
+                viewModel.LineYColNames = yCol;
             viewModel.ActiveProperty = sender;
-            viewModel.YColNames = yCol;
             Session["viewModel"] = viewModel;
             return PartialView("CallbackPopupPanelProperty", viewModel);
         }
 
         // ycol: aaa;bbb;
-        public ActionResult CallbackColorPickers(ViewModel vm, string ycol, string[] barColors)
+        public ActionResult CallbackBarColorPickers(ViewModel vm, string barYcol, string[] barColors)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
-            viewModel.YColNames = ycol;
+            viewModel.BarYColNames = barYcol;
             viewModel.BarColors = barColors;
             Session["viewModel"] = viewModel;
 
-            return PartialView("CallbackColorPickers", viewModel);
+            return PartialView("CallbackBarColorPickers", viewModel);
+        }
+
+        public ActionResult CallbackLineColorPickers(ViewModel vm, string lineYcol, string[] lineColors)
+        {
+            ViewModel viewModel = (ViewModel)Session["viewModel"];
+            viewModel.LineYColNames = lineYcol;
+            viewModel.LineColors = lineColors;
+            Session["viewModel"] = viewModel;
+
+            return PartialView("CallbackLineColorPickers", viewModel);
         }
 
         public ActionResult DxGridview(ViewModel vm, bool? isLoad)

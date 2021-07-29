@@ -48,8 +48,17 @@ namespace Suhoh.Model
         public bool CbBarXValueLabel { get; set; }
         public string DdBarXColumn { get; set; }
         public int RadioOrientationBar { get; set; }
-        public string YColNames { get; set; }
+        public string BarYColNames { get; set; }
         public string[] BarColors { get; set; }
+
+        // Line Chart Property
+        public string LineTitle { get; set; }
+        public bool CbLineXValueLabel { get; set; }
+        public bool CbLineYValueLabel { get; set; }
+        public string DdLineXColumn { get; set; }
+        public int RadioLineShape { get; set; }
+        public string LineYColNames { get; set; }
+        public string[] LineColors { get; set; }
 
         // OpenLayers
         public string MapTitle { get; set; }
@@ -97,8 +106,16 @@ namespace Suhoh.Model
             CbBarXValueLabel = false;
             DdBarXColumn = "";
             RadioOrientationBar = 1;
-            YColNames = string.Empty;
+            BarYColNames = string.Empty;
             BarColors = new string[] { "#e41a1c" }; // initial bar color
+
+            // Line Chart Property
+            CbLineXValueLabel = false;
+            CbLineYValueLabel = false;
+            DdLineXColumn = "";
+            RadioLineShape = 1;
+            LineYColNames = string.Empty;
+            LineColors = new string[] { "#e41a1c" }; // initial line color
 
             // Map
             MapTitle = "Map Title";
@@ -129,7 +146,7 @@ namespace Suhoh.Model
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
             MainPanelCount = 3;
-            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Bar1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
+            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Line1']}, {'name': 'Panel2', 'type': ['Bar1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
     }
 

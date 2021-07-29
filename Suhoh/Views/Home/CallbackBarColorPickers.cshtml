@@ -1,0 +1,41 @@
+﻿
+@using Suhoh.Model
+@model ViewModel
+
+@Html.DevExpress().CallbackPanel(
+    cbSsettings =>
+    {
+        cbSsettings.Name = "callbackBarColorPickers";
+        cbSsettings.CallbackRouteValues = new { Controller = "Home", Action = "CallbackBarColorPickers" };
+        cbSsettings.ClientSideEvents.BeginCallback = "callbackBarColorPickers_OnBeginCallback";
+        cbSsettings.ClientSideEvents.EndCallback = "callbackBarColorPickers_OnEndCallback";
+        cbSsettings.SetContent(() =>
+        {
+            if (Model.BarYColNames.Length > 0)
+            {
+                string[] barCols = Model.BarYColNames.Split(';');
+
+                ViewContext.Writer.Write("<Label class='barColorPickerHeading'>Color</Label>");
+
+                ViewContext.Writer.Write("<div id='divBarColorPicker' class='divBarColorPicker'>");
+                for (int i = 0; i < barCols.Length; i++)
+                {
+                    ViewContext.Writer.Write("<div id='divBarColorPickerText' class='divBarColorPickerText'>");
+                    ViewContext.Writer.Write(barCols[i]);
+                    ViewContext.Writer.Write("</div>");
+
+                    ViewContext.Writer.Write("<div id='divBarColorPickerDropDown' class='divBarColorPickerDropDown'>");
+                    @Html.DevExpress().ColorEdit(settings =>
+                    {
+                        settings.Name = "ceBarColorPicker" + i.ToString();
+                        settings.Width = 120;
+                        settings.Color = System.Drawing.ColorTranslator.FromHtml(Model.BarColors[i]);
+                        settings.Properties.EnableCustomColors = true;
+                        settings.Properties.ClientSideEvents.ColorChanged = "ceBarColorPickerClicked";
+                    }).GetHtml();
+                    ViewContext.Writer.Write("</div>");
+                }
+                ViewContext.Writer.Write("</div>");
+            }
+        });
+    }).GetHtml()

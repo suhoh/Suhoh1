@@ -2,25 +2,26 @@
 // D3 bar chart functions
 //
 
-//var _barData;
-//var _barSvg = null;
+const _barMarginTop = 30;
+const _barMarginRight = 30;
+const _barMarginLeft = 50;
+const _barMarginBottom = 30;
 
 var _bars = [];
 var _activeBar;
+var _barSvgHeight;
+var _barColors = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
 
-function initBar_old(divName) {
+function initBar(divName) {
     _bars.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'isLegend': true,
-        'textLabel': null, 'color': 1, 'isLabel': false,
-        'isXValue': false, 'isYValue': false, 'color': '#FF6600', 'isVertical': 1
+        'textLabel': null, 'isLabel': false,
+        'isXValue': false, 'isYValue': false, 'isVertical': 1,
+        'color': _barColors
     })
-
-    //for (i = 0; i < _testStackBarData.length; i++) {
-    //    var a = _testStackBarData[i].Y.split(',');
-    //}
 }
 
-function getBar_old(divName) {
+function getBar(divName) {
     for (i = 0; i < _bars.length; i++) {
         if (_bars[i].divName == divName)
             return _bars[i]
@@ -28,42 +29,43 @@ function getBar_old(divName) {
     return null;
 }
 
-function getBarData_old(paneId, jsonData, xCol, yCol, color, isInitial) {
+function getBarData(paneId, jsonData, xCol, yCol, color, isInitial) {
     if (jsonData == null)
         return null;
 
     var bGraph = splitterMain.GetPaneByName(paneId);
     var width = bGraph.GetClientWidth();
     var height = bGraph.GetClientHeight();
-    //var min = Math.min(width, height);
-
     var bar = getBar(paneId);
     bar.xCol = xCol;    // Applicant
     bar.yCol = yCol;    // Elevation; Quantity_m3
     bar.color = color;
 
+    // Y columns
+    var yCols = yCol.split(';');
+
     var xyArray = [];
     if (!isInitial) {
-        xyArray = bar.data;
+        xyArray = bar.data; // use existing data
     }
     else {
-        var xy = groupBy(jsonData, xCol, yCol);
-        for (i = 0; i < xy.length; i++) {
-            xyArray.push({ "X": xy[i][xCol], "Y": xy[i][yCol] });
+        var xy = [];
+        for (i = 0; i < yCols.length; i++) {
+            xy.push(groupBy(jsonData, xCol, yCols[i])); // 3 dimensional array
+        }
+        for (j = 0; j < xy[0].length; j++) {    // take first array length
+            var s = { X: xy[0][j][xCol] };
+            for (k = 0; k < yCols.length; k++) {
+                s[yCols[k]] = xy[k][j][yCols[k]]
+            }
+            xyArray.push(s);
         }
     }
-
-    //return { barData: xyArray, width: width, height: height, min: min, color: color }
-    return { barData: xyArray, width: width, height: height, color: color }
+    return { barData: xyArray, colData: yCols, width: width, height: height, color: color }
 }
 
-function drawBar_old(divName, data, width, height, barColor) {
-    var svgHeight = height - 30; // svg height will be 30px smaller than panel height to leave room for title
-    var marginTop = 30;
-    var marginRight = 30;
-    var marginLeft = 50;
-    var marginBottom = 30;
-
+function drawBar(divName, data, columns, width, height, barColor) {
+    
     if (data == undefined)
         return null;
 
@@ -72,45 +74,70 @@ function drawBar_old(divName, data, width, height, barColor) {
 
     d3.select("#" + divName).selectAll("svg").remove();
 
+    if (columns[0].length == 0) {
+        $('#divBarColorPickerDropDown').remove();
+        return;
+    }
+    //console.log(columns);
+
+    _barSvgHeight = height - 30; // svg height will be 30px smaller than panel height to leave room for title
+
     var svg = d3.select("#" + divName)
         .append("svg")
         .attr("width", width)
-        .attr("height", svgHeight)
+        .attr("height", _barSvgHeight)
         .attr("class", "barChart")
-        .attr("transform", "translate(0," + marginTop + ")")
+        .attr("transform", "translate(0," + _barMarginTop + ")")
         .append("g");
+
+    var stackedData = d3.stack()
+        .keys(columns)
+        (data)
+        .map(d => (d.forEach(v => v.key = d.key), d));
 
     var x;
     var y;
     // x and y band
     if (bar.isVertical == 1) {
         if (width > 400 && bar.isLegend == true)
-            x = d3.scaleBand().rangeRound([0, width - marginLeft - marginRight - 50 - 115]).padding(0.1);
+            x = d3.scaleBand().rangeRound([0, width - _barMarginLeft - _barMarginRight - 50 - 115]).padding(0.1);
         else
-            x = d3.scaleBand().rangeRound([0, width - marginLeft - marginRight - 50]).padding(0.1);
-        y = d3.scaleLinear().rangeRound([svgHeight - marginTop - marginBottom - 30, 0]);
+            x = d3.scaleBand().rangeRound([0, width - _barMarginLeft - _barMarginRight - 50]).padding(0.1);
+        y = d3.scaleLinear().rangeRound([_barSvgHeight - _barMarginTop - _barMarginBottom - 30, 0]);
     }
     else {
         if (width > 400 && bar.isLegend == true)
-            x = d3.scaleLinear().rangeRound([0, width - marginLeft - marginRight - 50 - 115]);
+            x = d3.scaleLinear().rangeRound([0, width - _barMarginLeft - _barMarginRight - 50 - 115]);
         else
-            x = d3.scaleLinear().rangeRound([0, width - marginLeft - marginRight - 50]);
-        y = d3.scaleBand().rangeRound([svgHeight - marginTop - marginBottom - 30, 0]);
+            x = d3.scaleLinear().rangeRound([0, width - _barMarginLeft - _barMarginRight - 50]);
+        y = d3.scaleBand().rangeRound([_barSvgHeight - _barMarginTop - _barMarginBottom - 30, 0]);
     }
+
+    var yArray = [];
+    for (i = 0; i < data.length; i++) {
+        var str = '';
+        for (j = 0; j < columns.length; j++) {
+            str += data[i][columns[j]] + ',';
+        }
+        str = str.substring(0, str.length - 1);
+        yArray.push(sumStr(str));
+    }
+    var yMax = Math.max(...yArray);
 
     if (bar.isVertical == 1) {
         x.domain(data.map(function (d) { return d.X; }));
-        y.domain([0, d3.max(data, function (d) { return d.Y; })]);
+        y.domain([0, yMax]);
     }
     else {
-        x.domain([0, d3.max(data, function (d) { return d.Y; })]);
+        x.domain([0, yMax]);
         y.domain(data.map(function (d) { return d.X; }));
     }
+
     // x-axis
     var xAxis = d3.axisBottom(x);
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(" + (marginLeft + marginRight) + ", " + (svgHeight - marginTop - marginBottom) + ")")
+        .attr("transform", "translate(" + (_barMarginLeft + _barMarginRight) + ", " + (_barSvgHeight - _barMarginTop - _barMarginBottom) + ")")
         .call(xAxis)
         .selectAll("text")
         .attr("transform", "rotate(30)")
@@ -120,7 +147,7 @@ function drawBar_old(divName, data, width, height, barColor) {
     var yAxis = d3.axisLeft(y);
     svg.append("g")
         .attr("class", "y axis")
-        .attr("transform", "translate(" + (marginLeft + marginRight) + ", " + marginTop + ")")
+        .attr("transform", "translate(" + (_barMarginLeft + _barMarginRight) + ", " + _barMarginTop + ")")
         .call(yAxis);
 
     var yColumn = bar.yCol;
@@ -152,142 +179,150 @@ function drawBar_old(divName, data, width, height, barColor) {
         }
     }
 
-    var barTooltip = d3.select("#" + divName).append("div").attr("class", "barTooltip").style("display", "none");
-    var barTooltipTriangle = d3.select("#" + divName).append("div").attr("class", "barTooltipTriangle").style("display", "none");
-    var axisLabelTooltip = d3.select("#" + divName).append("div").attr("class", "axisLabelTooltip").style("display", "none");
-    //var barTextLabel = d3.select("#" + divName).append("div").attr("class", "barTextLabel").style("display", "none");
+    var color = d3.scaleOrdinal()
+        .domain(columns)
+        //.range(['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'])
+        .range(barColor)
+
+    $('#barTooltip').remove();
 
     // bar
-    if (bar.isVertical == 1) {
-        svg.selectAll("bar")
-            .data(data)
-            .enter()
-            .append("rect")
-            .attr("class", "bar")
-            .style("fill", barColor)
-            .attr("x", function (d) { return x(d.X); })
-            .attr("y", function (d) { return y(d.Y) - 5; })
-            .attr("width", x.bandwidth())
-            .attr("height", function (d) { return svgHeight - y(d.Y) - marginTop - marginBottom - 30; })
-            .attr("transform", "translate(" + (marginLeft + marginRight) + ", 35)")
-            .on("mouseenter", function (event, d) {
+    createBar(bar, svg, stackedData, x, y, color);
+    createTextLabel(bar, svg, stackedData, x, y);
+    createLegend(bar, svg, stackedData, width, color);
+
+    axisTooltip(bar);
+
+    return svg;
+}
+
+function createBar(bar, svg, stackedData, x, y, color) {
+    var barTooltip = d3.select("#" + bar.divName).append("div").attr("id", "barTooltip").attr("class", "barTooltip").style("display", "none");
+    var barTooltipTriangle = d3.select("#" + bar.divName).append("div").attr("class", "barTooltipTriangle").style("display", "none");
+    
+    var barSvg = svg.append("g")
+        .selectAll("bar")
+        .data(stackedData)
+        .enter()
+        .append("g")
+        .attr("fill", function (d) {
+            //console.log(color(d.key));
+            return color(d.key)
+        })
+        .selectAll("rect")
+        .data(function (d) { return d; })
+        .enter()
+        .append("rect")
+        .attr("x", function (d) {
+            if (bar.isVertical == 1)
+                return x(d.data.X);
+            else
+                return x(d[0]);
+        })
+        .attr("y", function (d) {
+            if (bar.isVertical == 1)
+                return y(d[1]);
+            else
+                return y(d.data.X) + (y.bandwidth() / 4);
+        })
+        .attr("transform", "translate(" + (_barMarginLeft + _barMarginRight) + ", 30)")
+        .on('mouseenter', function (event, d) {
+            var subgroupName = d3.select(this.parentNode).datum().key;
+            var subgroupValue = d.data[subgroupName];
+
+            barTooltip
+                .style("display", "inline-block")
+                .style("position", "absolute")
+                .html(subgroupName + "<br>" + subgroupValue)
+                .style("opacity", 1)
+
+            if (bar.isVertical == 1) {
                 barTooltip
                     .transition()
                     .duration(200)
-                    .style("left", marginLeft + marginRight + x(d.X) + "px")
-                    .style("top", y(d.Y) + 6 + "px");
-
-                barTooltip
-                    .style("display", "inline-block")
-                    .style("position", "absolute")
-                    .html(d.X + "<br/>" + (d.Y).toFixed(1));
+                    .style("left", _barMarginLeft + _barMarginRight + x(d.data.X) + (x.bandwidth() / 2) - (($('#barTooltip').width() / 2) + 8) + "px") // (box size / 2) + padding: 8
+                    .style("top", y(d[1]) + 5 + "px");
 
                 barTooltipTriangle
                     .transition()
                     .duration(200)
-                    .style("left", marginLeft + marginRight + x(d.X) + (x.bandwidth() / 2) - 5 + "px")
-                    .style("top", y(d.Y) + 40 + "px");
+                    .style("left", _barMarginLeft + _barMarginRight + x(d.data.X) + (x.bandwidth() / 2) - 5 + "px")
+                    .style("top", y(d[1]) + 40 + "px");
 
                 barTooltipTriangle
                     .style("display", "inline-block")
                     .style("position", "absolute")
                     .html("&#x25BC");
-            })
-
-            .on("mouseleave", function (d) {
-                barTooltip.style("display", "none");
-                barTooltipTriangle.style("display", "none");
-            });
-
-        var g = svg.append("g")
-
-        bar.textLabel = g.selectAll("text")
-            .data(data)
-            .enter()
-            .append('text')
-            .attr("transform", "translate(" + (marginLeft + marginRight) + "," + (height / 2) + ")")
-            .attr("x", function (d) { return x(d.X) + x.bandwidth() / 2 })
-            .attr("y", function (d) { return (y(d.Y) / 2) - 25 })
-            .style("text-anchor", "middle")
-            .style("font-size", "12px")
-            .attr("display", "none");
-    }
-    else {
-        svg.selectAll("bar")
-            .data(data)
-            .enter()
-            .append("rect")
-            .style("fill", barColor)
-            .attr("x", marginLeft + marginRight + 1)
-            .attr("y", function (d) {
-                console.log(y(d.X));
-                return marginTop + y(d.X) + (y.bandwidth() / 6);
-            })
-            .attr("height", y.bandwidth() / 1.5)
-            .attr("width", function (d) {
-                if (x(d.Y) < 0)
-                    return;
-                else
-                    return x(d.Y);
-            })
-            .on("mouseenter", function (event, d) {
+            }
+            else {
                 barTooltip
                     .transition()
                     .duration(200)
-                    .style("left", marginLeft + marginRight + x(d.Y) + 15 + "px")
-                    .style("top", marginTop + marginTop + y(d.X) + (y.bandwidth() / 2) - 20 + "px")
-
-                barTooltip
-                    .style("display", "inline-block")
-                    .style("position", "absolute")
-                    .html(d.X + "<br/>" + (d.Y).toFixed(1));
+                    .style("left", _barMarginLeft + _barMarginRight + x(d[1]) + 15 + "px")
+                    .style("top", _barMarginTop + _marginTop + y(d.data.X) + (y.bandwidth() / 2) - 20 + "px")
 
                 barTooltipTriangle
                     .transition()
                     .duration(200)
-                    .style("left", x(d.Y) + marginLeft + marginRight + 6 + "px")
-                    .style("top", marginTop + marginTop + y(d.X) + (y.bandwidth() / 2) - 10 + "px");
+                    .style("left", x(d[1]) + _barMarginLeft + _barMarginRight + 6 + "px")
+                    .style("top", _barMarginTop + _marginTop + y(d.data.X) + (y.bandwidth() / 2) - 10 + "px");
 
                 barTooltipTriangle
                     .style("display", "inline-block")
                     .style("position", "absolute")
                     .html("&#x25C0");
-            })
-            .on("mouseleave", function (d) {
-                barTooltip.style("display", "none");
-                barTooltipTriangle.style("display", "none");
-            });
+            }
+        })
+        .on("mouseleave", function (d) {
+            barTooltip.style("display", "none");
+            barTooltipTriangle.style("display", "none");
+        });
 
-        var g = svg.append("g")
-
-        bar.textLabel = g.selectAll("text")
-            .data(data)
-            .enter()
-            .append('text')
-            .attr("x", function (d) { return marginLeft + marginRight + (x(d.Y) / 2) })
-            .attr("y", function (d) { return marginTop + y(d.X) + (y.bandwidth() / 2) + 5 })
-            .style("text-anchor", "left")
-            .style("font-size", "12px")
-            .attr("display", "none");
-
-        //barTextLabel
-        //    .transition()
-        //    .duration(200)
-        //    .style("left", marginLeft + marginRight + 30 + "px")
-        //    .style("top", marginTop + y(d.X) + (y.bandwidth() / 2) + 5 + "px")
-
-        //barTextLabel
-        //    .style("display", "inline-block")
-        //    .style("position", "absolute")
-        //    .html(d.X + "<br/>" + (d.Y).toFixed(1));
+    if (bar.isVertical == 1) {
+        barSvg
+            .attr("width", x.bandwidth())
+            .attr("height", function (d) { return y(d[0]) - y(d[1]); })
     }
+    else {
+        barSvg
+            .attr("width", function (d) { return x(d[1]) - x(d[0]); })
+            .attr("height", (y.bandwidth() / 2));
+    }
+}
 
-    var xColumn = bar.xCol;
-    var d = [];
-    d.push('');
+function createTextLabel(bar, svg, stackedData, x, y) {
+    var barTextLabel = bar.textLabel = svg.append("g")
+        .selectAll("bar")
+        .data(stackedData)
+        .enter()
+        .append("g")
+        .selectAll("rect")
+        .data(function (d) { return d; })
+        .enter()
+        .append("text")
+        .attr("id", "barTextLabel")
+        .attr("class", "barTextLabel")
+        .style("text-anchor", "left")
+        .style("font-size", "12px")
+        .attr("display", "none");
 
+    if (bar.isVertical == 1) {
+        barTextLabel
+            .attr("x", function (d) { return x(d.data.X) })
+            .attr("y", function (d) { return y(d[1]) })
+            .attr("transform", "translate(" + (_barMarginLeft + _barMarginRight + (x.bandwidth() / 2)) + ", 30)");
+    }
+    else {
+        barTextLabel
+            .attr("x", function (d) { return x(d[0]) })
+            .attr("y", function (d) { return y(d.data.X) + (y.bandwidth() / 2) })
+            .attr("transform", "translate(" + (_barMarginLeft + _barMarginRight + (y.bandwidth() / 2)) + ", 30)");
+    }
+}
+
+function createLegend(bar, svg, stackedData, width, color) {
     var legend = svg.selectAll("legend")
-        .data(d)
+        .data(stackedData)
         .enter()
         .append("g")
         .attr("class", "barLegend")
@@ -298,20 +333,26 @@ function drawBar_old(divName, data, width, height, barColor) {
             .attr("width", 7)
             .attr("height", 7)
             .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (10 + (idx * 15)) + ")"; })
-            .attr("fill", barColor);
+            .attr("fill", function (d) { return color(d.key) });
 
         legend.append("text")
             .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (13 + (idx * 15)) + ")"; })
             .attr("dy", ".35em")
             .style("text-anchor", "start")
             .style("font-size", "8px")
-            .text(xColumn);
+            .text(function (d) {
+                return d.key;
+            })
     }
+}
+
+function axisTooltip(bar) {
+    var axisLabelTooltip = d3.select("#" + bar.divName).append("div").attr("class", "axisLabelTooltip").style("display", "none");
 
     if (bar.isVertical == 1) {
-        d3.select("#" + divName)
+        d3.select("#" + bar.divName)
             .selectAll(".x .tick")
-            .data(data)
+            .data(bar.data)
             .on("mouseover", function (event, d) {
                 axisLabelTooltip
                     .style("display", "inline-block")
@@ -326,9 +367,9 @@ function drawBar_old(divName, data, width, height, barColor) {
             });
     }
     else {
-        d3.select("#" + divName)
+        d3.select("#" + bar.divName)
             .selectAll(".y .tick")
-            .data(data)
+            .data(bar.data)
             .on("mouseover", function (event, d) {
                 axisLabelTooltip
                     .style("display", "inline-block")
@@ -342,7 +383,29 @@ function drawBar_old(divName, data, width, height, barColor) {
                 axisLabelTooltip.style("display", "none");
             });
     }
+}
 
-
-    return svg;
+function wrap(text, width, height) {
+    text.each(function (idx, elem) {
+        var text = $(elem);
+        text.attr("dy", height);
+        var words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            y = text.attr("y"),
+            dy = parseFloat(text.attr("dy")),
+            tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (elem.getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+            }
+        }
+    });
 }

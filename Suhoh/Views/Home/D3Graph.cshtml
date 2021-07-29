@@ -22,6 +22,10 @@
             {
                 graphType = "BAR";
             }
+            if (Model.CreatePanelName.ToUpper().Contains("LINE"))
+            {
+                graphType = "LINE";
+            }
         }
         <span style="font-size: large">@graphType</span>
     </div>

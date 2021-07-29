@@ -198,14 +198,84 @@
     margin-left: 2px;
     float: left;
 }
-.thBarColorPickerHeading1 {
+
+.barColorPickerHeading {
     font-weight: bold;
-    margin-top: 10px;
     margin-left: 2px;
     margin-bottom: 5px;
     float: left;
 }
+
+.divBarColorPicker {
+    float: left;
+}
+
+.divBarColorPickerText {
+    float: left;
+    margin-top: 4px;
+    width: 120px;
+}
+
+.divBarColorPickerDropDown {
+    float: left;
+}
 /*Property Popup Bar Chart End*/
+
+/*Property Popup Line Chart*/
+.thLineTitleHeading1 {
+    font-weight: bold;
+    margin-left: 2px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+.thLineLabelHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    float: left;
+}
+
+.thLineXValueChkBox {
+    float: left;
+}
+
+.thLineYValueChkBox {
+    float: left;
+    margin-left: 10px;
+}
+
+.thLineXYColumnHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    float: left;
+}
+
+.thLineXColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 10px;
+    margin-left: 2px;
+}
+
+.thLineXColumnDropDown {
+    height: 40px;
+}
+
+.thLineYColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-left: 2px;
+}
+
+.thLineShapeHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    float: left;
+}
+/*Property Popup Line Chart End*/
 
 /*Charts ToolTip*/
 .pieTooltip {
@@ -264,23 +334,3 @@
     float: left;
 }
 
-.colorPickerHeading {
-    font-weight: bold;
-    margin-left: 2px;
-    margin-bottom: 5px;
-    float: left;
-}
-
-.divColorPicker {
-    float: left;
-}
-
-.divColorPickerText {
-    float: left;
-    margin-top: 4px;
-    width: 120px;
-}
-
-.divColorPickerDropDown {
-    float: left;
-}

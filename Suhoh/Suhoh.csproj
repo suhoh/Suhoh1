@@ -170,7 +170,7 @@
     <Content Include="Content\Images\Suhoh\Maximize.svg" />
     <Content Include="Content\Images\Suhoh\Minimize.svg" />
     <Content Include="Scripts\D3\bar.js" />
-    <Content Include="Scripts\D3\barStack.js" />
+    <Content Include="Scripts\D3\line.js" />
     <Content Include="Scripts\D3\main.js" />
     <Content Include="Scripts\D3\pie.js" />
     <Content Include="Scripts\D3_v650\d3.js" />
@@ -336,7 +336,9 @@
     <Content Include="Views\Home\LeftPanelLayerList.cshtml" />
     <Content Include="Views\Home\LeftPanelReports.cshtml" />
     <Content Include="Views\Home\LeftPanelProjectGridview.cshtml" />
-    <Content Include="Views\Home\CallbackColorPickers.cshtml" />
+    <Content Include="Views\Home\CallbackBarColorPickers.cshtml" />
+    <Content Include="Views\Home\D3LineProperty.cshtml" />
+    <Content Include="Views\Home\CallbackLineColorPickers.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
