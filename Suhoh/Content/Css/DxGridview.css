@@ -28,6 +28,34 @@
     /*background-color: yellow;*/
 }
 
+
+.divGridviewReset {
+    opacity: 1;
+    position: absolute;
+    /*top: 62px;*/
+    right: 124px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+
+.btnGridviewReset {
+    background-color: rgba(113,57,143,.5) !important;
+    color: white !important;
+    font-weight: bold !important;
+    border: none;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 26px;
+    height: 22px;
+    /*background: url('../Images/Suhoh/Minimize.svg') no-repeat center;
+    background-size: 15px 15px;*/
+}
+
+    .btnGridviewReset:hover {
+        background-color: rgba(113,57,143,.8) !important;
+    }
+
 .divGridviewMaximize {
     opacity: 1;
     position: absolute;
@@ -136,21 +164,21 @@
         background-color: rgba(0,60,136,.7) !important;
     }
 
+.divGridviewGrouping {
+    opacity: 1;
+    position: absolute;
+    /*top: 2px;*/
+    right: 160px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+
 /*Checkboxes in the middle - Header filter, grouping*/
 .divGridviewHeaderFilter {
     opacity: 1;
     position: absolute;
     /*top: 2px;*/
-    right: 218px;
-    z-index: 100;
-    /*background-color: yellow;*/
-}
-
-.divGridviewGrouping {
-    opacity: 1;
-    position: absolute;
-    /*top: 2px;*/
-    right: 132px;
+    right: 242px;
     z-index: 100;
     /*background-color: yellow;*/
 }

@@ -35,8 +35,6 @@ function splitterMainResized(s, e) {
     updatePies(_pies, false);
     updateBars(_bars, false);
     updateGridviewHeights(_gridviews);
-
-    chkBarLabelClicked(null, null, _bars.divName);
 }
 
 function updateMaps(maps) {
@@ -62,6 +60,16 @@ function updatePies(pies, isInitial) {
     });
 }
 
+function updatePie(p, isInitial) {
+    var pieData = getPieData(p.divName, p.data, p.xCol, p.yCol, isInitial);
+    if (pieData != null)
+        drawPie(p.divName, pieData.pieData, pieData.width, pieData.height, pieData.min / 2);
+    _activePie = p;
+    // check and see if chkPiePercentageLabel already created. It gets created when opening up Property.
+    if (typeof chkPiePercentageLabel != "undefined" && ASPxClientUtils.IsExists(chkPiePercentageLabel))
+        chkPieLabelClicked(null, null, p.divName);
+}
+
 function updateBars(bars, isInitial) {
     if (bars.length == 0)
         return;
@@ -77,12 +85,23 @@ function updateBars(bars, isInitial) {
     });
 }
 
+function updateBar(b, isInitial) {
+    var barData = getBarData(b.divName, b.data, b.xCol, b.yCol, b.color, isInitial);     // used to be PaneId
+    if (barData != null) {
+        var barSvg = drawBar(b.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
+        b.svg = barSvg;
+    }
+    _activeBar = b;
+    if (typeof cbBarXValue != "undefined" && ASPxClientUtils.IsExists(cbBarXValue))
+        chkBarLabelClicked(null, null, b.divName);
+}
+
 function updateGridviews(gridviews) {
     if (gridviews.length == 0)
         return;
     gridviews.forEach(function (g) {
         var gv = eval(g.name);
-        gv.PerformCallback({ 'isLoad': false });
+        gv.PerformCallback({ 'isReLoad': false });
         document.getElementById(g.name + "_Title").innerHTML = _filename;
     })
 }
@@ -191,11 +210,11 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
 
         // Gridviews
         _gridviews.forEach(function (g) {
-            g.isHeaderFilter = false;   // set local array
-            g.isGrouping = false;       // set local array
+            g.isHeaderFilter = false;   
+            g.isGrouping = false;       
             var gv = eval(g.name);      // DevExpress control
             gv.ClearFilter();
-            gv.PerformCallback({ 'isLoad': true } );
+            gv.PerformCallback({ 'isReLoad': true } );
             document.getElementById(g.name + "_Title").innerHTML = _filename;
         })
 
@@ -372,10 +391,6 @@ function btnAddNewPaneClick(s, e) {
             alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);
         }
     });
-
-    //cbRightPanelPartial.PerformCallback({
-    //    'sender': addNewPaneSender, 'paneDir': paneDir, 'paneType': paneType
-    //});
 }
 
 //

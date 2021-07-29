@@ -114,8 +114,7 @@
         {
             ViewModel vm = (ViewModel)Session["viewModel"];
             var grid = s as MVCxGridView;
-            vm.FilterExpression = grid.FilterExpression;
-            if (!String.IsNullOrEmpty(Model.FilterExpression))
+            if (!Model.IsReload)
             {
                 var keys = "";
                 for (int i = 0; i < grid.VisibleRowCount; i++)
@@ -127,6 +126,11 @@
                     keys = keys.Substring(0, keys.Length - 1);  // remove last vertical bar
                 vm.GridviewKeys = keys;
             }
+            else
+            {
+                grid.FilterExpression = string.Empty;
+            }
+            vm.FilterExpression = grid.FilterExpression;
             Session["viewModel"] = vm;
         };
 

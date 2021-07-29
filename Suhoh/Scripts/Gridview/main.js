@@ -10,7 +10,7 @@ var _gridviewKeys = '';     // stored filtered keys (Seq)
 var _filteredData = null;  // stores filtered data from Gridview
 
 function initGridview(name) {
-    _gridviews.push({ 'name': name, 'isHeaderFilter': false, 'isGrouping': false, 'pageSize': _pageSize });  // DevExpress control name
+    _gridviews.push({ 'name': name, 'isHeaderFilter': false, 'isGrouping': false, 'filteredKeys': null, 'pageSize': _pageSize });  // DevExpress control name
 }
 
 function getGridview(divName) {
@@ -47,30 +47,41 @@ function dxGridview_OnEndCallback(s, e) {
     });
 
     function successFunc(data, status) {    // data: 11|33|234
-        if (data.length == 0)
-            return;
-        var orClause = getOrClause('x.Seq', data);
-        _filteredData = _jsonData.filter(function (x) {
-            return eval(orClause);
-        });
+        if (data.length == 0)   
+            _filteredData = _jsonData;
+        else {
+            var orClause = getOrClause('x.Seq', data);
+            _filteredData = _jsonData.filter(function (x) {
+                return eval(orClause);
+            });
+        }
+
+        // Update Gridview
+        gv.filteredKeys = data;
 
         // Update dataset and Redraw pies
-        _pies.forEach(function (p) {
-            p.data = _filteredData;
-        });
-        updatePies(_pies, true);    // true: isInitial
+        for (var i = 0; i < _pies.length; i++) {
+            if (_filteredData == _pies[i].data)
+                continue;
+            _pies[i].data = _filteredData;
+            updatePie(_pies[i], true);    // true: isInitial
+        }
 
         // Update dataset and Redraw bars
-        _bars.forEach(function (b) {
-            b.data = _filteredData;
-        });
-        updateBars(_bars, true);    // true: isInitial
+        for (var i = 0; i < _bars.length; i++) {
+            if (_filteredData == _bars[i].data)
+                continue;
+            _bars[i].data = _filteredData;
+            updateBar(_bars[i], true);    // true: isInitial
+        }
 
         // Update dataset and Redraw maps
-        _maps.forEach(function (m) {
-            m.isLabelOn = false;    // set it to false when loading new data
-            addPointLayer(_filteredData, m, null, null, null, true); // true: zoom to layer
-        })
+        for (var i = 0; i < _maps.length; i++) {
+            if (_filteredData == _maps[i].data)
+                continue;
+            _maps[i].isLabelOn = false;    // set it to false when loading new data
+            addPointLayer(_filteredData, _maps[i], null, null, null, true); // true: zoom to layer
+        }
     }
 
     function errorFunc(data, status) {
@@ -79,6 +90,7 @@ function dxGridview_OnEndCallback(s, e) {
 }
 
 function getOrClause(operand, keys) {
+    if (keys)
     var k = keys.split('|');
     var orClause = "";
     k.forEach(function (c) {
@@ -98,12 +110,24 @@ function dxGridview_Init(s, e) {
     }
 }
 
+function btnGridviewResetClick(s) {
+    var pId = s.id.split('_')[0];
+    var g = getGridview(pId);
+    g.isHeaderFilter = false;
+    g.isGrouping = false;
+
+    var gv = eval(g.name);
+    gv.ClearFilter();
+
+    gv.PerformCallback({ 'isReLoad': true });
+}
+
 function btnGridviewMaximizeClick(s) {
     var pId = s.id.split('_')[0];
-    var map = getMap(pId);
-    var p = splitterMain.GetPaneByName(pId);
-    p.Expand();
-    map.isMaximized = !map.isMaximized;
+    //var map = getMap(pId);
+    //var p = splitterMain.GetPaneByName(pId);
+    //p.Expand();
+    //map.isMaximized = !map.isMaximized;
 }
 
 function btnGridviewLegendClick(s) {
@@ -120,7 +144,7 @@ function chkHeaderFilterGroupingChecked(s, e) {
     gv.isHeaderFilter = eval(pId + "_HeaderFilter").GetChecked();
     gv.isGrouping = eval(pId + "_Grouping").GetChecked();
 
-    eval(pId).PerformCallback({ 'isLoad': false });   // Refresh gridview
+    eval(pId).PerformCallback({ 'isReLoad': false });   // Refresh gridview
 }
 
 
