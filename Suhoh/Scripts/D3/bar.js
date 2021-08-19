@@ -188,10 +188,10 @@ function drawBar(divName, data, columns, width, height, barColor) {
 
     // bar
     createBar(bar, svg, stackedData, x, y, color);
-    createTextLabel(bar, svg, stackedData, x, y);
-    createLegend(bar, svg, stackedData, width, color);
+    createBarTextLabel(bar, svg, stackedData, x, y);
+    createBarLegend(bar, svg, stackedData, width, color);
 
-    axisTooltip(bar);
+    axisBarTooltip(bar);
 
     return svg;
 }
@@ -206,7 +206,7 @@ function createBar(bar, svg, stackedData, x, y, color) {
         .enter()
         .append("g")
         .attr("fill", function (d) {
-            //console.log(color(d.key));
+            console.log(color(d.key));
             return color(d.key)
         })
         .selectAll("rect")
@@ -259,13 +259,13 @@ function createBar(bar, svg, stackedData, x, y, color) {
                     .transition()
                     .duration(200)
                     .style("left", _barMarginLeft + _barMarginRight + x(d[1]) + 15 + "px")
-                    .style("top", _barMarginTop + _marginTop + y(d.data.X) + (y.bandwidth() / 2) - 20 + "px")
+                    .style("top", _barMarginTop + _barMarginTop + y(d.data.X) + (y.bandwidth() / 2) - 20 + "px")
 
                 barTooltipTriangle
                     .transition()
                     .duration(200)
                     .style("left", x(d[1]) + _barMarginLeft + _barMarginRight + 6 + "px")
-                    .style("top", _barMarginTop + _marginTop + y(d.data.X) + (y.bandwidth() / 2) - 10 + "px");
+                    .style("top", _barMarginTop + _barMarginTop + y(d.data.X) + (y.bandwidth() / 2) - 10 + "px");
 
                 barTooltipTriangle
                     .style("display", "inline-block")
@@ -290,7 +290,7 @@ function createBar(bar, svg, stackedData, x, y, color) {
     }
 }
 
-function createTextLabel(bar, svg, stackedData, x, y) {
+function createBarTextLabel(bar, svg, stackedData, x, y) {
     var barTextLabel = bar.textLabel = svg.append("g")
         .selectAll("bar")
         .data(stackedData)
@@ -320,7 +320,7 @@ function createTextLabel(bar, svg, stackedData, x, y) {
     }
 }
 
-function createLegend(bar, svg, stackedData, width, color) {
+function createBarLegend(bar, svg, stackedData, width, color) {
     var legend = svg.selectAll("legend")
         .data(stackedData)
         .enter()
@@ -346,7 +346,7 @@ function createLegend(bar, svg, stackedData, width, color) {
     }
 }
 
-function axisTooltip(bar) {
+function axisBarTooltip(bar) {
     var axisLabelTooltip = d3.select("#" + bar.divName).append("div").attr("class", "axisLabelTooltip").style("display", "none");
 
     if (bar.isVertical == 1) {

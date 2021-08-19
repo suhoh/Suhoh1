@@ -34,6 +34,7 @@ function splitterMainResized(s, e) {
     updateMaps(_maps);
     updatePies(_pies, false);
     updateBars(_bars, false);
+    updateLines(_lines, false);
     updateGridviewHeights(_gridviews);
 }
 
@@ -94,6 +95,32 @@ function updateBar(b, isInitial) {
     _activeBar = b;
     if (typeof cbBarXValue != "undefined" && ASPxClientUtils.IsExists(cbBarXValue))
         chkBarLabelClicked(null, null, b.divName);
+}
+
+function updateLines(lines, isInitial) {
+    if (lines.length == 0)
+        return;
+    lines.forEach(function (l) {
+        var lineData = getLineData(l.divName, l.data, l.xCol, l.yCol, l.color, isInitial);     // used to be PaneId
+        if (lineData != null) {
+            var lineSvg = drawLine(l.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
+            l.svg = lineSvg;
+        }
+        _activeLine = l;
+        if (typeof cbLineXValue != "undefined" && ASPxClientUtils.IsExists(cbLineXValue))
+            chkLineLabelClicked(null, null, l.divName);
+    });
+}
+
+function updateLine(l, isInitial) {
+    var lineData = getLineData(l.divName, l.data, l.xCol, l.yCol, l.color, isInitial);     // used to be PaneId
+    if (lineData != null) {
+        var lineSvg = drawLine(l.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
+        l.svg = lineSvg;
+    }
+    _activeLine = l;
+    if (typeof cbLineXValue != "undefined" && ASPxClientUtils.IsExists(cbLineXValue))
+        chkLineLabelClicked(null, null, l.divName);
 }
 
 function updateGridviews(gridviews) {
@@ -345,7 +372,7 @@ function getLineColNames(columnNames) {
     var yCol = null;
     for (i = 0; i < columnNames.length; i++) {
         if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date'))
-            xCol == columnNames[i].Name;
+            xCol = columnNames[i].Name;
         if (yCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
             yCol = columnNames[i].Name;
     }
@@ -520,14 +547,43 @@ function renderBarProperty(id) {
 
 function renderLineProperty(id) {
     var line = getLine(id);
-    //if (line.data == null)
-    //    return;
+    if (line.data == null)
+        return;
 
     popupPanelProperty.Show();
-    _activeline = line;
+    _activeLine = line;
 
     popupPanelProperty.SetHeaderText("Line Property");
-    _activeLine = line;
+    if (_columnNames == undefined || _columnNames.length == 0) {
+        console.log("_columnNames: null or empty.")
+        return;
+    }
+
+    cbLineXColumn.ClearItems();
+    lbLineYColumn.ClearItems();
+    _columnNames.forEach(function (c) {
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
+            cbLineXColumn.AddItem(c.Name);
+        if (c.Type == 'Int64' || c.Type == 'Double')
+            lbLineYColumn.AddItem(c.Name);
+    });
+
+    chkLineXValueLabel.SetChecked(line.isXValue);
+    chkLineYValueLabel.SetChecked(line.isYValue);
+    chkLineLabelClicked(null, null, line.divName);
+
+    cbLineXColumn.SetValue(line.xCol);
+    var items = line.yCol.split(';');
+    lbLineYColumn.SelectValues(items);
+
+    var selectedItems = lbLineYColumn.GetSelectedItems();
+    ddLineYColumn.SetText(getSelectedItemsText(selectedItems));
+
+    document.getElementById(line.divName + "_Title").innerHTML = line.xCol + " vs " + line.yCol;
+    tbPropertyLineTitle.SetText(line.xCol + " vs " + line.yCol); // title in property
+
+    document.getElementById('divLineColorPickerText').innerHTML = selectedItems[0].text;
+    ceLineColorPicker0.SetColor(line.color[0]); 
 }
 
 function renderMapProperty(id) {

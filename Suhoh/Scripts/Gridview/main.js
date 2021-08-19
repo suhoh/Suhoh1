@@ -75,6 +75,14 @@ function dxGridview_OnEndCallback(s, e) {
             updateBar(_bars[i], true);    // true: isInitial
         }
 
+        // Update dataset and Redraw lines
+        for (var i = 0; i < _lines.length; i++) {
+            if (_filteredData == _lines[i].data)
+                continue;
+            _lines[i].data = _filteredData;
+            updateLine(_lines[i], true);    // true: isInitial
+        }
+
         // Update dataset and Redraw maps
         for (var i = 0; i < _maps.length; i++) {
             if (_filteredData == _maps[i].data)

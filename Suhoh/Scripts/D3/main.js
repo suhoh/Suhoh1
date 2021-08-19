@@ -420,7 +420,34 @@ function showHideLegend(s) {
         drawBar(bar.divName, barData.barData, barData.colData, barData.width, barData.height, barData.color);
         chkBarLabelClicked(null, null, id);
     }
-    
+
+    if (id.toUpperCase().indexOf('LINE') > -1) {
+        var line = getLine(id);
+        if (line == null)
+            return;
+
+        _activeLine = line;
+        line.isLegend = !line.isLegend;
+
+        //chkBarXValueLabel.SetChecked(bar.isXValue);
+        //chkBarYValueLabel.SetChecked(bar.isYValue);
+        //if (typeof ceBarColorPicker !== "undefined" && ASPxClientUtils.IsExists(ceBarColorPicker))
+        //    bar.color = ceBarColorPicker.GetText();
+
+        var lineData = getLineData(line.divName, _jsonData, line.xCol, line.yCol, line.color, false);
+        if (lineData == null)
+            return;
+        if (line.isLegend == true)
+            for (i = 0; i < lineData.lineData.length; i++) {
+                $('#' + line.divName + 'lineLegend' + i).show(500);
+            }
+        else
+            for (i = 0; i < lineData.lineData.length; i++) {
+                $('#' + line.divName + 'lineLegend' + i).hide(500);
+            }
+        drawLine(line.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
+        chkLineLabelClicked(null, null, id);
+    }
 }
 
 function radioOrientationBarClicked(s, e) {
@@ -489,11 +516,38 @@ function tbLinePropertyTitleKeyUp(s, e) {
         document.getElementById(caller).innerHTML = tbPropertyLineTitle.GetText();
 }
 
-function chkLineLabelClicked(s, e, id) {
+function cbLineXYColumnChanged(s, e) {
+    if (_activeLine == undefined)
+        return;
+    var line = getLine(_activeLine.divName);
+    line.xCol = cbLineXColumn.GetText();
 
+    var selectedItems = lbLineYColumn.GetSelectedItems();
+    ddLineYColumn.SetText(getSelectedItemsText(selectedItems));  // Consumptive Use_M3;Latitude
+
+    if (selectedItems.length == 0)
+        $('#divLineColorPicker').remove();
+
+    line.yCol = getSelectedItemsText(selectedItems);
+    line.color = _lineColors;
+
+    var jsonData = _jsonData;
+    if (_filteredData != null)
+        jsonData = _filteredData;
+
+    var lineData = getLineData(line.divName, jsonData, line.xCol, line.yCol, line.color, true);
+    drawLine(line.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
+
+    tbPropertyLineTitle.SetText(line.xCol + " vs " + line.yCol);
+    document.getElementById(line.divName + "_Title").innerHTML = line.xCol + " vs " + line.yCol;
+
+    chkLineLabelClicked(null, null, line.divName);
+
+    if (s.name == 'lbLineYColumn')
+        callbackLineColorPickers.PerformCallback({ 'lineYcol': line.yCol, 'lineColors': line.color });
 }
 
-function cbLineXYColumnChanged(s, e) {
+function chkLineLabelClicked(s, e, id) {
 
 }
 
@@ -510,5 +564,18 @@ function callbackLineColorPickers_OnEndCallback(s, e) {
 }
 
 function ceLineColorPickerClicked(s, e) {
+    if (_activeLine == undefined)
+        return;
 
+    var cIdx = s.name.substr(s.name.length - 1, 1);
+    _lineColors[cIdx] = s.GetText();
+
+    var line = getLine(_activeLine.divName);
+    line.color = _lineColors;
+
+    var lineData = getLineData(line.divName, _jsonData, line.xCol, line.yCol, line.color, true);
+    drawLine(line.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
+
+    chkLineLabelClicked(null, null, line.divName);
+    callbackLineColorPickers.PerformCallback({ 'ycol': line.yCol, 'lineColors': line.color });
 }

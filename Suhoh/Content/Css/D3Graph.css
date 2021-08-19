@@ -275,6 +275,27 @@
     margin-left: 2px;
     float: left;
 }
+
+.lineColorPickerHeading {
+    font-weight: bold;
+    margin-left: 2px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+.divLineColorPicker {
+    float: left;
+}
+
+.divLineColorPickerText {
+    float: left;
+    margin-top: 4px;
+    width: 120px;
+}
+
+.divLineColorPickerDropDown {
+    float: left;
+}
 /*Property Popup Line Chart End*/
 
 /*Charts ToolTip*/
