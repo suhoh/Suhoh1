@@ -3,17 +3,18 @@
 //
 
 const _gotoLocationSymbolTimer = 15000; // remove symbol after 15 seconds
-const _zoomToBuffer = 2000;     // zoom to buffer size (2K)
+const _zoomToBuffer = 2500;     // zoom to buffer size (2K)
 const _zoomToDuration = 1500;   // duration when zoom to layer
-const _lonColName = "Longitude";
-const _latColName = "Latitude";
+const _lonColName = "LONGITUDE";
+const _latColName = "LATITUDE";
 const _mapX = '-114.06666';
 const _mapY = '51.04999';
 const _basemap = "Streets";
 
-var _maps = []; // { 'divName': divName, 'map': map, 'layer': null, 'scaleLine': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude, 'zCol': null, 
-                // 'basemap': _basemap, 'mousePosition': null, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null, 
-                // 'x': null, 'y': null, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false }
+var _myFeatures;    // Stores geometry and seq for zipped shaped file - { 'geom': item.getGeometry(), 'seq': index }
+var _maps = [];     // { 'divName': divName, 'map': map, 'layer': null, 'features': null, 'scaleLine': null, 'data': null, 'xCol': Longitude, 'yCol': Latitude, 'zCol': null, 
+                    // 'basemap': _basemap, 'mousePosition': null, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null, 
+                    // 'x': null, 'y': null, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false }
 var _activeMap;
 var _gotoLocationLayer = null;
 
@@ -117,7 +118,8 @@ function initMap(divName) {
     });
 
     _maps.push({
-        'divName': divName, 'map': map, 'layer': null, 'scaleLine': scaleLine, 'data': null, 'xCol': null, 'yCol': null, 'zCol': null, 'basemap': _basemap,
+        'divName': divName, 'map': map, 'layer': null, 'type': null, 'features': null, 'scaleLine': scaleLine, 'data': null,
+        'xCol': null, 'yCol': null, 'zCol': null, 'basemap': _basemap,
         'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null,
         'x': _mapX, 'y': _mapY, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false
     });
@@ -237,7 +239,6 @@ function showHideGoToLocation(value) {
         $("#trGoToLatLonX").hide();
         $("#trGoToLatLonY").hide();
     }
-
 }
 
 function addPointLayerHandler(map, fitToLayer) {
@@ -245,6 +246,7 @@ function addPointLayerHandler(map, fitToLayer) {
         addPointLayer(map.data, map, map.xCol, map.yCol, map.zCol, fitToLayer);
     else
         addPointLayer(map.data, map, map.xCol, map.yCol, null, fitToLayer);
+    console.log("addPointLayer: addPointLayerHandler");
 }
 
 function cbBasemapChanged(s, e) {

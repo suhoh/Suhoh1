@@ -100,9 +100,16 @@ function btnChangeLayoutClicked(s, e) {
         //dataType: "json",
         data: { 'sender': 'leftPanel', 'paneDir': -1, 'paneType': -1, 'jsonPanels': JSON.stringify(panels), 'isNewLayout': true },
         success: function (data) {
+            if (_filename != undefined && _filename.toUpperCase().indexOf('ZIP') > -1) {  // In case where zipped shapefile is already loaded, use _geometry
+                _maps.forEach(function (m) {
+                    m.type = 'SHP';
+                    m.features = _myFeatures;
+                })
+            }
             $('#divRightPanelPartial').html(data);
 
-            convertJsonToDataTable(_jsonData, _jsonDataGridview);
+            updateAllViews(_jsonData, _jsonDataGridview);
+            console.log('updateAllViews: btnChangeLayoutClicked');
         },
         error: function (xhr, textStatus, errorThrown) {
             alert('Request Status: ' + xhr.status + '; Status Text: ' + textStatus + '; Error: ' + errorThrown);

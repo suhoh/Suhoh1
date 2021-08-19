@@ -87,6 +87,9 @@ namespace Suhoh.Model
         // Left panel load project
         public int RadioLeftPanelSaveLoad { get; set; }
 
+        // Left panel: select data source
+        public int RadioSelectDataSource { get; set; }
+
         public IEnumerable Projects;
         
 
@@ -144,11 +147,12 @@ namespace Suhoh.Model
             CbLeftPanelAttributeOperator = "=";
 
             RadioLeftPanelSaveLoad = 1;
+            RadioSelectDataSource = 1;
 
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
             MainPanelCount = 3;
-            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Line1']}, {'name': 'Panel2', 'type': ['Bar1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
+            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Line1']}, {'name': 'Panel2', 'type': ['Pie1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
     }
 

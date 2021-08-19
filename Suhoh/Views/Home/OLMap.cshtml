@@ -60,7 +60,7 @@
 </body>
 
 @*<div class="loadExcel">
-        <button type="button" class="loadExcelButton" title="Load Excel" onclick="loadExcelFile()"></button>
+        <button type="button" class="loadExcelButton" title="Load Excel" onclick="loadDataSource()"></button>
     </div>*@
 
 <script>
@@ -70,8 +70,11 @@
     initMap(divId);
     if (_jsonData != null) {
         var map = getMap(divId);
-        if (map != null)
+        if (map != null) {
             addPointLayer(_jsonData, map);
+            console.log('addPointLayer: OLMap.cshtml');
+        }
+
     }
 
 </script>

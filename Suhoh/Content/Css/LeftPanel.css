@@ -113,21 +113,28 @@
 }
 
     .excelFilename.label {
+        font-weight: bold;
         margin-top: 6px;
     }
     .excelFilename.textBox {
         float: left;
+        margin-top: 3px;
     }
     .excelFilename.loadButton {
+        float: left;
+        margin-top: 3px;
         margin-left: 4px;
         margin-bottom: 8px;
         border-radius: 2px;
-        float: left;
         width: 26px;
         height: 26px;
         background: url('../Images/Suhoh/Load.svg') no-repeat;
         background-size: auto;
     }
+
+.radioSselectDataSource {
+    margin-left: 10px;
+}
 
 /*Save Load Project*/
 .radioLeftPanelSaveLoad {

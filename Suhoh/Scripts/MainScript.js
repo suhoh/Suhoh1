@@ -8,6 +8,7 @@ var _jsonData;              // loaded data in JSON
 var _jsonDataGridview       // stringify data for only Gridview
 var _columnNames;           // loaded column names    
 var _filename;              // loaded filename
+var _filetype               // .zip, .xls, .xlsx, csv
 var _activePropertyName     // currently active property when clicked from panel
 
 window.addEventListener('resize', function (event) {
@@ -160,6 +161,9 @@ function getPaneSize(paneId) {
     return { width: width, height: height }
 }
 
+//
+// Excel to Json
+//
 var ExcelToJSON = function () {
     this.parseExcel = function (file) {
         var reader = new FileReader();
@@ -175,7 +179,18 @@ var ExcelToJSON = function () {
                 _jsonDataGridview = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project:'bbbb'...}, { ...}]
                 var columnNames = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 })[0]; 
                 columnNames.sort();
-                convertJsonToDataTable(_jsonData, _jsonDataGridview);   // For Gridview
+                for (var i = 0; i < _maps.length; i++) {
+                    _maps[i].type = 'XLS';
+                }
+
+                // Disable XY column since shape already has coordinates
+                if (typeof cbMapXColumn != "undefined" && ASPxClientUtils.IsExists(cbMapXColumn)) {
+                    cbMapXColumn.SetEnabled(true);
+                    cbMapYColumn.SetEnabled(true);
+                }
+
+                updateAllViews(_jsonData, _jsonDataGridview);   // Populate Gridview and update all views
+                console.log('updateAllViews: ExcelToJSON');
             })
         };
         reader.onerror = function (ex) {
@@ -184,6 +199,66 @@ var ExcelToJSON = function () {
         reader.readAsBinaryString(file);
     };
 };
+
+//
+// zipped shape file to Json
+//
+var shpLoaded = false;
+var shapeToJSON = function () {
+    this.parseShape = function (zipFile) {
+        loadshp({
+            //url: 'TestPt_wgs84.zip',
+            url: zipFile,
+            encoding: 'big5',   // default: utf-8, big5
+            EPSG: 4326  // wgs84
+        },
+        function (data) {
+            if (shpLoaded) {    // This gets called twice all the time. Load it once
+                shpLoaded = false;
+                return;
+            }
+            if (data == null) {
+                alert('No shape records found.');
+                return;
+            }
+            shpLoaded = true;
+
+            var features = new ol.format.GeoJSON().readFeatures(data, { featureProjection: 'EPSG:4326' });  // WGS84
+            if (features.length == 0)
+                return;
+            var geomType = features[0].getGeometry().getType(); // Point, LineString, Polygon
+
+            _jsonData = [];
+            var symbols = [];
+            var myFeat = [];    // { 'geom': item.getGeometry(), 'seq': index }
+            var lat, lon;
+            $.each(features, function (index, item) {
+                myFeat.push({ 'geom': item.getGeometry(), 'Seq': index });
+                item.values_['Seq'] = index;    // Add sequence here which matches with index
+                delete item.values_.geometry;
+                _jsonData.push(item.values_);
+            });
+
+            _geometry = myFeat; // Save as global. Used when Change Layout
+
+            for (var i = 0; i < _maps.length; i++) { // Set map's type to SHPb
+                _maps[i].type = 'SHP';
+                _maps[i].features = myFeat;
+            }
+
+            // Disable XY column since shape already has coordinates
+            if (typeof cbMapXColumn != "undefined" && ASPxClientUtils.IsExists(cbMapXColumn)) {
+                cbMapXColumn.SetEnabled(false);
+                cbMapYColumn.SetEnabled(false);
+            }
+
+            //_jsonData = addSeqNo(_jsonData);
+            _jsonDataGridview = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project:'bbbb'...}, { ...}]
+            updateAllViews(_jsonData, _jsonDataGridview);   // Populate Gridview and update all views
+            console.log('updateAllViews: shapeToJSON');
+        });
+    }
+}
 
 function addSeqNo(json) {
     for (var i = 0; i < json.length; i++) {
@@ -195,9 +270,9 @@ function addSeqNo(json) {
 // Initial loading
 // Panes already created.
 // Ajax: convert Json to DataTable and will show in Gridview
-function convertJsonToDataTable(jsonData, jsonDataGridview) {
+function updateAllViews(jsonData, jsonDataGridview) {
     if (jsonData == undefined || jsonDataGridview == undefined) {
-        console.log("convertJsonToDataTable: jsonData or jsonDataGridview is null.");
+        console.log("updateAllViews: jsonData or jsonDataGridview is null.");
         return;
     }
 
@@ -211,6 +286,7 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         error: errorFunc
     });
 
+    // Update all views
     function successFunc(data, status) {    // returns list of column name and type. DataTypes: int64, String, DateTime, Date, Double )
         if (status != 'success') {
             console.log("ConvertJsonToDataTable: no column names returned.");
@@ -223,8 +299,7 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         _filteredData = null;   // Reset filtered data to null which applies all panel
 
         // Maps
-        // if proper is open and Show Label is checked
-        var labelColName;
+        // if property is open and Show Label is checked
         if (typeof cbShowLabel != "undefined" && ASPxClientUtils.IsExists(cbShowLabel) && ASPxClientUtils.IsExists(chkShowLabel)) {
             chkShowLabel.SetChecked(false); // uncheck show label checkbox when loading new data
         }
@@ -232,7 +307,8 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
         _maps.forEach(function (m) {
             m.isLabelOn = false;    // set it to false when loading new data
             m.zCol = cNames.zCol;
-                addPointLayer(jsonData, m, cNames.xCol, cNames.yCol, labelColName, true); // true: zoom to layer
+            addPointLayer(jsonData, m, cNames.xCol, cNames.yCol, cNames.zCol, true); // true: zoom to layer
+            console.log("addPointLayer: updateAllViews");
         })
 
         // Gridviews
@@ -289,13 +365,13 @@ function convertJsonToDataTable(jsonData, jsonDataGridview) {
     }
 }
 
-function loadExcelFile(evt) {
-    var excelFile = document.createElement('input');
-    excelFile.type = 'file';
-    excelFile.accept = '.xls, .xlsx'
-    excelFile.id = 'excelFile';
+function loadDataSource(evt) {
+    var sourceFile = document.createElement('input');
+    sourceFile.type = 'file';
+    sourceFile.accept = '.zip, .xls, .xlsx, .csv';  // shape zip file, Excel and CSV
+    sourceFile.id = 'sourceFile';
 
-    document.body.appendChild(excelFile);
+    document.body.appendChild(sourceFile);
 
     $('input[type="file"]').change(function (e) {
 
@@ -303,12 +379,23 @@ function loadExcelFile(evt) {
         loadingPanel.Show();
 
         _filename = e.target.files[0].name;
-        tbExcelFilename.SetText(_filename);
-        var xl2json = new ExcelToJSON();
-        xl2json.parseExcel(e.target.files[0]);
-
+        _filetype = _filename.substr(_filename.lastIndexOf('.') + 1, _filename.length - _filename.lastIndexOf('.') - 1).toUpperCase();    // ZIP, XLS, XLSX, CSV
+        tbSourceFilename.SetText(_filename);
+        if (_filetype == 'ZIP') {
+            radioSelectDataSource.SetValue(1);
+            var shp2json = new shapeToJSON();
+            shp2json.parseShape(e.target.files[0]);
+        }
+        if (_filetype == 'XLS' || _filetype == 'XLSX') {
+            radioSelectDataSource.SetValue(2);
+            var xl2json = new ExcelToJSON();
+            xl2json.parseExcel(e.target.files[0]);
+        }
+        if (_filetype == 'CSV') {
+            radioSelectDataSource.SetValue(3);
+        }
     });
-    excelFile.click();
+    sourceFile.click();
 }
 
 function getLonLatColumnNames(columnNames) {
@@ -320,9 +407,9 @@ function getLonLatColumnNames(columnNames) {
     var yCol = null;
     var zCol = null;    // label column
     for (i = 0; i < columnNames.length; i++) {
-        if (columnNames[i].Name == _lonColName)
+        if (columnNames[i].Name.toUpperCase() == _lonColName)
             xCol = columnNames[i].Name;
-        if (columnNames[i].Name == _latColName)
+        if (columnNames[i].Name.toUpperCase() == _latColName)
             yCol = columnNames[i].Name;
     }
     if (xCol != null && yCol != null)
@@ -634,6 +721,17 @@ function renderMapProperty(id) {
             cbMapYColumn.AddItem(c.Name);
         }
     });
+
+    // Enable/disable XY column in property dialog
+    if (map.type == 'SHP') {
+        cbMapXColumn.SetEnabled(false);
+        cbMapYColumn.SetEnabled(false);
+    }
+    else {
+        cbMapXColumn.SetEnabled(true);
+        cbMapYColumn.SetEnabled(true);
+    }
+
     cbShowLabel.SetSelectedIndex(0);
     cbMapXColumn.SetValue(map.xCol);
     cbMapYColumn.SetValue(map.yCol);

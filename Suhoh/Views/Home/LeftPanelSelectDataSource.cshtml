@@ -2,6 +2,25 @@
 @using Suhoh.Model
 @model ViewModel
 
+
+<div>
+    @Html.DevExpress().RadioButtonListFor(model => model.RadioSelectDataSource,
+        settings =>
+        {
+            settings.Name = "radioSelectDataSource";
+            settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+            settings.Properties.Items.Add("Shape (.zip)", 1);
+            settings.Properties.Items.Add("Excel", 2);
+            settings.Properties.Items.Add("CSV", 3);
+            settings.Width = 240;
+            settings.Height = 28;
+            settings.ControlStyle.CssClass = "radioSselectDataSource";
+            settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
+            settings.Properties.ValueType = typeof(Int32);
+            settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioLeftPanelSaveLoadClick";
+        }).GetHtml()
+</div>
+
 @Html.DevExpress().Label(settings => {
     settings.Name = "labelExcelFilename";
     settings.Text = "Filename";
@@ -12,7 +31,7 @@
 <div>
     @Html.DevExpress().TextBox(settings =>
     {
-        settings.Name = "tbExcelFilename";
+        settings.Name = "tbSourceFilename";
         settings.Width = 216;
         settings.ReadOnly = true;
         settings.ControlStyle.CssClass = "excelFilename textBox";
@@ -27,7 +46,7 @@
             settings.ToolTip = "Load Excel";
             settings.Text = "";
             settings.ControlStyle.CssClass = "excelFilename loadButton";
-            settings.ClientSideEvents.Click = "loadExcelFile";
+            settings.ClientSideEvents.Click = "loadDataSource"; // load shape, excel and CSV
         }
     ).GetHtml()
 </div>
