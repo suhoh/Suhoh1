@@ -235,7 +235,6 @@
     <Content Include="Scripts\MainScript.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\OL\addLayers.js" />
-    <Content Include="Scripts\OL\label.js" />
     <Content Include="Scripts\OL\layersNsymbols.js" />
     <Content Include="Scripts\OL\main.js" />
     <Content Include="Scripts\Ol_v650\ol.css" />
@@ -288,6 +287,11 @@
     <Content Include="Scripts\SheetJS\cpexcel.js" />
     <Content Include="Scripts\SheetJS\jszip.js" />
     <Content Include="Scripts\SheetJS\xlsx.full.min.js" />
+    <Content Include="Scripts\shp2geojson\jszip-utils-ie.js" />
+    <Content Include="Scripts\shp2geojson\jszip-utils.js" />
+    <Content Include="Scripts\shp2geojson\jszip.js" />
+    <Content Include="Scripts\shp2geojson\preprocess.js" />
+    <Content Include="Scripts\shp2geojson\preview.js" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>

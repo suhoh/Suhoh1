@@ -30,6 +30,51 @@ function getLine(divName) {
 }
 
 function getLineData(paneId, jsonData, xCol, yCol, color, isInitial) {
+    xCol = 'Well Report Id';
+    yCol = 'DEM;Head;Total Depth Drilled';
+
+    if (jsonData == null)
+        return null;
+
+    var lGraph = splitterMain.GetPaneByName(paneId);
+    var width = lGraph.GetClientWidth();
+    var height = lGraph.GetClientHeight();
+    var line = getLine(paneId);
+    line.xCol = xCol;    // Applicant
+    line.yCol = yCol;    // Elevation; Quantity_m3
+    line.color = color;
+
+    // Y columns
+    var lineYCols = yCol.split(';');
+
+    var lineXyArray = [];
+    var series = [];
+    var obj = null;
+
+    if (!isInitial) {
+        lineXyArray = line.data; // use existing data
+    }
+    else {
+        var gb;
+        for (i = 0; i < lineYCols.length; i++) {
+            var gb = groupBy(jsonData, xCol, lineYCols[i]);
+            var values = [];
+            for (s = 0; s < gb.length; s++) {
+                values.push(gb[s][lineYCols[i]]);
+            }
+            series.push({ name: lineYCols[i], 'values': values });
+        }
+        var x = [];  // X columns
+        for (i = 0; i < gb.length; i++) {
+            x.push(gb[i][xCol]);    // list of distinct x values
+        }
+        obj = { 'y': yCol, 'series': series, 'x': x } // https://observablehq.com/@d3/multi-line-chart
+        console.log(obj);
+    }
+    return { lineData: obj, colData: lineYCols, width: width, height: height, color: color }
+}
+
+function getLineData_Old(paneId, jsonData, xCol, yCol, color, isInitial) {
     if (jsonData == null)
         return null;
 

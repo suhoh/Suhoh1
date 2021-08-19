@@ -81,6 +81,7 @@ function dxGridview_OnEndCallback(s, e) {
                 continue;
             _maps[i].isLabelOn = false;    // set it to false when loading new data
             addPointLayer(_filteredData, _maps[i], null, null, null, true); // true: zoom to layer
+            console.log("addPointLayer: dxGridview_OnEndCallback");
         }
     }
 

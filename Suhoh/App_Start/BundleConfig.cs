@@ -16,7 +16,6 @@ namespace Suhoh
                 "~/Scripts/OL/main.js",
                 "~/Scripts/OL/layersNsymbols.js",
                 "~/Scripts/OL/addLayers.js",
-                "~/Scripts/OL/label.js",
                 "~/Scripts/D3_v650/d3.js",
                 "~/Scripts/D3/main.js",
                 "~/Scripts/D3/pie.js",
