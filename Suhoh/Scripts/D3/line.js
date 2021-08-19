@@ -39,9 +39,6 @@ function getLine(divName) {
 }
 
 function getLineData(paneId, jsonData, xCol, yCol, color, isInitial) {
-    xCol = 'Well Report Id';
-    yCol = 'DEM;Head;Total Depth Drilled';
-
     if (jsonData == null)
         return null;
 
@@ -124,7 +121,7 @@ function drawLine(divName, data, columns, width, height, lineColor) {
     _lineSvgHeight = height - 30; // svg height will be 30px smaller than panel height to leave room for title
 
     var line = getLine(divName);
-    line.data = _multiLineData;
+    line.data = data;
 
     var svg = d3.select("#" + divName)
         .append("svg")
@@ -145,8 +142,8 @@ function drawLine(divName, data, columns, width, height, lineColor) {
         x = d3.scaleBand().rangeRound([0, width - _lineMarginLeft - _lineMarginRight - 50]).padding(0.1);
     y = d3.scaleLinear().rangeRound([_lineSvgHeight - _lineMarginTop - _lineMarginBottom - 30, 0]);
 
-    x.domain(_multiLineData.x.map(function (d) { return d; }));
-    y.domain([0, d3.max(_multiLineData.series, d => d3.max(d.values))]).nice();
+    x.domain(data.x.map(function (d) { return d; }));
+    y.domain([0, d3.max(data.series, d => d3.max(d.values))]).nice();
 
     // x-axis
     var xAxis = d3.axisBottom(x);
