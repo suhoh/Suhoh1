@@ -298,6 +298,19 @@
 }
 /*Property Popup Line Chart End*/
 
+/*Line Chart ToolTip*/
+.axisLineLabelTooltip {
+    height: 12px;
+    line-height: 1;
+    font-weight: bold;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    border-radius: 3px;
+    text-align: center;
+}
+/*Line Chart ToolTip End*/
+
 /*Charts ToolTip*/
 .pieTooltip {
     background: white;

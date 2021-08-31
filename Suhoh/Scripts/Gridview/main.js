@@ -8,6 +8,7 @@ var _activeGridview;
 var _headerFilterPanel, _groupingPanel;
 var _gridviewKeys = '';     // stored filtered keys (Seq)
 var _filteredData = null;  // stores filtered data from Gridview
+var _isResetClicked = false;
 
 function initGridview(name) {
     _gridviews.push({ 'name': name, 'isHeaderFilter': false, 'isGrouping': false, 'filteredKeys': null, 'pageSize': _pageSize });  // DevExpress control name
@@ -28,6 +29,11 @@ function dxGridview_OnBeginCallback(s, e) {
     e.customArgs["dxGridview_Grouping"] = gv.isGrouping;
 }
 function dxGridview_OnEndCallback(s, e) {
+    if ((e.command == 'APPLYFILTER' || e.command == 'CUSTOMCALLBACK' || e.command == 'FUNCTION') && !_isResetClicked)
+        return;
+    else
+        _isResetClicked = false;
+
     var gv = getGridview(s.name);
     // Adjust checkboxes
     var headerFilter = s.name + "_HeaderFilter";
@@ -124,6 +130,7 @@ function btnGridviewResetClick(s) {
     var g = getGridview(pId);
     g.isHeaderFilter = false;
     g.isGrouping = false;
+    _isResetClicked = true;
 
     var gv = eval(g.name);
     gv.ClearFilter();
