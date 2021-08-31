@@ -9,6 +9,7 @@
         {
             settings.Name = "radioSelectDataSource";
             settings.Properties.RepeatDirection = System.Web.UI.WebControls.RepeatDirection.Horizontal;
+            settings.Properties.Items.Add("All", 0);
             settings.Properties.Items.Add("Shape (.zip)", 1);
             settings.Properties.Items.Add("Excel", 2);
             settings.Properties.Items.Add("CSV", 3);
@@ -17,7 +18,7 @@
             settings.ControlStyle.CssClass = "radioSselectDataSource";
             settings.ControlStyle.Border.BorderStyle = System.Web.UI.WebControls.BorderStyle.None;
             settings.Properties.ValueType = typeof(Int32);
-            settings.Properties.ClientSideEvents.SelectedIndexChanged = "radioLeftPanelSaveLoadClick";
+            settings.Properties.ClientSideEvents.SelectedIndexChanged = "";
         }).GetHtml()
 </div>
 

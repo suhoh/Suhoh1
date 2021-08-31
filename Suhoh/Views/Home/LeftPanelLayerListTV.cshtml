@@ -1,0 +1,56 @@
+﻿
+@using Suhoh.Model
+@model ViewModel
+
+@{
+    ViewBag.Title = "LeftPanelLayerListTV";
+}
+
+@Html.DevExpress().TreeView(
+    settings => {
+        settings.Name = "tvMapServices";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "LeftPanelLayerListTV" };
+        settings.ClientSideEvents.BeginCallback = "";
+        settings.ClientSideEvents.EndCallback = "";
+
+        settings.AllowCheckNodes = true;
+        settings.AllowSelectNode = true;
+        settings.CheckNodesRecursive = true;
+        settings.EnableAnimation = true;
+        settings.EnableHotTrack = true;
+        settings.ShowTreeLines = true;
+        settings.ShowExpandButtons = true;
+        settings.Width = 300;
+
+        settings.Nodes.Add(node => {
+            node.Text = "Home";
+            node.Nodes.Add(subNode => {
+                subNode.Text = "News";
+                subNode.Nodes.Add("For Developers");
+                subNode.Nodes.Add("Website news");
+            });
+            node.Nodes.Add("Our Mission");
+            node.Nodes.Add("Our Customers");
+        });
+        settings.Nodes.Add(node => {
+            node.Text = "Products";
+            node.Nodes.Add("Subscriptions / Packs");
+            node.Nodes.Add(".NET Windows Forms Components");
+            node.Nodes.Add("Reporting / Printing Suites");
+            node.Nodes.Add("ASP.NET WebForms Components");
+            node.Nodes.Add("ASP.NET MVC Extensions");
+        });
+        settings.Nodes.Add(node => {
+            node.Text = "Support";
+            node.Nodes.Add("Knowledge Base");
+            node.Nodes.Add("Documentation");
+            node.Nodes.Add("Support Center");
+            node.Nodes.Add("Newsgroups");
+            node.Nodes.Add("Best Practicies");
+        });
+
+        settings.PreRender = (source, e) => {
+            ASPxTreeView treeView = (ASPxTreeView)source;
+            treeView.ExpandToDepth(0);
+        };
+    }).GetHtml()

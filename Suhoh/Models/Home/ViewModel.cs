@@ -147,12 +147,12 @@ namespace Suhoh.Model
             CbLeftPanelAttributeOperator = "=";
 
             RadioLeftPanelSaveLoad = 1;
-            RadioSelectDataSource = 1;
+            RadioSelectDataSource = 0;
 
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
             MainPanelCount = 3;
-            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Line1']}, {'name': 'Panel2', 'type': ['Pie1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
+            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Pie1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
     }
 
@@ -174,8 +174,10 @@ namespace Suhoh.Model
         [XmlArrayItem(typeof(DataSourceInfo), ElementName = "DataSource")]
         public DataSourceInfo[] DataSources { get; set; }
 
-        [XmlElement(ElementName = "ExcelFilePath")]
-        public string ExcelFilePath { get; set; }
+        // Map Services
+        [XmlArray(ElementName = "MapServices")]
+        [XmlArrayItem(typeof(MapService), ElementName = "MapService")]
+        public MapService[] MapServices { get; set; }
 
         [XmlElement(ElementName = "PageSizes")]
         public string PageSizes { get; set; }
@@ -209,6 +211,18 @@ namespace Suhoh.Model
         public bool Subscribed { get; set; }
         [XmlAttribute(AttributeName = "show")]
         public bool Show { get; set; }
+    }
+
+    public class MapService
+    {
+        [XmlAttribute(AttributeName = "id")]
+        public string Id { get; set; }
+        [XmlAttribute(AttributeName = "type")]
+        public string Type { get; set; }
+        [XmlAttribute(AttributeName = "url")]
+        public string Url { get; set; }
+        [XmlAttribute(AttributeName = "turnOn")]
+        public bool TrunOn { get; set; }
     }
 
     public class Project

@@ -21,7 +21,7 @@ function addPointLayer(jsonData, map, xCol, yCol, zCol, isFitToLayer) {
 
     var layer;
     var symbols = [];
-    if (map.type == 'XLS' || map.type == undefined) {
+    if (map.type == 'XLS' || map.type == 'CSV' || map.type == undefined) {
         var symbol;
         for (var i = 0; i < jsonData.length; i++) {
             if (map.isLabelOn)
@@ -59,7 +59,12 @@ function addPointLayer(jsonData, map, xCol, yCol, zCol, isFitToLayer) {
             style: shpStyleFunction
         });
     }
-    
+
+    if (layer == undefined) {
+        showMessage('Map layer is undefined.', 'Error');
+        return;
+    }
+
     map.layer = layer;
     map.map.addLayer(layer);
     if (isFitToLayer)
@@ -101,3 +106,28 @@ function fitToLayer(map, layer) {
     map.getView().fit(extent, { size: map.getSize(), duration: _zoomToDuration });
 }
 
+
+//
+// https://openlayers.org/en/latest/examples/arcgis-tiled.html
+//
+function addMapService(url) {
+    var testUrl = new ol.layer.Image({
+        source: new ol.source.ImageArcGISRest({
+            ratio: 1,
+            params: {},
+            url: url,
+            crossOrigin: "Anonymous"    // Maybe no need this for v631 and above. Need this. cause Tainted issue when printing
+            //https://stackoverflow.com/questions/22710627/tainted-canvases-may-not-be-exported
+        })
+    });
+
+
+    _maps[0].map.addLayer(testUrl);
+}
+
+//
+// https://openlayers.org/en/latest/examples/vector-esri.html
+//
+function addFeatureService() {
+
+}

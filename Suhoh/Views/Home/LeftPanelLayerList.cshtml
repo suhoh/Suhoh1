@@ -2,5 +2,34 @@
 @using Suhoh.Model
 @model ViewModel
 
-<h4 style="margin-left: 12px">List of layers shown on Map</h4>
+<div style="float:left; margin-top:10px; margin-bottom: 5px">
+    @Html.DevExpress().Label(settings => {
+        settings.Name = "labelLoadMapService";
+        settings.Text = "Load Map Service (ESRI)";
+        settings.ControlStyle.CssClass = "mapLayers label";
+        settings.Properties.EnableClientSideAPI = true;
+    }).GetHtml()
+
+
+    @Html.DevExpress().TextBox(settings =>
+    {
+        settings.Name = "tbMapServiceUrl";
+        settings.Width = 222;
+        settings.ReadOnly = false;
+        settings.ControlStyle.CssClass = "mapLayers textBox";
+        settings.Properties.NullText = "Enter Map Service Url";
+        settings.Text = "";
+    }).GetHtml()
+
+    @Html.DevExpress().Button(
+    settings =>
+    {
+        settings.Name = "btnloadMapService";
+        settings.ToolTip = "Load Map Service";
+        settings.Text = "";
+        settings.ControlStyle.CssClass = "mapLayers loadButton";
+        settings.ClientSideEvents.Click = "btnLoadMapServiceClicked"; 
+    }
+).GetHtml()
+</div>
 

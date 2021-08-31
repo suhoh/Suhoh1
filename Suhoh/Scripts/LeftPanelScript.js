@@ -375,3 +375,11 @@ function gvLeftPanelProjects_OnEndCallback(s, e) {
         gvLeftPanelProjects.SetFocusedRowIndex(gvLeftPanelProjects.pageRowCount - 1);
     }
 }
+
+//
+// Load Map service
+//
+function btnLoadMapServiceClicked(s, e) {
+    addMapService('https://maps.alberta.ca/genesis/rest/services/AWWID_BWWT-Layers/Latest/MapServer');
+}
+

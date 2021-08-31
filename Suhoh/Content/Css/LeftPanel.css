@@ -113,13 +113,15 @@
 }
 
     .excelFilename.label {
-        font-weight: bold;
+        font-weight: normal;
         margin-top: 6px;
     }
+
     .excelFilename.textBox {
         float: left;
         margin-top: 3px;
     }
+
     .excelFilename.loadButton {
         float: left;
         margin-top: 3px;
@@ -176,3 +178,25 @@
     margin-top: 8px;
     margin-bottom: 10px;
 }
+
+/*Map Layers*/
+.mapLayers {
+    margin-left: 10px;
+    float:left;
+}
+    .mapLayers.label {
+        font-weight: normal;
+    }
+    .mapLayers.textBox {
+        margin-top: 3px;
+    }
+    .mapLayers.loadButton {
+        float: left;
+        margin-top: 7px;
+        margin-left: 4px;
+        border-radius: 2px;
+        width: 26px; /*no effect, background-size controls the size*/
+        height: 26px; /*no effect, background-size controls the size*/
+        background: url('../Images/DX/add.svg') no-repeat;
+        background-size: 20px;
+    }

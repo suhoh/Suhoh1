@@ -30,6 +30,24 @@ function clearAllPanels() {
     _gridviews = [];
 }
 
+function clearAllAttributes() {
+    _maps.forEach(function (m) {
+        m.xCol = m.yCol = m.zCol = null;
+    });
+    _pies.forEach(function (p) {    // Add attributes to clear
+
+    });
+    _bars.forEach(function (b) {
+
+    });
+    _lines.forEach(function (l) {
+
+    })
+    _gridviews.forEach(function (g) {
+
+    })
+}
+
 function splitterMainResized(s, e) {
     // Update all panes
     updateMaps(_maps);
@@ -130,6 +148,7 @@ function updateGridviews(gridviews) {
     gridviews.forEach(function (g) {
         var gv = eval(g.name);
         gv.PerformCallback({ 'isReLoad': false });
+        console.log('gv.PerformCallback: updateGridviews');
         document.getElementById(g.name + "_Title").innerHTML = _filename;
     })
 }
@@ -162,6 +181,50 @@ function getPaneSize(paneId) {
 }
 
 //
+// Load data
+//
+function loadDataSource(evt) {
+    var sourceType = radioSelectDataSource.GetValue();
+    var sourceFile = document.createElement('input');
+    sourceFile.type = 'file';
+    sourceFile.id = 'sourceFile';
+    if (sourceType == 1)
+        sourceFile.accept = '.zip';
+    else if (sourceType == 2)
+        sourceFile.accept = '.xls, .xlsx';
+    else if (sourceType == 3)
+        sourceFile.accept = '.csv';
+    else
+        sourceFile.accept = '.zip, .xls, .xlsx, .csv';  // shape zip file, Excel and CSV
+
+    document.body.appendChild(sourceFile);
+
+    $('input[type="file"]').change(function (e) {
+
+        loadingPanel.Hide();
+        loadingPanel.Show();
+        clearAllAttributes();
+
+        _filename = e.target.files[0].name;
+        _filetype = _filename.substr(_filename.lastIndexOf('.') + 1, _filename.length - _filename.lastIndexOf('.') - 1).toUpperCase();    // ZIP, XLS, XLSX, CSV
+        tbSourceFilename.SetText(_filename);
+        if (_filetype == 'ZIP') {
+            var shp2json = new shapeToJSON();
+            shp2json.parseShape(e.target.files[0]);
+        }
+        if (_filetype == 'XLS' || _filetype == 'XLSX') {
+            var xl2json = new ExcelToJSON();
+            xl2json.parseExcel(e.target.files[0]);
+        }
+        if (_filetype == 'CSV') {
+            var csv2Json = new csvToJson();
+            csv2Json.parseCsv(e.target.files[0])
+        }
+    });
+    sourceFile.click();
+}
+
+//
 // Excel to Json
 //
 var ExcelToJSON = function () {
@@ -183,7 +246,7 @@ var ExcelToJSON = function () {
                     _maps[i].type = 'XLS';
                 }
 
-                // Disable XY column since shape already has coordinates
+                // Enable XY column for map property if already shown
                 if (typeof cbMapXColumn != "undefined" && ASPxClientUtils.IsExists(cbMapXColumn)) {
                     cbMapXColumn.SetEnabled(true);
                     cbMapYColumn.SetEnabled(true);
@@ -199,6 +262,38 @@ var ExcelToJSON = function () {
         reader.readAsBinaryString(file);
     };
 };
+
+//
+// Load CSV
+//
+var csvToJson = function () {
+    this.parseCsv = function (file) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var csvFile = e.target.result;
+            d3.csv(csvFile).then(function (data) {
+                _jsonData = addSeqNo(data);    // add sequence number
+                _jsonDataGridview = JSON.stringify(_jsonData);   // [{'applicant':'aaa', 'project:'bbbb'...}, { ...}]
+
+                for (var i = 0; i < _maps.length; i++) {
+                    _maps[i].type = 'CSV';
+                }
+                // Enable XY column for map property if already shown
+                if (typeof cbMapXColumn != "undefined" && ASPxClientUtils.IsExists(cbMapXColumn)) {
+                    cbMapXColumn.SetEnabled(true);
+                    cbMapYColumn.SetEnabled(true);
+                }
+
+                updateAllViews(_jsonData, _jsonDataGridview);   // Populate Gridview and update all views
+                console.log('updateAllViews: csvToJson');
+            });
+        }
+        reader.onerror = function (ex) {
+            console.log(ex);
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
 //
 // zipped shape file to Json
@@ -317,7 +412,8 @@ function updateAllViews(jsonData, jsonDataGridview) {
             g.isGrouping = false;       
             var gv = eval(g.name);      // DevExpress control
             gv.ClearFilter();
-            gv.PerformCallback({ 'isReLoad': true } );
+            gv.PerformCallback({ 'isReLoad': true });
+            console.log('gv.PerformCallback: updateAllViews');
             document.getElementById(g.name + "_Title").innerHTML = _filename;
         })
 
@@ -365,39 +461,6 @@ function updateAllViews(jsonData, jsonDataGridview) {
     }
 }
 
-function loadDataSource(evt) {
-    var sourceFile = document.createElement('input');
-    sourceFile.type = 'file';
-    sourceFile.accept = '.zip, .xls, .xlsx, .csv';  // shape zip file, Excel and CSV
-    sourceFile.id = 'sourceFile';
-
-    document.body.appendChild(sourceFile);
-
-    $('input[type="file"]').change(function (e) {
-
-        loadingPanel.Hide();
-        loadingPanel.Show();
-
-        _filename = e.target.files[0].name;
-        _filetype = _filename.substr(_filename.lastIndexOf('.') + 1, _filename.length - _filename.lastIndexOf('.') - 1).toUpperCase();    // ZIP, XLS, XLSX, CSV
-        tbSourceFilename.SetText(_filename);
-        if (_filetype == 'ZIP') {
-            radioSelectDataSource.SetValue(1);
-            var shp2json = new shapeToJSON();
-            shp2json.parseShape(e.target.files[0]);
-        }
-        if (_filetype == 'XLS' || _filetype == 'XLSX') {
-            radioSelectDataSource.SetValue(2);
-            var xl2json = new ExcelToJSON();
-            xl2json.parseExcel(e.target.files[0]);
-        }
-        if (_filetype == 'CSV') {
-            radioSelectDataSource.SetValue(3);
-        }
-    });
-    sourceFile.click();
-}
-
 function getLonLatColumnNames(columnNames) {
     if (columnNames == undefined || columnNames.length == 0)
         return;
@@ -407,9 +470,9 @@ function getLonLatColumnNames(columnNames) {
     var yCol = null;
     var zCol = null;    // label column
     for (i = 0; i < columnNames.length; i++) {
-        if (columnNames[i].Name.toUpperCase() == _lonColName)
+        if (columnNames[i].Name.toUpperCase() == _lonColName || columnNames[i].Name.toUpperCase() == _x)
             xCol = columnNames[i].Name;
-        if (columnNames[i].Name.toUpperCase() == _latColName)
+        if (columnNames[i].Name.toUpperCase() == _latColName || columnNames[i].Name.toUpperCase() == _y)
             yCol = columnNames[i].Name;
     }
     if (xCol != null && yCol != null)
@@ -565,17 +628,23 @@ function renderPieProperty(id) {
     }
     cbPieXColumn.ClearItems();
     cbPieYColumn.ClearItems();
+
+    // Csv columns are always string. Had to add all the columns to X/Y dropdown
+    var isCsv = false;
+    if (_maps.length > 0) {
+        if (_maps[0].type == 'CSV')
+            isCsv = true;
+    }
     _columnNames.forEach(function (c) {
-        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv)
             cbPieXColumn.AddItem(c.Name);
-        if (c.Type == 'Int64' || c.Type == 'Double')
+        if (c.Type == 'Int64' || c.Type == 'Double' || isCsv)
             cbPieYColumn.AddItem(c.Name);
     });
 
     var canvas = ramp(_colorScaleHSL);
     var div = document.getElementById('divColorRampPie');
     div.appendChild(canvas);
-
 
     document.getElementById(pie.divName + "_Title").innerHTML = pie.xCol + " vs " + pie.yCol;   // title in panel
     tbPropertyPieTitle.SetText(pie.xCol + " vs " + pie.yCol); // title in property
@@ -606,10 +675,17 @@ function renderBarProperty(id) {
     }
     cbBarXColumn.ClearItems();
     lbBarYColumn.ClearItems();
+
+    // Csv columns are always string. Had to add all the columns to X/Y dropdown
+    var isCsv = false;
+    if (_maps.length > 0) {
+        if (_maps[0].type == 'CSV')
+            isCsv = true;
+    }
     _columnNames.forEach(function (c) {
-        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv)
             cbBarXColumn.AddItem(c.Name);
-        if (c.Type == 'Int64' || c.Type == 'Double')
+        if (c.Type == 'Int64' || c.Type == 'Double' || isCsv)
             lbBarYColumn.AddItem(c.Name);
     });
 
@@ -648,10 +724,17 @@ function renderLineProperty(id) {
 
     cbLineXColumn.ClearItems();
     lbLineYColumn.ClearItems();
+
+    // Csv columns are always string. Had to add all the columns to X/Y dropdown
+    var isCsv = false;
+    if (_maps.length > 0) {
+        if (_maps[0].type == 'CSV')
+            isCsv = true;
+    }
     _columnNames.forEach(function (c) {
-        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date')
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv)
             cbLineXColumn.AddItem(c.Name);
-        if (c.Type == 'Int64' || c.Type == 'Double')
+        if (c.Type == 'Int64' || c.Type == 'Double' || isCsv)
             lbLineYColumn.AddItem(c.Name);
     });
 
@@ -714,9 +797,10 @@ function renderMapProperty(id) {
     cbShowLabel.ClearItems();
     cbMapXColumn.ClearItems();
     cbMapYColumn.ClearItems();
+
     _columnNames.forEach(function (c) {
         cbShowLabel.AddItem(c.Name);
-        if (c.Type == 'Int64' || c.Type == 'Double') {
+        if ((c.Type == 'Int64' || c.Type == 'Double') || map.type == 'CSV') {   // Todo: CSV columns returns as string always
             cbMapXColumn.AddItem(c.Name);
             cbMapYColumn.AddItem(c.Name);
         }
