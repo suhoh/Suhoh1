@@ -53,12 +53,11 @@ function getLineData(paneId, jsonData, xCol, yCol, color, isInitial) {
     // Y columns
     var lineYCols = yCol.split(';');
 
-    var lineXyArray = [];
     var series = [];
     var obj = null;
 
     if (!isInitial) {
-        lineXyArray = line.data; // use existing data
+        obj = line.data; // use existing data
     }
     else {
         var gb;
@@ -126,7 +125,7 @@ function drawLine(divName, data, columns, width, height, lineColor) {
     var svg = d3.select("#" + divName)
         .append("svg")
         .attr("width", width)
-        .attr("height", _lineSvgHeight)
+        .attr("height", height)
         .attr("class", "lineChartSvg")
         .attr("transform", "translate(0" + _lineMarginTop + ")")
         .append("g");
@@ -135,135 +134,80 @@ function drawLine(divName, data, columns, width, height, lineColor) {
     var y;
 
     if (width > 400 && line.isLegend == true)
-        //x = d3.scaleUtc().range([0, width - _lineMarginLeft - _lineMarginRight - 50 - 115]);
         x = d3.scaleBand().rangeRound([0, width - _lineMarginLeft - _lineMarginRight - 50 - 115]).padding(0.1);
     else
-        //x = d3.scaleUtc().range([0, width - _lineMarginLeft - _lineMarginRight - 50]);
         x = d3.scaleBand().rangeRound([0, width - _lineMarginLeft - _lineMarginRight - 50]).padding(0.1);
     y = d3.scaleLinear().rangeRound([_lineSvgHeight - _lineMarginTop - _lineMarginBottom - 30, 0]);
 
-    x.domain(data.x.map(function (d) { return d; }));
+    x.domain(data.x.map(function (d) {
+        console.log(d);
+        return d;
+    }));
     y.domain([0, d3.max(data.series, d => d3.max(d.values))]).nice();
 
     // x-axis
     var xAxis = d3.axisBottom(x);
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + "," + (_lineSvgHeight - _lineMarginTop - _lineMarginBottom) + ")")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + "," + (_lineSvgHeight - _lineMarginTop - _lineMarginBottom + 30) + ")")
         .call(xAxis)
         .selectAll("text")
         .attr("transform", "rotate(30)")
         .style("text-anchor", "start");
 
-    //if (_multiLineData == undefined)
-    //    return null;
+    // y-axis
+    var yAxis = d3.axisLeft(y);
+    svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + ", " + (_lineMarginTop + 30) + ")")
+        .call(yAxis);
 
-    //var line = getLine(divName);
-    //line.data = _multiLineData; // make it global
+    // y-axis Label
+    var yColumn = line.yCol;
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", "25px")
+        .attr("x", (30 - (height / 2)) + "px")
+        .style("text-anchor", "middle")
+        .attr("font-weight", "bold")
+        .text(yColumn);
 
-    //if (columns[0].length == 0) {
-    //    $('#divLineColorPickerDropDown').remove();
-    //    return;
-    //}
+        var color = d3.scaleOrdinal()
+        .domain(columns)
+        .range(lineColor);
 
-    //_lineSvgHeight = height - 30; // svg height will be 30px smaller than panel height to leave room for title
+    createLine(line, svg, data, x, y, color);
+    createLineLegend(line, svg, columns, width, color);
 
-    //var svg = d3.select("#" + divName)
-    //    .append("svg")
-    //    .attr("width", width)
-    //    .attr("height", _lineSvgHeight)
-    //    .attr("class", "lineChart")
-    //    .attr("transform", "translate(0," + _lineMarginTop + ")")
-    //    .append("g");
-
-    ////var stackedData = d3.stack()
-    ////    .keys(columns)
-    ////    (_testData)
-    ////    .map(d => (d.forEach(v => v.key = d.key), d));
-
-    //var x;
-    //var y;
-
-    //if (width > 400 && line.isLegend == true)
-    //    x = d3.scaleBand().rangeRound([0, width - _lineMarginLeft - _lineMarginRight - 50 - 115]).padding(0.1);
-    //else
-    //    x = d3.scaleBand().rangeRound([0, width - _lineMarginLeft - _lineMarginRight - 50]).padding(0.1);
-    //y = d3.scaleLinear().rangeRound([_lineSvgHeight - _lineMarginTop - _lineMarginBottom - 30, 0]);
-
-    //var yArray = [];
-    //for (i = 0; i < _multiLineData.series.length; i++) {
-    //    var str = '';
-    //    for (j = 0; j < _multiLineData.x.length; j++) {
-    //        //str += data[i][columns[j]] + ',';
-    //        str += _multiLineData.x[j] + ',';
-    //    }
-    //    str = str.substring(0, str.length - 1)
-    //    yArray.push(sumStr(str));
-    //}
-    //var yMax = Math.max(...yArray);
-
-    //x.domain(data.map(function (d) { return d.X; }))
-    //y.domain([0, yMax]);
-
-    //// x-axis
-    //var xAxis = d3.axisBottom(x);
-    //svg.append("g")
-    //    .attr("class", "x axis")
-    //    .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + "," + (_lineSvgHeight - _lineMarginTop - _lineMarginBottom) + ")")
-    //    .call(xAxis)
-    //    .selectAll("text")
-    //    .attr("transform", "rotate(30)")
-    //    .style("text-anchor", "start");
-
-    //// y-axis
-    //var yAxis = d3.axisLeft(y);
-    //svg.append("g")
-    //    .attr("class", "y axis")
-    //    .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + ", " + _lineMarginTop + ")")
-    //    .call(yAxis);
-
-    //// y-axis Label
-    //var yColumn = line.yCol;
-    //svg.append("text")
-    //    .attr("transform", "rotate(-90)")
-    //    .attr("y", "25px")
-    //    .attr("x", (30 - (height / 2)) + "px")
-    //    .style("text-anchor", "middle")
-    //    .attr("font-weight", "bold")
-    //    .text(yColumn);
-
-    //var color = d3.scaleOrdinal()
-    //    .domain(columns)
-    //    .range(lineColor);
-
-    //$('#lineTooltip').remove();
-
-    //// line
-    //createLine(line, svg, _testData, columns, x, y, color);
-    ////createLineLegend(line, svg, stackedData, width, color);
-    //createLineLegend(line, svg, columns, width, color);
+    axisLineTooltip(line);
 }
 
-
-// https://bl.ocks.org/LemoNode/a9dc1a454fdc80ff2a738a9990935e9d
-function createLine(line, svg, data, columns, x, y, color) {
+function createLine(line, svg, data, x, y, color) {
     //var lineTooltip = d3.select("#" + line.divName).append("div").attr("id", "lineTooltip").attr("class", "lineTooltip").style("display", "none");
     //var lineTooltipTriangle = d3.select("#" + line.divName).append("div").attr("class", "lineTooltipTriangle").style("display", "none");
 
-    var dataline = d3.line()
-        .x(function (d) { return x(d.x); })
-        //.y(function (d) { return y(d[columns[0]]); })
-        .y(function (d) { return y(d.series.values); })
-        .curve(d3.curveStep);
+    var line = d3.line()
+        .defined(d => !isNaN(d))
+        .x((d, i) => x(data.x[i]))
+        .y(d => y(d))
+        .curve(d3.curveLinear);
 
-    var lineSvg = svg.append("path")
-        .data(_multiLineData)
-        //.join("path")
-        .attr("d", dataline)
-        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + ", 30)")
+    var ccc = "#e41a1c";
+
+    svg.append("g")
+        .selectAll("path")
+        .data(data.series)
+        .join("path")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2)) + "," + (_lineMarginTop + 30) + ")")
         .attr("fill", "none")
-        .attr("stroke", "red")
-        .attr("stroke-width", 2);
+        .attr("stroke", function (d) {
+            return color(d.name)
+        })
+        .attr("stroke-width", 1.5)
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round")
+        .style("mix-blend-mode", "multiply")
+        .attr("d", d => line(d.values));
 }
 
 function createLineLegend(line, svg, columns, width, color) {
@@ -278,11 +222,14 @@ function createLineLegend(line, svg, columns, width, color) {
         legend.append("rect")
             .attr("width", 7)
             .attr("height", 7)
-            .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (10 + (idx * 15)) + ")"; })
-            .attr("fill", function (d) { return color(d) });
+            .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (10 + (idx * 15) + 30) + ")"; })
+            .attr("fill", function (d) {
+                //console.log(d);
+                return color(d)
+            });
 
         legend.append("text")
-            .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (13 + (idx * 15)) + ")"; })
+            .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (13 + (idx * 15) + 30) + ")"; })
             .attr("dy", ".35em")
             .style("text-anchor", "start")
             .style("font-size", "8px")
@@ -290,4 +237,25 @@ function createLineLegend(line, svg, columns, width, color) {
                 return d;
             })
     }
+}
+
+function axisLineTooltip(line) {
+    var axisLineLabelTooltip = d3.select("#" + line.divName).append("div").attr("class", "axisLineLabelTooltip").style("display", "none");
+
+    d3.select("#" + line.divName)
+        .selectAll(".x .tick")
+        .data(line.data)
+        .on("mouseover", function (event, d) {
+            axisLineLabelTooltip
+                .style("display", "inline-block")
+                .style("position", "absolute")
+                .style("height", 12 + "px")
+                .html(d.x)
+                .style("left", event.offsetX + "px")
+                .style("top", event.offsetY - 25 + "px");
+        })
+        .on("mouseleave", function (d) {
+            axisLineLabelTooltip
+                .style("display", "none");
+        });
 }
