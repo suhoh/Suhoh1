@@ -81,6 +81,12 @@ namespace Suhoh.Controllers
             return PartialView("CallbackLineColorPickers", viewModel);
         }
 
+        public ActionResult LeftPanelLayerListTV(ViewModel vm)
+        {
+            ViewModel viewModel = (ViewModel)Session["viewModel"];
+            return PartialView("LeftPanelLayerListTV", viewModel);
+        }
+
         public ActionResult DxGridview(ViewModel vm, bool? isReLoad)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
@@ -97,6 +103,13 @@ namespace Suhoh.Controllers
 
             Session["viewModel"] = viewModel;
             return PartialView("DxGridview", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult GetAppConfig()
+        {
+            ViewModel viewModel = (ViewModel)Session["viewModel"];
+            return Json(viewModel.AppConfig, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

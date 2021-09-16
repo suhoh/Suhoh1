@@ -152,7 +152,7 @@ namespace Suhoh.Model
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
             MainPanelCount = 3;
-            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Pie1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
+            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Bar1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
     }
 
@@ -221,8 +221,8 @@ namespace Suhoh.Model
         public string Type { get; set; }
         [XmlAttribute(AttributeName = "url")]
         public string Url { get; set; }
-        [XmlAttribute(AttributeName = "turnOn")]
-        public bool TrunOn { get; set; }
+        [XmlAttribute(AttributeName = "isVisible")]
+        public bool IsVisible { get; set; }
     }
 
     public class Project

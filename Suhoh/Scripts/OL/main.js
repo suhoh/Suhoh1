@@ -81,16 +81,6 @@ function initMap(divName) {
         })
     });
 
-    var layerAts = new ol.layer.Image({
-        source: new ol.source.ImageArcGISRest({
-            ratio: 1,
-            params: {},
-            url: _atsUrl,
-            crossOrigin: "Anonymous"    // Maybe no need this for v631 and above. Need this. cause Tainted issue when printing
-            //https://stackoverflow.com/questions/22710627/tainted-canvases-may-not-be-exported
-        })
-    });
-
     var mousePositionControl = new ol.control.MousePosition({
         coordinateFormat: ol.coordinate.createStringXY(5),
         projection: 'EPSG:4326',
@@ -111,13 +101,36 @@ function initMap(divName) {
         }).extend([
             scaleLine, mousePositionControl
         ]),
-        layers: [layerStreets, layerTopo, layerImagery, layerNatGeo, layerShadedRelief, layerAts],
+        layers: [layerStreets, layerTopo, layerImagery, layerNatGeo, layerShadedRelief],
         logo: false,
         view: new ol.View({
             center: ol.proj.fromLonLat([-115.979293, 55.528787]),
             zoom: 4
         })
     });
+
+    // Get appConfig from server
+    var url = "Home/GetAppConfig"
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: {},
+        dataType: "json",
+        success: successFunc,
+        error: errorFunc
+    });
+    function successFunc(data, status) {
+        console.log(data);
+        _appConfig = data;
+        if (_appConfig.MapServices.length > 0) {
+            _appConfig.MapServices.forEach(function (m) {
+                addMapService(map, m.Id, m.Url, m.IsVisible);
+            })
+        }
+    }
+    function errorFunc(data, status) {
+        showMessage('Warning', 'Map Services not exist.')
+    }    
 
     _maps.push({
         'divName': divName, 'map': map, 'layer': null, 'type': null, 'features': null, 'scaleLine': scaleLine, 'data': null,

@@ -380,6 +380,54 @@ function gvLeftPanelProjects_OnEndCallback(s, e) {
 // Load Map service
 //
 function btnLoadMapServiceClicked(s, e) {
-    addMapService('https://maps.alberta.ca/genesis/rest/services/AWWID_BWWT-Layers/Latest/MapServer');
+    var url = tbMapServiceUrl.GetText();
+    if (url.length < 1) {
+        showMessage('Enter Map Service Url. e.g. https://maps.alberta.ca/genesis/rest/services/Transportation/Latest/MapServer', 'Error');
+        return;
+    }
+
+    url += '/info/iteminfo?f=pjson';
+    var xHttp = new XMLHttpRequest();   // call for upper left corner of LSD
+    xHttp.onreadystatechange = function () {
+        if (xHttp.readyState == 4 && xHttp.status == 200) { // 4: complete, 200: Ok
+            var json = JSON.parse(xHttp.responseText);
+            console.log(json);
+            addMapService(_maps[0].map, 'TEST', url, true);
+        }
+        else {
+            showMessage(xHttp.statusText, 'Error')
+        }
+    }
+    xHttp.open("GET", url, true);    // POST didn't work. false for Sync
+    xHttp.send();
+
+    //console.log(url);
+    //addMapService(_maps[0].map, 'TEST', url, true);
 }
 
+function getCurrentNode() {
+    return callbackTvMapServices.GetNodeByName(ddNodes.GetKeyValue());
+}
+
+function mapServiceTVInit(s, e) {
+
+}
+
+function mapServiceTVNodeClick(s, e) {
+
+}
+function mapServiceTVExpandedChanged(s, e) {
+
+}
+function mapServiceTVCheckedChanged(s, e) {
+    var nodeName = e.node.name;
+    var isChecked = e.node.GetChecked();
+
+    _maps.forEach(function (m) {
+        m.map.getLayers().getArray()
+            .filter(layer => layer.get('name') === nodeName)
+            .forEach(layer => layer.setProperties({ visible: isChecked }, false));
+    })
+
+    console.log(nodeName);
+}

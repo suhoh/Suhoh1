@@ -21,6 +21,18 @@ var _multiLineData = {
     'x': ["CLENNETT, DAVID", "SARUK, JESSIE", "STELMASCHUK, OREST"]
 }
 
+var _testPoint = [{
+    'name': 'DEM',
+    'values': [{ 'x': 'Unknown', y: 4025 },
+    { 'x': '', y: 11397 },
+    { 'x': 'Pump', y: 5356 },
+    { 'x': 'Air', y: 1322 },
+    { 'x': 'Pump & Air', y: 2038 },
+    { 'x': 'Not Applicable', y: 4634 },
+    { 'x': 'Bailer', y: 2604 },
+    { 'x': 'Bailer & Pump', y: 680 }]
+}];
+
 function initLine(divName) {
     _lines.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'data': null, 'svg': null, 'isLegend': true,
@@ -39,6 +51,42 @@ function getLine(divName) {
 }
 
 function getLineData(paneId, jsonData, xCol, yCol, color, isInitial) {
+    if (jsonData == null)
+        return null;
+
+    var lGraph = splitterMain.GetPaneByName(paneId);
+    var width = lGraph.GetClientWidth();
+    var height = lGraph.GetClientHeight();
+    var line = getLine(paneId);
+    line.xCol = xCol;    // Applicant
+    line.yCol = yCol;    // Elevation; Quantity_m3
+    line.color = color;
+
+    // Y columns
+    var lineYCols = yCol.split(';');
+
+    var series = [];
+
+    if (!isInitial) {
+        series = line.data; // use existing data
+    }
+    else {
+        var gb;
+        var name;
+        for (i = 0; i < lineYCols.length; i++) {
+            var gb = groupBy(jsonData, xCol, lineYCols[i]);
+            var values = [];
+            for (s = 0; s < gb.length; s++) {
+                values.push({ 'x': gb[s][xCol], 'y': gb[s][lineYCols[i]] });
+            }
+            series.push({ name: lineYCols[i], values: values });
+        }
+        console.log(series);
+    }
+    return { lineData: series, colData: lineYCols, width: width, height: height, color: color }
+}
+
+function getLineData_Old(paneId, jsonData, xCol, yCol, color, isInitial) {
     if (jsonData == null)
         return null;
 
@@ -77,41 +125,6 @@ function getLineData(paneId, jsonData, xCol, yCol, color, isInitial) {
         console.log(obj);
     }
     return { lineData: obj, colData: lineYCols, width: width, height: height, color: color }
-}
-
-function getLineData_Old(paneId, jsonData, xCol, yCol, color, isInitial) {
-    if (jsonData == null)
-        return null;
-
-    var lGraph = splitterMain.GetPaneByName(paneId);
-    var width = lGraph.GetClientWidth();
-    var height = lGraph.GetClientHeight();
-    var line = getLine(paneId);
-    line.xCol = xCol;    // Applicant
-    line.yCol = yCol;    // Elevation; Quantity_m3
-    line.color = color;
-
-    // Y columns
-    var lineYCols = yCol.split(';');
-
-    var lineXyArray = [];
-    if (!isInitial) {
-        lineXyArray = line.data; // use existing data
-    }
-    else {
-        var xy = [];
-        for (i = 0; i < lineYCols.length; i++) {
-            xy.push(groupBy(jsonData, xCol, lineYCols[i])); // 3 dimensional array
-        }
-        for (j = 0; j < xy[0].length; j++) {    // take first array length
-            var s = { X: xy[0][j][xCol] };
-            for (k = 0; k < lineYCols.length; k++) {
-                s[lineYCols[k]] = xy[k][j][lineYCols[k]]
-            }
-            lineXyArray.push(s);
-        }
-    }
-    return { lineData: lineXyArray, colData: lineYCols, width: width, height: height, color: color }
 }
 
 function drawLine(divName, data, columns, width, height, lineColor) {

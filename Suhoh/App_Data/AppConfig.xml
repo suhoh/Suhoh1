@@ -13,10 +13,11 @@
     <DataSource id="Projects" description="User Projects" type="table" database="SUHOH_S.dbo.Projects" active="true" subscribed="true" show="true"></DataSource>    
   </DataSources>
   <MapServices>
-    <MapService id="Access" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/Access/Latest/MapServer" turnOn="true"></MapService>
-    <MapService id="FireMap" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/FireMap/Latest/MapServer" turnOn="true"></MapService>
-    <MapService id="Land_Use_Management" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/Land_Use_Management/Latest/MapServer" turnOn="true"></MapService>
-    <MapService id="AWWID_BWWT-Layers" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/AWWID_BWWT-Layers/Latest/MapServer" turnOn="true"></MapService>
+    <MapService id="Alberta_Township_System" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/Alberta_Township_System/Latest/MapServer" isVisible="true"></MapService>
+    <MapService id="Access" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/Access/Latest/MapServer" isVisible="false"></MapService>
+    <MapService id="FireMap" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/FireMap/Latest/MapServer" isVisible="false"></MapService>
+    <MapService id="Land_Use_Management" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/Land_Use_Management/Latest/MapServer" isVisible="false"></MapService>
+    <MapService id="AWWID_BWWT-Layers" type="MapServer" url="https://maps.alberta.ca/genesis/rest/services/AWWID_BWWT-Layers/Latest/MapServer" isVisible="false"></MapService>
   </MapServices>
   <!--Gridview page sizes dropdown list-->
   <PageSizes>10,20,40,80,160</PageSizes>

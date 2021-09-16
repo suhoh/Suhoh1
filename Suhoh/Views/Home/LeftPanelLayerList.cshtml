@@ -2,7 +2,7 @@
 @using Suhoh.Model
 @model ViewModel
 
-<div style="float:left; margin-top:10px; margin-bottom: 5px">
+<div style="float:left; margin-top:10px">
     @Html.DevExpress().Label(settings => {
         settings.Name = "labelLoadMapService";
         settings.Text = "Load Map Service (ESRI)";
@@ -28,8 +28,13 @@
         settings.ToolTip = "Load Map Service";
         settings.Text = "";
         settings.ControlStyle.CssClass = "mapLayers loadButton";
-        settings.ClientSideEvents.Click = "btnLoadMapServiceClicked"; 
+        settings.ClientSideEvents.Click = "btnLoadMapServiceClicked";
     }
 ).GetHtml()
 </div>
 
+<div style="margin-left: 10px; margin-bottom: 2px;">Layers</div>
+
+<div id="leftPanelLayerListTV" style="margin-bottom: 10px">
+    @Html.Action("LeftPanelLayerListTV", Model)
+</div>

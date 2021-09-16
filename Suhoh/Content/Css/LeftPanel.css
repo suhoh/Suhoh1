@@ -182,14 +182,17 @@
 /*Map Layers*/
 .mapLayers {
     margin-left: 10px;
-    float:left;
+    float: left;
 }
+
     .mapLayers.label {
         font-weight: normal;
     }
+
     .mapLayers.textBox {
         margin-top: 3px;
     }
+
     .mapLayers.loadButton {
         float: left;
         margin-top: 7px;
@@ -200,3 +203,10 @@
         background: url('../Images/DX/add.svg') no-repeat;
         background-size: 20px;
     }
+
+/*Layerlist treeview*/
+.layerListTV {
+    max-height: 300px;
+    max-width: 500px;
+    overflow-y: auto;
+}

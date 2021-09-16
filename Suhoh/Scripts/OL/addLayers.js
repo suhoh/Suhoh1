@@ -110,8 +110,10 @@ function fitToLayer(map, layer) {
 //
 // https://openlayers.org/en/latest/examples/arcgis-tiled.html
 //
-function addMapService(url) {
-    var testUrl = new ol.layer.Image({
+function addMapService(map, name, url, isVisible) {
+    var layer = new ol.layer.Image({
+        name: name,
+        visible: isVisible,
         source: new ol.source.ImageArcGISRest({
             ratio: 1,
             params: {},
@@ -120,9 +122,7 @@ function addMapService(url) {
             //https://stackoverflow.com/questions/22710627/tainted-canvases-may-not-be-exported
         })
     });
-
-
-    _maps[0].map.addLayer(testUrl);
+    map.addLayer(layer);
 }
 
 //
