@@ -577,5 +577,5 @@ function ceLineColorPickerClicked(s, e) {
     drawLine(line.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
 
     chkLineLabelClicked(null, null, line.divName);
-    callbackLineColorPickers.PerformCallback({ 'ycol': line.yCol, 'lineColors': line.color });
+    callbackLineColorPickers.PerformCallback({ 'lineYcol': line.yCol, 'lineColors': line.color });
 }
