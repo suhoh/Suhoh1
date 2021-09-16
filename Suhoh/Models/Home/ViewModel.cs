@@ -152,7 +152,7 @@ namespace Suhoh.Model
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
             MainPanelCount = 3;
-            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Pie1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
+            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Line1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
     }
 

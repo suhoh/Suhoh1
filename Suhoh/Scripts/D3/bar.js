@@ -233,7 +233,7 @@ function createBar(bar, svg, stackedData, x, y, color) {
             barTooltip
                 .style("display", "inline-block")
                 .style("position", "absolute")
-                .html(subgroupName + "<br>" + subgroupValue)
+                .html(subgroupName + "<br>" + parseInt(subgroupValue))
                 .style("opacity", 1)
 
             if (bar.isVertical == 1) {
