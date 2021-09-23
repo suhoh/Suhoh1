@@ -548,11 +548,58 @@ function cbLineXYColumnChanged(s, e) {
 }
 
 function chkLineLabelClicked(s, e, id) {
+    var line;
+    if (id != null)
+        line = getLine(id);
+    else
+        line = getLine(_activeLine.divName);
 
+    var isXValueLabel, isYValueLabel;
+
+    if (s == undefined) {
+        isXValueLabel = line.isXValue;
+        isYValueLabel = line.isYValue;
+    }
+    else {
+        isXValueLabel = line.isXValue = eval("chkLineXValueLabel").GetChecked();
+        isYValueLabel = line.isYValue = eval("chkLineYValueLabel").GetChecked();
+    }
+
+    if (line.textLabel == null)
+        return;
+
+    if (isXValueLabel && !isYValueLabel) {
+        line.textLabel
+            .text(function (d) {
+                return d.x;
+            })
+            .attr("display", "block");
+    }
+    else if (!isXValueLabel && isYValueLabel) {
+        line.textLabel
+            .text(function (d) {
+                return parseInt(d.y);
+            })
+            .attr("display", "block");
+    }
+    else if (isXValueLabel && isYValueLabel) {
+        line.textLabel
+            .text(function (d) {
+                return (d.x + ", " + parseInt(d.y));
+            })
+            .attr("display", "block");
+    }
+    else
+        line.textLabel.attr("display", "none");
 }
 
 function radioLineShapeClicked(s, e) {
 
+    var line = getLine(_activeLine.divName);
+    var lineData = getLineData(line.divName, _jsonData, line.xCol, line.yCol, line.color, true);
+
+    drawLine(line.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
+    chkLineLabelClicked(null, null, line.divName);
 }
 
 function callbackLineColorPickers_OnBeginCallback(s, e) {

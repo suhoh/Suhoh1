@@ -100,7 +100,7 @@ function updateBars(bars, isInitial) {
             b.svg = barSvg;
         }
         _activeBar = b;
-        if (typeof cbBarXValue != "undefined" && ASPxClientUtils.IsExists(cbBarXValue))
+        //if (typeof cbBarXColumn != "undefined" && ASPxClientUtils.IsExists(cbBarXColumn))
             chkBarLabelClicked(null, null, b.divName);
     });
 }
@@ -112,7 +112,7 @@ function updateBar(b, isInitial) {
         b.svg = barSvg;
     }
     _activeBar = b;
-    if (typeof cbBarXValue != "undefined" && ASPxClientUtils.IsExists(cbBarXValue))
+    if (typeof cbBarXColumn != "undefined" && ASPxClientUtils.IsExists(cbBarXColumn))
         chkBarLabelClicked(null, null, b.divName);
 }
 
@@ -126,7 +126,7 @@ function updateLines(lines, isInitial) {
             l.svg = lineSvg;
         }
         _activeLine = l;
-        if (typeof cbLineXValue != "undefined" && ASPxClientUtils.IsExists(cbLineXValue))
+        //if (typeof cbLineXColumn != "undefined" && ASPxClientUtils.IsExists(cbLineXColumn))
             chkLineLabelClicked(null, null, l.divName);
     });
 }
@@ -138,7 +138,7 @@ function updateLine(l, isInitial) {
         l.svg = lineSvg;
     }
     _activeLine = l;
-    if (typeof cbLineXValue != "undefined" && ASPxClientUtils.IsExists(cbLineXValue))
+    if (typeof cbLineXColumn != "undefined" && ASPxClientUtils.IsExists(cbLineXColumn))
         chkLineLabelClicked(null, null, l.divName);
 }
 

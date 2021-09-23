@@ -253,6 +253,9 @@ function createBar(bar, svg, stackedData, x, y, color) {
                     .style("display", "inline-block")
                     .style("position", "absolute")
                     .html("&#x25BC");
+                console.log("barBand: " + x.bandwidth());
+                console.log("barX :" + x(d.data.X));
+                console.log("barTooltipWidth: " + $('#barTooltip').width());
             }
             else {
                 barTooltip
