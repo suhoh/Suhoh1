@@ -339,6 +339,18 @@
     text-align: center;
 }
 
+.lineTooltip {
+    /*width: 100px;*/
+    height: 24px;
+    line-height: 1;
+    font-weight: bold;
+    padding: 8px;
+    background: rgba(0, 0, 0, 1);
+    color: #ffffff;
+    border-radius: 3px;
+    text-align: center;
+}
+
 .axisLabelTooltip {
     height: 12px;
     line-height: 1;
@@ -351,6 +363,11 @@
 }
 
 .barTextLabel {
+    line-height: 1;
+    font-weight: bold;
+}
+
+.lineTextLabel {
     line-height: 1;
     font-weight: bold;
 }

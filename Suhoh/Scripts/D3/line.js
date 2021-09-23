@@ -13,7 +13,7 @@ var _lineSvgHeight;
 var _lineColors = ['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'];
 
 var columns = "Consumptive Use_M3";
-var _testData = [{ X: "CLENNETT, DAVID", Y: 1565}, { X: "SARUK, JESSIE", Y: 85 }, { X: "STELMASCHUK, OREST", Y: 998 }, { X: "MAURICE & NATALIE CLENNETT", Y: 1423.4 }, { X: "FUNDYTUS, LEONARD", Y: 70 }, { X: "PIDRUCHNEY, JOE", Y: 1344 }]
+var _testData = [{ X: "CLENNETT, DAVID", Y: 1565 }, { X: "SARUK, JESSIE", Y: 85 }, { X: "STELMASCHUK, OREST", Y: 998 }, { X: "MAURICE & NATALIE CLENNETT", Y: 1423.4 }, { X: "FUNDYTUS, LEONARD", Y: 70 }, { X: "PIDRUCHNEY, JOE", Y: 1344 }]
 
 var _multiLineData = {
     'y': "DEM",
@@ -190,19 +190,35 @@ function drawLine(divName, data, columns, width, height, lineColor) {
         .domain(columns)
         .range(lineColor);
 
-    createLine(line, svg, data, x, y, color, columns);
+    $('#lineTooltip').remove();
+
+    createLine(line, svg, data, x, y, color);
+    createLineTextLabel(line, svg, data, x, y);
     createLineLegend(line, svg, columns, width, color);
 
     axisLineTooltip(line, data);
 }
 
-function createLine(line, svg, data, x, y, color, columns) {
-    //var lineTooltip = d3.select("#" + line.divName).append("div").attr("id", "lineTooltip").attr("class", "lineTooltip").style("display", "none");
-    //var lineTooltipTriangle = d3.select("#" + line.divName).append("div").attr("class", "lineTooltipTriangle").style("display", "none");
+function createLine(line, svg, data, x, y, color) {
+    var lineTooltip = d3.select("#" + line.divName).append("div").attr("id", "lineTooltip").attr("class", "lineTooltip").style("display", "none");
 
-    var line = d3.line()
+    var curveType;
+    var curveTypeValue = 1;
+
+    if (typeof radioLineShape != "undefined" && ASPxClientUtils.IsExists(radioLineShape))
+        curveTypeValue = radioLineShape.GetValue();
+
+    if (curveTypeValue == 1)
+        curveType = d3.curveLinear;
+    else if (curveTypeValue == 2)
+        curveType = d3.curveCatmullRom.alpha(0.5);
+    else
+        curveType = d3.curveMonotoneX;
+
+    var lines = d3.line()
         .x(function (d) { return x(d.x); })
-        .y(function (d) { return y(d.y); });
+        .y(function (d) { return y(d.y); })
+        .curve(curveType);
 
     // Line
     svg.append("g")
@@ -219,9 +235,9 @@ function createLine(line, svg, data, x, y, color, columns) {
         .attr("stroke-linecap", "round")
         .style("mix-blend-mode", "multiply")
         .attr("d", function (d) {
-            return line(d.values)
-        })
-    
+            return lines(d.values)
+        });
+
     // Dot
     svg.selectAll("lineSvg")
         .data(data)
@@ -245,7 +261,53 @@ function createLine(line, svg, data, x, y, color, columns) {
         .style("fill", function (d) {
             console.log(d.color);
             return color(d.color);
+        })
+        .on("mouseenter", function (event, d) {
+            lineTooltip
+                .style("display", "inline-block")
+                .style("position", "absolute")
+                .html(d.x + "<br>" + parseInt(d.y))
+                .style("opacity", 1);
+
+            var tooltipDiv = document.getElementById("lineTooltip");
+            var tooltipRect = tooltipDiv.getBoundingClientRect();
+
+            var tooltipWidth = tooltipRect.width;
+
+            lineTooltip
+                .transition()
+                .duration(200)
+                .style("left", _lineMarginLeft + _lineMarginRight + _lineMarginRight + (x.bandwidth() / 2) + x(d.x) - (tooltipWidth / 2) + "px")
+                .style("top", y(d.y) + 8 + "px");
+
+            //console.log("lineBand: " + x.bandwidth());
+            //console.log("lineX :" + x(d.x));
+            //console.log("lineTooltipWidth: " + $('#lineTooltip').width());
+            //console.log("tootipWidth: " + tooltipWidth);
+        })
+        .on("mouseleave", function (d) {
+            lineTooltip
+                .style("display", "none");
         });
+}
+
+function createLineTextLabel(line, svg, data, x, y) {
+    line.textLabel = svg.selectAll("lineSvg")
+        .data(data)
+        .enter()
+        .append("g")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2)) + ", 60)")
+        .selectAll("circle")
+        .data(function (d) { return d.values; })
+        .enter()
+        .append("text")
+        .attr("id", "lineTextLabel")
+        .attr("class", "lineTextLabel")
+        .style("text-anchor", "left")
+        .style("font-size", "12px")
+        .attr("display", "none")
+        .attr("x", function (d) { return x(d.x) })
+        .attr("y", function (d) { return y(d.y) });
 }
 
 function createLineLegend(line, svg, columns, width, color) {
