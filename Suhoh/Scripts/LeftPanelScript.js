@@ -64,7 +64,7 @@ function btnChangeLayoutClicked(s, e) {
     }
     if (nPanel == 3) {
         var type = cb3_1PanelType.GetText();
-        panels.push({'name':'Panel1', 'type':[type + '1']});
+        panels.push({ 'name': 'Panel1', 'type': [type + '1'] });
         type = cb3_2PanelType.GetText();
         panels.push({ 'name': 'Panel2', 'type': [type + '1'] });
         type = cb3_3PanelType.GetText();
@@ -88,7 +88,7 @@ function btnChangeLayoutClicked(s, e) {
         p.type.forEach(function (t) {
             if (t.toUpperCase().indexOf('GRIDVIEW') > -1)
                 initGridview(p.name + t);   // Moved out of DxGridview.cshtml under <Script> section due to callback issue
-                                            // When callback, DxGridview gets refresh and no code should be included
+            // When callback, DxGridview gets refresh and no code should be included
         })
     });
 
@@ -188,7 +188,7 @@ function cbLeftPanelAttributeSearch1Changed(s, e) {
     var type = getColumnInfo(_columnNames, column).Type;
     if (type == "Int64" || type == "Double")    // change Like dropdown2 to Between and vice versa
         replaceItemText(cbLeftPanelAttributeSearch2, 'Like', 'Between');
-    else 
+    else
         replaceItemText(cbLeftPanelAttributeSearch2, 'Between', 'Like');
 
     cbLeftPanelAttributeSearch3.ClearItems();
@@ -386,27 +386,42 @@ function btnLoadMapServiceClicked(s, e) {
         return;
     }
 
-    url += '/info/iteminfo?f=pjson';
+    var msInfo = url + '/info/iteminfo?f=pjson';
     var xHttp = new XMLHttpRequest();   // call for upper left corner of LSD
     xHttp.onreadystatechange = function () {
         if (xHttp.readyState == 4 && xHttp.status == 200) { // 4: complete, 200: Ok
             var json = JSON.parse(xHttp.responseText);
-            console.log(json);
-            addMapService(_maps[0].map, 'TEST', url, true);
+            if (json.type != 'Map Service') {
+                showMessage("'" + json.type + "'" + ' not supported yet.', 'Warning');
+                return;
+            }
+            var alias = json.title.replace(/_/g, ' ');  // replace _ to space
+            if (!isLayerExist(alias)) {
+                addMapService(_maps[0].map, alias, url, true);
+                // Update TV - flag - 0: not visible, 1: visible, 2: add, 3: remove
+                callbackLeftPanelLayerListTV.PerformCallback({ 'id': json.title, 'alias': alias, 'url': url, 'flag': 2 });
+            }
+            else {
+                alert('exist');
+            }
         }
         else {
-            showMessage(xHttp.statusText, 'Error')
         }
     }
-    xHttp.open("GET", url, true);    // POST didn't work. false for Sync
+    xHttp.open("GET", msInfo, true);    // POST didn't work. false for Sync
     xHttp.send();
+}
 
-    //console.log(url);
-    //addMapService(_maps[0].map, 'TEST', url, true);
+function isLayerExist(name) {
+    for (var i = 0; i < _maps.length; i++) {
+        if (_maps[i].map.getLayers().getArray().filter(layer => layer.get('name') === name).length > 0)
+            return true;
+    }
+    return false;
 }
 
 function getCurrentNode() {
-    return callbackTvMapServices.GetNodeByName(ddNodes.GetKeyValue());
+    return leftPanelLayerListTV.GetNodeByName(ddNodes.GetKeyValue());
 }
 
 function mapServiceTVInit(s, e) {
@@ -429,5 +444,16 @@ function mapServiceTVCheckedChanged(s, e) {
             .forEach(layer => layer.setProperties({ visible: isChecked }, false));
     })
 
+    // Update visibility
+    callbackLeftPanelLayerListTV.PerformCallback({ 'id': nodeName, 'alias': nodeName, 'url': 'url', 'flag': isChecked ? 1 : 0 });
+
     console.log(nodeName);
+}
+
+function callbackLeftPanelLayerListTV_OnBeginCallback(s, e) {
+
+}
+
+function callbackLeftPanelLayerListTV_OnEndCallback(s, e) {
+
 }

@@ -25,9 +25,9 @@ function addPointLayer(jsonData, map, xCol, yCol, zCol, isFitToLayer) {
         var symbol;
         for (var i = 0; i < jsonData.length; i++) {
             if (map.isLabelOn)
-                symbol = getSymbol(jsonData[i][map.xCol], jsonData[i][map.yCol], jsonData[i][map.zCol]);    // Show label
+                symbol = getSymbol(jsonData[i][map.xCol], jsonData[i][map.yCol], jsonData[i][map.zCol], jsonData[i]['Seq']);    // Show label
             else
-                symbol = getSymbol(jsonData[i][map.xCol], jsonData[i][map.yCol], null);                     // No label
+                symbol = getSymbol(jsonData[i][map.xCol], jsonData[i][map.yCol], null, jsonData[i]['Seq']);                     // No label
             symbols.push(symbol);
             var vectorSource = new ol.source.Vector({
                 features: symbols
@@ -45,9 +45,9 @@ function addPointLayer(jsonData, map, xCol, yCol, zCol, isFitToLayer) {
 
         $.each(matchResult, function (index, item) {
             if (map.isLabelOn)
-                symbol = getShpSymbol(item.geom, jsonData[index][map.zCol]);
+                symbol = getShpSymbol(item.geom, jsonData[index][map.zCol], jsonData[index]['Seq']);
             else
-                symbol = getShpSymbol(item.geom, null);
+                symbol = getShpSymbol(item.geom, null, jsonData[index]['Seq']);
             symbols.push(symbol);
         });
         var vectorSource = new ol.source.Vector({
@@ -72,24 +72,24 @@ function addPointLayer(jsonData, map, xCol, yCol, zCol, isFitToLayer) {
 }
 
 
-function getSymbol(x, y, z) {
+function getSymbol(x, y, z, seq) {
     var point = new ol.geom.Point([x, y]);
     point.transform('EPSG:4326', 'EPSG:3857');  // from Lat/Lon to Web Mercator
     var symbol = new ol.Feature({
         geometry: point,
-        toolTip: 'test',
+        Seq: seq,
         name: z
     });
     return symbol;
 }
 
-function getShpSymbol(geom, z) {
+function getShpSymbol(geom, z, seq) {
     var g = geom.clone();
     g.transform('EPSG:4326', 'EPSG:3857');   // from Lat/Lon to Web Mercator
     var symbol = new ol.Feature({
         geometry: g,
         type: 'SHP',
-        toolTip: 'test',
+        Seq: seq,
         name: z
     });
     return symbol;

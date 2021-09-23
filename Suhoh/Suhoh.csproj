@@ -343,7 +343,7 @@
     <Content Include="Views\Home\CallbackBarColorPickers.cshtml" />
     <Content Include="Views\Home\D3LineProperty.cshtml" />
     <Content Include="Views\Home\CallbackLineColorPickers.cshtml" />
-    <Content Include="Views\Home\LeftPanelLayerListTV.cshtml" />
+    <Content Include="Views\Home\CallbackLeftPanelLayerListTV.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

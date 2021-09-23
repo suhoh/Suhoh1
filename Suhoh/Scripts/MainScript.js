@@ -489,7 +489,7 @@ function getPieColNames(columnNames) {
     var xCol = null;
     var yCol = null;
     for (i = 0; i < columnNames.length; i++) {
-        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date'))
+        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date' || columnNames[i].Name == 'Seq'))
             xCol = columnNames[i].Name;
         if (yCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
             yCol = columnNames[i].Name;
@@ -505,7 +505,7 @@ function getBarColNames(columnNames) {
     var xCol = null;
     var yCol = null;
     for (i = 0; i < columnNames.length; i++) {
-        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date'))
+        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date' || columnNames[i].Name == 'Seq'))
             xCol = columnNames[i].Name;
         if (yCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
             yCol = columnNames[i].Name;
@@ -521,7 +521,7 @@ function getLineColNames(columnNames) {
     var xCol = null;
     var yCol = null;
     for (i = 0; i < columnNames.length; i++) {
-        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date'))
+        if (xCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date' || columnNames[i].Name == 'Seq'))
             xCol = columnNames[i].Name;
         if (yCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
             yCol = columnNames[i].Name;
@@ -636,7 +636,7 @@ function renderPieProperty(id) {
             isCsv = true;
     }
     _columnNames.forEach(function (c) {
-        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv)
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv || c.Name == 'Seq')
             cbPieXColumn.AddItem(c.Name);
         if (c.Type == 'Int64' || c.Type == 'Double' || isCsv)
             cbPieYColumn.AddItem(c.Name);
@@ -683,7 +683,7 @@ function renderBarProperty(id) {
             isCsv = true;
     }
     _columnNames.forEach(function (c) {
-        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv)
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv || c.Name == 'Seq')
             cbBarXColumn.AddItem(c.Name);
         if (c.Type == 'Int64' || c.Type == 'Double' || isCsv)
             lbBarYColumn.AddItem(c.Name);
@@ -732,7 +732,7 @@ function renderLineProperty(id) {
             isCsv = true;
     }
     _columnNames.forEach(function (c) {
-        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv)
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv || c.Name == 'Seq')
             cbLineXColumn.AddItem(c.Name);
         if (c.Type == 'Int64' || c.Type == 'Double' || isCsv)
             lbLineYColumn.AddItem(c.Name);

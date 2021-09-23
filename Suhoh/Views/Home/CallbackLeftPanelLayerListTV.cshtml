@@ -1,0 +1,62 @@
+﻿
+@using Suhoh.Model
+@model ViewModel
+
+@Html.DevExpress().CallbackPanel(
+    cbSettings =>
+    {
+        cbSettings.Name = "callbackLeftPanelLayerListTV";
+        cbSettings.CallbackRouteValues = new { Controller = "Home", Action = "CallbackLeftPanelLayerListTV" };
+        cbSettings.ClientSideEvents.BeginCallback = "callbackLeftPanelLayerListTV_OnBeginCallback";
+        cbSettings.ClientSideEvents.EndCallback = "callbackLeftPanelLayerListTV_OnEndCallback";
+
+        cbSettings.SetContent(() =>
+        {
+            @Html.DevExpress().TreeView(
+            settings =>
+            {
+                settings.Name = "leftPanelLayerListTV";
+
+                // Events gets fired on client side
+                settings.EnableClientSideAPI = true;
+                settings.ClientSideEvents.Init = "mapServiceTVInit";
+                settings.ClientSideEvents.NodeClick = "mapServiceTVNodeClick";
+                settings.ClientSideEvents.ExpandedChanged = "mapServiceTVExpandedChanged";
+                settings.ClientSideEvents.CheckedChanged = "mapServiceTVCheckedChanged";
+
+                settings.ControlStyle.CssClass = "layerListTV";
+                //settings.EnableNodeTextWrapping = true;   // makes select node size larger than it's text
+
+                settings.SettingsLoadingPanel.Mode = TreeViewLoadingPanelMode.Disabled;
+
+                settings.AllowCheckNodes = true;
+                settings.AllowSelectNode = true;
+                settings.CheckNodesRecursive = true;
+                settings.EnableAnimation = true;
+                settings.EnableHotTrack = true;
+                //settings.ShowTreeLines = true;    // Do not support by design
+                settings.ShowExpandButtons = true;
+
+                foreach (var m in Model.AppConfig.MapServices)
+                {
+                    settings.Nodes.Add(node =>
+                    {
+                        node.Name = m.Alias;
+                        node.Text = m.Alias;
+                        node.Checked = true;
+                        if (!m.IsVisible)
+                            node.Checked = false;
+                    });
+                    if (m.Owner.ToUpper() == "USER")    // not aligned properly
+                    {
+                        //ViewContext.Writer.Write("<span><button id='" + (String.Format("{0}_Delete", m.Alias)) +
+                        //    "' type='button' class='btnDeleteUserLayer' title='Remove' " +
+                        //    "onclick='btnGridviewResetClick(this)'>D</button></span>");
+                    };
+                };
+
+            }).GetHtml();
+        });
+    }).GetHtml()
+
+

@@ -124,13 +124,15 @@ function initMap(divName) {
         _appConfig = data;
         if (_appConfig.MapServices.length > 0) {
             _appConfig.MapServices.forEach(function (m) {
-                addMapService(map, m.Id, m.Url, m.IsVisible);
+                addMapService(map, m.Alias, m.Url, m.IsVisible);
             })
         }
     }
     function errorFunc(data, status) {
         showMessage('Warning', 'Map Services not exist.')
     }    
+
+    map.on('click', identifyFeature);
 
     _maps.push({
         'divName': divName, 'map': map, 'layer': null, 'type': null, 'features': null, 'scaleLine': scaleLine, 'data': null,
@@ -139,6 +141,37 @@ function initMap(divName) {
         'x': _mapX, 'y': _mapY, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false
     });
 }
+
+function identifyFeature(evt) {
+    var pixel = evt.pixel;
+    var feat = evt.map.getFeaturesAtPixel(pixel, { hitTolerance: 2 });
+    if (feat.length == 0)
+        return;
+
+    // filter data from main
+    var seqs = '';
+    feat.forEach(function (f) {
+        seqs += f.get('Seq') + "|";
+    });
+    seqs = seqs.substr(0, seqs.length - 1);
+    var orClause = getOrClause('x.Seq', seqs);
+    var ids = _jsonData.filter(function (x) {
+        return eval(orClause);
+    });
+
+    // generate identify content
+    var keys = Object.keys(ids[0]); // list column names
+    var contents =
+        "<b>Well Location:&nbsp;</b><br />" + item.Location + "<br />" +
+        "<b>Max Pressure:&nbsp;</b> " + item.PressureMax.toFixed(2) + " kPa/m<br />" +
+        "<b>Quality Code:&nbsp;</b> " + item.TestQC + "<br />" +
+        "<b>Qual HF:&nbsp;</b> " + item.QualHF + "<br />" +
+        "<b>Formation:&nbsp;</b> " + item.Formation + "<br />";
+
+    console.log(keys);
+}
+
+
 
 function btnMapMaximizeClick(s) {
     var pId = s.id.split('_')[0];

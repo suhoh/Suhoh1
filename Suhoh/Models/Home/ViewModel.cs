@@ -177,7 +177,7 @@ namespace Suhoh.Model
         // Map Services
         [XmlArray(ElementName = "MapServices")]
         [XmlArrayItem(typeof(MapService), ElementName = "MapService")]
-        public MapService[] MapServices { get; set; }
+        public List<MapService> MapServices { get; set; }
 
         [XmlElement(ElementName = "PageSizes")]
         public string PageSizes { get; set; }
@@ -217,8 +217,12 @@ namespace Suhoh.Model
     {
         [XmlAttribute(AttributeName = "id")]
         public string Id { get; set; }
+        [XmlAttribute(AttributeName = "alias")]
+        public string Alias { get; set; }
         [XmlAttribute(AttributeName = "type")]
         public string Type { get; set; }
+        [XmlAttribute(AttributeName = "owner")]
+        public string Owner { get; set; }
         [XmlAttribute(AttributeName = "url")]
         public string Url { get; set; }
         [XmlAttribute(AttributeName = "isVisible")]

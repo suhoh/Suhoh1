@@ -14,7 +14,8 @@ using System.Xml.Serialization;
 using System.IO;
 
 namespace Suhoh.Controllers
-{    public class HomeController : Controller
+{
+    public class HomeController : Controller
     {
         AppConfig _appConfig;
 
@@ -81,19 +82,43 @@ namespace Suhoh.Controllers
             return PartialView("CallbackLineColorPickers", viewModel);
         }
 
-        public ActionResult LeftPanelLayerListTV(ViewModel vm)
+        //
+        // flag: 0: not visible, 1: visible, 2: add, 3: remove
+        //
+        public ActionResult CallbackLeftPanelLayerListTV(ViewModel vm, string id, string alias, string url, int flag)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
-            return PartialView("LeftPanelLayerListTV", viewModel);
+
+            // Add if not exist already
+            if (viewModel.AppConfig.MapServices.Where(m => m.Alias.ToUpper().Equals(alias.ToUpper())).Count() == 0 && flag == 2)
+            {
+                MapService ms = new MapService() { Id = id, Alias = alias, IsVisible = true, Type = "MapServer", Owner = "user", Url = url };
+                viewModel.AppConfig.MapServices.Add(ms);
+            }
+            // Remove
+            if (viewModel.AppConfig.MapServices.Where(m => m.Alias.ToUpper().Equals(alias.ToUpper())).Count() == 1 && flag == 3)
+            {
+                MapService ms = viewModel.AppConfig.MapServices.Where(m => m.Alias.ToUpper().Equals(alias.ToUpper())).First();
+                viewModel.AppConfig.MapServices.Remove(ms);
+            }
+
+            // Update visibility
+            if (flag == 0 || flag == 1)
+            {
+                MapService ms = viewModel.AppConfig.MapServices.Where(m => m.Alias.ToUpper().Equals(alias.ToUpper())).First();
+                ms.IsVisible = Convert.ToBoolean(flag);
+            }
+
+            return PartialView("CallbackLeftPanelLayerListTV", viewModel);
         }
 
         public ActionResult DxGridview(ViewModel vm, bool? isReLoad)
         {
             ViewModel viewModel = (ViewModel)Session["viewModel"];
+
             viewModel.CreatePanelName = Request.Params["dxGridview_sender"];
             viewModel.IsHeaderFilter = Convert.ToBoolean(Request.Params["dxGridview_HeaderFilter"]);
             viewModel.IsGrouping = Convert.ToBoolean(Request.Params["dxGridview_Grouping"]);
-
             viewModel.IsReload = false;
             if (isReLoad.HasValue && isReLoad.Value == true)
             {
@@ -115,7 +140,7 @@ namespace Suhoh.Controllers
         [HttpPost]
         public ActionResult GetGridviewKeys(ViewModel vm)
         {
-            ViewModel viewModel = (ViewModel)Session["viewModel"];            
+            ViewModel viewModel = (ViewModel)Session["viewModel"];
             return Json(viewModel.GridviewKeys, JsonRequestBehavior.AllowGet);
         }
 
@@ -138,7 +163,7 @@ namespace Suhoh.Controllers
             {
                 vm.IsGrouping = true;
             }
-            
+
             var p = Request.Params["OnBeginCallback"];  // test - send from DevExpress PerformCallback
             ViewBag.IsChangePanels = true;              // test ViewBag
 
@@ -180,7 +205,7 @@ namespace Suhoh.Controllers
         public ActionResult RefreshProjectList(string email)
         {
             ViewModel vm = (ViewModel)Session["viewModel"];
-            AppConfig appConfig = (AppConfig)Session["appConfig"];            
+            AppConfig appConfig = (AppConfig)Session["appConfig"];
             vm.Projects = DataEngine.RefreshProjectList(appConfig, email);
             Session["viewModel"] = vm;
             return Json("Success", JsonRequestBehavior.AllowGet);
