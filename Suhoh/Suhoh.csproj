@@ -171,7 +171,7 @@
     <Content Include="Content\Images\Suhoh\Minimize.svg" />
     <Content Include="Scripts\D3\bar.js" />
     <Content Include="Scripts\D3\line.js" />
-    <Content Include="Scripts\D3\main.js" />
+    <Content Include="Scripts\D3\d3Main.js" />
     <Content Include="Scripts\D3\pie.js" />
     <Content Include="Scripts\D3_v650\d3.js" />
     <Content Include="Scripts\D3_v650\d3.min.js" />
@@ -226,7 +226,7 @@
     <Content Include="Content\Images\DX\sign-out.svg" />
     <Content Include="Content\Images\DX\user.svg" />
     <Content Include="Content\Css\Layout.css" />
-    <Content Include="Scripts\Gridview\main.js" />
+    <Content Include="Scripts\Gridview\gridviewMain.js" />
     <Content Include="Scripts\jQuery\additional-methods.js" />
     <Content Include="Scripts\jQuery\additional-methods.min.js" />
     <Content Include="Scripts\jQuery\jquery.validate.js" />
@@ -236,7 +236,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\OL\addLayers.js" />
     <Content Include="Scripts\OL\layersNsymbols.js" />
-    <Content Include="Scripts\OL\main.js" />
+    <Content Include="Scripts\OL\olMain.js" />
     <Content Include="Scripts\Ol_v650\ol.css" />
     <Content Include="Scripts\Ol_v650\ol.js" />
     <Content Include="Content\Photo\Alberto_Alonso.jpg" />
