@@ -20,6 +20,9 @@ var _maps = [];     // { 'divName': divName, 'map': map, 'layer': null, 'feature
 var _activeMap;
 var _gotoLocationLayer = null;
 
+var _maptipContainer;
+var _mapOverlay;
+
 function getMap(divName) {
     for (i = 0; i < _maps.length; i++) {
         if (_maps[i].divName == divName)
@@ -109,6 +112,78 @@ function initMap(divName) {
         })
     });
 
+    // Maptip
+    var maptipContainer = document.getElementById(divName + '_Popup');
+    var maptipContent = document.getElementById(divName + '_Popup-content');
+    var closer = document.getElementById(divName + '_Popup-closer');
+
+    var mapOverlay = new ol.Overlay({
+        //element: document.getElementById('popup'),
+        element: maptipContainer,
+        offset: [0, 0],
+        positioning: 'bottom'
+    });
+    map.addOverlay(mapOverlay);
+
+    map.on('click', identifyFeature);
+
+    function identifyFeature(evt) {
+        var pixel = evt.pixel;
+        var feat = evt.map.getFeaturesAtPixel(pixel, { hitTolerance: 2 });
+        if (feat.length == 0)
+            return;
+
+        // filter data from main
+        var seqs = '';
+        feat.forEach(function (f) {
+            seqs += f.get('Seq') + "|";
+        });
+        seqs = seqs.substr(0, seqs.length - 1);
+        var orClause = getOrClause('x.Seq', seqs);
+        var jsons = _jsonData.filter(function (x) {
+            return eval(orClause);
+        });
+
+        // generate identify content
+        var keys = Object.keys(jsons[0]); // list column names
+        var contents = [];
+        for (i = 0; i < jsons.length; i++) {
+            var content = '<table>';
+            //var content = '';
+            for (j = 0; j < keys.length; j++) {
+                content += "<tr><td style='text-align:right; font-weight:500'>" + keys[j] + "&nbsp;</td><td>&nbsp;" + jsons[i][keys[j]] + "</td></tr>";
+                //content += "<b>" + keys[j] + "</b>" + jsons[i][keys[j]] + "<br />";
+            }
+            content += "</table>";
+            contents.push(content);
+        }
+
+        mapOverlay.setPosition(evt.coordinate);
+        maptipContent.innerHTML = content;
+
+        //const element = mapOverlay.getElement();
+        //$(element).popover('dispose');
+        //mapOverlay.setPosition(evt.coordinate);
+        //$(element).popover({
+        //    container: element,
+        //    placement: 'right',
+        //    animation: true,
+        //    html: true,
+        //    content: contents[0]
+        //});
+        //$(element).popover('show');
+
+
+        console.log(contents);
+    }
+
+    // Close on maptip is clicked
+    closer.onclick = function () {
+        mapOverlay.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
+
     // Get appConfig from server
     var url = "Home/GetAppConfig"
     $.ajax({
@@ -132,8 +207,6 @@ function initMap(divName) {
         showMessage('Warning', 'Map Services not exist.')
     }    
 
-    map.on('click', identifyFeature);
-
     _maps.push({
         'divName': divName, 'map': map, 'layer': null, 'type': null, 'features': null, 'scaleLine': scaleLine, 'data': null,
         'xCol': null, 'yCol': null, 'zCol': null, 'basemap': _basemap,
@@ -142,36 +215,13 @@ function initMap(divName) {
     });
 }
 
-function identifyFeature(evt) {
-    var pixel = evt.pixel;
-    var feat = evt.map.getFeaturesAtPixel(pixel, { hitTolerance: 2 });
-    if (feat.length == 0)
-        return;
+function mapTipPrev(s) {
 
-    // filter data from main
-    var seqs = '';
-    feat.forEach(function (f) {
-        seqs += f.get('Seq') + "|";
-    });
-    seqs = seqs.substr(0, seqs.length - 1);
-    var orClause = getOrClause('x.Seq', seqs);
-    var ids = _jsonData.filter(function (x) {
-        return eval(orClause);
-    });
-
-    // generate identify content
-    var keys = Object.keys(ids[0]); // list column names
-    var contents =
-        "<b>Well Location:&nbsp;</b><br />" + item.Location + "<br />" +
-        "<b>Max Pressure:&nbsp;</b> " + item.PressureMax.toFixed(2) + " kPa/m<br />" +
-        "<b>Quality Code:&nbsp;</b> " + item.TestQC + "<br />" +
-        "<b>Qual HF:&nbsp;</b> " + item.QualHF + "<br />" +
-        "<b>Formation:&nbsp;</b> " + item.Formation + "<br />";
-
-    console.log(keys);
 }
 
+function mapTipNext(s) {
 
+}
 
 function btnMapMaximizeClick(s) {
     var pId = s.id.split('_')[0];
