@@ -26,6 +26,10 @@
             {
                 graphType = "LINE";
             }
+            if (Model.CreatePanelName.ToUpper().Contains("SCATTER"))
+            {
+                graphType = "SCATTER";
+            }
         }
         <span style="font-size: large">@graphType</span>
     </div>

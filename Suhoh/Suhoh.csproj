@@ -173,6 +173,7 @@
     <Content Include="Scripts\D3\line.js" />
     <Content Include="Scripts\D3\d3Main.js" />
     <Content Include="Scripts\D3\pie.js" />
+    <Content Include="Scripts\D3\scatter.js" />
     <Content Include="Scripts\D3_v650\d3.js" />
     <Content Include="Scripts\D3_v650\d3.min.js" />
     <Content Include="Content\GridView.css" />
@@ -344,6 +345,7 @@
     <Content Include="Views\Home\D3LineProperty.cshtml" />
     <Content Include="Views\Home\CallbackLineColorPickers.cshtml" />
     <Content Include="Views\Home\CallbackLeftPanelLayerListTV.cshtml" />
+    <Content Include="Views\Home\D3ScatterProperty.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

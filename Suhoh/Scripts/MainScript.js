@@ -27,6 +27,7 @@ function clearAllPanels() {
     _pies = [];
     _bars = [];
     _lines = [];
+    _scatters = [];
     _gridviews = [];
 }
 
@@ -450,6 +451,17 @@ function updateAllViews(jsonData, jsonDataGridview) {
             document.getElementById(l.divName + "_Title").innerHTML = l.xCol + " vs " + l.yCol; // title in panel
         });
 
+        // Scatter
+        var scatterColNames = getScatterColNames(data);
+        _scatters.forEach(function (s) {
+            var scatterData = getScatterData(s.divName, jsonData, scatterColNames.xCol, scatterColNames.yCol, scatterColNames.zCol, s.color, true);
+            if (scatterData != null) {
+                var scatterSvg = drawScatter(s.divName, scatterData.scatterData, scatterData.xCol, scatterData.yCol, scatterData.zCol, scatterData.width, scatterData.height, scatterData.color);
+                s.svg = scatterSvg;
+            }
+            document.getElementById(s.divName + "_Title").innerHTML = s.xCol + " vs " + s.yCol; // title in panel
+        });
+
         // render property popup if shown
         if (popupPanelProperty.IsVisible())
             callbackPopupPanelProperty_OnEndCallback();
@@ -529,6 +541,25 @@ function getLineColNames(columnNames) {
     return { xCol: xCol, yCol: yCol }
 }
 
+function getScatterColNames(columnNames) {
+    if (columnNames == undefined || columnNames.length == 0)
+        return;
+
+    // xCol: numbers, yCol: numbers, zCol: String or DateTime
+    var xCol = null;
+    var yCol = null;
+    var zCol = null;
+    for (i = 0; i < columnNames.length; i++) {
+        if (xCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
+            xCol = columnNames[i].Name;
+        if (yCol == null && (columnNames[i].Type == 'Int64' || columnNames[i].Type == 'Double'))
+            yCol = columnNames[i].Name;
+        if (zCol == null && (columnNames[i].Type == 'String' || columnNames[i].Type == 'DateTime' || columnNames[i].Type == 'Date' || columnNames[i].Name == 'Seq'))
+            zCol = columnNames[i].Name;
+    }
+    return { xCol: xCol, yCol: yCol, zCol: zCol }
+}
+
 // This function will be used for all 3 panels (Map, Graph and Gridview)
 function radioAddPaneTypeClick(s, e) {
 }
@@ -581,6 +612,8 @@ function showPropertyPopup(s) {
     // Set y column for bar graph for use when property opens
     var yCol = '';
     var chart;
+
+    // Bar & Line may have multiple yColumns
     if (_activePropertyName.toUpperCase().indexOf('BAR') > -1 || _activePropertyName.toUpperCase().indexOf('LINE') > -1) {
         var id = _activePropertyName.split('_')[0];
         if (id.toUpperCase().indexOf('BAR') > -1)
@@ -607,6 +640,8 @@ function callbackPopupPanelProperty_OnEndCallback(s, e) {
         renderBarProperty(id)
     if (id.toUpperCase().indexOf('LINE') > -1)
         renderLineProperty(id)
+    if (id.toUpperCase().indexOf('SCATTER') > -1)
+        renderScatterProperty(id)
     if (id.toUpperCase().indexOf('MAP') > -1)
         renderMapProperty(id)
     if (id.toUpperCase().indexOf('GRIDVIEW') > -1)
@@ -754,6 +789,17 @@ function renderLineProperty(id) {
 
     document.getElementById('divLineColorPickerText').innerHTML = selectedItems[0].text;
     ceLineColorPicker0.SetColor(line.color[0]); 
+}
+
+function renderScatterProperty(id) {
+    var scatter = getScatter(id);
+    if (scatter.data == null)
+        return;
+
+    popupPanelProperty.Show();
+    _activeScatter = scatter;
+
+    popupPanelProperty.SetHeaderText("Scatter Property");
 }
 
 function renderMapProperty(id) {

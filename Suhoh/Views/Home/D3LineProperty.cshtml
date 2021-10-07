@@ -9,15 +9,15 @@
         <tr>
             <th>
                 @Html.DevExpress().TextBoxFor(model => model.LineTitle,
-                          settings =>
-                          {
-                              settings.Name = "tbPropertyLineTitle";
-                              settings.Width = 240;
-                              settings.Text = "Graph Title";
-                              settings.ControlStyle.CssClass = "D3LineTitlePropertyBox";
-                              settings.Properties.ClientSideEvents.KeyUp = "tbLinePropertyTitleKeyUp";
-                          }
-                          ).GetHtml()
+                        settings =>
+                        {
+                            settings.Name = "tbPropertyLineTitle";
+                            settings.Width = 240;
+                            settings.Text = "Graph Title";
+                            settings.ControlStyle.CssClass = "D3LineTitlePropertyBox";
+                            settings.Properties.ClientSideEvents.KeyUp = "tbLinePropertyTitleKeyUp";
+                        }
+                        ).GetHtml()
             </th>
         </tr>
     </table>

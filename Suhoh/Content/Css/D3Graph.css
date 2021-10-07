@@ -296,9 +296,7 @@
 .divLineColorPickerDropDown {
     float: left;
 }
-/*Property Popup Line Chart End*/
 
-/*Line Chart ToolTip*/
 .axisLineLabelTooltip {
     height: 12px;
     line-height: 1;
@@ -309,8 +307,72 @@
     border-radius: 3px;
     text-align: center;
 }
+/*Property Popup Line Chart End*/
 
-/*Line Chart ToolTip End*/
+/*Property Popup Scatter Chart*/
+.thScatterTitleHeading1 {
+    font-weight: bold;
+    margin-left: 2px;
+    margin-bottom: 5px;
+    float: left;
+}
+
+.thScatterLabelHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    float: left;
+}
+
+.thScatterXValueChkBox {
+    float: left;
+}
+
+.thScatterYValueChkBox {
+    float: left;
+    margin-left: 10px;
+}
+
+.thScatterXYColumnHeading1 {
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 2px;
+    float: left;
+}
+
+.thScatterXColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 8px;
+    margin-left: 2px;
+}
+
+.thScatterXColumnDropDown {
+    height: 32px;
+}
+
+.thScatterYColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 6px;
+    margin-left: 2px;
+}
+
+.thScatterYColumnDropDown {
+    height: 32px;
+}
+
+.thScatterZColumnDropDownLabel {
+    font-weight: normal;
+    float: left;
+    margin-top: 6px;
+    margin-left: 2px;
+}
+
+.thScatterZColumnDropDown {
+    height: 32px;
+}
+/*Property Popup Scatter Chart End*/
 
 /*Charts ToolTip*/
 .pieTooltip {

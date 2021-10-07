@@ -60,6 +60,14 @@ namespace Suhoh.Model
         public string LineYColNames { get; set; }
         public string[] LineColors { get; set; }
 
+        // Scatter Chart Property
+        public string ScatterTitle { get; set; }
+        public bool CbScatterXValueLabel { get; set; }
+        public bool CbScatterYValueLabel { get; set; }
+        public string DdScatterXColumn { get; set; }
+        public string DdScatterYColumn { get; set; }
+        public string DdScatterZColumn { get; set; }
+
         // OpenLayers
         public string MapTitle { get; set; }
         public bool ChkShowCoordinates { get; set; }
@@ -121,6 +129,13 @@ namespace Suhoh.Model
             LineYColNames = string.Empty;
             LineColors = new string[] { "#e41a1c" }; // initial line color
 
+            // Scatter Chart Property
+            CbScatterXValueLabel = false;
+            CbScatterYValueLabel = false;
+            DdScatterXColumn = "";
+            DdScatterYColumn = "";
+            DdScatterZColumn = "";
+
             // Map
             MapTitle = "Map Title";
             ChkShowCoordinates = true;
@@ -152,7 +167,7 @@ namespace Suhoh.Model
             ActiveProperty = string.Empty;
             ActivePanelSettings = 3;
             MainPanelCount = 3;
-            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Map1']}, {'name': 'Panel2', 'type': ['Line1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
+            MainPanelJson = @"[{'name': 'Panel1', 'type': ['Scatter1']}, {'name': 'Panel2', 'type': ['Line1']}, {'name': 'Panel3', 'type': ['Gridview1']}]";
         }
     }
 

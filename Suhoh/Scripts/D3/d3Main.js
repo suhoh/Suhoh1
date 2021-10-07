@@ -30,9 +30,9 @@ function initGraph(divName) {
         initBar(divName);
     else if (divName.toUpperCase().indexOf('LINE') > -1)
         initLine(divName);
-    //else if (divName.toUpperCase().indexOf('SCATTER') > -1)
-    //    initPie(divName);
-    //else
+    else if (divName.toUpperCase().indexOf('SCATTER') > -1)
+        initScatter(divName);
+    else
         return 1;
 }
 
@@ -625,4 +625,24 @@ function ceLineColorPickerClicked(s, e) {
 
     chkLineLabelClicked(null, null, line.divName);
     callbackLineColorPickers.PerformCallback({ 'lineYcol': line.yCol, 'lineColors': line.color });
+}
+
+// Scatter Chart
+function tbScatterPropertyTitleKeyUp(s, e) {
+    var caller;
+    if (s.name == undefined)    // called manually
+        caller = s + "_Title";
+    else
+        caller = _activeScatter.divName + "_Title";
+
+    if (typeof tbPropertyScatterTitle !== "undefined" && ASPxClientUtils.IsExists(tbPropertyScatterTitle))
+        document.getElementById(caller).innerHTML = tbPropertyScatterTitle.GetText();
+}
+
+function chkScatterLabelClicked(s, e, id) {
+
+}
+
+function cbScatterXYColumnChanged(s, e) {
+
 }

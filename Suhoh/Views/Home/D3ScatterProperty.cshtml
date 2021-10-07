@@ -1,0 +1,112 @@
+﻿@using Suhoh.Model
+@model ViewModel
+
+<div id="divScatterTitle" class="divScatterTitle">
+    <table>
+        <tr>
+            <th id="thScatterTitleHeading1" class="thScatterTitleHeading1">Title</th>
+        </tr>
+        <tr>
+            <th>
+                @Html.DevExpress().TextBoxFor(model => model.ScatterTitle,
+                        settings =>
+                        {
+                            settings.Name = "tbPropertyScatterTitle";
+                            settings.Width = 240;
+                            settings.Text = "Graph Title";
+                            settings.ControlStyle.CssClass = "D3ScatterTitlePropertyBox";
+                            settings.Properties.ClientSideEvents.KeyUp = "tbScatterPropertyTitleKeyUp";
+                        }
+                        ).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div id="divScatterLabel" class="divScatterLabel">
+    <table>
+        <tr>
+            <th id="thScatterLabelHeading1" class="thScatterLabelHeading1">
+                Label
+            </th>
+        </tr>
+        <tr>
+            <th id="thScatterXValueChkBox" class="thScatterXValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.CbScatterXValueLabel,
+                    settings =>
+                    {
+                        settings.Name = "chkScatterXValueLabel";
+                        settings.Text = "X Value";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "chkScatterLabelClicked";
+                    }).GetHtml()
+            </th>
+            <th id="thScatterYValueChkBox" class="thScatterYValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.CbScatterYValueLabel,
+                    settings =>
+                    {
+                        settings.Name = "chkScatterYValueLabel";
+                        settings.Text = "Y Value";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "chkScatterLabelClicked";
+                    }).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
+
+<div id="divScatterXYColumn" class="divScatterXYColumn">
+    <table>
+        <tr>
+            <th id="thScatterXYColumnHeading1" class="thScatterXYColumnHeading1">
+                XY Columns
+            </th>
+        </tr>
+        <tr>
+            <th id="thScatterXColumnDropDownLabel" class="thScatterXColumnDropDownLabel">
+                X Column
+            </th>
+            <th id="thScatterXColumnDropDown" class="thScatterXColumnDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.DdScatterXColumn,
+                settings =>
+                {
+                    settings.Name = "cbScatterXColumn";
+                    settings.Width = 167;
+                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    settings.Properties.DropDownWidth = 165;
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbScatterXYColumnChanged";
+                }).BindList(DataEngine.GetXColumn()).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th id="thScatterYColumnDropDownLabel" class="thScatterYColumnDropDownLabel">
+                Y Column
+            </th>
+            <th id="thScatterYColumnDropDown" class="thScatterYColumnDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.DdScatterYColumn,
+                settings =>
+                {
+                    settings.Name = "cbScatterYColumn";
+                    settings.Width = 167;
+                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    settings.Properties.DropDownWidth = 165;
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbScatterXYColumnChanged";
+                }).BindList(DataEngine.GetXColumn()).GetHtml()
+            </th>
+        </tr>
+        <tr>
+            <th id="thScatterZColumnDropDownLabel" class="thScatterZColumnDropDownLabel">
+                Z Column
+            </th>
+            <th id="thScatterZColumnDropDown" class="thScatterZColumnDropDown">
+                @Html.DevExpress().ComboBoxFor(model => model.DdScatterZColumn,
+                settings =>
+                {
+                    settings.Name = "cbScatterZColumn";
+                    settings.Width = 167;
+                    settings.Properties.IncrementalFilteringMode = IncrementalFilteringMode.StartsWith;
+                    settings.Properties.DropDownWidth = 165;
+                    settings.Properties.ClientSideEvents.SelectedIndexChanged = "cbScatterXYColumnChanged";
+                }).BindList(DataEngine.GetXColumn()).GetHtml()
+            </th>
+        </tr>
+    </table>
+</div>
