@@ -156,7 +156,7 @@
     <Content Include="Content\Css\D3Graph.css" />
     <Content Include="Content\Css\DxGridview.css" />
     <Content Include="Content\Css\LeftPanel.css" />
-    <Content Include="Content\Css\OpenLayerMap.css" />
+    <Content Include="Content\Css\OlMap.css" />
     <Content Include="Content\Favicon\NavyBlue.png" />
     <Content Include="Content\Favicon\512px-Icon_S_blue.svg.png" />
     <Content Include="Content\Favicon\Sicons-Basic-Round-Social-Scribd.ico" />

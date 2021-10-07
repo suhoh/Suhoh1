@@ -6,20 +6,6 @@
 }
 
 <style>
-    .olMap {
-        opacity: 1;
-        background-color: #ffffff;
-        width: 100%;
-        height: 100%;
-        position: static;
-        z-index: 1;
-        /*position: fixed;
-        top: 47px;
-        bottom: 0px;
-        left: 0px;
-        z-index: 1;*/
-    }
-
 </style>
 
 <head>
@@ -27,6 +13,17 @@
 <body>
     <div style="width: 100%; height: 100%; position: relative;" >
         <div id="@Model.CreatePanelName" class="olMap" onclick="divPanelClicked(this)">
+            @*<div id="popup" title="Welcome to OpenLayers" style="min-width:200px; max-height:300px; overflow:auto"></div>*@
+
+            <div id="@(String.Format("{0}_Popup", Model.CreatePanelName))" class="ol-popup">
+                <a href="#" id="@(String.Format("{0}_Popup-closer", Model.CreatePanelName))" class="ol-popup-closer"></a>
+                <div id="@(String.Format("{0}_Popup-navigator", Model.CreatePanelName))">
+                    <button id="@(String.Format("{0}_MaptipPrev", Model.CreatePanelName))" onclick="mapTipPrev(this)" type="button" class="mapTipPrev">&#8249;</button>
+                    <div id="@(String.Format("{0}_Popup-count", Model.CreatePanelName))"></div>
+                    <button id="@(String.Format("{0}_MaptipPrev", Model.CreatePanelName))" onclick="mapTipNext(this)" type="button" class="mapTipNext">&#8250;</button>
+                </div>
+                <div id="@(String.Format("{0}_Popup-content", Model.CreatePanelName))"></div>
+            </div>
         </div>
 
         <div class="divMapMaximizeButton">

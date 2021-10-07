@@ -42,7 +42,7 @@ namespace Suhoh
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/Css/DxGridview.css",
                 "~/Content/Css/D3Graph.css",
-                "~/Content/Css/OpenLayerMap.css",
+                "~/Content/Css/OlMap.css",
                 "~/Content/Css/Content.css",
                 "~/Content/Css/Layout.css",
                 "~/Content/Css/LeftPanel.css",
