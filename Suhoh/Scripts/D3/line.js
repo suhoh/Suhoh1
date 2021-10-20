@@ -349,7 +349,6 @@ function axisLineTooltip(line, data) {
             axisLineLabelTooltip
                 .style("display", "inline-block")
                 .style("position", "absolute")
-                .style("height", 25 + "px")
                 .html(d.x)
                 .style("left", event.offsetX + "px")
                 .style("top", event.offsetY - 40 + "px");

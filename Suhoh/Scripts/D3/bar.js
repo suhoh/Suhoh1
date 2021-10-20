@@ -350,23 +350,22 @@ function createBarLegend(bar, svg, stackedData, width, color) {
 }
 
 function axisBarTooltip(bar) {
-    var axisLabelTooltip = d3.select("#" + bar.divName).append("div").attr("class", "axisLabelTooltip").style("display", "none");
+    var axisBarLabelTooltip = d3.select("#" + bar.divName).append("div").attr("class", "axisBarLabelTooltip").style("display", "none");
 
     if (bar.isVertical == 1) {
         d3.select("#" + bar.divName)
             .selectAll(".x .tick")
             .data(bar.data)
             .on("mouseover", function (event, d) {
-                axisLabelTooltip
+                axisBarLabelTooltip
                     .style("display", "inline-block")
                     .style("position", "absolute")
-                    .style("height", 12 + "px")
                     .html(d.X)
                     .style("left", event.offsetX + "px")
                     .style("top", event.offsetY - 25 + "px");
             })
             .on("mouseleave", function (d) {
-                axisLabelTooltip.style("display", "none");
+                axisBarLabelTooltip.style("display", "none");
             });
     }
     else {
@@ -374,7 +373,7 @@ function axisBarTooltip(bar) {
             .selectAll(".y .tick")
             .data(bar.data)
             .on("mouseover", function (event, d) {
-                axisLabelTooltip
+                axisBarLabelTooltip
                     .style("display", "inline-block")
                     .style("position", "absolute")
                     .style("height", 12 + "px")
@@ -383,7 +382,7 @@ function axisBarTooltip(bar) {
                     .style("top", event.offsetY - 25 + "px");
             })
             .on("mouseleave", function (d) {
-                axisLabelTooltip.style("display", "none");
+                axisBarLabelTooltip.style("display", "none");
             });
     }
 }
