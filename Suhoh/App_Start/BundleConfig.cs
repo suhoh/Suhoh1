@@ -46,7 +46,8 @@ namespace Suhoh
                 "~/Content/Css/Content.css",
                 "~/Content/Css/Layout.css",
                 "~/Content/Css/LeftPanel.css",
-                "~/Scripts/Ol_v650/ol.css"));
+                "~/Scripts/Ol_v650/ol.css"
+                ));
 
             //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
             //        "~/Scripts/bootstrap.js",

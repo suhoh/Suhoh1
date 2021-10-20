@@ -20,50 +20,121 @@
         z-index: 1;*/
 }
 
-.ol-popup {
-    position: absolute;
-    background-color: white;
-    /*-webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));*/
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #cccccc;
-    bottom: 12px;
-    left: -50px;
-    min-width: 240px;
-    max-height: 300px;
-    opacity: 0.95;
-    font: 10pt Segoe UI, Arial, Helvetica, sans-serif;    
-    /*overflow:auto;*/
+.popupContainer {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    min-width: 220px;
+    max-height: 280px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    overflow: auto;
 }
 
-    .ol-popup:after, .ol-popup:before {
+    /*.popupContainer:after, .popupContainer:before {
+        position: absolute;
         top: 100%;
         border: solid transparent;
         content: " ";
         height: 0;
         width: 0;
-        position: absolute;
         pointer-events: none;
     }
 
-    .ol-popup:after {
+    .popupContainer:after {
         border-top-color: white;
         border-width: 10px;
-        left: 48px;
+        left: 110px;
         margin-left: -10px;
     }
 
-    .ol-popup:before {
+    .popupContainer:before {
         border-top-color: #cccccc;
         border-width: 11px;
-        left: 48px;
+        left: 110px;
         margin-left: -11px;
+    }*/
+
+.popupHeader {
+    height: 40px;
+    padding: 2px 8px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+.popupBody {
+    height: 120px;
+    padding: 2px 16px;
+    overflow: auto;
+}
+
+.popupFooter {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+/* The Close Button */
+.popupClose {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+    .popupClose:hover,
+    .popupClose:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
     }
 
-.ol-popup-closer {
-    text-decoration: none;
+/*.ol-popupDiv {
     position: absolute;
+    background-color: white;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -110px;
+    min-width: 220px;
+    max-height: 280px;
+    opacity: 0.95;
+    font: 10pt Segoe UI, Arial, Helvetica, sans-serif;
+    overflow-y: auto;
+}
+    .ol-popupDiv:after, .ol-popupDiv:before {
+        position: absolute;
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        pointer-events: none;
+    }
+
+.ol-popupDiv:after {
+        border-top-color: white;
+        border-width: 10px;
+        left: 110px;
+        margin-left: -10px;
+    }
+
+    .ol-popupDiv:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 110px;
+        margin-left: -11px;
+    }*/
+
+.ol-popup-closer {
+    position: absolute;
+    text-decoration: none;
     top: 2px;
     right: 8px;
 }
@@ -84,9 +155,9 @@
     text-align: center;
 }
 
-    .toolTipPrev:hover {
-        background-color: rgba(0,60,136,.7);
-    }
+.toolTipPrev:hover {
+    background-color: rgba(0,60,136,.7);
+}
 
 .mapTipNext {
     background-color: rgba(0,60,136,.5);
@@ -98,9 +169,9 @@
     width: 25px;
 }
 
-    .toolTipNext:hover {
-        background-color: rgba(0,60,136,.7);
-    }
+.toolTipNext:hover {
+    background-color: rgba(0,60,136,.7);
+}
 
 #popup-count {
     float: left;
@@ -266,6 +337,7 @@
     z-index: 0;
     pointer-events: auto;
 }
+
     .btnCoordinateToggle:hover {
         background-color: rgba(0,60,136,.7) !important;
     }

@@ -54,14 +54,15 @@ function getScatterData(paneId, jsonData, xCol, yCol, zCol, color, isInitial) {
     scatter.zCol = zCol;
     scatter.color = color;
 
-    var sData;
+    var sData = [];
 
     if (!isInitial) {
         sData = scatter.data; // use existing data
     }
     else {
-        sData = _scatterTestPoint;
+        sData.push({ 'X': gb[s][xCol], 'Y': gb[s][yCol], 'Z': gb[s][zCol] });
     }
+
     return { scatterData: sData, xCol: scatter.xCol, yCol: scatter.yCol, zCol: scatter.zCol, width: width, height: height, color: color }
 }
 
