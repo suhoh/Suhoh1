@@ -113,15 +113,16 @@ function initMap(divName) {
     });
 
     // Maptip
-    var maptipContainer = document.getElementById(divName + '_Popup');
-    var maptipContent = document.getElementById(divName + '_Popup-content');
-    var closer = document.getElementById(divName + '_Popup-closer');
+    var maptipContainer = document.getElementById(divName + '_PopupContainer');
+    var maptipHeader = document.getElementById(divName + '_PopupHeader');
+    var maptipBody = document.getElementById(divName + '_PopupBody');
+    //var closer = document.getElementById(divName + '_PopupCloser');
 
     var mapOverlay = new ol.Overlay({
         //element: document.getElementById('popup'),
         element: maptipContainer,
         offset: [0, 0],
-        positioning: 'bottom'
+        positioning: 'bottom-center'    // not in effect is css has position: absolute
     });
     map.addOverlay(mapOverlay);
 
@@ -130,8 +131,11 @@ function initMap(divName) {
     function identifyFeature(evt) {
         var pixel = evt.pixel;
         var feat = evt.map.getFeaturesAtPixel(pixel, { hitTolerance: 2 });
-        if (feat.length == 0)
+        if (feat.length == 0) {
+            mapOverlay.setPosition(undefined);
+            closer.blur();
             return;
+        }
 
         // filter data from main
         var seqs = '';
@@ -151,15 +155,20 @@ function initMap(divName) {
             var content = '<table>';
             //var content = '';
             for (j = 0; j < keys.length; j++) {
-                content += "<tr><td style='text-align:right; font-weight:500'>" + keys[j] + "&nbsp;</td><td>&nbsp;" + jsons[i][keys[j]] + "</td></tr>";
-                //content += "<b>" + keys[j] + "</b>" + jsons[i][keys[j]] + "<br />";
+                var v = jsons[i][keys[j]];
+                if (keys[j] == 'Drill Date') {
+                    var d = new Date(jsons[i][keys[j]]);
+                    v = dateToYyyyMmDd(d);  // had to convert to yyyy-mm-dd. Long date makes popup blurry
+                }
+                content += "<tr><td style='text-align:left;'>" + keys[j] + "&nbsp;&nbsp;</td><td style='font-weight:500;'>" + v + "</td></tr>";
+                //content += "<b><i>" + keys[j] + ":&nbsp;</i></b>" + v + "<br />";
             }
             content += "</table>";
             contents.push(content);
         }
 
         mapOverlay.setPosition(evt.coordinate);
-        maptipContent.innerHTML = content;
+        maptipBody.innerHTML = contents[0];
 
         //const element = mapOverlay.getElement();
         //$(element).popover('dispose');
@@ -178,11 +187,11 @@ function initMap(divName) {
     }
 
     // Close on maptip is clicked
-    closer.onclick = function () {
-        mapOverlay.setPosition(undefined);
-        closer.blur();
-        return false;
-    };
+    //closer.onclick = function () {
+    //    mapOverlay.setPosition(undefined);
+    //    closer.blur();
+    //    return false;
+    //};
 
     // Get appConfig from server
     var url = "Home/GetAppConfig"
@@ -213,6 +222,16 @@ function initMap(divName) {
         'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null,
         'x': _mapX, 'y': _mapY, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false
     });
+}
+
+function dateToYyyyMmDd(date) {
+    var d = date.getDate();
+    var m = date.getMonth() + 1; //Month from 0 to 11
+    var y = date.getFullYear();
+    if (isNaN(d) || isNaN(m) || isNaN(y))
+        return ''
+    else
+        return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 }
 
 function mapTipPrev(s) {
