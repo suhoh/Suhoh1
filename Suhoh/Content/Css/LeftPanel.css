@@ -90,12 +90,12 @@
 }
 
 /*Panel Settings*/
-.leftPanelSettingsFloatLeft {
+.leftPanelPanelsFloatLeft {
     float: left;
     margin-left: 10px;
 }
 
-.leftPanelSettings3 {
+.leftPanelPanels3 {
     float: left;
     margin-left: 10px;
     margin-top: 10px;

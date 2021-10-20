@@ -85,7 +85,16 @@
     settings.Groups.Add(group =>
     {
         group.Name = "panelSettings";
-        group.Text = "Panel Settings";
+        group.Text = "Panels";
+        group.SetContentTemplateContent(c =>
+        {
+            Html.RenderPartial("leftPanelPanels", Model);
+        });
+    });
+    settings.Groups.Add(group =>
+    {
+        group.Name = "globalSettings";
+        group.Text = "Settings";
         group.SetContentTemplateContent(c =>
         {
             Html.RenderPartial("LeftPanelSettings", Model);
