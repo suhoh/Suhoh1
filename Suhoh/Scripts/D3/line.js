@@ -251,15 +251,15 @@ function createLine(line, svg, data, x, y, color) {
         .attr("class", "lineDot")
         .attr("r", 3)
         .attr("cx", function (d) {
-            console.log("x: " + d.x);
+            //console.log("x: " + d.x);
             return x(d.x);
         })
         .attr("cy", function (d) {
-            console.log("y: " + d.y);
+            //console.log("y: " + d.y);
             return y(d.y);
         })
         .style("fill", function (d) {
-            console.log(d.color);
+            //console.log(d.color);
             return color(d.color);
         })
         .on("mouseenter", function (event, d) {
@@ -349,7 +349,7 @@ function axisLineTooltip(line, data) {
             axisLineLabelTooltip
                 .style("display", "inline-block")
                 .style("position", "absolute")
-                .style("height", 12 + "px")
+                .style("height", 25 + "px")
                 .html(d.x)
                 .style("left", event.offsetX + "px")
                 .style("top", event.offsetY - 40 + "px");

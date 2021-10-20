@@ -64,6 +64,7 @@ namespace Suhoh.Model
         public string ScatterTitle { get; set; }
         public bool CbScatterXValueLabel { get; set; }
         public bool CbScatterYValueLabel { get; set; }
+        public bool CbScatterZValueLabel { get; set; }
         public string DdScatterXColumn { get; set; }
         public string DdScatterYColumn { get; set; }
         public string DdScatterZColumn { get; set; }
@@ -132,6 +133,7 @@ namespace Suhoh.Model
             // Scatter Chart Property
             CbScatterXValueLabel = false;
             CbScatterYValueLabel = false;
+            CbScatterZValueLabel = false;
             DdScatterXColumn = "";
             DdScatterYColumn = "";
             DdScatterZColumn = "";

@@ -55,6 +55,7 @@ function splitterMainResized(s, e) {
     updatePies(_pies, false);
     updateBars(_bars, false);
     updateLines(_lines, false);
+    updateScatters(_scatters, false);
     updateGridviewHeights(_gridviews);
 }
 
@@ -141,6 +142,25 @@ function updateLine(l, isInitial) {
     _activeLine = l;
     if (typeof cbLineXColumn != "undefined" && ASPxClientUtils.IsExists(cbLineXColumn))
         chkLineLabelClicked(null, null, l.divName);
+}
+
+function updateScatters(scatters, isInitial) {
+    if (scatters.length == 0)
+        return;
+    scatters.forEach(function (s) {
+        updateScatter(s, isInitial);
+    });
+}
+
+function updateScatter(s, isInitial) {
+    var scatterData = getScatterData(s.divName, s.data, s.xCol, s.yCol, s.zCol, s.color, isInitial);     // used to be PaneId
+    if (scatterData != null) {
+        var scatterSvg = drawScatter(s.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
+        s.svg = scatterSvg;
+    }
+    _activeScatter = s;
+    //if (typeof cbScatterXColumn != "undefined" && ASPxClientUtils.IsExists(cbScatterXColumn))
+        chkScatterLabelClicked(null, null, s.divName);
 }
 
 function updateGridviews(gridviews) {
@@ -456,7 +476,7 @@ function updateAllViews(jsonData, jsonDataGridview) {
         _scatters.forEach(function (s) {
             var scatterData = getScatterData(s.divName, jsonData, scatterColNames.xCol, scatterColNames.yCol, scatterColNames.zCol, s.color, true);
             if (scatterData != null) {
-                var scatterSvg = drawScatter(s.divName, scatterData.scatterData, scatterData.xCol, scatterData.yCol, scatterData.zCol, scatterData.width, scatterData.height, scatterData.color);
+                var scatterSvg = drawScatter(s.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
                 s.svg = scatterSvg;
             }
             document.getElementById(s.divName + "_Title").innerHTML = s.xCol + " vs " + s.yCol; // title in panel
@@ -800,6 +820,44 @@ function renderScatterProperty(id) {
     _activeScatter = scatter;
 
     popupPanelProperty.SetHeaderText("Scatter Property");
+    if (_columnNames == undefined || _columnNames.length == 0) {
+        //console.log("_columnNames: null or empty.")
+        return;
+    }
+
+    cbScatterXColumn.ClearItems();
+    cbScatterYColumn.ClearItems();
+    cbScatterZColumn.ClearItems();
+
+    // Csv columns are always string. Had to add all the columns to X/Y dropdown
+    var isCsv = false;
+    if (_maps.length > 0) {
+        if (_maps[0].type == 'CSV')
+            isCsv = true;
+    }
+    _columnNames.forEach(function (c) {
+        if (c.Type == 'Int64' || c.Type == 'Double' || isCsv)
+            cbScatterXColumn.AddItem(c.Name);
+        if (c.Type == 'Int64' || c.Type == 'Double' || isCsv)
+            cbScatterYColumn.AddItem(c.Name);
+        if (c.Type == 'String' || c.Type == 'DateTime' || c.Type == 'Date' || isCsv || c.Name == 'Seq')
+            cbScatterZColumn.AddItem(c.Name);
+    });
+
+    chkScatterXValueLabel.SetChecked(scatter.isXValue);
+    chkScatterYValueLabel.SetChecked(scatter.isYValue);
+    chkScatterZValueLabel.SetChecked(scatter.isZValue);
+    chkScatterLabelClicked(null, null, scatter.divName);
+
+    cbScatterXColumn.SetValue(scatter.xCol);
+    cbScatterYColumn.SetValue(scatter.yCol);
+    cbScatterZColumn.SetValue(scatter.zCol);
+
+    document.getElementById(scatter.divName + "_Title").innerHTML = scatter.xCol + " vs " + scatter.yCol;
+    tbPropertyScatterTitle.SetText(scatter.xCol + " vs " + scatter.yCol); // title in property
+
+    //document.getElementById('divLineColorPickerText').innerHTML = selectedItems[0].text;
+    //ceLineColorPicker0.SetColor(line.color[0]); 
 }
 
 function renderMapProperty(id) {

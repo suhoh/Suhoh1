@@ -429,11 +429,6 @@ function showHideLegend(s) {
         _activeLine = line;
         line.isLegend = !line.isLegend;
 
-        //chkBarXValueLabel.SetChecked(bar.isXValue);
-        //chkBarYValueLabel.SetChecked(bar.isYValue);
-        //if (typeof ceBarColorPicker !== "undefined" && ASPxClientUtils.IsExists(ceBarColorPicker))
-        //    bar.color = ceBarColorPicker.GetText();
-
         var lineData = getLineData(line.divName, _jsonData, line.xCol, line.yCol, line.color, false);
         if (lineData == null)
             return;
@@ -447,6 +442,29 @@ function showHideLegend(s) {
             }
         drawLine(line.divName, lineData.lineData, lineData.colData, lineData.width, lineData.height, lineData.color);
         chkLineLabelClicked(null, null, id);
+    }
+
+    if (id.toUpperCase().indexOf('SCATTER') > -1) {
+        var scatter = getScatter(id);
+        if (scatter == null)
+            return;
+
+        _activeScatter = scatter;
+        scatter.isLegend = !scatter.isLegend;
+
+        var scatterData = getScatterData(scatter.divName, _jsonData, scatter.xCol, scatter.yCol, scatter.zCol, scatter.color, false);
+        if (scatterData == null)
+            return;
+        if (scatter.isLegend == true)
+            for (i = 0; i < scatterData.scatterData.length; i++) {
+                $('#' + scatter.divName + 'scatterLegend' + i).show(500);
+            }
+        else
+            for (i = 0; i < scatterData.scatterData.length; i++) {
+                $('#' + scatter.divName + 'scatterLegend' + i).hide(500);
+            }
+        drawScatter(scatter.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
+        chkScatterLabelClicked(null, null, id);
     }
 }
 
@@ -639,10 +657,109 @@ function tbScatterPropertyTitleKeyUp(s, e) {
         document.getElementById(caller).innerHTML = tbPropertyScatterTitle.GetText();
 }
 
-function chkScatterLabelClicked(s, e, id) {
+function cbScatterXYColumnChanged(s, e) {
+    if (_activeScatter == undefined)
+        return;
 
+    var scatter = getScatter(_activeScatter.divName);
+    scatter.xCol = cbScatterXColumn.GetText();
+    scatter.yCol = cbScatterYColumn.GetText();
+    scatter.zCol = cbScatterZColumn.GetText();
+
+    //if (selectedItems.length == 0)
+    //    $('#divScatterColorPicker').remove();
+
+    //scatter.yCol = getSelectedItemsText(selectedItems);
+    //scatter.color = _lineColors;
+
+    var jsonData = _jsonData;
+    if (_filteredData != null)
+        jsonData = _filteredData;
+
+    var scatterData = getScatterData(scatter.divName, jsonData, scatter.xCol, scatter.yCol, scatter.zCol, scatter.color, true);
+    drawScatter(scatter.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
+
+    tbPropertyScatterTitle.SetText(scatter.xCol + " vs " + scatter.yCol);
+    document.getElementById(scatter.divName + "_Title").innerHTML = scatter.xCol + " vs " + scatter.yCol;
+
+    chkScatterLabelClicked(null, null, scatter.divName);
+
+    if (s.name == 'lbLineYColumn')
+        callbackLineColorPickers.PerformCallback({ 'lineYcol': line.yCol, 'lineColors': line.color });
 }
 
-function cbScatterXYColumnChanged(s, e) {
+function chkScatterLabelClicked(s, e, id) {
+    var scatter;
+    if (id != null)
+        scatter = getScatter(id);
+    else
+        scatter = getScatter(_activeScatter.divName);
 
+    var isXValueLabel, isYValueLabel, isZValueLabel;
+
+    if (s == undefined) {
+        isXValueLabel = scatter.isXValue;
+        isYValueLabel = scatter.isYValue;
+        isZValueLabel = scatter.isZValue;
+    }
+    else {
+        isXValueLabel = scatter.isXValue = eval("chkScatterXValueLabel").GetChecked();
+        isYValueLabel = scatter.isYValue = eval("chkScatterYValueLabel").GetChecked();
+        isZValueLabel = scatter.isZValue = eval("chkScatterZValueLabel").GetChecked();
+    }
+
+    if (scatter.textLabel == null)
+        return;
+
+    if (isXValueLabel && !isYValueLabel && !isZValueLabel) {
+        scatter.textLabel
+            .text(function (d) {
+                return d.X;
+            })
+            .attr("display", "block");
+    }
+    else if (!isXValueLabel && isYValueLabel && !isZValueLabel) {
+        scatter.textLabel
+            .text(function (d) {
+                return d.Y;
+            })
+            .attr("display", "block");
+    }
+    else if (!isXValueLabel && !isYValueLabel && isZValueLabel) {
+        scatter.textLabel
+            .text(function (d) {
+                return d.Z;
+            })
+            .attr("display", "block");
+    }
+    else if (isXValueLabel && isYValueLabel && !isZValueLabel) {
+        scatter.textLabel
+            .text(function (d) {
+                return d.X + ", " + d.Y;
+            })
+            .attr("display", "block");
+    }
+    else if (isXValueLabel && !isYValueLabel && isZValueLabel) {
+        scatter.textLabel
+            .text(function (d) {
+                return d.X + ", " + d.Z;
+            })
+            .attr("display", "block");
+    }
+    else if (!isXValueLabel && isYValueLabel && isZValueLabel) {
+        scatter.textLabel
+            .text(function (d) {
+                return d.Y + ", " + d.Z;
+            })
+            .attr("display", "block");
+    }
+    else if (isXValueLabel && isYValueLabel && isZValueLabel) {
+        scatter.textLabel
+            .text(function (d) {
+                return d.X + ", " + d.Y + ", " + d.Z;
+            })
+            .attr("display", "block");
+    }
+    else
+        scatter.textLabel.attr("display", "none");
 }

@@ -27,7 +27,7 @@ function initScatter(divName) {
     _scatters.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'zCol': null, 'data': null, 'svg': null, 'isLegend': true,
         'textLabel': null, 'isLabel': false,
-        'isXValue': false, 'isYValue': false,
+        'isXValue': false, 'isYValue': false, 'isZValue': false,
         'color': _scatterColors
     })
 }
@@ -54,18 +54,22 @@ function getScatterData(paneId, jsonData, xCol, yCol, zCol, color, isInitial) {
     scatter.zCol = zCol;
     scatter.color = color;
 
-    var sData;
+    var sData = [];
 
     if (!isInitial) {
         sData = scatter.data; // use existing data
     }
     else {
-        sData = _scatterTestPoint;
+        for (i = 0; i < jsonData.length; i++) {
+            if (jsonData[i][xCol].toString().length == 0 || jsonData[i][yCol].toString().length == 0)
+                continue;
+            sData.push({ 'X': jsonData[i][xCol], 'Y': jsonData[i][yCol], 'Z': jsonData[i][zCol] })
+        }
     }
     return { scatterData: sData, xCol: scatter.xCol, yCol: scatter.yCol, zCol: scatter.zCol, width: width, height: height, color: color }
 }
 
-function drawScatter(divName, data, xCol, yCol, zCol, width, height, scatterColor) {
+function drawScatter(divName, data, width, height, scatterColor) {
     d3.select("#" + divName).selectAll("svg").remove();
     _scatterSvgHeight = height - 30;
 
@@ -77,7 +81,7 @@ function drawScatter(divName, data, xCol, yCol, zCol, width, height, scatterColo
         .attr("width", width)
         .attr("height", height)
         .attr("class", "lineChartSvg")
-        .attr("transform", "translate(0" + _lineMarginTop + ")")
+        .attr("transform", "translate(0" + _scatterMarginTop + ")")
         .append("g");
 
     var x;
@@ -90,10 +94,10 @@ function drawScatter(divName, data, xCol, yCol, zCol, width, height, scatterColo
     y = d3.scaleLinear().range([_scatterSvgHeight - _scatterMarginTop - _scatterMarginBottom - 30, 0]);
 
     x.domain([0, d3.max(data, function (d) {
-        return d.x;
+        return d.X;
     })]);
     y.domain([0, d3.max(data, function (d) {
-        return d.y;
+        return d.Y;
     })]);
 
     var xAxis = d3.axisBottom(x);
@@ -111,25 +115,109 @@ function drawScatter(divName, data, xCol, yCol, zCol, width, height, scatterColo
         .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + ", " + (_scatterMarginTop + 30) + ")")
         .call(yAxis);
 
-    //var clipX = width - _scatterMarginRight;
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", "25px")
+        .attr("x", (- (height / 2)) + "px")
+        .style("text-anchor", "middle")
+        .attr("font-weight", "bold")
+        .text(scatter.yCol);
 
-    //var xGridlines = d3.axisBottom()
-    //    .tickFormat("")
-    //    .tickSize(-clipX)
-    //    .scale(x);
+    var color = d3.scaleOrdinal()
+        //.domain(zCol)
+        .range(scatterColor);
+    
+    $('#scatterTooltip').remove();
 
-    var dataPoints = svg.append("g")
+    createScatter(scatter, svg, data, x, y, color);
+    createScatterTextLabel(scatter, svg, data, x, y);
+    createScatterLegend(scatter, svg, width, color);
+}
+
+function createScatter(scatter, svg, data, x, y, color) {
+    var scatterTooltip = d3.select("#" + scatter.divName).append("div").attr("id", "scatterTooltip").attr("class", "scatterTooltip").style("display", "none");
+
+    svg.append("g")
         .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + "," + (_scatterMarginTop + 30) + ")")
         .selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
-        .attr("cx", function (d) { return x(d.x) })
-        .attr("cy", function (d) { return y(d.y) })
-        .attr("r", 3);
-        //.call(xGridlines);
+        .attr("cx", function (d) { return x(d.X) })
+        .attr("cy", function (d) { return y(d.Y) })
+        .attr("r", 3)
+        .style("fill", function (d) {
+            return color(d.Z);
+        })
+        .on("mouseenter", function (event, d) {
+            scatterTooltip
+                .style("display", "inline-block")
+                .style("position", "absolute")
+                .html(parseInt(d.X) + "<br>" + parseInt(d.Y) + "<br>" + d.Z)
+                .style("opacity", 1);
 
+            var tooltipDiv = document.getElementById("scatterTooltip");
+            var tooltipRect = tooltipDiv.getBoundingClientRect();
 
- 
+            var tooltipWidth = tooltipRect.width;
+
+            scatterTooltip
+                .transition()
+                .duration(200)
+                .style("left", _scatterMarginLeft + _scatterMarginRight + _scatterMarginRight + x(d.X) - (tooltipWidth / 2) + "px")
+                .style("top", y(d.Y) + "px");
+        })
+        .on("mouseleave", function (d) {
+            scatterTooltip
+                .style("display", "none");
+        });
 }
 
+function createScatterTextLabel(scatter, svg, data, x, y) {
+    scatter.textLabel = svg.append("g")
+        .selectAll("scatter")
+        .data(data)
+        .enter()
+        .append("g")
+        .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + ", 60)")
+        .append("text")
+        .attr("id", "scatterTextLabel")
+        .attr("class", "scatterTextLabel")
+        .style("text-anchor", "left")
+        .style("font-size", "12px")
+        .attr("display", "none")
+        .attr("x", function (d) { return x(d.X) })
+        .attr("y", function (d) { return y(d.Y) });
+}
+
+function createScatterLegend(scatter, svg, width, color) {
+    // group by zCol
+    var uniqueNames = scatter.data.map(function (d) { return d.Z; }).filter((v, i, a) => a.indexOf(v) === i)
+
+    var legend = svg.selectAll("legend")
+        .data(uniqueNames)
+        .enter()
+        .append("g")
+        .attr("class", "scatterLegend")
+        .attr("id", function (d, idx) { return scatter.divName + "scatterLegend" + idx });
+
+    if (width > 400 && scatter.isLegend == true) {
+        legend.append("rect")
+            .attr("width", 7)
+            .attr("height", 7)
+            .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (10 + (idx * 15) + 30) + ")"; })
+            .attr("fill", function (d) {
+                //console.log(d);
+                return color(d);
+            });
+
+        legend.append("text")
+            .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (13 + (idx * 15) + 30) + ")"; })
+            .attr("dy", ".35em")
+            .style("text-anchor", "start")
+            .style("font-size", "8px")
+            .text(function (d) {
+                return d;
+            })
+    }
+}

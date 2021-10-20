@@ -49,6 +49,15 @@
                         settings.Properties.ClientSideEvents.CheckedChanged = "chkScatterLabelClicked";
                     }).GetHtml()
             </th>
+            <th id="thScatterZValueChkBox" class="thScatterZValueChkBox">
+                @Html.DevExpress().CheckBoxFor(settings => Model.CbScatterZValueLabel,
+                    settings =>
+                    {
+                        settings.Name = "chkScatterZValueLabel";
+                        settings.Text = "Z Value";
+                        settings.Properties.ClientSideEvents.CheckedChanged = "chkScatterLabelClicked";
+                    }).GetHtml()
+            </th>
         </tr>
     </table>
 </div>
