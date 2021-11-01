@@ -13,31 +13,24 @@
 <body>
     <div style="width: 100%; height: 100%; position: relative;">
         <div id="@Model.CreatePanelName" class="olMap" onclick="divPanelClicked(this)">
-            @*<div id="popup" title="Welcome to OpenLayers" style="min-width:200px; max-height:300px; overflow:auto"></div>*@
 
-            @*<div id="@(String.Format("{0}_PopupDiv", Model.CreatePanelName))" class="ol-popupDiv">
-                    <a href="#" id="@(String.Format("{0}_Popup-closer", Model.CreatePanelName))" class="ol-popup-closer"></a>
-                    <div id="@(String.Format("{0}_Popup-navigator", Model.CreatePanelName))">
-                        <button id="@(String.Format("{0}_MaptipPrev", Model.CreatePanelName))" onclick="mapTipPrev(this)" type="button" class="mapTipPrev">&#8249;</button>
-                        <div id="@(String.Format("{0}_Popup-count", Model.CreatePanelName))"></div>
-                        <button id="@(String.Format("{0}_MaptipPrev", Model.CreatePanelName))" onclick="mapTipNext(this)" type="button" class="mapTipNext">&#8250;</button>
-                    </div>
-                    <div id="@(String.Format("{0}_Popup", Model.CreatePanelName))">
-                        <div id="@(String.Format("{0}_Popup-content", Model.CreatePanelName))"></div>
-                    </div>
-                </div>*@
-
-            <!-- Modal content -->
             <div id="@(String.Format("{0}_PopupContainer", Model.CreatePanelName))" class="popupContainer">
                 <div id="@(String.Format("{0}_PopupHeader", Model.CreatePanelName))" class="popupHeader">
-                    <span id="@(String.Format("{0}_PopupClose", Model.CreatePanelName))" class="popupClose">&times;</span>
-                    <h3>Identify</h3>
+
+                    @*<div id="@(String.Format("{0}_PopupLeftButton", Model.CreatePanelName))" class="popupLeftButtonDiv" >
+                            <button id="@(String.Format("{0}_PopupLeftButton", Model.CreatePanelName))" type="button" class='popupLeftButton'
+                                    onclick='btnGridviewMaximizeClick(this)'></button>
+                        </div>*@
+                    <div id="@(String.Format("{0}_PopupLeftButton", Model.CreatePanelName))" class="popupLeftButton">&#9664;</div>
+                    <div id="@(String.Format("{0}_PopupCounts", Model.CreatePanelName))" class="popupCounts">1 of 1</div>
+                    <div id="@(String.Format("{0}_PopupRightButton", Model.CreatePanelName))" class="popupRightButton">&#9654;</div>
+                    <div id="@(String.Format("{0}_PopupClose", Model.CreatePanelName))" class="popupClose">&times;</div>
                 </div>
                 <div id="@(String.Format("{0}_PopupBody", Model.CreatePanelName))" class="popupBody">
                 </div>
-                <div id="@(String.Format("{0}_PopupFooter", Model.CreatePanelName))" class="popupFooter">
-                    <h3>Modal Footer</h3>
-                </div>
+                @*<div id="@(String.Format("{0}_PopupFooter", Model.CreatePanelName))" class="popupFooter">
+                    &#9660;
+                </div>*@
             </div>
 
         </div>

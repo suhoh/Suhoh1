@@ -34,6 +34,7 @@ function clearAllPanels() {
 function clearAllAttributes() {
     _maps.forEach(function (m) {
         m.xCol = m.yCol = m.zCol = null;
+        m.overlay.setPosition(undefined);
     });
     _pies.forEach(function (p) {    // Add attributes to clear
 
@@ -385,7 +386,7 @@ function addSeqNo(json) {
 
 // Initial loading
 // Panes already created.
-// Ajax: convert Json to DataTable and will show in Gridview
+// Ajax: convert Json to DataTable and will show in Gridview and returns column types
 function updateAllViews(jsonData, jsonDataGridview) {
     if (jsonData == undefined || jsonDataGridview == undefined) {
         console.log("updateAllViews: jsonData or jsonDataGridview is null.");

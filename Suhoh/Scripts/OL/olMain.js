@@ -115,8 +115,49 @@ function initMap(divName) {
     // Maptip
     var maptipContainer = document.getElementById(divName + '_PopupContainer');
     var maptipHeader = document.getElementById(divName + '_PopupHeader');
+    var maptipLeftButton = document.getElementById(divName + '_PopupLeftButton');
+    var maptipCounts = document.getElementById(divName + '_PopupCounts');
+    var maptipRightButton = document.getElementById(divName + '_PopupRightButton');
     var maptipBody = document.getElementById(divName + '_PopupBody');
-    //var closer = document.getElementById(divName + '_PopupCloser');
+    var maptipCloser = document.getElementById(divName + '_PopupClose');
+
+    var mpCurrent = 1;  // current maptip showing in map tip
+    var mpTotal = 1;    // total count
+
+    var contents = [];
+
+    // Left button clicked
+    maptipLeftButton.onclick = function () {
+        if (mpCurrent == 1)
+            return;
+        mpCurrent--
+        showContent();
+    } 
+
+    // Right button clicked
+    maptipRightButton.onclick = function () {
+        if (mpCurrent == contents.length)
+            return;
+        mpCurrent++;
+        showContent();
+    } 
+
+    function showContent() {
+        maptipCounts.innerHTML = mpCurrent + " of " + mpTotal;
+        maptipBody.innerHTML = contents[mpCurrent - 1];   
+        var tPos = $('#' + divName + '_PopupContainer').width() / 2;
+        $('#' + divName + '_PopupBody').append('<style>.popupBody:before {left:' + tPos + 'px' + ' !important;} </style>');
+        $('#' + divName + '_PopupBody').append('<style>.popupBody:after {left:' + tPos + 'px' + ' !important;} </style>');
+        //$('head').append('<style>.popupBody:before {left:' + tPos + 'px' + ' !important;} </style>');
+        //$('head').append('<style>.popupBody:after {left:' + tPos + 'px' + ' !important;} </style>');
+    }
+
+    // Close on maptip is clicked
+    maptipCloser.onclick = function() {
+        mapOverlay.setPosition(undefined);
+        maptipCloser.blur();
+        return false;
+    };
 
     var mapOverlay = new ol.Overlay({
         //element: document.getElementById('popup'),
@@ -133,7 +174,7 @@ function initMap(divName) {
         var feat = evt.map.getFeaturesAtPixel(pixel, { hitTolerance: 2 });
         if (feat.length == 0) {
             mapOverlay.setPosition(undefined);
-            closer.blur();
+            maptipCloser.blur();
             return;
         }
 
@@ -150,18 +191,21 @@ function initMap(divName) {
 
         // generate identify content
         var keys = Object.keys(jsons[0]); // list column names
-        var contents = [];
+        contents = [];
         for (i = 0; i < jsons.length; i++) {
             var content = '<table>';
-            //var content = '';
             for (j = 0; j < keys.length; j++) {
                 var v = jsons[i][keys[j]];
-                if (keys[j] == 'Drill Date') {
+                // Get DateTime column name
+                var colType = _columnNames.filter(function (c) {
+                    return c.Name == keys[j];
+                });
+                // Convert to short date
+                if (colType[0].Type == 'DateTime' || colType[0].Type == 'Date') {
                     var d = new Date(jsons[i][keys[j]]);
                     v = dateToYyyyMmDd(d);  // had to convert to yyyy-mm-dd. Long date makes popup blurry
                 }
                 content += "<tr><td style='text-align:left;'>" + keys[j] + "&nbsp;&nbsp;</td><td style='font-weight:500;'>" + v + "</td></tr>";
-                //content += "<b><i>" + keys[j] + ":&nbsp;</i></b>" + v + "<br />";
             }
             content += "</table>";
             contents.push(content);
@@ -169,29 +213,16 @@ function initMap(divName) {
 
         mapOverlay.setPosition(evt.coordinate);
         maptipBody.innerHTML = contents[0];
+        mpCurrent = 1;
+        mpTotal = contents.length;
+        maptipCounts.innerHTML = '1 of ' + mpTotal;
 
-        //const element = mapOverlay.getElement();
-        //$(element).popover('dispose');
-        //mapOverlay.setPosition(evt.coordinate);
-        //$(element).popover({
-        //    container: element,
-        //    placement: 'right',
-        //    animation: true,
-        //    html: true,
-        //    content: contents[0]
-        //});
-        //$(element).popover('show');
+        var tPos = $('#' + divName + '_PopupContainer').width() / 2;
+        $('#' + divName + '_PopupBody').append('<style>.popupBody:before {left:' + tPos + 'px' + ' !important;} </style>');
+        $('#' + divName + '_PopupBody').append('<style>.popupBody:after {left:' + tPos + 'px' + ' !important;} </style>');
 
-
-        console.log(contents);
+        console.log(tPos);
     }
-
-    // Close on maptip is clicked
-    //closer.onclick = function () {
-    //    mapOverlay.setPosition(undefined);
-    //    closer.blur();
-    //    return false;
-    //};
 
     // Get appConfig from server
     var url = "Home/GetAppConfig"
@@ -218,7 +249,7 @@ function initMap(divName) {
 
     _maps.push({
         'divName': divName, 'map': map, 'layer': null, 'type': null, 'features': null, 'scaleLine': scaleLine, 'data': null,
-        'xCol': null, 'yCol': null, 'zCol': null, 'basemap': _basemap,
+        'xCol': null, 'yCol': null, 'zCol': null, 'basemap': _basemap, 'overlay': mapOverlay,
         'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null,
         'x': _mapX, 'y': _mapY, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false
     });
