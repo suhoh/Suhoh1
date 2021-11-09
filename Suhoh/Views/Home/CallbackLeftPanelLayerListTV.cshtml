@@ -46,13 +46,22 @@
                         node.Checked = true;
                         if (!m.IsVisible)
                             node.Checked = false;
+                        if (m.Owner.ToUpper() == "USER")
+                        {
+                            node.ImageStyle.CssClass = "btnMapServiceDelete";
+                            node.Image.Url = "~/Content/Images/DX/delete.svg";
+                            //settings.AllowSelectNode = true;
+                        }
                     });
-                    if (m.Owner.ToUpper() == "USER")    // not aligned properly
-                    {
-                        //ViewContext.Writer.Write("<span><button id='" + (String.Format("{0}_Delete", m.Alias)) +
-                        //    "' type='button' class='btnDeleteUserLayer' title='Remove' " +
-                        //    "onclick='btnGridviewResetClick(this)'>D</button></span>");
-                    };
+                    //if (m.Owner.ToUpper() == "USER")    // not aligned properly
+                    //{
+                    //    string btnId = m.Alias.Replace(" ", "_");
+                    //    ViewContext.Writer.Write("<span><button id='" + (String.Format("{0}_Delete", m.Alias)) +
+                    //        "' type='button' class='btnDeleteUserLayer' title='Remove' " +
+                    //        "onclick='btnGridviewResetClick(this)'>D</button></span>");
+                    //    ViewContext.Writer.Write("<span><button id='" + (String.Format("{0}_Delete", btnId)) +
+                    //        "' type='button' class='btnDeleteUserLayer' title='Remove' onclick='btnDeleteUserLayer(this)'>D</button></span>");
+                    //};
                 };
 
             }).GetHtml();

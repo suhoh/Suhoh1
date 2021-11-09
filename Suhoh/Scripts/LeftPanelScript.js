@@ -457,3 +457,12 @@ function callbackLeftPanelLayerListTV_OnBeginCallback(s, e) {
 function callbackLeftPanelLayerListTV_OnEndCallback(s, e) {
 
 }
+
+// 
+// Map service functions
+//
+
+function btnDeleteUserLayer(s) {
+}
+
+
