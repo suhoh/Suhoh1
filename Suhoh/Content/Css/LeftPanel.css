@@ -238,3 +238,9 @@
         background-color: rgba(113,57,143,.8) !important;
     }
 
+.btnMapServiceDelete {
+    height: 14px;
+    width: 14px; 
+    float: right; 
+    padding-left: 5px; 
+}
