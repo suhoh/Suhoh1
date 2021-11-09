@@ -12,62 +12,45 @@
 
         cbSettings.SetContent(() =>
         {
-            @Html.DevExpress().TreeView(
-            settings =>
+            ViewContext.Writer.Write("<table style='margin-top:20px'>");
+            foreach (var m in Model.AppConfig.MapServices)
             {
-                settings.Name = "leftPanelLayerListTV";
-
-                // Events gets fired on client side
-                settings.EnableClientSideAPI = true;
-                settings.ClientSideEvents.Init = "mapServiceTVInit";
-                settings.ClientSideEvents.NodeClick = "mapServiceTVNodeClick";
-                settings.ClientSideEvents.ExpandedChanged = "mapServiceTVExpandedChanged";
-                settings.ClientSideEvents.CheckedChanged = "mapServiceTVCheckedChanged";
-
-                settings.ControlStyle.CssClass = "layerListTV";
-                //settings.EnableNodeTextWrapping = true;   // makes select node size larger than it's text
-
-                settings.SettingsLoadingPanel.Mode = TreeViewLoadingPanelMode.Disabled;
-
-                settings.AllowCheckNodes = true;
-                settings.AllowSelectNode = true;
-                settings.CheckNodesRecursive = true;
-                settings.EnableAnimation = true;
-                settings.EnableHotTrack = true;
-                //settings.ShowTreeLines = true;    // Do not support by design
-                settings.ShowExpandButtons = true;
-
-                foreach (var m in Model.AppConfig.MapServices)
+                Html.DevExpress().CheckBox(settings =>
                 {
-                    settings.Nodes.Add(node =>
-                    {
-                        node.Name = m.Alias;
-                        if (m.Owner.ToUpper() == "USER")
-                            node.Name = m.Alias + "_USER";
+                    settings.Name = m.Alias;
+                    settings.Checked = m.IsVisible;
+                    settings.ControlStyle.CssClass = "";
+                    settings.Properties.ClientSideEvents.CheckedChanged = "";
+                }).GetHtml();
 
-                        node.Text = m.Alias;
-                        node.Checked = true;
-                        if (!m.IsVisible)
-                            node.Checked = false;
+                Html.DevExpress().Label(labelSettings =>
+                {
+                    labelSettings.Name = m.Alias + "_Label";
+                    labelSettings.Text = m.Alias;
+                    labelSettings.ControlStyle.CssClass = "";
+                }).GetHtml();
 
-                        if (m.Owner.ToUpper() == "USER")    // not aligned properly
-                        {
-                            ViewContext.Writer.Write("<span><button id='" + (String.Format("{0}_Delete", m.Alias)) +
-                                "' type='button' class='btnDeleteUserLayer' title='Remove' " +
-                                "onclick='btnGridviewResetClick(this)'>D</button></span>");
-                        };
-                    });
-                };
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = m.Alias + "_Zoom";
+                    settings.Text = "";
+                    settings.UseSubmitBehavior = false;
+                    settings.ClientSideEvents.Click = "";
+                    settings.ControlStyle.CssClass = "";
+                    settings.Images.Image.IconID = IconID.HybriddemoiconsBottompanelHybriddemoZoominSvgGray16x16;
+                }).GetHtml();
 
-                //settings.SetNodeTemplateContent(c =>
-                //{
-                //    if (c.Node.Name.Contains("USER"))
-                //    {
-                //        ViewContext.Writer.Write(c.Node.Text);
-                //    }
-                //});
-
-            }).GetHtml();
+                Html.DevExpress().Button(settings =>
+                {
+                    settings.Name = m.Alias + "_Delete";
+                    settings.Text = "";
+                    settings.UseSubmitBehavior = false;
+                    settings.ClientSideEvents.Click = "";
+                    settings.ControlStyle.CssClass = "";
+                    settings.Images.Image.IconID = IconID.HybriddemoiconsBottompanelHybriddemoDeleteSvgWhite16x16;
+                }).GetHtml();
+            };
+            ViewContext.Writer.Write("</table>");
         });
     }).GetHtml()
 

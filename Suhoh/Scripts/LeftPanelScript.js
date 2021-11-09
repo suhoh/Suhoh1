@@ -424,6 +424,9 @@ function getCurrentNode() {
     return leftPanelLayerListTV.GetNodeByName(ddNodes.GetKeyValue());
 }
 
+//
+// To be deleted later
+//
 function mapServiceTVInit(s, e) {
 
 }
