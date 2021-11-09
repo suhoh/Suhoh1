@@ -26,7 +26,6 @@ namespace Suhoh.Controllers
 
             _appConfig = ReadConfigXml("App_Data", "AppConfig.xml");
 
-
             Session["appConfig"] = _appConfig;
             _appConfig.ActiveDatabase = GetActiveDatabase(_appConfig);
 

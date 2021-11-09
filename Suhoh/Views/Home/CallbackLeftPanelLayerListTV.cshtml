@@ -42,18 +42,30 @@
                     settings.Nodes.Add(node =>
                     {
                         node.Name = m.Alias;
+                        if (m.Owner.ToUpper() == "USER")
+                            node.Name = m.Alias + "_USER";
+
                         node.Text = m.Alias;
                         node.Checked = true;
                         if (!m.IsVisible)
                             node.Checked = false;
+
+                        if (m.Owner.ToUpper() == "USER")    // not aligned properly
+                        {
+                            ViewContext.Writer.Write("<span><button id='" + (String.Format("{0}_Delete", m.Alias)) +
+                                "' type='button' class='btnDeleteUserLayer' title='Remove' " +
+                                "onclick='btnGridviewResetClick(this)'>D</button></span>");
+                        };
                     });
-                    if (m.Owner.ToUpper() == "USER")    // not aligned properly
-                    {
-                        //ViewContext.Writer.Write("<span><button id='" + (String.Format("{0}_Delete", m.Alias)) +
-                        //    "' type='button' class='btnDeleteUserLayer' title='Remove' " +
-                        //    "onclick='btnGridviewResetClick(this)'>D</button></span>");
-                    };
                 };
+
+                //settings.SetNodeTemplateContent(c =>
+                //{
+                //    if (c.Node.Name.Contains("USER"))
+                //    {
+                //        ViewContext.Writer.Write(c.Node.Text);
+                //    }
+                //});
 
             }).GetHtml();
         });
