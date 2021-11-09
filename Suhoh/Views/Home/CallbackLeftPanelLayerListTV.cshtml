@@ -42,6 +42,9 @@
                     settings.Nodes.Add(node =>
                     {
                         node.Name = m.Alias;
+                        if (m.Owner.ToUpper() == "USER")
+                            node.Name = m.Alias + "_USER";
+
                         node.Text = m.Alias;
                         node.Checked = true;
                         if (!m.IsVisible)
@@ -63,6 +66,14 @@
                     //        "' type='button' class='btnDeleteUserLayer' title='Remove' onclick='btnDeleteUserLayer(this)'>D</button></span>");
                     //};
                 };
+
+                //settings.SetNodeTemplateContent(c =>
+                //{
+                //    if (c.Node.Name.Contains("USER"))
+                //    {
+                //        ViewContext.Writer.Write(c.Node.Text);
+                //    }
+                //});
 
             }).GetHtml();
         });

@@ -2,22 +2,24 @@
     var adjustmentDelegates = [];
     function AddAdjustmentDelegate(adjustmentDelegate) {
         adjustmentDelegates.push(adjustmentDelegate);
-        //_map.updateSize();
     }
+
     function onControlsInitialized(s, e) {
         adjustPageControls();
     }
     function onBrowserWindowResized(s, e) {
         adjustPageControls();
     }
+
     function adjustPageControls() {
         for(var i = 0; i < adjustmentDelegates.length; i++) {
             adjustmentDelegates[i]();
         }
     }
     function onLeftMenuItemClick(s, e) {
-        if(e.item.name === "ToggleLeftPanel")
+        if (e.item.name === "ToggleLeftPanel") {
             toggleLeftPanel();
+        }
         if(e.item.name === "Back")
             window.history.back();
     }
@@ -44,7 +46,8 @@
             leftPanel.SetVisible(!leftPanel.GetVisible());
             adjustPageControls();
 
-            //window.dispatchEvent(new Event('resize'));
+            // Resize splitter panels
+            splitterMain.AdjustControl();
 
             var event;
             if (typeof (Event) === 'function') {
@@ -75,12 +78,6 @@
             pGraph.SetSize(pGraph.offsetWidth + offset);
 
         }
-
-        //var pMap = splitterMain.GetPaneByName('paneMap');
-        //var pGraph = splitterMain.GetPaneByName('paneGraph');
-        //pMap.RefreshContentUrl();
-        //pGraph.RefreshContentUrl();
-
     }
 
     function toggleRightPanel() {
