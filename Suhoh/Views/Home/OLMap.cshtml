@@ -18,9 +18,9 @@
                 <div id="@(String.Format("{0}_PopupHeader", Model.CreatePanelName))" class="popupHeader">
 
                     @*<div id="@(String.Format("{0}_PopupLeftButton", Model.CreatePanelName))" class="popupLeftButtonDiv" >
-                            <button id="@(String.Format("{0}_PopupLeftButton", Model.CreatePanelName))" type="button" class='popupLeftButton'
-                                    onclick='btnGridviewMaximizeClick(this)'></button>
-                        </div>*@
+                        <button id="@(String.Format("{0}_PopupLeftButton", Model.CreatePanelName))" type="button" class='popupLeftButton'
+                                onclick='btnGridviewMaximizeClick(this)'></button>
+                    </div>*@
                     <div id="@(String.Format("{0}_PopupLeftButton", Model.CreatePanelName))" class="popupLeftButton">&#9664;</div>
                     <div id="@(String.Format("{0}_PopupCounts", Model.CreatePanelName))" class="popupCounts">1 of 1</div>
                     <div id="@(String.Format("{0}_PopupRightButton", Model.CreatePanelName))" class="popupRightButton">&#9654;</div>
@@ -33,6 +33,11 @@
                 </div>*@
             </div>
 
+        </div>
+
+        <div class="divMapPrev">
+            <button id="@(String.Format("{0}_Prev", Model.CreatePanelName))" type="button" class="btnMapPrev" title="Prev"
+                    onclick="btnMapPrevClick(this)"></button>
         </div>
 
         <div class="divMapMaximizeButton">

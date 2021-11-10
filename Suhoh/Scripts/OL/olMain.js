@@ -273,6 +273,18 @@ function mapTipNext(s) {
 
 }
 
+function btnMapPrevClick(s) {
+
+}
+
+function btnMapNextClick(s) {
+
+}
+
+function btnMapHomeClick(s) {
+
+}
+
 function btnMapMaximizeClick(s) {
     var pId = s.id.split('_')[0];
     var map = getMap(pId);

@@ -215,6 +215,34 @@
         background-color: rgba(0,60,136,.7) !important;
     }
 /*Buttons*/
+.divMapPrev {
+    opacity: 1;
+    position: absolute;
+    top: 56px;
+    left: 9px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+.btnMapPrev {
+    background-color: rgba(0,60,136,.5) !important;
+    /*color: blue !important;*/
+    font-weight: bold !important;
+    border: none;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 19px;
+    height: 19px;
+    background: url('../Images/Suhoh/Maximize.svg') no-repeat center;
+    background-size: 15px 15px;
+}
+
+    .btnMapPrev:hover {
+        background-color: rgba(0,60,136,.7) !important;
+    }
+
+
+
 .divMapMaximizeButton {
     opacity: 1;
     position: absolute;
