@@ -684,8 +684,8 @@ function cbScatterXYColumnChanged(s, e) {
 
     chkScatterLabelClicked(null, null, scatter.divName);
 
-    if (s.name == 'lbLineYColumn')
-        callbackLineColorPickers.PerformCallback({ 'lineYcol': line.yCol, 'lineColors': line.color });
+    //if (s.name == 'cbScatterYColumn')
+    //    callbackLineColorPickers.PerformCallback({ 'lineYcol': line.yCol, 'lineColors': line.color });
 }
 
 function chkScatterLabelClicked(s, e, id) {

@@ -184,7 +184,7 @@ function drawBar(divName, data, columns, width, height, barColor) {
         //.range(['#e41a1c', '#377eb8', '#4daf4a', '#800080', '#333399', '#999999', '#FF00FF'])
         .range(barColor)
 
-    $('#barTooltip').remove();
+    //$('#barTooltip').remove();
 
     // bar
     createBar(bar, svg, stackedData, x, y, color);
@@ -206,7 +206,7 @@ function createBar(bar, svg, stackedData, x, y, color) {
         .enter()
         .append("g")
         .attr("fill", function (d) {
-            console.log(color(d.key));
+            //console.log(color(d.key));
             return color(d.key)
         })
         .selectAll("rect")
@@ -253,9 +253,9 @@ function createBar(bar, svg, stackedData, x, y, color) {
                     .style("display", "inline-block")
                     .style("position", "absolute")
                     .html("&#x25BC");
-                console.log("barBand: " + x.bandwidth());
-                console.log("barX :" + x(d.data.X));
-                console.log("barTooltipWidth: " + $('#barTooltip').width());
+                //console.log("barBand: " + x.bandwidth());
+                //console.log("barX :" + x(d.data.X));
+                //console.log("barTooltipWidth: " + $('#barTooltip').width());
             }
             else {
                 barTooltip
