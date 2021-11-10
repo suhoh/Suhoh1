@@ -141,7 +141,7 @@ function drawLine(divName, data, columns, width, height, lineColor) {
         .attr("width", width)
         .attr("height", height)
         .attr("class", "lineChartSvg")
-        .attr("transform", "translate(0" + _lineMarginTop + ")")
+        .attr("transform", "translate(0," + _lineMarginTop + ")")
         .append("g");
 
     var x;
@@ -165,7 +165,7 @@ function drawLine(divName, data, columns, width, height, lineColor) {
     var xAxis = d3.axisBottom(x);
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + "," + (_lineSvgHeight - _lineMarginTop - _lineMarginBottom + 30) + ")")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + "," + (_lineSvgHeight - _lineMarginTop - _lineMarginBottom) + ")")
         .call(xAxis)
         .selectAll("text")
         .attr("transform", "rotate(30)")
@@ -174,14 +174,14 @@ function drawLine(divName, data, columns, width, height, lineColor) {
     var yAxis = d3.axisLeft(y);
     svg.append("g")
         .attr("class", "y axis")
-        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + ", " + (_lineMarginTop + 30) + ")")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight) + ", " + _lineMarginTop + ")")
         .call(yAxis);
 
     var yColumn = line.yCol;
     svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", "25px")
-        .attr("x", (- (height / 2)) + "px")
+        .attr("x", (30 - (height / 2)) + "px")
         .style("text-anchor", "middle")
         .attr("font-weight", "bold")
         .text(yColumn);
@@ -190,7 +190,7 @@ function drawLine(divName, data, columns, width, height, lineColor) {
         .domain(columns)
         .range(lineColor);
 
-    $('#lineTooltip').remove();
+    //$('#lineTooltip').remove();
 
     createLine(line, svg, data, x, y, color);
     createLineTextLabel(line, svg, data, x, y);
@@ -201,6 +201,7 @@ function drawLine(divName, data, columns, width, height, lineColor) {
 
 function createLine(line, svg, data, x, y, color) {
     var lineTooltip = d3.select("#" + line.divName).append("div").attr("id", "lineTooltip").attr("class", "lineTooltip").style("display", "none");
+    //var lineTooltip = d3.select("#" + line.divName).append("div").attr("id", "lineTooltip").attr("class", "lineTooltip");
 
     var curveType;
     var curveTypeValue = 1;
@@ -225,7 +226,7 @@ function createLine(line, svg, data, x, y, color) {
         .selectAll("path")
         .data(data)
         .join("path")
-        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2)) + "," + (_lineMarginTop + 30) + ")")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2)) + "," + _lineMarginTop + ")")
         .attr("fill", "none")
         .attr("stroke", function (d) {
             return color(d.name)
@@ -243,7 +244,7 @@ function createLine(line, svg, data, x, y, color) {
         .data(data)
         .enter()
         .append("g")
-        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2)) + "," + (_lineMarginTop + 30) + ")")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2)) + "," + _lineMarginTop + ")")
         .selectAll("circle")
         .data(function (d) { return d.values; })
         .enter()
@@ -269,15 +270,19 @@ function createLine(line, svg, data, x, y, color) {
                 .html(d.x + "<br>" + parseInt(d.y))
                 .style("opacity", 1);
 
-            var tooltipDiv = document.getElementById("lineTooltip");
-            var tooltipRect = tooltipDiv.getBoundingClientRect();
+            //var tooltipDiv = document.getElementById("lineTooltip");
+            //var tooltipRect = tooltipDiv.getBoundingClientRect();
 
-            var tooltipWidth = tooltipRect.width;
+            //var tooltipWidth = tooltipRect.width;
+
+            //console.log(lineTooltip);
+            //console.log(tooltipWidth);
 
             lineTooltip
                 .transition()
                 .duration(200)
-                .style("left", _lineMarginLeft + _lineMarginRight + _lineMarginRight + (x.bandwidth() / 2) + x(d.x) - (tooltipWidth / 2) + "px")
+                //.style("left", _lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2) + x(d.x) - (tooltipWidth / 2) + "px")
+                .style("left", _lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2) + x(d.x) + "px")
                 .style("top", y(d.y) + 8 + "px");
 
             //console.log("lineBand: " + x.bandwidth());
@@ -296,7 +301,7 @@ function createLineTextLabel(line, svg, data, x, y) {
         .data(data)
         .enter()
         .append("g")
-        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2)) + ", 60)")
+        .attr("transform", "translate(" + (_lineMarginLeft + _lineMarginRight + (x.bandwidth() / 2)) + "," + _lineMarginTop + ")")
         .selectAll("circle")
         .data(function (d) { return d.values; })
         .enter()
@@ -322,14 +327,14 @@ function createLineLegend(line, svg, columns, width, color) {
         legend.append("rect")
             .attr("width", 7)
             .attr("height", 7)
-            .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (10 + (idx * 15) + 30) + ")"; })
+            .attr("transform", function (d, idx) { return "translate(" + (width - 115) + "," + (10 + (idx * 15)) + ")"; })
             .attr("fill", function (d) {
                 //console.log(d);
                 return color(d)
             });
 
         legend.append("text")
-            .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (13 + (idx * 15) + 30) + ")"; })
+            .attr("transform", function (d, idx) { return "translate(" + (width - 100) + "," + (13 + (idx * 15)) + ")"; })
             .attr("dy", ".35em")
             .style("text-anchor", "start")
             .style("font-size", "8px")
@@ -351,7 +356,7 @@ function axisLineTooltip(line, data) {
                 .style("position", "absolute")
                 .html(d.x)
                 .style("left", event.offsetX + "px")
-                .style("top", event.offsetY - 40 + "px");
+                .style("top", event.offsetY - 25 + "px");
             //alert("hi");
         })
         .on("mouseleave", function (d) {

@@ -441,6 +441,11 @@
     text-align: center;
 }
 
+.scatterGrid {
+    stroke: lightgrey;
+    stroke-opacity: 0.3;
+}
+
 .barTextLabel {
     line-height: 1;
     font-weight: bold;
