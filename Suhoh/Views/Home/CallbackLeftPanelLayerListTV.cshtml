@@ -12,50 +12,68 @@
 
         cbSettings.SetContent(() =>
         {
-            @Html.DevExpress().TreeView(
-            settings =>
+            foreach (var m in Model.AppConfig.MapServices)
             {
-                settings.Name = "leftPanelLayerListTV";
+                ViewContext.Writer.Write("<table>");
+                ViewContext.Writer.Write("<tr>");
 
-                // Events gets fired on client side
-                settings.EnableClientSideAPI = true;
-                settings.ClientSideEvents.Init = "mapServiceTVInit";
-                settings.ClientSideEvents.NodeClick = "mapServiceTVNodeClick";
-                settings.ClientSideEvents.ExpandedChanged = "mapServiceTVExpandedChanged";
-                settings.ClientSideEvents.CheckedChanged = "mapServiceTVCheckedChanged";
-
-                settings.ControlStyle.CssClass = "layerListTV";
-                //settings.EnableNodeTextWrapping = true;   // makes select node size larger than it's text
-
-                settings.SettingsLoadingPanel.Mode = TreeViewLoadingPanelMode.Disabled;
-
-                settings.AllowCheckNodes = true;
-                settings.AllowSelectNode = true;
-                settings.CheckNodesRecursive = true;
-                settings.EnableAnimation = true;
-                settings.EnableHotTrack = true;
-                //settings.ShowTreeLines = true;    // Do not support by design
-                settings.ShowExpandButtons = true;
-
-                foreach (var m in Model.AppConfig.MapServices)
+                Html.DevExpress().CheckBox(settings =>
                 {
-                    settings.Nodes.Add(node =>
-                    {
-                        node.Name = m.Alias;
-                        node.Text = m.Alias;
-                        node.Checked = true;
-                        if (!m.IsVisible)
-                            node.Checked = false;
-                    });
-                    if (m.Owner.ToUpper() == "USER")    // not aligned properly
-                    {
-                        //ViewContext.Writer.Write("<span><button id='" + (String.Format("{0}_Delete", m.Alias)) +
-                        //    "' type='button' class='btnDeleteUserLayer' title='Remove' " +
-                        //    "onclick='btnGridviewResetClick(this)'>D</button></span>");
-                    };
-                };
+                    ViewContext.Writer.Write("<th>");
+                    settings.Name = m.Alias;
+                    settings.Checked = m.IsVisible;
+                    settings.ControlStyle.CssClass = "chkMaplayer";
+                    settings.Properties.ClientSideEvents.CheckedChanged = "mapLayerCheckedChanged";
+                    ViewContext.Writer.Write("</th>");
+                }).GetHtml();
 
-            }).GetHtml();
+                Html.DevExpress().Label(labelSettings =>
+                {
+                    ViewContext.Writer.Write("<th>");
+                    labelSettings.Name = m.Alias + "_Label";
+                    labelSettings.Text = m.Alias;
+                    labelSettings.ControlStyle.CssClass = "labelMapLayer";
+                    ViewContext.Writer.Write("</th>");
+                }).GetHtml();
+
+                Html.DevExpress().Button(settings =>
+                {
+                    ViewContext.Writer.Write("<th>");
+                    settings.Name = m.Alias + "_Zoom";
+                    settings.Text = "";
+                    settings.UseSubmitBehavior = false;
+                    settings.ClientSideEvents.Click = "mapLayerZoomClicked";
+                    settings.ControlStyle.CssClass = "btnMapLayer";
+                    settings.RenderMode = ButtonRenderMode.Link;
+                    settings.Images.Image.IconID = IconID.ZoomZoomin16x16office2013;
+                    settings.Height = 15;
+                    settings.Width = 15;
+                    settings.ControlStyle.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+                    ViewContext.Writer.Write("</th>");
+                }).GetHtml();
+
+                if (m.Owner.ToUpper() != "SYSTEM")
+                {
+                    Html.DevExpress().Button(settings =>
+                    {
+                        ViewContext.Writer.Write("<th>");
+                        settings.Name = m.Alias + "_Delete";
+                        settings.Text = "";
+                        settings.UseSubmitBehavior = false;
+                        settings.ClientSideEvents.Click = "mapLayerDeleteClicked";
+                        settings.ControlStyle.CssClass = "btnMapLayer";
+                        settings.RenderMode = ButtonRenderMode.Link;
+                        settings.Images.Image.Url = "~/Content/Images/DX/delete.svg";
+                        settings.Width = 15;
+                        settings.Height = 15;
+                        settings.ControlStyle.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+                        ViewContext.Writer.Write("</th>");
+                    }).GetHtml();
+                }
+
+                ViewContext.Writer.Write("</tr>");
+                ViewContext.Writer.Write("</table>");
+            };
         });
     }).GetHtml()
 

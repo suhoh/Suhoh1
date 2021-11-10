@@ -424,22 +424,24 @@ function getCurrentNode() {
     return leftPanelLayerListTV.GetNodeByName(ddNodes.GetKeyValue());
 }
 
-function mapServiceTVInit(s, e) {
+//
+// Map Layer Functions 
+//
+function mapLayerZoomClicked(s, e) {
 
 }
 
-function mapServiceTVNodeClick(s, e) {
+function mapLayerDeleteClicked(s, e) {
 
 }
-function mapServiceTVExpandedChanged(s, e) {
 
-}
-function mapServiceTVCheckedChanged(s, e) {
-    var nodeName = e.node.name;
-    var isChecked = e.node.GetChecked();
+function mapLayerCheckedChanged(s, e) {
+    var nodeName = s.name;
+    var isChecked = s.GetChecked();
 
     _maps.forEach(function (m) {
-        m.map.getLayers().getArray()
+        m.map.getLayers()
+            .getArray()
             .filter(layer => layer.get('name') === nodeName)
             .forEach(layer => layer.setProperties({ visible: isChecked }, false));
     })
@@ -457,3 +459,12 @@ function callbackLeftPanelLayerListTV_OnBeginCallback(s, e) {
 function callbackLeftPanelLayerListTV_OnEndCallback(s, e) {
 
 }
+
+// 
+// Map service functions
+//
+
+function btnDeleteUserLayer(s) {
+}
+
+

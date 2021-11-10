@@ -22,12 +22,14 @@
         }).GetHtml()
 </div>
 
-@Html.DevExpress().Label(settings => {
+<div>Filename</div>
+
+@*@Html.DevExpress().Label(settings => {
     settings.Name = "labelExcelFilename";
     settings.Text = "Filename";
     settings.ControlStyle.CssClass = "excelFilename label";
     settings.Properties.EnableClientSideAPI = true;
-}).GetHtml()
+}).GetHtml()*@
 
 <div>
     @Html.DevExpress().TextBox(settings =>
