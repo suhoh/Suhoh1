@@ -12,47 +12,68 @@
 
         cbSettings.SetContent(() =>
         {
-            ViewContext.Writer.Write("<table style='margin-top:20px'>");
             foreach (var m in Model.AppConfig.MapServices)
             {
+                ViewContext.Writer.Write("<table>");
+                ViewContext.Writer.Write("<tr>");
+
                 Html.DevExpress().CheckBox(settings =>
                 {
+                    ViewContext.Writer.Write("<th>");
                     settings.Name = m.Alias;
                     settings.Checked = m.IsVisible;
-                    settings.ControlStyle.CssClass = "";
-                    settings.Properties.ClientSideEvents.CheckedChanged = "";
+                    settings.ControlStyle.CssClass = "chkMaplayer";
+                    settings.Properties.ClientSideEvents.CheckedChanged = "mapLayerCheckedChanged";
+                    ViewContext.Writer.Write("</th>");
                 }).GetHtml();
 
                 Html.DevExpress().Label(labelSettings =>
                 {
+                    ViewContext.Writer.Write("<th>");
                     labelSettings.Name = m.Alias + "_Label";
                     labelSettings.Text = m.Alias;
-                    labelSettings.ControlStyle.CssClass = "";
+                    labelSettings.ControlStyle.CssClass = "labelMapLayer";
+                    ViewContext.Writer.Write("</th>");
                 }).GetHtml();
 
                 Html.DevExpress().Button(settings =>
                 {
+                    ViewContext.Writer.Write("<th>");
                     settings.Name = m.Alias + "_Zoom";
                     settings.Text = "";
                     settings.UseSubmitBehavior = false;
-                    settings.ClientSideEvents.Click = "";
-                    settings.ControlStyle.CssClass = "";
-                    settings.Height = 20;
-                    settings.Width = 20;
-                    settings.Images.Image.IconID = IconID.HybriddemoiconsBottompanelHybriddemoZoominSvgGray16x16;
+                    settings.ClientSideEvents.Click = "mapLayerZoomClicked";
+                    settings.ControlStyle.CssClass = "btnMapLayer";
+                    settings.RenderMode = ButtonRenderMode.Link;
+                    settings.Images.Image.IconID = IconID.ZoomZoomin16x16office2013;
+                    settings.Height = 15;
+                    settings.Width = 15;
+                    settings.ControlStyle.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+                    ViewContext.Writer.Write("</th>");
                 }).GetHtml();
 
-                Html.DevExpress().Button(settings =>
+                if (m.Owner.ToUpper() != "SYSTEM")
                 {
-                    settings.Name = m.Alias + "_Delete";
-                    settings.Text = "";
-                    settings.UseSubmitBehavior = false;
-                    settings.ClientSideEvents.Click = "";
-                    settings.ControlStyle.CssClass = "";
-                    settings.Images.Image.IconID = IconID.HybriddemoiconsBottompanelHybriddemoDeleteSvgWhite16x16;
-                }).GetHtml();
+                    Html.DevExpress().Button(settings =>
+                    {
+                        ViewContext.Writer.Write("<th>");
+                        settings.Name = m.Alias + "_Delete";
+                        settings.Text = "";
+                        settings.UseSubmitBehavior = false;
+                        settings.ClientSideEvents.Click = "mapLayerDeleteClicked";
+                        settings.ControlStyle.CssClass = "btnMapLayer";
+                        settings.RenderMode = ButtonRenderMode.Link;
+                        settings.Images.Image.Url = "~/Content/Images/DX/delete.svg";
+                        settings.Width = 15;
+                        settings.Height = 15;
+                        settings.ControlStyle.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+                        ViewContext.Writer.Write("</th>");
+                    }).GetHtml();
+                }
+
+                ViewContext.Writer.Write("</tr>");
+                ViewContext.Writer.Write("</table>");
             };
-            ViewContext.Writer.Write("</table>");
         });
     }).GetHtml()
 

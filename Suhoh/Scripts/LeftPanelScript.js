@@ -425,25 +425,23 @@ function getCurrentNode() {
 }
 
 //
-// To be deleted later
+// Map Layer Functions 
 //
-function mapServiceTVInit(s, e) {
+function mapLayerZoomClicked(s, e) {
 
 }
 
-function mapServiceTVNodeClick(s, e) {
-
-}
-function mapServiceTVExpandedChanged(s, e) {
+function mapLayerDeleteClicked(s, e) {
 
 }
 
-function mapServiceTVCheckedChanged(s, e) {
-    var nodeName = e.node.name;
-    var isChecked = e.node.GetChecked();
+function mapLayerCheckedChanged(s, e) {
+    var nodeName = s.name;
+    var isChecked = s.GetChecked();
 
     _maps.forEach(function (m) {
-        m.map.getLayers().getArray()
+        m.map.getLayers()
+            .getArray()
             .filter(layer => layer.get('name') === nodeName)
             .forEach(layer => layer.setProperties({ visible: isChecked }, false));
     })
