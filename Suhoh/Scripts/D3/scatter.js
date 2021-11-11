@@ -77,15 +77,6 @@ function drawScatter(divName, data, width, height, scatterColor) {
 
     _scatterSvgHeight = height - 30;
 
-    //var svg = d3.select("#" + divName)
-    //    .append("svg")
-    //    .attr("width", width)
-    //    .attr("height", _scatterSvgHeight)
-    //    .attr("class", "scatterChartSvg")
-    //    .attr("transform", "translate(0," + _scatterMarginTop + ")")
-    //    .append("g")
-    //    .attr("clip-path", "url(#rect-clip)");
-
     var svg = d3.select("#" + divName)
         .append("svg")
         .attr("width", width)
@@ -136,36 +127,6 @@ function drawScatter(divName, data, width, height, scatterColor) {
         .attr("font-weight", "bold")
         .text(scatter.yCol);
 
-    // gridlines
-    //var scatterXGridlines = d3.axisBottom(x)
-    //    .tickFormat("")
-    //    .tickSize(-clipY);
-
-    //var scatterYGridlines = d3.axisLeft(y)
-    //    .tickFormat("")
-    //    .tickSize(-clipX);
-
-    //svg.append("g")
-    //    .attr("class", "scatterGrid")
-    //    .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + "," + (_scatterSvgHeight - _scatterMarginTop - _scatterMarginBottom) + ")")
-    //    .call(scatterXGridlines);
-
-    //svg.append("g")
-    //    .attr("class", "scatterGrid")
-    //    .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + ", " + _scatterMarginTop + ")")
-    //    .call(scatterYGridlines);
-
-    // clip Path
-    //var clipX = width - 244;
-    //var clipY = height - 120;
-    //svg.append("clipPath")
-    //    .attr("id", "rect-clip")
-    //    .append("rect")
-    //    .attr("x", _scatterMarginLeft + _scatterMarginRight)
-    //    .attr("y", _scatterMarginTop)
-    //    .attr("width", clipX)
-    //    .attr("height", clipY);
-
     var color = d3.scaleOrdinal()
         //.domain(zCol)
         .range(scatterColor);
@@ -180,8 +141,6 @@ function drawScatter(divName, data, width, height, scatterColor) {
 function createScatter(scatter, svg, data, width, height, x, y, color) {
     var scatterTooltip = d3.select("#" + scatter.divName).append("div").attr("id", "scatterTooltip_" + scatter.divName).attr("class", "scatterTooltip").style("display", "none");
 
-    //var svgClip = svg.attr("clip-path", "url(#rect-clip)");
-
     // Scatter
     svg.append("g")
         .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + "," + _scatterMarginTop + ")")
@@ -191,10 +150,11 @@ function createScatter(scatter, svg, data, width, height, x, y, color) {
         .append("circle")
         .attr("cx", function (d) { return x(d.X) })
         .attr("cy", function (d) { return y(d.Y) })
-        .attr("r", 3)
+        .attr("r", 4)
         .style("fill", function (d) {
             return color(d.Z);
         })
+        .attr("clip-path", "url(#rect-clip)")
         .on("mouseenter", function (event, d) {
             scatterTooltip
                 .style("display", "inline-block")
@@ -220,26 +180,30 @@ function createScatter(scatter, svg, data, width, height, x, y, color) {
             scatterTooltip
                 .style("display", "none");
         });
-        //.attr("clip-path", "url(#rect-clip)");
 
     // clip Path
-    var clipX = width - 244;
+    var clipX;
+    if (width > 400 && scatter.isLegend == true)
+        clipX = width - 244;
+    else
+        clipX = width - 130;
     var clipY = height - 120;
 
     svg.append("clipPath")
         .attr("id", "rect-clip")
         .append("rect")
-        .attr("x", _scatterMarginLeft + _scatterMarginRight)
-        .attr("y", _scatterMarginTop)
+        .attr("x", 0)
+        .attr("y", 0)
         .attr("width", clipX)
         .attr("height", clipY);
 
+    // border
     svg.append("rect")
         .attr("x", _scatterMarginLeft + _scatterMarginRight)
         .attr("y", _scatterMarginTop)
         .attr("width", clipX)
         .attr("height", clipY)
-        .style("stroke", "red")
+        .style("stroke", "black")
         .style("fill", "none")
         .style("stroke-width", "1px");
 
@@ -263,6 +227,12 @@ function createScatter(scatter, svg, data, width, height, x, y, color) {
         .attr("class", "scatterGrid")
         .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + ", " + _scatterMarginTop + ")")
         .call(scatterYGridlines);
+
+    // zoom
+    function zoom() {
+        var newX = d3.event.transform.rescaleX(x);
+        var newY = d3.event.transform.rescaleY(y);
+    }
 }
 
 function createScatterTextLabel(scatter, svg, data, x, y) {
