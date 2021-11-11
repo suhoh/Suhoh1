@@ -148,46 +148,6 @@
         content: "✖";
     }
 
-.mapTipPrev {
-    float: left;
-    background-color: rgba(0,60,136,.5);
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    width: 25px;
-    vertical-align: middle;
-    text-align: center;
-}
-
-.toolTipPrev:hover {
-    background-color: rgba(0,60,136,.7);
-}
-
-.mapTipNext {
-    background-color: rgba(0,60,136,.5);
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    margin-left: 5px;
-    width: 25px;
-}
-
-.toolTipNext:hover {
-    background-color: rgba(0,60,136,.7);
-}
-
-#popup-count {
-    float: left;
-    margin-left: 5px;
-    margin-top: 1px;
-}
-
-#popup-content {
-    margin-top: 4px;
-}
-
 /*Load Excel files*/
 .loadExcel {
     opacity: 1;
@@ -214,7 +174,8 @@
     .loadExcelButton:hover {
         background-color: rgba(0,60,136,.7) !important;
     }
-/*Buttons*/
+
+/*Goto Previous extent*/
 .divMapPrev {
     opacity: 1;
     position: absolute;
@@ -231,18 +192,80 @@
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
     padding: 0px !important;
-    width: 19px;
-    height: 19px;
-    background: url('../Images/Suhoh/Maximize.svg') no-repeat center;
-    background-size: 15px 15px;
+    width: 20px;
+    height: 20px;
+    background: url('../Images/Suhoh/reshot-icon-block-arrow-left-RLQZBMHF5P.svg') no-repeat center;
+    background-size: 16px 16px;
 }
 
     .btnMapPrev:hover {
         background-color: rgba(0,60,136,.7) !important;
     }
 
+/*Goto Home extent*/
+.divMapHome {
+    opacity: 1;
+    position: absolute;
+    top: 80px;
+    left: 9px;
+    z-index: 100;
+    /*background-color: yellow;*/
+}
+.btnMapHome {
+    background-color: rgba(0,60,136,.5) !important;
+    /*color: blue !important;*/
+    font-weight: bold !important;
+    border: none;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 20px;
+    height: 20px;
+    background: url('../Images/Suhoh/reshot-icon-home-JD7ZL9Y2U8.svg') no-repeat center;
+    background-size: 17px 17px;
+}
+
+    .btnMapHome:hover {
+        background-color: rgba(0,60,136,.7) !important;
+    }
+
+/*Goto Next extent*/
+.divMapNext {
+    opacity: 1;
+    position: absolute;
+    top: 104px;
+    left: 9px;
+    z-index: 100;
+}
+
+.btnMapNext {
+    background-color: rgba(0,60,136,.5) !important;
+    /*color: blue !important;*/
+    font-weight: bold !important;
+    border: none;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 20px;
+    height: 20px;
+    background: url('../Images/Suhoh/reshot-icon-block-arrow-right-8RLNHT5AVG.svg') no-repeat center;
+    background-size: 17px 17px;
+}
+
+    .btnMapNext:hover {
+        background-color: rgba(0,60,136,.7) !important;
+    }
 
 
+.ddBookMark {
+    opacity: 1;
+    position: absolute;
+    top: 4px;
+    right: 150px;
+    z-index: 100;
+}
+
+/* Maximize button */
 .divMapMaximizeButton {
     opacity: 1;
     position: absolute;

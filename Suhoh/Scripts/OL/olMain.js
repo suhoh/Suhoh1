@@ -265,23 +265,15 @@ function dateToYyyyMmDd(date) {
         return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
 }
 
-function mapTipPrev(s) {
-
-}
-
-function mapTipNext(s) {
-
-}
-
 function btnMapPrevClick(s) {
 
 }
 
-function btnMapNextClick(s) {
+function btnMapHomeClick(s) {
 
 }
 
-function btnMapHomeClick(s) {
+function btnMapNextClick(s) {
 
 }
 

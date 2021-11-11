@@ -163,6 +163,8 @@
     <Content Include="Content\Favicon\Sicons-Basic-Round-Social-Scribd.ico" />
     <Content Include="Content\Images\DX\cancel.svg" />
     <Content Include="Content\Images\DX\settings.svg" />
+    <Content Include="Content\Images\Suhoh\left-arrow.svg" />
+    <Content Include="Content\Images\Suhoh\left-arrow.png" />
     <Content Include="Content\Images\Suhoh\Legend.svg" />
     <Content Include="Content\Images\Suhoh\Load.svg" />
     <Content Include="Content\Images\Suhoh\Logo.svg">
@@ -170,6 +172,11 @@
     </Content>
     <Content Include="Content\Images\Suhoh\Maximize.svg" />
     <Content Include="Content\Images\Suhoh\Minimize.svg" />
+    <Content Include="Content\Images\Suhoh\reshot-icon-block-arrow-left-RLQZBMHF5P.svg" />
+    <Content Include="Content\Images\Suhoh\reshot-icon-block-arrow-right-8RLNHT5AVG.svg" />
+    <Content Include="Content\Images\Suhoh\reshot-icon-home-JD7ZL9Y2U8.svg" />
+    <Content Include="Content\Images\Suhoh\reshot-icon-home-UKNYQCE6B2.svg" />
+    <Content Include="Content\Images\Suhoh\right-arrow.png" />
     <Content Include="Scripts\Bootstrap_v450\Bootstrap.bundle.min.js" />
     <Content Include="Scripts\D3\bar.js" />
     <Content Include="Scripts\D3\line.js" />

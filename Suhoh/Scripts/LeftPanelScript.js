@@ -108,7 +108,9 @@ function btnChangeLayoutClicked(s, e) {
             }
             $('#divRightPanelPartial').html(data);
 
+            splitterMain.AdjustControl();
             updateAllViews(_jsonData, _jsonDataGridview);
+            
             console.log('updateAllViews: btnChangeLayoutClicked');
         },
         error: function (xhr, textStatus, errorThrown) {
