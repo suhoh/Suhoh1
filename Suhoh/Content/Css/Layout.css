@@ -460,9 +460,8 @@ a.tree-view-node.hovered
 
 /*main display area - when callback*/
 .rightPanelPartial {
-    position: absolute;
-    top: 100px;
-    left: 272px;
+    padding-top: 50px;
+    padding-left: 272px;
 }
 
 /*panel border when activated*/
@@ -480,4 +479,5 @@ a.tree-view-node.hovered
 .popupMessage {
     color: red !important;  /*doesn't work*/
     font-weight: bold !important;
+    max-width: 400px !important;
 }

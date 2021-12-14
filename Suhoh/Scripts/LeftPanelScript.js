@@ -108,7 +108,24 @@ function btnChangeLayoutClicked(s, e) {
             }
             $('#divRightPanelPartial').html(data);
 
-            splitterMain.AdjustControl();
+            //$('#divRightPanelPartial').addClass('rightPanelPartial'); // doesn't work. Pane overflows to bottom
+            //$("#divRightPanelPartial").load('Home');
+            //$("#divRightPanelPartial").load('@Url.Content("Home/RightPanelPartial")');
+
+
+            //document.body.style.marginLeft = "272px";
+            //document.body.style.marginTop = "50px";
+
+            splitterMain.AdjustControl();   // Adjust splitter control
+
+            var evt = document.createEvent('UIEvents');
+            evt.initUIEvent('resize', true, false, window, 0);
+            window.dispatchEvent(evt);
+
+
+            //window.dispatchEvent(new Event('resize'));
+            //$(window).trigger('resize');
+
             updateAllViews(_jsonData, _jsonDataGridview);
             
             console.log('updateAllViews: btnChangeLayoutClicked');
@@ -404,10 +421,12 @@ function btnLoadMapServiceClicked(s, e) {
                 callbackLeftPanelLayerListTV.PerformCallback({ 'id': json.title, 'alias': alias, 'url': url, 'flag': 2 });
             }
             else {
-                alert('exist');
+                showMessage("Layer already exist: " + alias, "Warning");
+                return;
             }
         }
         else {
+            showMessage(xHttp.responseText, "Warning");
         }
     }
     xHttp.open("GET", msInfo, true);    // POST didn't work. false for Sync

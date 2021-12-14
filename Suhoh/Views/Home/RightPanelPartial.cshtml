@@ -7,10 +7,11 @@
     pSettings =>
     {
         pSettings.Name = "mainPanel";
-        //pSettings.FixedPosition = PanelFixedPosition.WindowRight;
         pSettings.Collapsible = false;
-        //pSettings.SettingsAdaptivity.CollapseAtWindowInnerWidth = 960;
         pSettings.Width = Unit.Percentage(100);
+        //pSettings.FixedPosition = PanelFixedPosition.WindowRight;
+        //pSettings.SettingsAdaptivity.CollapseAtWindowInnerWidth = 960;
+        //pSettings.ControlStyle.CssClass = "rightPanelPartial";
         pSettings.SetContent(() =>
         {
             @Html.DevExpress().Splitter(settings =>

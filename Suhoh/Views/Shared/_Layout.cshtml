@@ -243,7 +243,7 @@
                 settings.SettingsCollapsing.ExpandEffect = PanelExpandEffect.PopupToLeft;
                 settings.SettingsCollapsing.Modal = true;
                 settings.ClientSideEvents.Collapsed = "onRightPanelCollapsed";
-                settings.SetContent(() => ViewContext.Writer.Write(RenderSection("RightPanelContent", false)));
+                settings.SetContent(() => ViewContext.Writer.Write(RenderSection("RightPanelContent", false))); // Only in Gridview
             }).GetHtml()
         }
 
