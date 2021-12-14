@@ -117,6 +117,10 @@ function getOrClause(operand, keys) {
     return orClause;
 }
 
+function dxGridview_SelectionChanged(s, e) {
+    console.log(s);
+}
+
 function dxGridview_Init(s, e) {
     if (_initialLoad) {
         initGridview(s.name);

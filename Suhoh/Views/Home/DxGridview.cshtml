@@ -19,6 +19,8 @@
         settings.ClientSideEvents.BeginCallback = "dxGridview_OnBeginCallback";
         settings.ClientSideEvents.EndCallback = "dxGridview_OnEndCallback";
 
+        settings.ClientSideEvents.SelectionChanged = "dxGridview_SelectionChanged";
+
         settings.KeyFieldName = "Seq";   // TODO: need to have unique column here
         settings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
         settings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
@@ -83,6 +85,11 @@
         // Alternating color
         settings.Styles.AlternatingRow.BackColor = System.Drawing.Color.FromArgb(248, 243, 250);
         settings.Styles.AlternatingRow.Enabled = DefaultBoolean.True;
+
+        // Set selected color
+        settings.Styles.SelectedRow.BackColor = System.Drawing.Color.LightCyan;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
 
         // Gridlines - depends on theme
         settings.Settings.GridLines = GridLines.Both;
