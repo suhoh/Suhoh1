@@ -441,10 +441,10 @@
     text-align: center;
 }
 
-.scatterGrid {
+/*.scatterGrid {
     stroke: lightgrey;
     stroke-opacity: 0.3;
-}
+}*/
 
 .barTextLabel {
     line-height: 1;
@@ -475,3 +475,10 @@
     float: left;
 }
 
+.scatterXGrid {
+    stroke-opacity: 0.3;
+}
+
+.scatterYGrid {
+    stroke-opacity: 0.3;
+}

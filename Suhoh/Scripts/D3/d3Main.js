@@ -463,7 +463,7 @@ function showHideLegend(s) {
             for (i = 0; i < scatterData.scatterData.length; i++) {
                 $('#' + scatter.divName + 'scatterLegend' + i).hide(500);
             }
-        drawScatter(scatter.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
+        createScatter(scatter.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
         chkScatterLabelClicked(null, null, id);
     }
 }
@@ -677,7 +677,7 @@ function cbScatterXYColumnChanged(s, e) {
         jsonData = _filteredData;
 
     var scatterData = getScatterData(scatter.divName, jsonData, scatter.xCol, scatter.yCol, scatter.zCol, scatter.color, true);
-    drawScatter(scatter.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
+    createScatter(scatter.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
 
     tbPropertyScatterTitle.SetText(scatter.xCol + " vs " + scatter.yCol);
     document.getElementById(scatter.divName + "_Title").innerHTML = scatter.xCol + " vs " + scatter.yCol;

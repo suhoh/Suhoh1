@@ -156,7 +156,7 @@ function updateScatters(scatters, isInitial) {
 function updateScatter(s, isInitial) {
     var scatterData = getScatterData(s.divName, s.data, s.xCol, s.yCol, s.zCol, s.color, isInitial);     // used to be PaneId
     if (scatterData != null) {
-        var scatterSvg = drawScatter(s.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
+        var scatterSvg = createScatter(s.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
         s.svg = scatterSvg;
     }
     _activeScatter = s;
@@ -477,7 +477,7 @@ function updateAllViews(jsonData, jsonDataGridview) {
         _scatters.forEach(function (s) {
             var scatterData = getScatterData(s.divName, jsonData, scatterColNames.xCol, scatterColNames.yCol, scatterColNames.zCol, s.color, true);
             if (scatterData != null) {
-                var scatterSvg = drawScatter(s.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
+                var scatterSvg = createScatter(s.divName, scatterData.scatterData, scatterData.width, scatterData.height, scatterData.color);
                 s.svg = scatterSvg;
             }
             document.getElementById(s.divName + "_Title").innerHTML = s.xCol + " vs " + s.yCol; // title in panel
