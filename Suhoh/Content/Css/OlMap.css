@@ -187,7 +187,6 @@
 .btnMapPrev {
     background-color: rgba(0,60,136,.5) !important;
     /*color: blue !important;*/
-    font-weight: bold !important;
     border: none;
     box-shadow: 0 0 5px 2px white !important;
     border-radius: 2px;
@@ -201,6 +200,19 @@
     .btnMapPrev:hover {
         background-color: rgba(0,60,136,.7) !important;
     }
+
+.btnMapPrevWhite {
+    background-color: rgba(0,60,136,.5) !important;
+    /*color: blue !important;*/
+    border: none;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 20px;
+    height: 20px;
+    background: url('../Images/Suhoh/reshot-icon-block-arrow-left-white.svg') no-repeat center;
+    background-size: 16px 16px;
+}
 
 /*Goto Home extent*/
 .divMapHome {
@@ -256,6 +268,19 @@
         background-color: rgba(0,60,136,.7) !important;
     }
 
+.btnMapNextWhite {
+    background-color: rgba(0,60,136,.5) !important;
+    /*color: blue !important;*/
+    font-weight: bold !important;
+    border: none;
+    box-shadow: 0 0 5px 2px white !important;
+    border-radius: 2px;
+    padding: 0px !important;
+    width: 20px;
+    height: 20px;
+    background: url('../Images/Suhoh/reshot-icon-block-arrow-right-white.svg') no-repeat center;
+    background-size: 17px 17px;
+}
 
 .ddBookMark {
     opacity: 1;

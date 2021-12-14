@@ -1,7 +1,6 @@
 ﻿//
 // OpenLayers main functions
 //
-
 const _gotoLocationSymbolTimer = 15000; // remove symbol after 15 seconds
 const _zoomToBuffer = 2500;     // zoom to buffer size (2K)
 const _zoomToDuration = 1500;   // duration when zoom to layer
@@ -112,7 +111,138 @@ function initMap(divName) {
         })
     });
 
+    //////////////////////////////
+    // Goto previous/next extent
+    /////////////////////////////
+    var btnMapPrev = document.getElementById(divName + '_Prev');
+    var btnMapHome = document.getElementById(divName + '_Home');
+    var btnMapNext = document.getElementById(divName + '_Next');
+
+    var mapState = [];
+    var hCursor = -1;
+    const maxHistory = 10;
+    var isMapStateChanged = false;
+    var initialLoadCount = 2;   
+    var isPopState = false;
+    var isWindowResized = false;
+
+    // Store initial map state
+    var view = map.getView();
+    var initState = {
+        zoom: view.getZoom(),
+        center: view.getCenter(),
+        rotation: view.getRotation()
+    }
+
+    btnMapPrev.onclick = function () {
+        if (hCursor < 1)
+            return;
+        setMapView(mapState[--hCursor]);
+        setPrevNextButtonStatus();
+    }
+
+    btnMapHome.onclick = function () {
+        mapState = [];
+        hCursor = 0;
+        mapState.push(initState);
+        setMapView(initState);
+        setPrevNextButtonStatus();
+    }
+
+    btnMapNext.onclick = function () {
+        if ((hCursor + 1) == mapState.length || hCursor >= maxHistory)
+            return;
+        setMapView(mapState[++hCursor]);
+        setPrevNextButtonStatus();
+    }
+
+    map.on('moveend', updateMapState);
+    window.onresize = function (e) {    // prevent updateMapState gets fired when window resize
+        isWindowResized = true;
+    };
+
+    function getBounds(map) {
+        const extent = map.getView().calculateExtent(map.getSize())
+        return extent;
+    }
+
+    function setMapView(state) {
+        console.log("state count:" + mapState.length);
+        console.log("cursor: " + hCursor);
+        map.getView().setCenter(state.center);
+        map.getView().setZoom(state.zoom);
+        map.getView().setRotation(state.rotation);
+        isPopState = true;  // do not update map state
+    }
+
+    function getMapState(view) {
+        var state = {
+            zoom: view.getZoom(),
+            center: view.getCenter(),
+            rotation: view.getRotation()
+        };
+        return state;
+    }
+
+    function updateMapState() {
+        if (isWindowResized) {      // do not push when window resized
+            isWindowResized = false;
+            return;
+        }
+        if (--initialLoadCount > 0) // This gets fires twice. Just store one entry
+            return;
+        if (isPopState) {
+            isPopState = false;
+            return;
+        }
+
+        // if cursor is not at last element, take hCursor + 1, then starting adding
+        if ((hCursor + 1) < mapState.length)
+            mapState = mapState.slice(0, hCursor + 1);
+
+        var state = getMapState(map.getView());
+        mapState.push(state);
+        hCursor++;
+        if (mapState.length > maxHistory) {
+            mapState.shift();   // removes first item
+            hCursor--;
+        }
+
+        setPrevNextButtonStatus();
+
+        console.log("state count:" + mapState.length);
+        console.log("cursor: " + hCursor);
+    }
+
+    function setPrevNextButtonStatus() {
+        // Prev button
+        // Disable
+        if (hCursor == 0) {
+            $("#" + divName + '_Prev').removeClass('btnMapPrev');   // disable Prev button
+            $("#" + divName + '_Prev').addClass('btnMapPrevWhite');
+        }
+        // Enable
+        if (hCursor > 0) {
+            $("#" + divName + '_Prev').removeClass('btnMapPrevWhite');  // enable Prev button
+            $("#" + divName + '_Prev').addClass('btnMapPrev');
+        }
+        // Next button
+        // Disable
+        if (hCursor + 1 == mapState.length) {
+            $("#" + divName + '_Next').removeClass('btnMapNext');   // disable Next button
+            $("#" + divName + '_Next').addClass('btnMapNextWhite');
+        }
+        // Enable
+        if (hCursor < mapState.length - 1) {
+            $("#" + divName + '_Next').removeClass('btnMapNextWhite');  // enable Next button
+            $("#" + divName + '_Next').addClass('btnMapNext');
+        }
+
+    }
+
+    ///////////////
     // Maptip
+    ///////////////
     var maptipContainer = document.getElementById(divName + '_PopupContainer');
     var maptipHeader = document.getElementById(divName + '_PopupHeader');
     var maptipLeftButton = document.getElementById(divName + '_PopupLeftButton');
@@ -263,18 +393,6 @@ function dateToYyyyMmDd(date) {
         return ''
     else
         return '' + y + '-' + (m <= 9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
-}
-
-function btnMapPrevClick(s) {
-
-}
-
-function btnMapHomeClick(s) {
-
-}
-
-function btnMapNextClick(s) {
-
 }
 
 function btnMapMaximizeClick(s) {

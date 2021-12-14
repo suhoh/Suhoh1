@@ -229,10 +229,26 @@ function createScatter(scatter, svg, data, width, height, x, y, color) {
         .call(scatterYGridlines);
 
     // zoom
-    function zoom() {
+
+    var zoom = d3.zoom()
+        .scaleExtent([.5, 20])  // This control how much you can unzoom (x0.5) and zoom (x20)
+        .extent([[0, 0], [1000, 1000]])
+        .on("zoom", updateChart);
+
+    svg.append("rect")
+        .attr("width", 1000)
+        .attr("height", 1000)
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .attr('transform', 'translate(30, 30)')
+        .call(zoom);
+
+    function updateChart() {
+        console.log('entered');
         var newX = d3.event.transform.rescaleX(x);
         var newY = d3.event.transform.rescaleY(y);
     }
+
 }
 
 function createScatterTextLabel(scatter, svg, data, x, y) {

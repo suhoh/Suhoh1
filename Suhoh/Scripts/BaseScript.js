@@ -8,6 +8,7 @@
         adjustPageControls();
     }
     function onBrowserWindowResized(s, e) {
+        //$('#divRightPanelPartial').removeClass('rightPanelPartial');
         adjustPageControls();
     }
 
@@ -47,7 +48,8 @@
             adjustPageControls();
 
             // Resize splitter panels
-            splitterMain.AdjustControl();
+            //$('#divRightPanelPartial').removeClass('rightPanelPartial');
+            splitterMain.AdjustControl();   // Adjust splitter when left menu gets toggled
 
             var event;
             if (typeof (Event) === 'function') {

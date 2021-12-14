@@ -173,7 +173,9 @@
     <Content Include="Content\Images\Suhoh\Maximize.svg" />
     <Content Include="Content\Images\Suhoh\Minimize.svg" />
     <Content Include="Content\Images\Suhoh\reshot-icon-block-arrow-left-RLQZBMHF5P.svg" />
+    <Content Include="Content\Images\Suhoh\reshot-icon-block-arrow-left-white.svg" />
     <Content Include="Content\Images\Suhoh\reshot-icon-block-arrow-right-8RLNHT5AVG.svg" />
+    <Content Include="Content\Images\Suhoh\reshot-icon-block-arrow-right-white.svg" />
     <Content Include="Content\Images\Suhoh\reshot-icon-home-JD7ZL9Y2U8.svg" />
     <Content Include="Content\Images\Suhoh\reshot-icon-home-UKNYQCE6B2.svg" />
     <Content Include="Content\Images\Suhoh\right-arrow.png" />
