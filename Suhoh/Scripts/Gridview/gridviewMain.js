@@ -6,12 +6,15 @@ const _pageSize = 50;
 var _gridviews = [];
 var _activeGridview;
 var _headerFilterPanel, _groupingPanel;
-var _gridviewKeys = '';     // stored filtered keys (Seq)
+var _gridviewKeys = '';    // stores filtered keys (Seq)
 var _filteredData = null;  // stores filtered data from Gridview
 var _isResetClicked = false;
 
 function initGridview(name) {
-    _gridviews.push({ 'name': name, 'isHeaderFilter': false, 'isGrouping': false, 'filteredKeys': null, 'pageSize': _pageSize });  // DevExpress control name
+    _gridviews.push({
+        'name': name, 'selectedKeyData': null,
+        'isHeaderFilter': false, 'isGrouping': false, 'filteredKeys': null, 'pageSize': _pageSize
+    });  // DevExpress control name
 }
 
 function getGridview(divName) {
@@ -30,7 +33,7 @@ function dxGridview_OnBeginCallback(s, e) {
 }
 function dxGridview_OnEndCallback(s, e) {
     console.log(e.command);
-     // Prevents from firing multiple times
+    // Prevents from firing multiple times
     if ((e.command == 'APPLYFILTER' || e.command == 'CUSTOMCALLBACK' || e.command == 'FUNCTION') && !_isResetClicked)
         return;
     else
@@ -48,14 +51,14 @@ function dxGridview_OnEndCallback(s, e) {
     $.ajax({
         type: "POST",
         url: url,
-        data: { },
+        data: {},
         dataType: "json",
         success: successFunc,
         error: errorFunc
     });
 
     function successFunc(data, status) {    // data: 11|33|234
-        if (data.length == 0)   
+        if (data.length == 0)
             _filteredData = _jsonData;
         else {
             var orClause = getOrClause('x.Seq', data);
@@ -107,18 +110,28 @@ function dxGridview_OnEndCallback(s, e) {
 }
 
 function getOrClause(operand, keys) {
+    var k = [];
     if (keys)
-    var k = keys.split('|');
+        k = keys.split('|');
     var orClause = "";
     k.forEach(function (c) {
         orClause += operand + "==" + c + "||";
     });
-    orClause = orClause.substr(0, orClause.length - 2); // remove ||
+    orClause = orClause.substr(0, orClause.length - 2); // remove last ||
     return orClause;
 }
 
 function dxGridview_SelectionChanged(s, e) {
-    console.log(s);
+    var key = s.keyName;
+    s.GetSelectedFieldValues(key, function onGetSelectedFieldValues(values) {
+        var keys = values.join('|');
+        var gv = getGridview(s.name);
+        var orClause = getOrClause('x.Seq', keys);
+        gv.selectedKeyData = _jsonData.filter(function (x) {
+            return eval(orClause);
+        });
+        highlightLayer(gv.selectedKeyData);
+    });
 }
 
 function dxGridview_Init(s, e) {
