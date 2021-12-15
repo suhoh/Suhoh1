@@ -9,6 +9,15 @@
     position: absolute;
 }
 
+.divChartShowTooltip {
+    opacity: 1;
+    position: absolute;
+    top: 2px;
+    right: 136px;
+    z-index: 1;
+    /*background-color: yellow;*/
+}
+
 .divChartMaximizeButton {
     float:left;
     opacity: 1;

@@ -34,6 +34,16 @@
         <span style="font-size: large">@graphType</span>
     </div>
 
+    <div class="divChartShowTooltip">
+        @Html.DevExpress().CheckBox(cbsettings =>
+        {
+        cbsettings.Name = String.Format("{0}_ShowTooltip", Model.CreatePanelName);
+        cbsettings.Text = "Show Tooltip";
+        cbsettings.ControlStyle.CssClass = "";
+        cbsettings.Properties.ClientSideEvents.CheckedChanged = "chkHeaderFilterGroupingChecked";
+        }).GetHtml()
+    </div>
+
     <div class="divChartMaximizeButton">
         <button id="@(String.Format("{0}_Maximize", Model.CreatePanelName))" type="button" class="btnChartMaximize" title="Maximize"
                 onclick="btnBarMaximizeClick(this)"></button>

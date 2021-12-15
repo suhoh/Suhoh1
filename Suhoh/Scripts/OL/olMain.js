@@ -378,7 +378,7 @@ function initMap(divName) {
     }    
 
     _maps.push({
-        'divName': divName, 'map': map, 'layer': null, 'type': null, 'features': null, 'scaleLine': scaleLine, 'data': null,
+        'divName': divName, 'map': map, 'layer': null, 'highlightLayer': null, 'type': null, 'features': null, 'scaleLine': scaleLine, 'data': null,
         'xCol': null, 'yCol': null, 'zCol': null, 'basemap': _basemap, 'overlay': mapOverlay,
         'mousePosition': mousePositionControl, 'isCoordinatesOn': true, 'isLabelOn': false, 'labelColumn': null,
         'x': _mapX, 'y': _mapY, 'goToLocation': 1, 'sec': 15, 'twp': 24, 'rge': 1, 'mer': 5, 'isMaximized': false
@@ -649,3 +649,12 @@ function zoomToLonLat(paneId, lon, lat, isShowSymbol) {
     map.getView().fit(bufExtent, { size: map.getSize(), duration: _zoomToDuration });
 }
 
+function highlightLayer(jsonData) {
+    _maps.forEach(function (m) {
+        if (m.highlightLayer)
+            m.map.removeLayer(m.highlightLayer);
+
+        // ToDo: add highlight layer here
+    });
+
+}
