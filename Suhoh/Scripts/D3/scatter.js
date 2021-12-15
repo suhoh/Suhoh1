@@ -29,7 +29,7 @@ var _scatterTestPoint = [
 function initScatter(divName) {
     _scatters.push({
         'divName': divName, 'xCol': null, 'yCol': null, 'zCol': null, 'data': null, 'svg': null, 'isLegend': true,
-        'textLabel': null, 'isLabel': false,
+        'textLabel': null, 'isXLabel': false, 'isYLabel': false, 'isZLabel': false, 'circle': null,
         'isXValue': false, 'isYValue': false, 'isZValue': false,
         'color': _scatterColors
     })
@@ -87,6 +87,9 @@ function createScatter(divName, data, width, height, scatterColor) {
 
     _scatterSvgHeight = height - 30;
 
+    var zoom = d3.zoom()
+        .on("zoom", updateScatter);
+
     var svg = d3.select("#" + divName)
         .append("svg")
         .attr("width", width)
@@ -95,18 +98,14 @@ function createScatter(divName, data, width, height, scatterColor) {
         .attr("transform", "translate(0," + _scatterMarginTop + ")")
         .append("g");
 
-    var zoom = d3.zoom()
-        .on("zoom", updateScatter);
-
-    // zoom area
-    svg.append("rect")
-        .attr("width", clipX)
-        .attr("height", clipY)
-        .style("fill", "white")
-        .style("opacity", 0)
-        .style("pointer-event", "all")
-        .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + "," + _scatterMarginTop + ")")
-        .call(zoom);
+    //svg.append("rect")
+    //    .attr("width", clipX)
+    //    .attr("height", clipY)
+    //    .style("fill", "white")
+    //    .style("opacity", 0)
+    //    .style("pointer-event", "all")
+    //    .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + "," + _scatterMarginTop + ")")
+    //    .call(zoom);
 
     var x;
     var y;
@@ -127,11 +126,6 @@ function createScatter(divName, data, width, height, scatterColor) {
     var color = d3.scaleOrdinal()
         .range(scatterColor);
 
-    //$('#scatterTooltip_' + divName).remove();
-
-    //var circles = svg.append('g')
-    //    .attr("clip-path", "url(#rect-clip)");
-
     // clip Path
     svg.append("clipPath")
         .attr("id", "rect-clip")
@@ -140,7 +134,6 @@ function createScatter(divName, data, width, height, scatterColor) {
         .attr("y", 0)
         .attr("width", clipX)
         .attr("height", clipY);
-
     
     drawAxis(scatter, svg, x, y, height, false);
     drawGridlines(svg, x, y, clipX, clipY, false);
@@ -151,11 +144,17 @@ function createScatter(divName, data, width, height, scatterColor) {
 
     drawCircles(scatter, data, circles, x, y, color, false);
 
-    var ScatterTextLabel = svg.append('g')
-        .attr("clip-path", "url(#rect-clip)");
-
-    createScatterTextLabel(scatter, svg, data, ScatterTextLabel, x, y);
+    createScatterTextLabel(scatter, svg, data, x, y, false);
     createScatterLegend(scatter, svg, width, color);
+
+    // To do: Tooltip not working
+    svg.append("rect")
+        .attr("width", clipX)
+        .attr("height", clipY)
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + "," + _scatterMarginTop + ")")
+        .call(zoom);
 
     function updateScatter(event, d) {
         var new_x = event.transform.rescaleX(x);
@@ -165,7 +164,7 @@ function createScatter(divName, data, width, height, scatterColor) {
         drawGridlines(svg, new_x, new_y, clipX, clipY, true);
         drawCircles(scatter, data, circles, new_x, new_y, color, true);
 
-        createScatterTextLabel(scatter, svg, data, ScatterTextLabel, new_x, new_y);
+        createScatterTextLabel(scatter, svg, data, new_x, new_y, true);
     }
 }
 
@@ -261,7 +260,6 @@ function drawAxis(scatter, svg, x, y, height, isZoom) {
             .attr("transform", "rotate(30)")
             .style("text-anchor", "start");
         _y_axis.call(yAxis);
-
     }
 }
 
@@ -310,23 +308,29 @@ function drawBorder(svg, clipX, clipY) {
         .style("stroke-width", "1px");
 }
 
-
-function createScatterTextLabel(scatter, svg, data, ScatterTextLabel, x, y) {
-    scatter.textLabel = svg
-        .selectAll("scatter")
-        .data(data)
-        .enter()
-        .append("g")
-        .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + "," + _scatterMarginTop + ")")
-        .append("text")
-        .attr("id", "scatterTextLabel")
-        .attr("class", "scatterTextLabel")
-        .style("text-anchor", "left")
-        .style("font-size", "12px")
-        .attr("display", "none")
-        .attr("x", function (d) { return x(d.X) })
-        .attr("y", function (d) { return y(d.Y) })
-        .attr("clip-path", "url(#rect-clip)");
+function createScatterTextLabel(scatter, svg, data, x, y, isZoom) {
+    if (!isZoom) {
+        scatter.textLabel = svg.append("g")
+            .attr("transform", "translate(" + (_scatterMarginLeft + _scatterMarginRight) + "," + _scatterMarginTop + ")")
+            .selectAll("text")
+            .data(data)
+            .enter()
+            .append("text")
+            .attr("id", "scatterTextLabel")
+            .attr("class", "scatterTextLabel")
+            .style("text-anchor", "left")
+            .style("font-size", "12px")
+            .attr("display", "none")
+            .attr("x", function (d) { return x(d.X) })
+            .attr("y", function (d) { return y(d.Y) })
+            .attr("clip-path", "url(#rect-clip)");
+    }
+    // when zoom, only scale to be updated.
+    else {
+        scatter.textLabel
+            .attr("x", function (d) { return x(d.X) })
+            .attr("y", function (d) { return y(d.Y) })
+    }
 }
 
 function createScatterLegend(scatter, svg, width, color) {
